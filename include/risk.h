@@ -7,7 +7,8 @@
 struct Risks
 {
     bool32 hasSturdy:1;
-    bool32 padding:31;
+    bool32 hasMoldBreaker:1;
+    bool32 padding:30;
 };
 
 extern struct Risks gRisks;

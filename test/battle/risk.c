@@ -31,3 +31,19 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Sturdy (breaks)")
         EXPECT_EQ(opponent->hp, 0);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Opponent has Mold Breaker")
+{
+    GIVEN {
+        gRisks.hasMoldBreaker = TRUE;
+        PLAYER(SPECIES_ONIX) { Ability(ABILITY_STURDY); Level(1); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_WATER_GUN); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_WATER_GUN);
+        NOT ABILITY_POPUP(player, ABILITY_STURDY);
+    } THEN {
+        EXPECT_EQ(player->hp, 0);
+    }
+}
