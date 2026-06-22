@@ -13962,3 +13962,16 @@ void BS_RestoreStatChangeQueue(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
+void BS_JumpIfSkipSturdyPopup(void)
+{
+    NATIVE_ARGS(const u8 *jumpInstr);
+    if (gBattleStruct->skipSturdyPopup)
+    {
+        gBattlescriptCurrInstr = cmd->jumpInstr;
+        gBattleStruct->skipSturdyPopup = FALSE;
+    }
+    else
+    {
+        gBattlescriptCurrInstr = cmd->nextInstr;
+    }
+}

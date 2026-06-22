@@ -2109,3 +2109,8 @@
 	.macro trywakebattlersuproar
 	callnative BS_TryWakeBattlersUproar
 	.endm
+
+	.macro jumpifskipsturdypopup jumpInstr:req
+	callnative BS_JumpIfSkipSturdyPopup
+	.4byte \jumpInstr
+	.endm
