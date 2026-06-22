@@ -47,3 +47,23 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Mold Breaker")
         EXPECT_EQ(player->hp, 0);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Opponent has Filter")
+{
+    s16 damageFoe;
+    s16 damagePlayer;
+    GIVEN {
+        gRisks.hasFilter = TRUE;
+        PLAYER(SPECIES_AGGRON);
+        OPPONENT(SPECIES_AGGRON);
+    } WHEN {
+        TURN { MOVE(player, MOVE_AURA_SPHERE); MOVE(opponent, MOVE_AURA_SPHERE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AURA_SPHERE, player);
+        HP_BAR(opponent, captureDamage: &damagePlayer);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AURA_SPHERE, opponent);
+        HP_BAR(player, captureDamage: &damageFoe);
+    } THEN {
+        EXPECT_MUL_EQ(damageFoe, Q_4_12(0.75), damagePlayer);
+    }
+}

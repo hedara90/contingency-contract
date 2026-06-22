@@ -7455,6 +7455,23 @@ static inline uq4_12_t GetDefenderAbilitiesModifier(struct DamageContext *ctx)
     if (recordAbility && ctx->updateFlags)
         RecordAbilityBattle(ctx->battlerDef, ctx->abilities[ctx->battlerDef]);
 
+    if (!IsOnPlayerSide(ctx->battlerDef) && gRisks.hasFilter)
+    {
+        switch (ctx->abilities[ctx->battlerDef])
+        {
+        case ABILITY_FILTER:
+        case ABILITY_SOLID_ROCK:
+        case ABILITY_PRISM_ARMOR:
+            break;
+        default:
+            if (ctx->typeEffectivenessModifier >= UQ_4_12(2.0))
+            {
+                modifier = UQ_4_12(0.75);
+            }
+            break;
+        }
+    }
+
     return modifier;
 }
 
