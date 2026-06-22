@@ -67,3 +67,23 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Filter")
         EXPECT_MUL_EQ(damageFoe, Q_4_12(0.75), damagePlayer);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Opponent has Adaptability")
+{
+    s16 damageFoe;
+    s16 damagePlayer;
+    GIVEN {
+        gRisks.hasAdaptability = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_PSYCHIC); MOVE(opponent, MOVE_PSYCHIC); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_PSYCHIC, player);
+        HP_BAR(opponent, captureDamage: &damagePlayer);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_PSYCHIC, opponent);
+        HP_BAR(player, captureDamage: &damageFoe);
+    } THEN {
+        EXPECT_MUL_EQ(damagePlayer, Q_4_12(1.33), damageFoe);
+    }
+}
