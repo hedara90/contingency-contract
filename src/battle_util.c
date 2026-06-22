@@ -55,6 +55,8 @@
 #include "constants/pokemon.h"
 #include "test/battle.h"
 
+#include "risk.h"
+
 static bool32 TryRemoveScreens(enum BattlerId battler);
 static bool32 IsUnnerveAbilityOnOpposingSide(enum BattlerId battler);
 static u32 GetFlingPowerFromItemId(enum Item itemId);
@@ -7974,8 +7976,14 @@ s32 GetAdjustedDamage(struct DamageContext *ctx, s32 damage)
     {
         enduredHit = TRUE;
     }
-    else if (GetConfig(B_STURDY) >= GEN_5 && ctx->abilities[ctx->battlerDef] == ABILITY_STURDY && IsBattlerAtMaxHp(ctx->battlerDef))
+    else if (GetConfig(B_STURDY) >= GEN_5
+          && (ctx->abilities[ctx->battlerDef] == ABILITY_STURDY
+           || (gRisks.hasSturdy && !IsOnPlayerSide(ctx->battlerDef) && !gBattleStruct->moldBreakerActive))
+          && IsBattlerAtMaxHp(ctx->battlerDef))
     {
+        if (ctx->abilities[ctx->battlerDef] != ABILITY_STURDY)
+            gBattleStruct->skipSturdyPopup = TRUE;
+
         enduredHit = TRUE;
         RecordAbilityBattle(ctx->battlerDef, ABILITY_STURDY);
         gLastUsedAbility = ABILITY_STURDY;

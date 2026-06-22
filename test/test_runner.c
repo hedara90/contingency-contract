@@ -11,6 +11,7 @@
 #include "test_runner.h"
 #include "test/test.h"
 #include "test/battle.h"
+#include "risk.h"
 
 #define TIMEOUT_SECONDS 60
 
@@ -194,6 +195,8 @@ static void ClearSaveBlocks(void)
     ClearSav1();
     ClearSav2();
     ClearSav3();
+    //  Also clear out risks
+    ClearRisks();
 }
 
 void CB2_TestRunner(void)

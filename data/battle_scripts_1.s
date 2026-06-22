@@ -3864,7 +3864,9 @@ BattleScript_EnduredMsg::
 
 BattleScript_SturdiedMsg::
 	pause B_WAIT_TIME_SHORTEST
+	jumpifskipsturdypopup SkipSturdyPopup
 	call BattleScript_AbilityPopUpTarget
+SkipSturdyPopup:
 	printstring STRINGID_PKMNENDUREDHIT
 	waitmessage B_WAIT_TIME_LONG
 	return
