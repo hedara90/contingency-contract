@@ -10,7 +10,8 @@ struct Risks
     bool32 hasMoldBreaker:1;
     bool32 hasFilter:1;
     bool32 hasAdaptability:1;
-    bool32 padding:28;
+    bool32 hasWonderGuard:1;
+    bool32 padding:27;
 };
 
 extern struct Risks gRisks;

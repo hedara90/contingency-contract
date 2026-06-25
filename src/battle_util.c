@@ -8245,6 +8245,12 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(struct DamageCont
             RecordAbilityBattle(ctx->battlerDef, gBattleMons[ctx->battlerDef].ability);
         }
     }
+    else if (gRisks.hasWonderGuard && !IsOnPlayerSide(ctx->battlerDef) && modifier <= UQ_4_12(1.0))
+    {
+        modifier = UQ_4_12(0.0);
+        if (ctx->updateFlags)
+            gBattleStruct->moveResultFlags[ctx->battlerDef] |= MOVE_RESULT_MISSED;
+    }
 
     if (ctx->updateFlags)
         TryInitializeFirstSTABMoveTrainerSlide(ctx->battlerDef, ctx->battlerAtk, ctx->moveType);

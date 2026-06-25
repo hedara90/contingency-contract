@@ -87,3 +87,24 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Adaptability")
         EXPECT_MUL_EQ(damagePlayer, Q_4_12(1.33), damageFoe);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Opponent has Wonder Guard")
+{
+    GIVEN {
+        gRisks.hasWonderGuard = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_PSYCHIC); MOVE(opponent, MOVE_PSYCHIC); }
+        TURN { MOVE(player, MOVE_CRUNCH); }
+    } SCENE {
+        NONE_OF {
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_PSYCHIC, player);
+            HP_BAR(opponent);
+        }
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_PSYCHIC, opponent);
+        HP_BAR(player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CRUNCH, player);
+        HP_BAR(opponent);
+    }
+}
