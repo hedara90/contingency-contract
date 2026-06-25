@@ -108,3 +108,23 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Wonder Guard")
         HP_BAR(opponent);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Player can't crit")
+{
+    s16 damageFoe;
+    s16 damagePlayer;
+    GIVEN {
+        gRisks.cantCrit = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_WICKED_BLOW); MOVE(opponent, MOVE_WICKED_BLOW); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_WICKED_BLOW, player);
+        HP_BAR(opponent, captureDamage: &damagePlayer);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_WICKED_BLOW, opponent);
+        HP_BAR(player, captureDamage: &damageFoe);
+    } THEN {
+        EXPECT_MUL_EQ(damagePlayer, Q_4_12(1.5), damageFoe);
+    }
+}

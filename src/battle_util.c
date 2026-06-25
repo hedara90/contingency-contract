@@ -7853,6 +7853,10 @@ s32 CalcCritChanceStage(struct DamageContext *ctx)
     {
         critChance = CRITICAL_HIT_BLOCKED;
     }
+    else if (gRisks.cantCrit && IsOnPlayerSide(ctx->battlerAtk))
+    {
+        critChance = CRITICAL_HIT_BLOCKED;
+    }
     else if (gBattleMons[ctx->battlerAtk].volatiles.laserFocus
           || MoveAlwaysCrits(ctx->move)
           || (ctx->abilities[ctx->battlerAtk] == ABILITY_MERCILESS && gBattleMons[ctx->battlerDef].status1 & STATUS1_PSN_ANY))
