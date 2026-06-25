@@ -128,3 +128,40 @@ SINGLE_BATTLE_TEST("Risk: Player can't crit")
         EXPECT_MUL_EQ(damagePlayer, Q_4_12(1.5), damageFoe);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Opponent moves first (Single)")
+{
+    GIVEN {
+        gRisks.opponentMovesFirst = TRUE;
+        PLAYER(SPECIES_WOBBUFFET) { Speed(2); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(1); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_SCRATCH); MOVE(opponent, MOVE_SCRATCH); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+    }
+}
+
+DOUBLE_BATTLE_TEST("Risk: Opponent moves first (Double)")
+{
+    GIVEN {
+        gRisks.opponentMovesFirst = TRUE;
+        PLAYER(SPECIES_WOBBUFFET) { Speed(4); }
+        PLAYER(SPECIES_WOBBUFFET) { Speed(3); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(2); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(1); }
+    } WHEN {
+        TURN {
+            MOVE(playerLeft, MOVE_SCRATCH, target: opponentLeft);
+            MOVE(playerRight, MOVE_SCRATCH, target: opponentRight);
+            MOVE(opponentLeft, MOVE_SCRATCH, target: playerLeft);
+            MOVE(opponentRight, MOVE_SCRATCH, target: playerRight);
+        }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponentLeft);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponentRight);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, playerLeft);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, playerRight);
+    }
+}

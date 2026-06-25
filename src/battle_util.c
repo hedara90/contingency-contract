@@ -8013,7 +8013,7 @@ s32 GetAdjustedDamage(struct DamageContext *ctx, s32 damage)
           && IsBattlerAtMaxHp(ctx->battlerDef))
     {
         if (ctx->abilities[ctx->battlerDef] != ABILITY_STURDY)
-            gBattleStruct->skipSturdyPopup = TRUE;
+            gBattleStruct->skipSturdyPopup++;
 
         enduredHit = TRUE;
         RecordAbilityBattle(ctx->battlerDef, ABILITY_STURDY);

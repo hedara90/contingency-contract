@@ -13965,10 +13965,24 @@ void BS_RestoreStatChangeQueue(void)
 void BS_JumpIfSkipSturdyPopup(void)
 {
     NATIVE_ARGS(const u8 *jumpInstr);
-    if (gBattleStruct->skipSturdyPopup)
+    if (gBattleStruct->skipSturdyPopup > 0)
     {
         gBattlescriptCurrInstr = cmd->jumpInstr;
-        gBattleStruct->skipSturdyPopup = FALSE;
+        gBattleStruct->skipSturdyPopup--;
+    }
+    else
+    {
+        gBattlescriptCurrInstr = cmd->nextInstr;
+    }
+}
+
+void BS_JumpIfSkipQuickDrawPopup(void)
+{
+    NATIVE_ARGS(const u8 *jumpInstr);
+    if (gBattleStruct->skipQuickDrawPopup > 0)
+    {
+        gBattlescriptCurrInstr = cmd->jumpInstr;
+        gBattleStruct->skipQuickDrawPopup--;
     }
     else
     {

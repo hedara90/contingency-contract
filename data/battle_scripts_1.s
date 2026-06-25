@@ -5625,10 +5625,12 @@ BattleScript_QuickClawActivation::
 	end2
 
 BattleScript_QuickDrawActivation::
+	jumpifskipquickdrawpopup SkipQuickDrawPopup
 	flushtextbox
 	call BattleScript_AbilityPopUp
 	printstring STRINGID_CANACTFASTERTHANKSTO
 	waitmessage B_WAIT_TIME_LONG
+SkipQuickDrawPopup:
 	end2
 
 BattleScript_CustapBerryActivation::

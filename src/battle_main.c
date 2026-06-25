@@ -79,6 +79,7 @@
 #include "constants/trainers.h"
 #include "constants/weather.h"
 #include "cable_club.h"
+#include "risk.h"
 
 extern const struct BgTemplate gBattleBgTemplates[];
 extern const struct WindowTemplate *const gBattleWindowTemplates[];
@@ -5191,6 +5192,17 @@ static void TryChangingTurnOrderEffects(struct BattleCalcValues *calcValues, u32
      || (holdEffectBattler1 == HOLD_EFFECT_CUSTAP_BERRY && HasEnoughHpToEatBerry(battler1, ability1, 4, gBattleMons[battler1].item))))
         gProtectStructs[battler1].usedCustapBerry = TRUE;
 
+    if (gRisks.opponentMovesFirst)
+    {
+        if (!gProtectStructs[battler1].quickDraw
+         && !gProtectStructs[battler1].usedCustapBerry
+         && !IsOnPlayerSide(battler1))
+        {
+            gProtectStructs[battler1].quickDraw = TRUE;
+            gBattleStruct->skipQuickDrawPopup++;
+        }
+    }
+
     // Battler 2
     // Quick Draw
     if (ability2 == ABILITY_QUICK_DRAW && !IsBattleMoveStatus(gChosenMoveByBattler[battler2]) && quickDrawRandom[battler2])
@@ -5200,6 +5212,17 @@ static void TryChangingTurnOrderEffects(struct BattleCalcValues *calcValues, u32
      && ((holdEffectBattler2 == HOLD_EFFECT_QUICK_CLAW && quickClawRandom[battler2])
      || (holdEffectBattler2 == HOLD_EFFECT_CUSTAP_BERRY && HasEnoughHpToEatBerry(battler2, ability2, 4, gBattleMons[battler2].item))))
         gProtectStructs[battler2].usedCustapBerry = TRUE;
+
+    if (gRisks.opponentMovesFirst)
+    {
+        if (!gProtectStructs[battler2].quickDraw
+         && !gProtectStructs[battler2].usedCustapBerry
+         && !IsOnPlayerSide(battler2))
+        {
+            gProtectStructs[battler2].quickDraw = TRUE;
+            gBattleStruct->skipQuickDrawPopup++;
+        }
+    }
 }
 
 static void CheckChangingTurnOrderEffects(void)
