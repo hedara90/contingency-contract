@@ -7240,11 +7240,21 @@ static inline uq4_12_t GetParentalBondModifier(enum BattlerId battlerAtk)
 static inline uq4_12_t GetSameTypeAttackBonusModifier(struct DamageContext *ctx)
 {
     if (ctx->moveType == TYPE_MYSTERY)
+    {
         return UQ_4_12(1.0);
+    }
     else if (gBattleStruct->pledgeState == PLEDGE_COMBO_ATTACK && IS_BATTLER_OF_TYPE(BATTLE_PARTNER(ctx->battlerAtk), ctx->moveType))
+    {
         return (ctx->abilities[ctx->battlerAtk] == ABILITY_ADAPTABILITY) ? UQ_4_12(2.0) : UQ_4_12(1.5);
+    }
     else if (!IS_BATTLER_OF_TYPE(ctx->battlerAtk, ctx->moveType) || ctx->move == MOVE_STRUGGLE || ctx->move == MOVE_NONE)
+    {
         return UQ_4_12(1.0);
+    }
+    else if (!IsOnPlayerSide(ctx->battlerAtk) && gRisks.hasAdaptability)
+    {
+        return UQ_4_12(2.0);
+    }
     return (ctx->abilities[ctx->battlerAtk] == ABILITY_ADAPTABILITY) ? UQ_4_12(2.0) : UQ_4_12(1.5);
 }
 
@@ -7454,6 +7464,23 @@ static inline uq4_12_t GetDefenderAbilitiesModifier(struct DamageContext *ctx)
 
     if (recordAbility && ctx->updateFlags)
         RecordAbilityBattle(ctx->battlerDef, ctx->abilities[ctx->battlerDef]);
+
+    if (!IsOnPlayerSide(ctx->battlerDef) && gRisks.hasFilter)
+    {
+        switch (ctx->abilities[ctx->battlerDef])
+        {
+        case ABILITY_FILTER:
+        case ABILITY_SOLID_ROCK:
+        case ABILITY_PRISM_ARMOR:
+            break;
+        default:
+            if (ctx->typeEffectivenessModifier >= UQ_4_12(2.0))
+            {
+                modifier = UQ_4_12(0.75);
+            }
+            break;
+        }
+    }
 
     return modifier;
 }
@@ -8217,6 +8244,12 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(struct DamageCont
             gBattleStruct->moveResultFlags[ctx->battlerDef] |= MOVE_RESULT_MISSED;
             RecordAbilityBattle(ctx->battlerDef, gBattleMons[ctx->battlerDef].ability);
         }
+    }
+    else if (gRisks.hasWonderGuard && !IsOnPlayerSide(ctx->battlerDef) && modifier <= UQ_4_12(1.0))
+    {
+        modifier = UQ_4_12(0.0);
+        if (ctx->updateFlags)
+            gBattleStruct->moveResultFlags[ctx->battlerDef] |= MOVE_RESULT_MISSED;
     }
 
     if (ctx->updateFlags)
@@ -9804,9 +9837,21 @@ void ClearDamageCalcResults(void)
     gBattleStruct->preAttackEffectHappened = FALSE;
     gBattleScripting.savedDmg = 0;
     if (gCurrentMove != MOVE_NONE)
-        gBattleStruct->moldBreakerActive = IsMoldBreakerTypeAbility(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker)) || MoveIgnoresTargetAbility(gCurrentMove);
+    {
+        if ((!IsOnPlayerSide(gBattlerAttacker) && gRisks.hasMoldBreaker)
+         || (IsMoldBreakerTypeAbility(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker)) || MoveIgnoresTargetAbility(gCurrentMove)))
+        {
+            gBattleStruct->moldBreakerActive = TRUE;
+        }
+        else
+        {
+            gBattleStruct->moldBreakerActive = FALSE;
+        }
+    }
     else
+    {
         gBattleStruct->moldBreakerActive = FALSE;
+    }
 }
 
 bool32 DoesDestinyBondFail(enum BattlerId battler)
