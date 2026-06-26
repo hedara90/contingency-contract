@@ -4,6 +4,16 @@
 #include "gba/types.h"
 #include "global.h"
 
+#if TESTING
+#define TURN_LIMIT_1 3
+#define TURN_LIMIT_2 2
+#define TURN_LIMIT_3 1
+#else
+#define TURN_LIMIT_1 20
+#define TURN_LIMIT_2 15
+#define TURN_LIMIT_3 10
+#endif
+
 struct Risks
 {
     bool32 hasSturdy:1;
@@ -15,7 +25,10 @@ struct Risks
     bool32 cantCrit:1;
     bool32 opponentMovesFirst:1;
     bool32 opponentPartyPlus1:1;
-    bool32 padding:23;
+    bool32 turnLimit1:1;
+    bool32 turnLimit2:1;
+    bool32 turnLimit3:1;
+    bool32 padding:20;
 };
 
 extern struct Risks gRisks;

@@ -197,3 +197,58 @@ TEST("Risk: Opponent has 1 extra mon in party")
     Free(testParty);
     gRisks.opponentPartyPlus1 = FALSE;
 }
+
+SINGLE_BATTLE_TEST("Risk: Turn Limit 1")
+{
+    GIVEN {
+        gRisks.turnLimit1 = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { }
+        TURN { }
+        TURN { }
+    } SCENE {
+        MESSAGE("You lost against 2!");
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Turn Limit 2")
+{
+    GIVEN {
+        gRisks.turnLimit2 = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { }
+        TURN { }
+    } SCENE {
+        MESSAGE("You lost against 2!");
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Turn Limit 3")
+{
+    GIVEN {
+        gRisks.turnLimit3 = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { }
+    } SCENE {
+        MESSAGE("You lost against 2!");
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Turn Limit win")
+{
+    GIVEN {
+        gRisks.turnLimit3 = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_GUILLOTINE); }
+    } SCENE {
+        MESSAGE("You defeated 2!");
+    }
+}

@@ -5330,7 +5330,27 @@ static void RunTurnActionsFunctions(void)
     sTurnActionsFuncsTable[gCurrentActionFuncId]();
 
     if (gCurrentTurnActionNumber >= gBattlersCount) // everyone did their actions, turn finished
+    {
+        if ((gRisks.turnLimit1 || gRisks.turnLimit2 || gRisks.turnLimit3) && (gBattleOutcome & 0x7F) != B_OUTCOME_WON)
+        {
+            if (gRisks.turnLimit1)
+            {
+                if (gBattleTurnCounter == TURN_LIMIT_1 - 1)
+                    gBattleOutcome = B_OUTCOME_LOST;
+            }
+            else if (gRisks.turnLimit2)
+            {
+                if (gBattleTurnCounter == TURN_LIMIT_2 - 1)
+                    gBattleOutcome = B_OUTCOME_LOST;
+            }
+            else if (gRisks.turnLimit3)
+            {
+                if (gBattleTurnCounter == TURN_LIMIT_3 - 1)
+                    gBattleOutcome = B_OUTCOME_LOST;
+            }
+        }
         gBattleMainFunc = sEndTurnFuncsTable[gBattleOutcome & 0x7F];
+    }
 }
 
 static void HandleEndTurn_BattleWon(void)
