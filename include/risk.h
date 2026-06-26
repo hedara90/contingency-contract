@@ -28,7 +28,8 @@ struct Risks
     bool32 turnLimit1:1;
     bool32 turnLimit2:1;
     bool32 turnLimit3:1;
-    bool32 padding:20;
+    bool32 flipTypeChart:1;
+    bool32 padding:19;
 };
 
 extern struct Risks gRisks;

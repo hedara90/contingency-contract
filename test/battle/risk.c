@@ -252,3 +252,16 @@ SINGLE_BATTLE_TEST("Risk: Turn Limit win")
         MESSAGE("You defeated 2!");
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Flip type chart")
+{
+    GIVEN {
+        gRisks.flipTypeChart = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_PSYCHIC); }
+    } SCENE {
+        MESSAGE("It's super effective!");
+    }
+}
