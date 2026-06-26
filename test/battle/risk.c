@@ -165,3 +165,21 @@ DOUBLE_BATTLE_TEST("Risk: Opponent moves first (Double)")
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, playerRight);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Opponent has Regenerator")
+{
+    //  Also checking that it doesn't break other switchout abilities
+    GIVEN {
+        gRisks.hasRegenerator = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WEEZING) { Ability(ABILITY_NEUTRALIZING_GAS); HP(100); MaxHP(300); }
+        OPPONENT(SPECIES_WYNAUT);
+    } WHEN {
+        TURN { SWITCH(opponent, 1); }
+        TURN { SWITCH(opponent, 0); }
+    } SCENE {
+        MESSAGE("The effects of the neutralizing gas wore off!");
+    } THEN {
+        EXPECT_EQ(opponent->hp, 200);
+    }
+}

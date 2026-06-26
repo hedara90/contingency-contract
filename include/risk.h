@@ -11,9 +11,10 @@ struct Risks
     bool32 hasFilter:1;
     bool32 hasAdaptability:1;
     bool32 hasWonderGuard:1;
+    bool32 hasRegenerator:1;
     bool32 cantCrit:1;
     bool32 opponentMovesFirst:1;
-    bool32 padding:25;
+    bool32 padding:24;
 };
 
 extern struct Risks gRisks;
