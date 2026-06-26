@@ -1884,6 +1884,12 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
             monsCount = trainer->partySize;
         }
 
+        if (gRisks.opponentPartyPlus1)
+        {
+            if (monsCount + 1 <= PARTY_SIZE)
+                monsCount++;
+        }
+
         u32 monIndices[monsCount];
         DoTrainerPartyPool(trainer, monIndices, monsCount, battleTypeFlags);
 

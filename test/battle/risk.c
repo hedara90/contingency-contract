@@ -1,6 +1,10 @@
 #include "global.h"
 #include "test/battle.h"
 #include "risk.h"
+#include "malloc.h"
+#include "data.h"
+#include "battle.h"
+#include "battle_main.h"
 
 SINGLE_BATTLE_TEST("Risk: Opponent has Sturdy")
 {
@@ -182,4 +186,14 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Regenerator")
     } THEN {
         EXPECT_EQ(opponent->hp, 200);
     }
+}
+
+TEST("Risk: Opponent has 1 extra mon in party")
+{
+    gRisks.opponentPartyPlus1 = TRUE;
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    CreateNPCTrainerPartyFromTrainer(testParty, GetTrainerStructFromId(15), TRUE, BATTLE_TYPE_TRAINER);
+    EXPECT_NE(GetMonData(&testParty[2], MON_DATA_SPECIES), SPECIES_NONE);
+    Free(testParty);
+    gRisks.opponentPartyPlus1 = FALSE;
 }

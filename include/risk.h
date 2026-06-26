@@ -14,7 +14,8 @@ struct Risks
     bool32 hasRegenerator:1;
     bool32 cantCrit:1;
     bool32 opponentMovesFirst:1;
-    bool32 padding:24;
+    bool32 opponentPartyPlus1:1;
+    bool32 padding:23;
 };
 
 extern struct Risks gRisks;
