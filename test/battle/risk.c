@@ -338,3 +338,45 @@ SINGLE_BATTLE_TEST("Risk: Foe has Metronome (item)")
         EXPECT_EQ(damage[0], damage[6]);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Player has negative Metronome (item)")
+{
+    s16 damage[7];
+    GIVEN {
+        gRisks.playerHasNegativeMetronome = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_SCRATCH); }
+        TURN { MOVE(player, MOVE_SCRATCH); }
+        TURN { MOVE(player, MOVE_SCRATCH); }
+        TURN { MOVE(player, MOVE_SCRATCH); }
+        TURN { MOVE(player, MOVE_SCRATCH); }
+        TURN { MOVE(player, MOVE_SCRATCH); }
+        TURN { MOVE(player, MOVE_TACKLE); }
+        TURN { MOVE(player, MOVE_SCRATCH); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+        HP_BAR(opponent, captureDamage: &damage[0]);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+        HP_BAR(opponent, captureDamage: &damage[1]);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+        HP_BAR(opponent, captureDamage: &damage[2]);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+        HP_BAR(opponent, captureDamage: &damage[3]);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+        HP_BAR(opponent, captureDamage: &damage[4]);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+        HP_BAR(opponent, captureDamage: &damage[5]);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+        HP_BAR(opponent, captureDamage: &damage[6]);
+    } THEN {
+        EXPECT_MUL_EQ(damage[0], Q_4_12(0.8), damage[1]);
+        EXPECT_MUL_EQ(damage[0], Q_4_12(0.6), damage[2]);
+        EXPECT_MUL_EQ(damage[0], Q_4_12(0.4), damage[3]);
+        EXPECT_MUL_EQ(damage[0], Q_4_12(0.2), damage[4]);
+        EXPECT_MUL_EQ(damage[0], Q_4_12(0.0), damage[5]);
+        EXPECT_EQ(damage[0], damage[6]);
+    }
+}
