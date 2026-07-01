@@ -14,6 +14,8 @@
 #include "move.h"
 #include "constants/battle_move_resolution.h"
 
+#include "risk.h"
+
 static void ValidateBattlers(void);
 static enum Move GetOriginallyUsedMove(enum Move chosenMove);
 static void SetSameMoveTurnValues(enum BattleMoveEffects moveEffect);
@@ -3326,6 +3328,32 @@ static enum MoveEndResult MoveEndDefrost(struct BattleCalcValues *cv)
     return MOVEEND_RESULT_CONTINUE;
 }
 
+static enum MoveEndResult MoveEndAttackerDrowsy(struct BattleCalcValues *cv)
+{
+    while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
+    {
+        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+        if (gRisks.attackGetsDrowsy && battler == gBattlerAttacker && IsOnPlayerSide(gBattlerAttacker))
+        {
+            if (GetMoveCategory(cv->move) != DAMAGE_CATEGORY_STATUS
+             && IsBattlerAlive(gBattlerAttacker)
+             && !gBattleStruct->unableToUseMove
+             && !gBattleMons[gBattlerAttacker].volatiles.yawn
+             && !(gBattleMons[gBattlerAttacker].status1 & STATUS1_ANY)
+             && !IsElectricTerrainAffected(gBattlerAttacker, cv->abilities[gBattlerAttacker], cv->holdEffects[gBattlerAttacker], gFieldStatuses)
+             && !IsMistyTerrainAffected(gBattlerAttacker, cv->abilities[gBattlerAttacker], cv->holdEffects[gBattlerAttacker], gFieldStatuses))
+            {
+                gBattleMons[gBattlerAttacker].volatiles.yawn = 2;
+                BattleScriptCall(BattleScript_DrowsyAttacker);
+                return MOVEEND_RESULT_RUN_SCRIPT;
+            }
+        }
+    }
+    gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleScripting.moveendState++;
+    return MOVEEND_RESULT_CONTINUE;
+}
+
 static enum MoveEndResult MoveEndMoveBlockRecoil(struct BattleCalcValues *cv)
 {
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
@@ -4369,6 +4397,7 @@ static enum MoveEndResult (*const sMoveEndHandlers[])(struct BattleCalcValues *c
     [MOVEEND_HP_THRESHOLD_ITEMS_TARGET] = MoveEndHpThresholdItemsTarget,
     [MOVEEND_MULTIHIT_MOVE] = MoveEndMultihitMove,
     [MOVEEND_DEFROST] = MoveEndDefrost,
+    [MOVEEND_ATTACKER_DROWSY] = MoveEndAttackerDrowsy,
     [MOVEEND_MOVE_BLOCK_RECOIL] = MoveEndMoveBlockRecoil,
     [MOVEEND_SHEER_FORCE] = MoveEndSheerForce,
     [MOVEEND_MOVE_BLOCK] = MoveEndMoveBlock,

@@ -6313,3 +6313,8 @@ BattleScript_SilphScopeUnveiled::
 	printstring STRINGID_GHOSTWASMAROWAK
 	waitmessage B_WAIT_TIME_LONG
 	end2
+
+BattleScript_DrowsyAttacker::
+	printstring STRINGID_ATTACKER_GOT_DROWSY
+	waitmessage B_WAIT_TIME_MED
+	return

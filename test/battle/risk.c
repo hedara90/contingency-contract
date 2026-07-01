@@ -265,3 +265,18 @@ SINGLE_BATTLE_TEST("Risk: Flip type chart")
         MESSAGE("It's super effective!");
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Attacker gets Drowsy")
+{
+    GIVEN {
+        gRisks.attackGetsDrowsy = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_SCRATCH); }
+        TURN { }
+        TURN { }
+    } SCENE {
+        STATUS_ICON(player, sleep: TRUE);
+    }
+}
