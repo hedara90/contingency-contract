@@ -277,6 +277,8 @@ SINGLE_BATTLE_TEST("Risk: Attacker gets Drowsy")
         TURN { }
         TURN { }
     } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+        HP_BAR(opponent);
         STATUS_ICON(player, sleep: TRUE);
     }
 }
