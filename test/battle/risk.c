@@ -399,3 +399,20 @@ SINGLE_BATTLE_TEST("Risk: Player has recoil")
         EXPECT_MUL_EQ(damageAtk, Q_4_12(0.25), damageRecoil);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Opponent inflicts Gastro Acid on attack")
+{
+    GIVEN {
+        gRisks.opponentInflictsGastroAcid = TRUE;
+        PLAYER(SPECIES_FLYGON) { Ability(ABILITY_LEVITATE); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_SCRATCH); }
+        TURN { MOVE(opponent, MOVE_EARTHQUAKE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        HP_BAR(player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_EARTHQUAKE, opponent);
+        HP_BAR(player);
+    }
+}

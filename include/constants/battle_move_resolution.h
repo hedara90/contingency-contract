@@ -120,6 +120,7 @@ enum MoveEndState
     MOVEEND_MULTIHIT_MOVE,
     MOVEEND_DEFROST,
     MOVEEND_ATTACKER_DROWSY,
+    MOVEEND_OPPONENT_GASTRO_ACID,
     MOVEEND_STATUS_GETS_PARA,
     MOVEEND_MOVE_BLOCK_RECOIL, // Recoil effects should still happen even if Sheer Force applies
     MOVEEND_SHEER_FORCE, // If move is Sheer Force affected, jump to effects that are not suppressed

@@ -728,5 +728,6 @@ extern const u8 BattleScript_TakeHeart[];
 
 extern const u8 BattleScript_DrowsyAttacker[];
 extern const u8 BattleScript_StatusGetsPara[];
+extern const u8 BattleScript_OpponentInflictsGastroAcid[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

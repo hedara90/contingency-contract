@@ -6325,3 +6325,12 @@ BattleScript_StatusGetsPara::
 	waitmessage B_WAIT_TIME_LONG
 	updatestatusicon BS_EFFECT_BATTLER
 	return
+
+BattleScript_OpponentInflictsGastroAcid::
+	printstring STRINGID_PKMNSABILITYSUPPRESSED
+	waitmessage B_WAIT_TIME_LONG
+	trytoclearprimalweather
+	call BattleScript_TryRevertWeatherform
+	flushtextbox
+	tryendneutralizinggas
+	return
