@@ -380,3 +380,22 @@ SINGLE_BATTLE_TEST("Risk: Player has negative Metronome (item)")
         EXPECT_EQ(damage[0], damage[6]);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Player has recoil")
+{
+    s16 damageAtk;
+    s16 damageRecoil;
+    GIVEN {
+        gRisks.playerHasRecoil = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_SCRATCH); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+        HP_BAR(opponent, captureDamage: &damageAtk);
+        HP_BAR(player, captureDamage: &damageRecoil);
+    } THEN {
+        EXPECT_MUL_EQ(damageAtk, Q_4_12(0.25), damageRecoil);
+    }
+}

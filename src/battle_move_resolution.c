@@ -3449,6 +3449,21 @@ static enum MoveEndResult MoveEndMoveBlockRecoil(struct BattleCalcValues *cv)
         break;
     }
 
+    if (gRisks.playerHasRecoil
+     && IsOnPlayerSide(cv->battlerAtk)
+     && result != MOVEEND_RESULT_RUN_SCRIPT
+     && gBattleStruct->moveDamage[cv->battlerDef] != 0
+     && IsBattlerTurnDamaged(cv->battlerDef, INCLUDING_SUBSTITUTES) && IsBattlerAlive(cv->battlerAtk))
+    {
+        if (!(IsAbilityAndRecord(cv->battlerAtk, cv->abilities[cv->battlerAtk], ABILITY_ROCK_HEAD)
+           || IsAbilityAndRecord(cv->battlerAtk, cv->abilities[cv->battlerAtk], ABILITY_MAGIC_GUARD)))
+        {
+            SetPassiveDamageAmount(cv->battlerAtk, gBattleScripting.savedDmg * max(1, 25) / 100);
+            BattleScriptCall(BattleScript_MoveEffectRecoil);
+            result = MOVEEND_RESULT_RUN_SCRIPT;
+        }
+    }
+
     gBattleScripting.moveendState++;
     return result;
 }
