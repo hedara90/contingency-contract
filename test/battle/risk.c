@@ -296,3 +296,45 @@ SINGLE_BATTLE_TEST("Risk: Status gets Para")
         STATUS_ICON(player, paralysis: TRUE);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Foe has Metronome (item)")
+{
+    s16 damage[7];
+    GIVEN {
+        gRisks.foeHasMetronome = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_SCRATCH); }
+        TURN { MOVE(opponent, MOVE_SCRATCH); }
+        TURN { MOVE(opponent, MOVE_SCRATCH); }
+        TURN { MOVE(opponent, MOVE_SCRATCH); }
+        TURN { MOVE(opponent, MOVE_SCRATCH); }
+        TURN { MOVE(opponent, MOVE_SCRATCH); }
+        TURN { MOVE(opponent, MOVE_TACKLE); }
+        TURN { MOVE(opponent, MOVE_SCRATCH); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        HP_BAR(player, captureDamage: &damage[0]);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        HP_BAR(player, captureDamage: &damage[1]);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        HP_BAR(player, captureDamage: &damage[2]);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        HP_BAR(player, captureDamage: &damage[3]);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        HP_BAR(player, captureDamage: &damage[4]);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        HP_BAR(player, captureDamage: &damage[5]);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        HP_BAR(player, captureDamage: &damage[6]);
+    } THEN {
+        EXPECT_MUL_EQ(damage[0], Q_4_12(1.2), damage[1]);
+        EXPECT_MUL_EQ(damage[0], Q_4_12(1.4), damage[2]);
+        EXPECT_MUL_EQ(damage[0], Q_4_12(1.6), damage[3]);
+        EXPECT_MUL_EQ(damage[0], Q_4_12(1.8), damage[4]);
+        EXPECT_MUL_EQ(damage[0], Q_4_12(2.0), damage[5]);
+        EXPECT_EQ(damage[0], damage[6]);
+    }
+}

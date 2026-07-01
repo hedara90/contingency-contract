@@ -31,7 +31,8 @@ struct Risks
     bool32 flipTypeChart:1;
     bool32 attackGetsDrowsy:1;
     bool32 statusGetsPara:1;
-    bool32 padding:17;
+    bool32 foeHasMetronome:1;
+    bool32 padding:16;
 };
 
 extern struct Risks gRisks;

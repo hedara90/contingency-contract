@@ -7593,6 +7593,15 @@ static inline uq4_12_t GetOtherModifiers(struct DamageContext *ctx)
         DAMAGE_MULTIPLY_MODIFIER(GetDefenderItemsModifier(ctx));
         DAMAGE_MULTIPLY_MODIFIER(GetAttackerItemsModifier(ctx->battlerAtk, ctx->typeEffectivenessModifier, ctx->holdEffects[ctx->battlerAtk]));
     }
+    //  Apply Risk metronome modifier
+    if (gRisks.foeHasMetronome && !IsOnPlayerSide(ctx->battlerAtk))
+    {
+        u32 metronomeTurns;
+        uq4_12_t metronomeBoostBase;
+        metronomeBoostBase = PercentToUQ4_12(20);
+        metronomeTurns = min(gBattleMons[ctx->battlerAtk].volatiles.metronomeItemCounter, 5);
+        DAMAGE_MULTIPLY_MODIFIER(uq4_12_add(UQ_4_12(1.0), metronomeBoostBase * metronomeTurns));
+    }
     return finalModifier;
 }
 
