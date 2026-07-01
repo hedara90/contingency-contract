@@ -3354,6 +3354,32 @@ static enum MoveEndResult MoveEndAttackerDrowsy(struct BattleCalcValues *cv)
     return MOVEEND_RESULT_CONTINUE;
 }
 
+static enum MoveEndResult MoveEndStatusGetsPara(struct BattleCalcValues *cv)
+{
+    while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
+    {
+        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+        if (gRisks.statusGetsPara && battler == gBattlerAttacker && IsOnPlayerSide(gBattlerAttacker))
+        {
+            if (IsBattleMoveStatus(cv->move)
+             && !gBattleStruct->unableToUseMove
+             && CanBeParalyzed(battler, battler, cv->abilities[battler]))
+            {
+                gBattleMons[battler].status1 = STATUS1_PARALYSIS;
+                gEffectBattler = battler;
+                BtlController_EmitSetMonData(battler, B_COMM_TO_CONTROLLER, REQUEST_STATUS_BATTLE, 0, sizeof(gBattleMons[battler].status1), &gBattleMons[battler].status1);
+                MarkBattlerForControllerExec(cv->battlerAtk);
+                BattleScriptCall(BattleScript_StatusGetsPara);
+                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+                return MOVEEND_RESULT_RUN_SCRIPT;
+            }
+        }
+    }
+    gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleScripting.moveendState++;
+    return MOVEEND_RESULT_CONTINUE;
+}
+
 static enum MoveEndResult MoveEndMoveBlockRecoil(struct BattleCalcValues *cv)
 {
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
@@ -4398,6 +4424,7 @@ static enum MoveEndResult (*const sMoveEndHandlers[])(struct BattleCalcValues *c
     [MOVEEND_MULTIHIT_MOVE] = MoveEndMultihitMove,
     [MOVEEND_DEFROST] = MoveEndDefrost,
     [MOVEEND_ATTACKER_DROWSY] = MoveEndAttackerDrowsy,
+    [MOVEEND_STATUS_GETS_PARA] = MoveEndStatusGetsPara,
     [MOVEEND_MOVE_BLOCK_RECOIL] = MoveEndMoveBlockRecoil,
     [MOVEEND_SHEER_FORCE] = MoveEndSheerForce,
     [MOVEEND_MOVE_BLOCK] = MoveEndMoveBlock,

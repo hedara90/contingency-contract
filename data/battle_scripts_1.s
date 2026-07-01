@@ -6318,3 +6318,10 @@ BattleScript_DrowsyAttacker::
 	printstring STRINGID_ATTACKER_GOT_DROWSY
 	waitmessage B_WAIT_TIME_MED
 	return
+
+BattleScript_StatusGetsPara::
+	statusanimation BS_EFFECT_BATTLER
+	printfromtable gGotParalyzedStringIds
+	waitmessage B_WAIT_TIME_LONG
+	updatestatusicon BS_EFFECT_BATTLER
+	return

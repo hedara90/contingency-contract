@@ -282,3 +282,17 @@ SINGLE_BATTLE_TEST("Risk: Attacker gets Drowsy")
         STATUS_ICON(player, sleep: TRUE);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Status gets Para")
+{
+    GIVEN {
+        gRisks.statusGetsPara = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_SWORDS_DANCE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SWORDS_DANCE, player);
+        STATUS_ICON(player, paralysis: TRUE);
+    }
+}

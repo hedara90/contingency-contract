@@ -727,5 +727,6 @@ extern const u8 BattleScript_Memento[];
 extern const u8 BattleScript_TakeHeart[];
 
 extern const u8 BattleScript_DrowsyAttacker[];
+extern const u8 BattleScript_StatusGetsPara[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H
