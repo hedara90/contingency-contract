@@ -6334,3 +6334,8 @@ BattleScript_OpponentInflictsGastroAcid::
 	flushtextbox
 	tryendneutralizinggas
 	return
+
+BattleScript_AttackDisables::
+	printstring STRINGID_PKMNMOVEWASDISABLED
+	waitmessage B_WAIT_TIME_LONG
+	return

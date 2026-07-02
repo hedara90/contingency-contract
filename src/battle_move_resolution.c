@@ -3408,6 +3408,43 @@ static enum MoveEndResult MoveEndOpponentGastroAcid(struct BattleCalcValues *cv)
     return MOVEEND_RESULT_CONTINUE;
 }
 
+static enum MoveEndResult MoveEndAttacksDisable(struct BattleCalcValues *cv)
+{
+    while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
+    {
+        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+        if (gRisks.opponentAttacksDisable
+         && battler == cv->battlerDef
+         && IsBattlerTurnDamaged(battler, EXCLUDING_SUBSTITUTES)
+         && gBattleMons[battler].volatiles.disabledMove == MOVE_NONE
+         && gLastMoves[battler] != MOVE_NONE
+         && !IsOnPlayerSide(cv->battlerAtk)
+         && IsOnPlayerSide(battler))
+        {
+            enum Move move = MOVE_NONE;
+            for (u32 i = 0; i < 4; i++)
+            {
+                if (gBattleMons[battler].moves[i] == gLastMoves[battler]
+                 && gBattleMons[battler].pp[i] != 0)
+                {
+                    move = gBattleMons[battler].moves[i];
+                }
+            }
+            if (move != MOVE_NONE)
+            {
+                PREPARE_MOVE_BUFFER(gBattleTextBuff1, move)
+                gBattleMons[battler].volatiles.disabledMove = move;
+                gBattleMons[battler].volatiles.disableTimer = B_DISABLE_TIMER;
+                BattleScriptCall(BattleScript_AttackDisables);
+                return MOVEEND_RESULT_RUN_SCRIPT;
+            }
+        }
+    }
+    gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleScripting.moveendState++;
+    return MOVEEND_RESULT_CONTINUE;
+}
+
 static enum MoveEndResult MoveEndMoveBlockRecoil(struct BattleCalcValues *cv)
 {
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
@@ -4520,6 +4557,7 @@ static enum MoveEndResult (*const sMoveEndHandlers[])(struct BattleCalcValues *c
     [MOVEEND_ATTACKER_DROWSY] = MoveEndAttackerDrowsy,
     [MOVEEND_STATUS_GETS_PARA] = MoveEndStatusGetsPara,
     [MOVEEND_OPPONENT_GASTRO_ACID] = MoveEndOpponentGastroAcid,
+    [MOVEEND_ATTACKS_DISABLE] = MoveEndAttacksDisable,
     [MOVEEND_MOVE_BLOCK_RECOIL] = MoveEndMoveBlockRecoil,
     [MOVEEND_SHEER_FORCE] = MoveEndSheerForce,
     [MOVEEND_MOVE_BLOCK] = MoveEndMoveBlock,

@@ -431,3 +431,20 @@ SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches")
         MESSAGE("Wynaut was dragged out!");
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Opponent attacks apply disable")
+{
+    GIVEN {
+        gRisks.opponentAttacksDisable = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_SCRATCH); MOVE(opponent, MOVE_SCRATCH); }
+        TURN { MOVE(player, MOVE_CELEBRATE); }
+        TURN { MOVE(player, MOVE_CELEBRATE); }
+        TURN { MOVE(player, MOVE_CELEBRATE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        MESSAGE("Wobbuffet's move is no longer disabled!");
+    }
+}
