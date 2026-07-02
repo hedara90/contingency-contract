@@ -3729,6 +3729,57 @@ static enum MoveEndResult MoveEndMoveBlock(struct BattleCalcValues *cv)
     return result;
 }
 
+static enum MoveEndResult MoveEndOpponentForceSwitches(struct BattleCalcValues *cv)
+{
+    if (gRisks.opponentAttacksSwitches)
+    {
+        while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
+        {
+            enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+            if (battler == cv->battlerDef
+             && IsOnPlayerSide(battler)
+             && IsBattlerTurnDamaged(battler, EXCLUDING_SUBSTITUTES)
+             && IsBattlerAlive(battler)
+             && IsBattlerAlive(cv->battlerAtk)
+             && gBattleStruct->battlerState[battler].commanderSpecies == SPECIES_NONE)
+            {
+                bool32 shouldRunScript = FALSE;
+                if (cv->abilities[battler] == ABILITY_GUARD_DOG)
+                {
+                    shouldRunScript = FALSE;
+                }
+                else if (cv->abilities[battler] == ABILITY_SUCTION_CUPS)
+                {
+                    BattleScriptCall(BattleScript_AbilityPreventsPhasingOutRet);
+                    shouldRunScript = TRUE;
+                }
+                else if (gBattleMons[battler].volatiles.root)
+                {
+                    BattleScriptCall(BattleScript_PrintMonIsRootedRet);
+                    shouldRunScript = TRUE;
+                }
+                else if (GetActiveGimmick(battler) == GIMMICK_DYNAMAX)
+                {
+                    BattleScriptCall(BattleScript_HitSwitchTargetDynamaxed);
+                    shouldRunScript = TRUE;
+                }
+                else
+                {
+                    gBattleScripting.switchCase = B_SWITCH_HIT;
+                    BattleScriptCall(BattleScript_TryHitSwitchTarget);
+                    shouldRunScript = TRUE;
+                }
+
+                if (shouldRunScript)
+                    return MOVEEND_RESULT_RUN_SCRIPT;
+            }
+        }
+    }
+    gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleScripting.moveendState++;
+    return MOVEEND_RESULT_CONTINUE;
+}
+
 static enum MoveEndResult MoveEndItemEffectsAttacker2(struct BattleCalcValues *cv)
 {
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
@@ -4472,6 +4523,7 @@ static enum MoveEndResult (*const sMoveEndHandlers[])(struct BattleCalcValues *c
     [MOVEEND_MOVE_BLOCK_RECOIL] = MoveEndMoveBlockRecoil,
     [MOVEEND_SHEER_FORCE] = MoveEndSheerForce,
     [MOVEEND_MOVE_BLOCK] = MoveEndMoveBlock,
+    [MOVEEND_OPPONENT_FORCE_SWITCHES] = MoveEndOpponentForceSwitches,
     [MOVEEND_ITEM_EFFECTS_ATTACKER_2] = MoveEndItemEffectsAttacker2,
     [MOVEEND_ABILITY_EFFECT_FOES_FAINTED] = MoveEndAbilityEffectFoesFainted,
     [MOVEEND_SHELL_TRAP] = MoveEndShellTrap,

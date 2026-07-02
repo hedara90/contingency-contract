@@ -416,3 +416,18 @@ SINGLE_BATTLE_TEST("Risk: Opponent inflicts Gastro Acid on attack")
         HP_BAR(player);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches")
+{
+    GIVEN {
+        gRisks.opponentAttacksSwitches = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_WYNAUT);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_SCRATCH); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        MESSAGE("Wynaut was dragged out!");
+    }
+}
