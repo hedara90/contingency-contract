@@ -6339,3 +6339,8 @@ BattleScript_AttackDisables::
 	printstring STRINGID_PKMNMOVEWASDISABLED
 	waitmessage B_WAIT_TIME_LONG
 	return
+
+BattleScript_AttackTorments::
+	printstring STRINGID_PKMNSUBJECTEDTOTORMENT
+	waitmessage B_WAIT_TIME_LONG
+	return

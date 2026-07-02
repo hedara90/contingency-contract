@@ -3445,6 +3445,32 @@ static enum MoveEndResult MoveEndAttacksDisable(struct BattleCalcValues *cv)
     return MOVEEND_RESULT_CONTINUE;
 }
 
+static enum MoveEndResult MoveEndAttacksTorment(struct BattleCalcValues *cv)
+{
+    while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
+    {
+        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+        if (gRisks.opponentAttacksTorment
+         && battler == cv->battlerDef
+         && IsBattlerTurnDamaged(battler, EXCLUDING_SUBSTITUTES)
+         && !gBattleMons[battler].volatiles.torment
+         && !IsAbilityOnSide(battler, ABILITY_AROMA_VEIL)
+         && gLastMoves[battler] != MOVE_NONE
+         && !IsOnPlayerSide(cv->battlerAtk)
+         && IsOnPlayerSide(battler))
+        {
+            gBattleMons[gBattlerTarget].volatiles.torment = TRUE;
+            gBattleMons[gBattlerTarget].volatiles.tormentTimer = B_TORMENT_TIMER;
+            BattleScriptCall(BattleScript_AttackTorments);
+            return MOVEEND_RESULT_RUN_SCRIPT;
+        }
+    }
+    gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleScripting.moveendState++;
+    return MOVEEND_RESULT_CONTINUE;
+}
+
+
 static enum MoveEndResult MoveEndMoveBlockRecoil(struct BattleCalcValues *cv)
 {
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
@@ -4558,6 +4584,7 @@ static enum MoveEndResult (*const sMoveEndHandlers[])(struct BattleCalcValues *c
     [MOVEEND_STATUS_GETS_PARA] = MoveEndStatusGetsPara,
     [MOVEEND_OPPONENT_GASTRO_ACID] = MoveEndOpponentGastroAcid,
     [MOVEEND_ATTACKS_DISABLE] = MoveEndAttacksDisable,
+    [MOVEEND_ATTACKS_TORMENT] = MoveEndAttacksTorment,
     [MOVEEND_MOVE_BLOCK_RECOIL] = MoveEndMoveBlockRecoil,
     [MOVEEND_SHEER_FORCE] = MoveEndSheerForce,
     [MOVEEND_MOVE_BLOCK] = MoveEndMoveBlock,

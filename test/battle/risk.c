@@ -448,3 +448,20 @@ SINGLE_BATTLE_TEST("Risk: Opponent attacks apply disable")
         MESSAGE("Wobbuffet's move is no longer disabled!");
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Opponent attacks apply torment")
+{
+    GIVEN {
+        gRisks.opponentAttacksTorment = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_SCRATCH); MOVE(opponent, MOVE_SCRATCH); }
+        TURN { MOVE(player, MOVE_CELEBRATE); }
+        TURN { MOVE(player, MOVE_SCRATCH); }
+        TURN { MOVE(player, MOVE_CELEBRATE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        MESSAGE("Wobbuffet is no longer tormented!");
+    }
+}
