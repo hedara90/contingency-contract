@@ -7593,6 +7593,25 @@ static inline uq4_12_t GetOtherModifiers(struct DamageContext *ctx)
         DAMAGE_MULTIPLY_MODIFIER(GetDefenderItemsModifier(ctx));
         DAMAGE_MULTIPLY_MODIFIER(GetAttackerItemsModifier(ctx->battlerAtk, ctx->typeEffectivenessModifier, ctx->holdEffects[ctx->battlerAtk]));
     }
+    //  Apply Risk metronome modifier
+    if (gRisks.foeHasMetronome && !IsOnPlayerSide(ctx->battlerAtk))
+    {
+        u32 metronomeTurns;
+        uq4_12_t metronomeBoostBase;
+        metronomeBoostBase = PercentToUQ4_12(20);
+        metronomeTurns = min(gBattleMons[ctx->battlerAtk].volatiles.metronomeItemCounter, 5);
+        DAMAGE_MULTIPLY_MODIFIER(uq4_12_add(UQ_4_12(1.0), metronomeBoostBase * metronomeTurns));
+    }
+
+    if (gRisks.playerHasNegativeMetronome && IsOnPlayerSide(ctx->battlerAtk))
+    {
+        u32 metronomeTurns;
+        uq4_12_t metronomeBoostBase;
+        metronomeBoostBase = PercentToUQ4_12(20);
+        metronomeTurns = min(gBattleMons[ctx->battlerAtk].volatiles.metronomeItemCounter, 5);
+        DAMAGE_MULTIPLY_MODIFIER(uq4_12_subtract(UQ_4_12(1.0), metronomeBoostBase * metronomeTurns));
+    }
+
     return finalModifier;
 }
 
@@ -7853,6 +7872,10 @@ s32 CalcCritChanceStage(struct DamageContext *ctx)
     {
         critChance = CRITICAL_HIT_BLOCKED;
     }
+    else if (gRisks.cantCrit && IsOnPlayerSide(ctx->battlerAtk))
+    {
+        critChance = CRITICAL_HIT_BLOCKED;
+    }
     else if (gBattleMons[ctx->battlerAtk].volatiles.laserFocus
           || MoveAlwaysCrits(ctx->move)
           || (ctx->abilities[ctx->battlerAtk] == ABILITY_MERCILESS && gBattleMons[ctx->battlerDef].status1 & STATUS1_PSN_ANY))
@@ -8009,7 +8032,7 @@ s32 GetAdjustedDamage(struct DamageContext *ctx, s32 damage)
           && IsBattlerAtMaxHp(ctx->battlerDef))
     {
         if (ctx->abilities[ctx->battlerDef] != ABILITY_STURDY)
-            gBattleStruct->skipSturdyPopup = TRUE;
+            gBattleStruct->skipSturdyPopup++;
 
         enduredHit = TRUE;
         RecordAbilityBattle(ctx->battlerDef, ABILITY_STURDY);
@@ -8349,7 +8372,7 @@ uq4_12_t GetOverworldTypeEffectiveness(struct Pokemon *mon, enum Type moveType)
 
 uq4_12_t GetTypeModifier(enum Type atkType, enum Type defType)
 {
-    if (B_FLAG_INVERSE_BATTLE != 0 && FlagGet(B_FLAG_INVERSE_BATTLE))
+    if ((B_FLAG_INVERSE_BATTLE != 0 && FlagGet(B_FLAG_INVERSE_BATTLE)) || gRisks.flipTypeChart)
         return GetInverseTypeMultiplier(gTypeEffectivenessTable[atkType][defType]);
     return gTypeEffectivenessTable[atkType][defType];
 }
@@ -9842,7 +9865,7 @@ void ClearDamageCalcResults(void)
     if (gCurrentMove != MOVE_NONE)
     {
         if ((!IsOnPlayerSide(gBattlerAttacker) && gRisks.hasMoldBreaker)
-         || (IsMoldBreakerTypeAbility(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker)) || MoveIgnoresTargetAbility(gCurrentMove)))
+         || (IsMoldBreakerTypeAbility(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker)) || MoveIgnoresTargetAbility(gCurrentMove) || (!IsOnPlayerSide(gBattlerAttacker) && gRisks.hasMoldBreaker)))
         {
             gBattleStruct->moldBreakerActive = TRUE;
         }

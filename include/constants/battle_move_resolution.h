@@ -119,9 +119,15 @@ enum MoveEndState
     MOVEEND_HP_THRESHOLD_ITEMS_TARGET, // Activation only during a multi hit move / ability (Parental Bond)
     MOVEEND_MULTIHIT_MOVE,
     MOVEEND_DEFROST,
+    MOVEEND_ATTACKER_DROWSY,
+    MOVEEND_STATUS_GETS_PARA,
+    MOVEEND_OPPONENT_GASTRO_ACID,
+    MOVEEND_ATTACKS_DISABLE,
+    MOVEEND_ATTACKS_TORMENT,
     MOVEEND_MOVE_BLOCK_RECOIL, // Recoil effects should still happen even if Sheer Force applies
     MOVEEND_SHEER_FORCE, // If move is Sheer Force affected, jump to effects that are not suppressed
     MOVEEND_MOVE_BLOCK,
+    MOVEEND_OPPONENT_FORCE_SWITCHES,
     MOVEEND_ITEM_EFFECTS_ATTACKER_2,
     MOVEEND_ABILITY_EFFECT_FOES_FAINTED, // Moxie-like abilities / Battle Bond / Magician
     MOVEEND_SHELL_TRAP,

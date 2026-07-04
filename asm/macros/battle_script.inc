@@ -2114,3 +2114,8 @@
 	callnative BS_JumpIfSkipSturdyPopup
 	.4byte \jumpInstr
 	.endm
+
+	.macro jumpifskipquickdrawpopup jumpInstr:req
+	callnative BS_JumpIfSkipQuickDrawPopup
+	.4byte \jumpInstr
+	.endm
