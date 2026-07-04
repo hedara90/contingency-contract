@@ -9862,7 +9862,7 @@ void ClearDamageCalcResults(void)
     if (gCurrentMove != MOVE_NONE)
     {
         if ((!IsOnPlayerSide(gBattlerAttacker) && gRisks.hasMoldBreaker)
-         || (IsMoldBreakerTypeAbility(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker)) || MoveIgnoresTargetAbility(gCurrentMove)))
+         || (IsMoldBreakerTypeAbility(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker)) || MoveIgnoresTargetAbility(gCurrentMove) || (!IsOnPlayerSide(gBattlerAttacker) && gRisks.hasMoldBreaker)))
         {
             gBattleStruct->moldBreakerActive = TRUE;
         }

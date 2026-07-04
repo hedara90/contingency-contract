@@ -36,6 +36,25 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Sturdy (breaks)")
     }
 }
 
+AI_SINGLE_BATTLE_TEST("Risk: Opponent has Sturdy (AI)")
+{
+    u32 odds = 0;
+    PARAMETRIZE { gRisks.hasSturdy = FALSE; odds = SHOULD_SWITCH_HASBADODDS_PERCENTAGE; }
+    PARAMETRIZE { gRisks.hasSturdy = TRUE; odds = 100; }
+    PASSES_RANDOMLY(odds, 100, RNG_AI_SWITCH_HASBADODDS);
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_SWITCHING | AI_FLAG_SMART_MON_CHOICES | AI_FLAG_OMNISCIENT);
+        PLAYER(SPECIES_ELECTRODE) { HP(1); MaxHP(400); Moves(MOVE_THUNDERBOLT, MOVE_THUNDER_WAVE, MOVE_THUNDER_SHOCK); }
+        OPPONENT(SPECIES_PELIPPER) { Moves(MOVE_EARTHQUAKE); }
+        OPPONENT(SPECIES_RHYDON) { Moves(MOVE_EARTHQUAKE); Ability(ABILITY_ROCK_HEAD); }
+    } WHEN {
+        if (gRisks.hasSturdy)
+            TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_MOVE(opponent, MOVE_EARTHQUAKE); }
+        else
+            TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_SWITCH(opponent, 1); }
+    }
+}
+
 SINGLE_BATTLE_TEST("Risk: Opponent has Mold Breaker")
 {
     GIVEN {
@@ -49,6 +68,22 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Mold Breaker")
         NOT ABILITY_POPUP(player, ABILITY_STURDY);
     } THEN {
         EXPECT_EQ(player->hp, 0);
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("Risk: Opponent has Mold Breaker (AI)")
+{
+    PARAMETRIZE { gRisks.hasMoldBreaker = FALSE; }
+    PARAMETRIZE { gRisks.hasMoldBreaker = TRUE; }
+    GIVEN {
+        PLAYER(SPECIES_EELEKTROSS) { Moves(MOVE_TACKLE); }
+        OPPONENT(SPECIES_GOLURK) { Moves(MOVE_TACKLE, MOVE_EARTHQUAKE); }
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+    } WHEN {
+        if (gRisks.hasMoldBreaker)
+            TURN { MOVE(player, MOVE_TACKLE); EXPECT_MOVE(opponent, MOVE_EARTHQUAKE); }
+        else
+            TURN { MOVE(player, MOVE_TACKLE); EXPECT_MOVE(opponent, MOVE_TACKLE); }
     }
 }
 

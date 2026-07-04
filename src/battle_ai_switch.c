@@ -20,6 +20,7 @@
 #include "constants/battle_move_effects.h"
 #include "constants/items.h"
 #include "constants/moves.h"
+#include "risk.h"
 
 // this file's functions
 struct IncomingHealInfo
@@ -575,7 +576,8 @@ static bool32 FindMonThatAbsorbsOpponentsMove(struct SwitchAiContext *switchCont
         return FALSE;
     if (AreStatsRaised(switchContext->battler))
         return FALSE;
-    if (IsMoldBreakerTypeAbility(switchContext->opposingBattler, gAiLogicData->abilities[switchContext->opposingBattler]))
+    if (IsMoldBreakerTypeAbility(switchContext->opposingBattler, gAiLogicData->abilities[switchContext->opposingBattler])
+        || (!IsOnPlayerSide(switchContext->opposingBattler) && gRisks.hasMoldBreaker))
         return FALSE;
     if (switchContext->canBattlerWin1v1)
         return FALSE;
@@ -1889,7 +1891,7 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, enum BattlerId battler, const st
     u8 weatherDuration = gBattleStruct->weatherDuration;
     enum BattlerId opposingBattler = GetOppositeBattler(battler);
     enum Ability opposingAbility = gAiLogicData->abilities[opposingBattler], ability = gAiLogicData->abilities[battler];
-    bool32 usedSingleUseHealingItem = FALSE, opponentCanBreakMold = IsMoldBreakerTypeAbility(opposingBattler, opposingAbility);
+    bool32 usedSingleUseHealingItem = FALSE, opponentCanBreakMold = IsMoldBreakerTypeAbility(opposingBattler, opposingAbility) || (!IsOnPlayerSide(opposingBattler) && gRisks.hasMoldBreaker);
     s32 currentHP = startingHP, singleUseItemHeal = 0;
     bool32 applyWishNow = healInfo->healEndOfTurn && healInfo->wishCounter == 1;
 
@@ -1912,7 +1914,7 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, enum BattlerId battler, const st
         currentHP = currentHP - damageTaken;
 
         // One shot prevention effects
-        if (damageTaken >= maxHP && startingHP == maxHP && (heldItemEffect == HOLD_EFFECT_FOCUS_SASH || (!opponentCanBreakMold && GetConfig(B_STURDY) >= GEN_5 && ability == ABILITY_STURDY)) && hitsToKO < 1)
+        if (damageTaken >= maxHP && startingHP == maxHP && (heldItemEffect == HOLD_EFFECT_FOCUS_SASH || (!opponentCanBreakMold && ((GetConfig(B_STURDY) >= GEN_5 && ability == ABILITY_STURDY) || (gRisks.hasSturdy && !IsOnPlayerSide(battler))))) && hitsToKO < 1)
             currentHP = 1;
 
         // If mon is still alive, apply weather impact first, as it might KO the mon before it can heal with its item (order is weather -> item -> status)
