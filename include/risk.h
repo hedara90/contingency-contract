@@ -45,7 +45,8 @@ struct Risks
     bool32 hasOmniscientAi:1;
     bool32 hasPredictionAi:1;
     bool32 hasGuaranteedEffects:1;
-    bool32 padding:3;
+    bool32 hasGuaranteedAccuracy:1;
+    bool32 padding:2;
 };
 
 extern struct Risks gRisks;

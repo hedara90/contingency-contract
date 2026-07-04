@@ -625,3 +625,29 @@ AI_SINGLE_BATTLE_TEST("Risk: Opponent has guaranteed secondary effects (AI)")
             TURN { EXPECT_MOVE(opponent, MOVE_KARATE_CHOP); MOVE(player, MOVE_TACKLE); }
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Opponent can't miss")
+{
+    PASSES_RANDOMLY(100, 100);
+    GIVEN {
+        gRisks.hasGuaranteedAccuracy = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_FISSURE); }
+    } SCENE {
+        NONE_OF { MESSAGE("Wobbuffet avoided the attack!"); }
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("Risk: Opponent can't miss (AI)")
+{
+    GIVEN {
+        gRisks.hasGuaranteedAccuracy = TRUE;
+        PLAYER(SPECIES_WOBBUFFET) { Moves(MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_ZIGZAGOON) { Moves(MOVE_DOUBLE_EDGE, MOVE_FISSURE); }
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+    } WHEN {
+        TURN { MOVE(player, MOVE_CELEBRATE); EXPECT_MOVE(opponent, MOVE_FISSURE); }
+    }
+}

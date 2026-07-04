@@ -10249,6 +10249,8 @@ bool32 CanMoveSkipAccuracyCalc(enum BattlerId battlerAtk, enum BattlerId battler
     enum BattlerId abilityBattler = battlerAtk;
     enum BattleMoveEffects moveEffect = GetMoveEffect(move);
 
+    if (!IsOnPlayerSide(battlerAtk) && gRisks.hasGuaranteedAccuracy)
+        effect = TRUE;
     if (gBattleMons[battlerAtk].volatiles.battlerWithSureHit == battlerDef + 1
      || CanMoveSkipAccuracyCheck(battlerAtk, move)
      || gBattleMons[battlerDef].volatiles.glaiveRush)
@@ -10483,7 +10485,8 @@ bool32 DoesOHKOMoveMissTarget(struct BattleCalcValues *cv)
     if (gBattleMons[cv->battlerDef].volatiles.glaiveRush
      || gBattleMons[cv->battlerAtk].volatiles.battlerWithSureHit == cv->battlerDef + 1
      || IsAbilityAndRecord(cv->battlerAtk, cv->abilities[cv->battlerAtk], ABILITY_NO_GUARD)
-     || IsAbilityAndRecord(cv->battlerDef, cv->abilities[cv->battlerDef], ABILITY_NO_GUARD))
+     || IsAbilityAndRecord(cv->battlerDef, cv->abilities[cv->battlerDef], ABILITY_NO_GUARD)
+     || (!IsOnPlayerSide(cv->battlerAtk) && gRisks.hasGuaranteedAccuracy))
     {
         lands = SURE_HIT;
     }
