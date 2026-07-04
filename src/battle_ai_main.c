@@ -30,6 +30,7 @@
 #include "constants/moves.h"
 #include "constants/items.h"
 #include "constants/trainers.h"
+#include "risk.h"
 
 #if TESTING
 #include "test/battle.h"
@@ -292,6 +293,15 @@ static u64 GetAiFlags(u16 trainerId, enum BattlerId battler)
     // Automatically includes AI_FLAG_PREDICT_SWITCH if AI_FLAG_PREDICT_INCOMING_MON is being used
     if (flags & AI_FLAG_PREDICT_INCOMING_MON)
         flags |= AI_FLAG_PREDICT_SWITCH;
+
+    // Risk flags
+    if (gRisks.hasOmniscientAi)
+        flags |= AI_FLAG_OMNISCIENT;
+    if (gRisks.hasPredictionAi)
+    {
+        flags |= AI_FLAG_PREDICT_SWITCH;
+        flags |= AI_FLAG_PREDICT_MOVE;
+    }
 
     if (sDynamicAiFunc != NULL)
         flags |= AI_FLAG_DYNAMIC_FUNC;
