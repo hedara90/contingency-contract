@@ -465,3 +465,42 @@ SINGLE_BATTLE_TEST("Risk: Opponent attacks apply torment")
         MESSAGE("Wobbuffet is no longer tormented!");
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Player starts with burn")
+{
+    GIVEN {
+        gRisks.playerStartsWithBurn = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { }
+    } THEN {
+        EXPECT_EQ(gBattleMons[0].status1, STATUS1_BURN);
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Player starts with paralysis")
+{
+    GIVEN {
+        gRisks.playerStartsWithParalysis = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { }
+    } THEN {
+        EXPECT_EQ(gBattleMons[0].status1, STATUS1_PARALYSIS);
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Player starts with frostbite")
+{
+    GIVEN {
+        gRisks.playerStartsWithFrostbite = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { }
+    } THEN {
+        EXPECT_EQ(gBattleMons[0].status1, STATUS1_FROSTBITE);
+    }
+}

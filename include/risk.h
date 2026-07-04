@@ -38,7 +38,11 @@ struct Risks
     bool32 opponentAttacksSwitches:1;
     bool32 opponentAttacksDisable:1;
     bool32 opponentAttacksTorment:1;
-    bool32 padding:10;
+    bool32 playerStartsWithBurn:1;
+    bool32 playerStartsWithParalysis:1;
+    bool32 playerStartsWithFrostbite:1;
+    bool32 permanentSun:1;  //  Not implemented yet
+    bool32 padding:6;
 };
 
 extern struct Risks gRisks;
