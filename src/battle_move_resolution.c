@@ -14,6 +14,8 @@
 #include "move.h"
 #include "constants/battle_move_resolution.h"
 
+#include "risk.h"
+
 static void ValidateBattlers(void);
 static enum Move GetOriginallyUsedMove(enum Move chosenMove);
 static void SetSameMoveTurnValues(enum BattleMoveEffects moveEffect);
@@ -3326,6 +3328,149 @@ static enum MoveEndResult MoveEndDefrost(struct BattleCalcValues *cv)
     return MOVEEND_RESULT_CONTINUE;
 }
 
+static enum MoveEndResult MoveEndAttackerDrowsy(struct BattleCalcValues *cv)
+{
+    while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
+    {
+        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+        if (gRisks.attackGetsDrowsy && battler == gBattlerAttacker && IsOnPlayerSide(gBattlerAttacker))
+        {
+            if (GetMoveCategory(cv->move) != DAMAGE_CATEGORY_STATUS
+             && IsBattlerAlive(gBattlerAttacker)
+             && !gBattleStruct->unableToUseMove
+             && !gBattleMons[gBattlerAttacker].volatiles.yawn
+             && !(gBattleMons[gBattlerAttacker].status1 & STATUS1_ANY)
+             && !IsElectricTerrainAffected(gBattlerAttacker, cv->abilities[gBattlerAttacker], cv->holdEffects[gBattlerAttacker], gFieldStatuses)
+             && !IsMistyTerrainAffected(gBattlerAttacker, cv->abilities[gBattlerAttacker], cv->holdEffects[gBattlerAttacker], gFieldStatuses))
+            {
+                gBattleMons[gBattlerAttacker].volatiles.yawn = 2;
+                BattleScriptCall(BattleScript_DrowsyAttacker);
+                return MOVEEND_RESULT_RUN_SCRIPT;
+            }
+        }
+    }
+    gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleScripting.moveendState++;
+    return MOVEEND_RESULT_CONTINUE;
+}
+
+static enum MoveEndResult MoveEndStatusGetsPara(struct BattleCalcValues *cv)
+{
+    while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
+    {
+        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+        if (gRisks.statusGetsPara && battler == gBattlerAttacker && IsOnPlayerSide(gBattlerAttacker))
+        {
+            if (IsBattleMoveStatus(cv->move)
+             && !gBattleStruct->unableToUseMove
+             && CanBeParalyzed(battler, battler, cv->abilities[battler]))
+            {
+                gBattleMons[battler].status1 = STATUS1_PARALYSIS;
+                gEffectBattler = battler;
+                BtlController_EmitSetMonData(battler, B_COMM_TO_CONTROLLER, REQUEST_STATUS_BATTLE, 0, sizeof(gBattleMons[battler].status1), &gBattleMons[battler].status1);
+                MarkBattlerForControllerExec(cv->battlerAtk);
+                BattleScriptCall(BattleScript_StatusGetsPara);
+                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+                return MOVEEND_RESULT_RUN_SCRIPT;
+            }
+        }
+    }
+    gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleScripting.moveendState++;
+    return MOVEEND_RESULT_CONTINUE;
+}
+
+static enum MoveEndResult MoveEndOpponentGastroAcid(struct BattleCalcValues *cv)
+{
+    while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
+    {
+        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+        if (gRisks.opponentInflictsGastroAcid
+         && battler == cv->battlerAtk
+         && IsBattlerTurnDamaged(cv->battlerDef, EXCLUDING_SUBSTITUTES)
+         && !gAbilitiesInfo[cv->abilities[cv->battlerDef]].cantBeSuppressed
+         && !gBattleMons[cv->battlerDef].volatiles.gastroAcid
+         && !IsOnPlayerSide(battler)
+         && IsOnPlayerSide(cv->battlerDef))
+        {
+            enum BattlerId target = cv->battlerDef;
+            if (gBattleMons[target].volatiles.neutralizingGas)
+                gSpecialStatuses[target].neutralizingGasRemoved = TRUE;
+
+            RemoveRuinAbilityFlags(target);
+            gBattleMons[target].volatiles.gastroAcid = TRUE;
+            BattleScriptCall(BattleScript_OpponentInflictsGastroAcid);
+            return MOVEEND_RESULT_RUN_SCRIPT;
+        }
+    }
+    gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleScripting.moveendState++;
+    return MOVEEND_RESULT_CONTINUE;
+}
+
+static enum MoveEndResult MoveEndAttacksDisable(struct BattleCalcValues *cv)
+{
+    while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
+    {
+        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+        if (gRisks.opponentAttacksDisable
+         && battler == cv->battlerDef
+         && IsBattlerTurnDamaged(battler, EXCLUDING_SUBSTITUTES)
+         && gBattleMons[battler].volatiles.disabledMove == MOVE_NONE
+         && gLastMoves[battler] != MOVE_NONE
+         && !IsOnPlayerSide(cv->battlerAtk)
+         && IsOnPlayerSide(battler))
+        {
+            enum Move move = MOVE_NONE;
+            for (u32 i = 0; i < 4; i++)
+            {
+                if (gBattleMons[battler].moves[i] == gLastMoves[battler]
+                 && gBattleMons[battler].pp[i] != 0)
+                {
+                    move = gBattleMons[battler].moves[i];
+                }
+            }
+            if (move != MOVE_NONE)
+            {
+                PREPARE_MOVE_BUFFER(gBattleTextBuff1, move)
+                gBattleMons[battler].volatiles.disabledMove = move;
+                gBattleMons[battler].volatiles.disableTimer = B_DISABLE_TIMER;
+                BattleScriptCall(BattleScript_AttackDisables);
+                return MOVEEND_RESULT_RUN_SCRIPT;
+            }
+        }
+    }
+    gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleScripting.moveendState++;
+    return MOVEEND_RESULT_CONTINUE;
+}
+
+static enum MoveEndResult MoveEndAttacksTorment(struct BattleCalcValues *cv)
+{
+    while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
+    {
+        enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+        if (gRisks.opponentAttacksTorment
+         && battler == cv->battlerDef
+         && IsBattlerTurnDamaged(battler, EXCLUDING_SUBSTITUTES)
+         && !gBattleMons[battler].volatiles.torment
+         && !IsAbilityOnSide(battler, ABILITY_AROMA_VEIL)
+         && gLastMoves[battler] != MOVE_NONE
+         && !IsOnPlayerSide(cv->battlerAtk)
+         && IsOnPlayerSide(battler))
+        {
+            gBattleMons[gBattlerTarget].volatiles.torment = TRUE;
+            gBattleMons[gBattlerTarget].volatiles.tormentTimer = B_TORMENT_TIMER;
+            BattleScriptCall(BattleScript_AttackTorments);
+            return MOVEEND_RESULT_RUN_SCRIPT;
+        }
+    }
+    gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleScripting.moveendState++;
+    return MOVEEND_RESULT_CONTINUE;
+}
+
+
 static enum MoveEndResult MoveEndMoveBlockRecoil(struct BattleCalcValues *cv)
 {
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
@@ -3393,6 +3538,21 @@ static enum MoveEndResult MoveEndMoveBlockRecoil(struct BattleCalcValues *cv)
         break;
     default:
         break;
+    }
+
+    if (gRisks.playerHasRecoil
+     && IsOnPlayerSide(cv->battlerAtk)
+     && result != MOVEEND_RESULT_RUN_SCRIPT
+     && gBattleStruct->moveDamage[cv->battlerDef] != 0
+     && IsBattlerTurnDamaged(cv->battlerDef, INCLUDING_SUBSTITUTES) && IsBattlerAlive(cv->battlerAtk))
+    {
+        if (!(IsAbilityAndRecord(cv->battlerAtk, cv->abilities[cv->battlerAtk], ABILITY_ROCK_HEAD)
+           || IsAbilityAndRecord(cv->battlerAtk, cv->abilities[cv->battlerAtk], ABILITY_MAGIC_GUARD)))
+        {
+            SetPassiveDamageAmount(cv->battlerAtk, gBattleScripting.savedDmg * max(1, 25) / 100);
+            BattleScriptCall(BattleScript_MoveEffectRecoil);
+            result = MOVEEND_RESULT_RUN_SCRIPT;
+        }
     }
 
     gBattleScripting.moveendState++;
@@ -3630,6 +3790,57 @@ static enum MoveEndResult MoveEndMoveBlock(struct BattleCalcValues *cv)
 
     gBattleScripting.moveendState++;
     return result;
+}
+
+static enum MoveEndResult MoveEndOpponentForceSwitches(struct BattleCalcValues *cv)
+{
+    if (gRisks.opponentAttacksSwitches)
+    {
+        while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
+        {
+            enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
+            if (battler == cv->battlerDef
+             && IsOnPlayerSide(battler)
+             && IsBattlerTurnDamaged(battler, EXCLUDING_SUBSTITUTES)
+             && IsBattlerAlive(battler)
+             && IsBattlerAlive(cv->battlerAtk)
+             && gBattleStruct->battlerState[battler].commanderSpecies == SPECIES_NONE)
+            {
+                bool32 shouldRunScript = FALSE;
+                if (cv->abilities[battler] == ABILITY_GUARD_DOG)
+                {
+                    shouldRunScript = FALSE;
+                }
+                else if (cv->abilities[battler] == ABILITY_SUCTION_CUPS)
+                {
+                    BattleScriptCall(BattleScript_AbilityPreventsPhasingOutRet);
+                    shouldRunScript = TRUE;
+                }
+                else if (gBattleMons[battler].volatiles.root)
+                {
+                    BattleScriptCall(BattleScript_PrintMonIsRootedRet);
+                    shouldRunScript = TRUE;
+                }
+                else if (GetActiveGimmick(battler) == GIMMICK_DYNAMAX)
+                {
+                    BattleScriptCall(BattleScript_HitSwitchTargetDynamaxed);
+                    shouldRunScript = TRUE;
+                }
+                else
+                {
+                    gBattleScripting.switchCase = B_SWITCH_HIT;
+                    BattleScriptCall(BattleScript_TryHitSwitchTarget);
+                    shouldRunScript = TRUE;
+                }
+
+                if (shouldRunScript)
+                    return MOVEEND_RESULT_RUN_SCRIPT;
+            }
+        }
+    }
+    gBattleStruct->eventState.moveEndBattler = 0;
+    gBattleScripting.moveendState++;
+    return MOVEEND_RESULT_CONTINUE;
 }
 
 static enum MoveEndResult MoveEndItemEffectsAttacker2(struct BattleCalcValues *cv)
@@ -4369,9 +4580,15 @@ static enum MoveEndResult (*const sMoveEndHandlers[])(struct BattleCalcValues *c
     [MOVEEND_HP_THRESHOLD_ITEMS_TARGET] = MoveEndHpThresholdItemsTarget,
     [MOVEEND_MULTIHIT_MOVE] = MoveEndMultihitMove,
     [MOVEEND_DEFROST] = MoveEndDefrost,
+    [MOVEEND_ATTACKER_DROWSY] = MoveEndAttackerDrowsy,
+    [MOVEEND_STATUS_GETS_PARA] = MoveEndStatusGetsPara,
+    [MOVEEND_OPPONENT_GASTRO_ACID] = MoveEndOpponentGastroAcid,
+    [MOVEEND_ATTACKS_DISABLE] = MoveEndAttacksDisable,
+    [MOVEEND_ATTACKS_TORMENT] = MoveEndAttacksTorment,
     [MOVEEND_MOVE_BLOCK_RECOIL] = MoveEndMoveBlockRecoil,
     [MOVEEND_SHEER_FORCE] = MoveEndSheerForce,
     [MOVEEND_MOVE_BLOCK] = MoveEndMoveBlock,
+    [MOVEEND_OPPONENT_FORCE_SWITCHES] = MoveEndOpponentForceSwitches,
     [MOVEEND_ITEM_EFFECTS_ATTACKER_2] = MoveEndItemEffectsAttacker2,
     [MOVEEND_ABILITY_EFFECT_FOES_FAINTED] = MoveEndAbilityEffectFoesFainted,
     [MOVEEND_SHELL_TRAP] = MoveEndShellTrap,
