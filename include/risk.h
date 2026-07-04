@@ -44,7 +44,8 @@ struct Risks
     bool32 permanentSun:1;  //  Not implemented yet
     bool32 hasOmniscientAi:1;
     bool32 hasPredictionAi:1;
-    bool32 padding:4;
+    bool32 hasGuaranteedEffects:1;
+    bool32 padding:3;
 };
 
 extern struct Risks gRisks;
