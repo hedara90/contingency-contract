@@ -74,6 +74,7 @@
 #include "test/battle.h"
 #include "follower_npc.h"
 #include "load_save.h"
+#include "risk.h"
 
 // Helper for accessing command arguments and advancing gBattlescriptCurrInstr.
 //
@@ -9316,6 +9317,19 @@ static void Cmd_switchoutabilities(void)
 
     enum BattlerId battler = GetBattlerForBattleScript(cmd->battler);
 
+    if (!IsOnPlayerSide(battler) && gRisks.hasRegenerator && GetBattlerAbility(battler) != ABILITY_REGENERATOR)
+    {
+        u32 regenerate = GetNonDynamaxMaxHP(battler) / 3;
+        regenerate += gBattleMons[battler].hp;
+        if (regenerate > gBattleMons[battler].maxHP)
+            regenerate = gBattleMons[battler].maxHP;
+        BtlController_EmitSetMonData(battler, B_COMM_TO_CONTROLLER, REQUEST_HP_BATTLE,
+                                        1u << gBattleStruct->battlerPartyIndexes[battler],
+                                        sizeof(regenerate),
+                                        &regenerate);
+        MarkBattlerForControllerExec(battler);
+    }
+
     if (gBattleMons[battler].volatiles.neutralizingGas)
     {
         gBattleMons[battler].volatiles.neutralizingGas = FALSE;
@@ -13965,10 +13979,24 @@ void BS_RestoreStatChangeQueue(void)
 void BS_JumpIfSkipSturdyPopup(void)
 {
     NATIVE_ARGS(const u8 *jumpInstr);
-    if (gBattleStruct->skipSturdyPopup)
+    if (gBattleStruct->skipSturdyPopup > 0)
     {
         gBattlescriptCurrInstr = cmd->jumpInstr;
-        gBattleStruct->skipSturdyPopup = FALSE;
+        gBattleStruct->skipSturdyPopup--;
+    }
+    else
+    {
+        gBattlescriptCurrInstr = cmd->nextInstr;
+    }
+}
+
+void BS_JumpIfSkipQuickDrawPopup(void)
+{
+    NATIVE_ARGS(const u8 *jumpInstr);
+    if (gBattleStruct->skipQuickDrawPopup > 0)
+    {
+        gBattlescriptCurrInstr = cmd->jumpInstr;
+        gBattleStruct->skipQuickDrawPopup--;
     }
     else
     {

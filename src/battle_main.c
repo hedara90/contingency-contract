@@ -79,6 +79,7 @@
 #include "constants/trainers.h"
 #include "constants/weather.h"
 #include "cable_club.h"
+#include "risk.h"
 
 extern const struct BgTemplate gBattleBgTemplates[];
 extern const struct WindowTemplate *const gBattleWindowTemplates[];
@@ -614,6 +615,78 @@ static void CB2_InitBattleInternal(void)
         // Apply party-wide start-of-battle form changes for both sides.
         for (enum BattleTrainer trainer = B_TRAINER_PLAYER; trainer < MAX_BATTLE_TRAINERS; trainer++)
             TryFormChange(&gParties[trainer][i], FORM_CHANGE_BEGIN_BATTLE, trainer);
+    }
+
+    bool32 skipStatusSet = FALSE;
+    if (gRisks.permanentSun)
+    {
+        for (u32 i = 0; i < 6; i++)
+        {
+            enum Species species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
+            enum Ability ability = gSpeciesInfo[species].abilities[GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_ABILITY_NUM)];
+            if (ability == ABILITY_LEAF_GUARD)
+                skipStatusSet = TRUE;
+        }
+    }
+
+    if (skipStatusSet)
+    {
+    }
+    else if (gRisks.playerStartsWithBurn)
+    {
+        u32 status = STATUS1_BURN;
+        for (u32 i = 0; i < 6; i++)
+        {
+            enum Species species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
+            enum Ability ability = gSpeciesInfo[species].abilities[GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_ABILITY_NUM)];
+            if (species != SPECIES_NONE
+             && gSpeciesInfo[species].types[0] != TYPE_FIRE
+             && gSpeciesInfo[species].types[1] != TYPE_FIRE
+             && ability != ABILITY_WATER_VEIL
+             && ability != ABILITY_COMATOSE
+             && ability != ABILITY_THERMAL_EXCHANGE
+             && ability != ABILITY_PURIFYING_SALT
+             && ability != ABILITY_WATER_BUBBLE)
+            {
+                SetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_STATUS, &status);
+            }
+        }
+    }
+    else if (gRisks.playerStartsWithParalysis)
+    {
+        u32 status = STATUS1_PARALYSIS;
+        for (u32 i = 0; i < 6; i++)
+        {
+            enum Species species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
+            enum Ability ability = gSpeciesInfo[species].abilities[GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_ABILITY_NUM)];
+            if (species != SPECIES_NONE
+             && gSpeciesInfo[species].types[0] != TYPE_ELECTRIC
+             && gSpeciesInfo[species].types[1] != TYPE_ELECTRIC
+             && ability != ABILITY_COMATOSE
+             && ability != ABILITY_LIMBER
+             && ability != ABILITY_PURIFYING_SALT)
+            {
+                SetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_STATUS, &status);
+            }
+        }
+    }
+    else if (gRisks.playerStartsWithFrostbite)
+    {
+        u32 status = STATUS1_FROSTBITE;
+        for (u32 i = 0; i < 6; i++)
+        {
+            enum Species species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
+            enum Ability ability = gSpeciesInfo[species].abilities[GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_ABILITY_NUM)];
+            if (species != SPECIES_NONE
+             && gSpeciesInfo[species].types[0] != TYPE_ICE
+             && gSpeciesInfo[species].types[1] != TYPE_ICE
+             && ability != ABILITY_COMATOSE
+             && ability != ABILITY_MAGMA_ARMOR
+             && ability != ABILITY_PURIFYING_SALT)
+            {
+                SetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_STATUS, &status);
+            }
+        }
     }
 
     if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER))
@@ -1881,6 +1954,12 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
         else
         {
             monsCount = trainer->partySize;
+        }
+
+        if (gRisks.opponentPartyPlus1)
+        {
+            if (monsCount + 1 <= PARTY_SIZE)
+                monsCount++;
         }
 
         u32 monIndices[monsCount];
@@ -4740,6 +4819,9 @@ s32 GetBattleMovePriority(enum BattlerId battler, enum Ability ability, enum Mov
 
     priority = GetMovePriority(move);
 
+    if (gRisks.opponentAttacksSwitches && !IsOnPlayerSide(battler) && !IsBattleMoveStatus(move))
+        priority = -6;
+
     // Max Guard check
     if (GetActiveGimmick(battler) == GIMMICK_DYNAMAX && GetMoveCategory(move) == DAMAGE_CATEGORY_STATUS)
         return GetMovePriority(MOVE_MAX_GUARD);
@@ -5191,6 +5273,17 @@ static void TryChangingTurnOrderEffects(struct BattleCalcValues *calcValues, u32
      || (holdEffectBattler1 == HOLD_EFFECT_CUSTAP_BERRY && HasEnoughHpToEatBerry(battler1, ability1, 4, gBattleMons[battler1].item))))
         gProtectStructs[battler1].usedCustapBerry = TRUE;
 
+    if (gRisks.opponentMovesFirst)
+    {
+        if (!gProtectStructs[battler1].quickDraw
+         && !gProtectStructs[battler1].usedCustapBerry
+         && !IsOnPlayerSide(battler1))
+        {
+            gProtectStructs[battler1].quickDraw = TRUE;
+            gBattleStruct->skipQuickDrawPopup++;
+        }
+    }
+
     // Battler 2
     // Quick Draw
     if (ability2 == ABILITY_QUICK_DRAW && !IsBattleMoveStatus(gChosenMoveByBattler[battler2]) && quickDrawRandom[battler2])
@@ -5200,6 +5293,17 @@ static void TryChangingTurnOrderEffects(struct BattleCalcValues *calcValues, u32
      && ((holdEffectBattler2 == HOLD_EFFECT_QUICK_CLAW && quickClawRandom[battler2])
      || (holdEffectBattler2 == HOLD_EFFECT_CUSTAP_BERRY && HasEnoughHpToEatBerry(battler2, ability2, 4, gBattleMons[battler2].item))))
         gProtectStructs[battler2].usedCustapBerry = TRUE;
+
+    if (gRisks.opponentMovesFirst)
+    {
+        if (!gProtectStructs[battler2].quickDraw
+         && !gProtectStructs[battler2].usedCustapBerry
+         && !IsOnPlayerSide(battler2))
+        {
+            gProtectStructs[battler2].quickDraw = TRUE;
+            gBattleStruct->skipQuickDrawPopup++;
+        }
+    }
 }
 
 static void CheckChangingTurnOrderEffects(void)
@@ -5301,7 +5405,27 @@ static void RunTurnActionsFunctions(void)
     sTurnActionsFuncsTable[gCurrentActionFuncId]();
 
     if (gCurrentTurnActionNumber >= gBattlersCount) // everyone did their actions, turn finished
+    {
+        if ((gRisks.turnLimit1 || gRisks.turnLimit2 || gRisks.turnLimit3) && (gBattleOutcome & 0x7F) != B_OUTCOME_WON)
+        {
+            if (gRisks.turnLimit1)
+            {
+                if (gBattleTurnCounter == TURN_LIMIT_1 - 1)
+                    gBattleOutcome = B_OUTCOME_LOST;
+            }
+            else if (gRisks.turnLimit2)
+            {
+                if (gBattleTurnCounter == TURN_LIMIT_2 - 1)
+                    gBattleOutcome = B_OUTCOME_LOST;
+            }
+            else if (gRisks.turnLimit3)
+            {
+                if (gBattleTurnCounter == TURN_LIMIT_3 - 1)
+                    gBattleOutcome = B_OUTCOME_LOST;
+            }
+        }
         gBattleMainFunc = sEndTurnFuncsTable[gBattleOutcome & 0x7F];
+    }
 }
 
 static void HandleEndTurn_BattleWon(void)

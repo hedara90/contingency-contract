@@ -30,6 +30,7 @@
 #include "constants/moves.h"
 #include "constants/items.h"
 #include "constants/trainers.h"
+#include "risk.h"
 
 #if TESTING
 #include "test/battle.h"
@@ -292,6 +293,15 @@ static u64 GetAiFlags(u16 trainerId, enum BattlerId battler)
     // Automatically includes AI_FLAG_PREDICT_SWITCH if AI_FLAG_PREDICT_INCOMING_MON is being used
     if (flags & AI_FLAG_PREDICT_INCOMING_MON)
         flags |= AI_FLAG_PREDICT_SWITCH;
+
+    // Risk flags
+    if (gRisks.hasOmniscientAi)
+        flags |= AI_FLAG_OMNISCIENT;
+    if (gRisks.hasPredictionAi)
+    {
+        flags |= AI_FLAG_PREDICT_SWITCH;
+        flags |= AI_FLAG_PREDICT_MOVE;
+    }
 
     if (sDynamicAiFunc != NULL)
         flags |= AI_FLAG_DYNAMIC_FUNC;
@@ -4180,7 +4190,8 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
          || IsMoldBreakerTypeAbility(battlerDef, aiData->abilities[battlerDef])
          || aiData->abilities[battlerDef] == ABILITY_MYCELIUM_MIGHT
          || IsMoldBreakerTypeAbility(BATTLE_PARTNER(battlerDef), aiData->abilities[BATTLE_PARTNER(battlerDef)])
-         || aiData->abilities[BATTLE_PARTNER(battlerDef)] == ABILITY_MYCELIUM_MIGHT)
+         || aiData->abilities[BATTLE_PARTNER(battlerDef)] == ABILITY_MYCELIUM_MIGHT
+         || (!IsOnPlayerSide(battlerDef) && gRisks.hasMoldBreaker))
             return score;
      }
 

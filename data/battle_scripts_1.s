@@ -5625,10 +5625,12 @@ BattleScript_QuickClawActivation::
 	end2
 
 BattleScript_QuickDrawActivation::
+	jumpifskipquickdrawpopup SkipQuickDrawPopup
 	flushtextbox
 	call BattleScript_AbilityPopUp
 	printstring STRINGID_CANACTFASTERTHANKSTO
 	waitmessage B_WAIT_TIME_LONG
+SkipQuickDrawPopup:
 	end2
 
 BattleScript_CustapBerryActivation::
@@ -6311,3 +6313,34 @@ BattleScript_SilphScopeUnveiled::
 	printstring STRINGID_GHOSTWASMAROWAK
 	waitmessage B_WAIT_TIME_LONG
 	end2
+
+BattleScript_DrowsyAttacker::
+	printstring STRINGID_ATTACKER_GOT_DROWSY
+	waitmessage B_WAIT_TIME_MED
+	return
+
+BattleScript_StatusGetsPara::
+	statusanimation BS_EFFECT_BATTLER
+	printfromtable gGotParalyzedStringIds
+	waitmessage B_WAIT_TIME_LONG
+	updatestatusicon BS_EFFECT_BATTLER
+	return
+
+BattleScript_OpponentInflictsGastroAcid::
+	printstring STRINGID_PKMNSABILITYSUPPRESSED
+	waitmessage B_WAIT_TIME_LONG
+	trytoclearprimalweather
+	call BattleScript_TryRevertWeatherform
+	flushtextbox
+	tryendneutralizinggas
+	return
+
+BattleScript_AttackDisables::
+	printstring STRINGID_PKMNMOVEWASDISABLED
+	waitmessage B_WAIT_TIME_LONG
+	return
+
+BattleScript_AttackTorments::
+	printstring STRINGID_PKMNSUBJECTEDTOTORMENT
+	waitmessage B_WAIT_TIME_LONG
+	return
