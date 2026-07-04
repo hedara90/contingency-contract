@@ -3,6 +3,7 @@
 
 #include "main.h"
 #include "task.h"
+#include "constants/party_menu.h"
 
 enum PartyMenuLayout
 {
@@ -82,6 +83,9 @@ void DisplayPartyMenuStdMessage(u32 stringId);
 bool8 FieldCallback_PrepareFadeInFromMenu(void);
 bool8 FieldCallback_PrepareFadeInForTeleport(void);
 void CB2_ReturnToPartyMenuFromFlyMap(void);
+#if SWSH_PARTY_MENU_PC_ACCESS
+void CB2_ReopenPartyMenuFromPC(void);
+#endif
 void LoadHeldItemIcons(void);
 void DrawHeldItemIconsForTrade(u8 *partyCounts, u8 *partySpriteIds, u8 whichParty);
 void LoadPartyMenuAilmentGfx(void);
