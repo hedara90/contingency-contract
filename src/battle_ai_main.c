@@ -4180,7 +4180,8 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
          || IsMoldBreakerTypeAbility(battlerDef, aiData->abilities[battlerDef])
          || aiData->abilities[battlerDef] == ABILITY_MYCELIUM_MIGHT
          || IsMoldBreakerTypeAbility(BATTLE_PARTNER(battlerDef), aiData->abilities[BATTLE_PARTNER(battlerDef)])
-         || aiData->abilities[BATTLE_PARTNER(battlerDef)] == ABILITY_MYCELIUM_MIGHT)
+         || aiData->abilities[BATTLE_PARTNER(battlerDef)] == ABILITY_MYCELIUM_MIGHT
+         || (!IsOnPlayerSide(battlerDef) && gRisks.hasMoldBreaker))
             return score;
      }
 
