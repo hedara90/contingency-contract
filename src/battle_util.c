@@ -9479,6 +9479,9 @@ u32 CalcSecondaryEffectChance(enum BattlerId battler, enum Ability battlerAbilit
     bool8 hasRainbow = (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_RAINBOW) != 0;
     u16 secondaryEffectChance = additionalEffect->chance;
 
+    if (!IsOnPlayerSide(battler) && gRisks.hasGuaranteedEffects)
+        return 100;
+
     if (hasRainbow && hasSereneGrace && additionalEffect->moveEffect == MOVE_EFFECT_FLINCH)
         return secondaryEffectChance * 2;
 

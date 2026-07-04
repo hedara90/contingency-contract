@@ -108,3 +108,38 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Wonder Guard")
         HP_BAR(opponent);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Opponent has guaranteed secondary effects")
+{
+    PARAMETRIZE { gRisks.hasGuaranteedEffects = TRUE; }
+    PARAMETRIZE { gRisks.hasGuaranteedEffects = FALSE; }
+    if (gRisks.hasGuaranteedEffects)
+        PASSES_RANDOMLY(100, 100);
+    else
+        PASSES_RANDOMLY(30, 100, RNG_SECONDARY_EFFECT);
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET) { Speed(1); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(2); }
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_HEADBUTT); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_HEADBUTT, opponent);
+        MESSAGE("Wobbuffet flinched and couldn't move!");
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("Risk: Opponent has guaranteed secondary effects (AI)")
+{
+    PARAMETRIZE { gRisks.hasGuaranteedEffects = TRUE; }
+    PARAMETRIZE { gRisks.hasGuaranteedEffects = FALSE; }
+    GIVEN {
+        PLAYER(SPECIES_AGGRON) { Speed(1); Moves(MOVE_TACKLE); }
+        OPPONENT(SPECIES_ZIGZAGOON) { Speed(2); Moves(MOVE_HEADBUTT, MOVE_KARATE_CHOP); }
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+    } WHEN {
+        if (gRisks.hasGuaranteedEffects)
+            TURN { EXPECT_MOVE(opponent, MOVE_HEADBUTT); MOVE(player, MOVE_TACKLE); }
+        else
+            TURN { EXPECT_MOVE(opponent, MOVE_KARATE_CHOP); MOVE(player, MOVE_TACKLE); }
+    }
+}
