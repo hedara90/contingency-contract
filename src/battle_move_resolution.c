@@ -3386,11 +3386,11 @@ static enum MoveEndResult MoveEndOpponentGastroAcid(struct BattleCalcValues *cv)
     {
         enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
         if (gRisks.opponentInflictsGastroAcid
-         && battler == gBattlerAttacker
-         && IsBattlerTurnDamaged(battler, EXCLUDING_SUBSTITUTES)
+         && battler == cv->battlerAtk
+         && IsBattlerTurnDamaged(cv->battlerDef, EXCLUDING_SUBSTITUTES)
          && !gAbilitiesInfo[cv->abilities[cv->battlerDef]].cantBeSuppressed
          && !gBattleMons[cv->battlerDef].volatiles.gastroAcid
-         && !IsOnPlayerSide(gBattlerAttacker)
+         && !IsOnPlayerSide(battler)
          && IsOnPlayerSide(cv->battlerDef))
         {
             enum BattlerId target = cv->battlerDef;
