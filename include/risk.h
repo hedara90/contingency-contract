@@ -42,7 +42,9 @@ struct Risks
     bool32 playerStartsWithParalysis:1;
     bool32 playerStartsWithFrostbite:1;
     bool32 permanentSun:1;  //  Not implemented yet
-    bool32 padding:6;
+    bool32 hasOmniscientAi:1;
+    bool32 hasPredictionAi:1;
+    bool32 padding:4;
 };
 
 extern struct Risks gRisks;
