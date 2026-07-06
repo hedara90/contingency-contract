@@ -205,6 +205,25 @@ DOUBLE_BATTLE_TEST("Risk: Opponent moves first (Double)")
     }
 }
 
+AI_SINGLE_BATTLE_TEST("Risk: Opponent moves first (AI)")
+{
+    u32 odds;
+    PARAMETRIZE { odds = 100; gRisks.opponentMovesFirst = TRUE; }
+    PARAMETRIZE { odds = SHOULD_SWITCH_HASBADODDS_PERCENTAGE; gRisks.opponentMovesFirst = FALSE; }
+    PASSES_RANDOMLY(odds, 100, RNG_AI_SWITCH_HASBADODDS);
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_SWITCHING | AI_FLAG_SMART_MON_CHOICES | AI_FLAG_OMNISCIENT);
+        PLAYER(SPECIES_ELECTRODE) { HP(1); MaxHP(100); Moves(MOVE_THUNDERBOLT, MOVE_THUNDER_WAVE, MOVE_THUNDER_SHOCK); }
+        OPPONENT(SPECIES_PELIPPER) { Moves(MOVE_EARTHQUAKE); }
+        OPPONENT(SPECIES_RHYDON) { Moves(MOVE_EARTHQUAKE); Ability(ABILITY_ROCK_HEAD); }
+    } WHEN {
+        if (!gRisks.opponentMovesFirst)
+            TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_SWITCH(opponent, 1); }
+        else
+            TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_MOVE(opponent, MOVE_EARTHQUAKE); }
+    }
+}
+
 SINGLE_BATTLE_TEST("Risk: Opponent has Regenerator")
 {
     //  Also checking that it doesn't break other switchout abilities
@@ -464,6 +483,25 @@ SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
         MESSAGE("Wynaut was dragged out!");
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches (AI)")
+{
+    u32 odds;
+    PARAMETRIZE { odds = SHOULD_SWITCH_HASBADODDS_PERCENTAGE; gRisks.opponentAttacksSwitches = TRUE; }
+    PARAMETRIZE { odds = 100; gRisks.opponentAttacksSwitches = FALSE; }
+    PASSES_RANDOMLY(odds, 100, RNG_AI_SWITCH_HASBADODDS);
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_SWITCHING | AI_FLAG_SMART_MON_CHOICES | AI_FLAG_OMNISCIENT);
+        PLAYER(SPECIES_ELECTRODE) { HP(1); Speed(5); MaxHP(100); Moves(MOVE_THUNDERBOLT, MOVE_THUNDER_WAVE, MOVE_THUNDER_SHOCK); }
+        OPPONENT(SPECIES_PELIPPER) { Speed(10); Moves(MOVE_EARTHQUAKE); }
+        OPPONENT(SPECIES_RHYDON) { Speed(4); Moves(MOVE_EARTHQUAKE); Ability(ABILITY_ROCK_HEAD); }
+    } WHEN {
+        if (!gRisks.opponentAttacksSwitches)
+            TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_MOVE(opponent, MOVE_EARTHQUAKE); }
+        else
+            TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_SWITCH(opponent, 1); }
     }
 }
 
