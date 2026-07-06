@@ -81,6 +81,8 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+#if !SWSH_PARTY_MENU
+
 enum {
     MENU_SUMMARY,
     MENU_SWITCH,
@@ -8617,4 +8619,6 @@ s8 Test_UpdatePartySelectionSingleLayout(s8 slotId, s8 movementDir, bool8 choose
     sPartyMenuInternal = savedInternal;
     return slotId;
 }
-#endif
+#endif // TESTING
+
+#endif // !SWSH_PARTY_MENU

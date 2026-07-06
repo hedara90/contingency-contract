@@ -21,6 +21,10 @@ static void SetTestPartySize(enum BattleTrainer trainer, u8 partySize)
 
 TEST("Full multi partner party menu stops down navigation at partner party count")
 {
+#if SWSH_PARTY_MENU
+    // SwSh has no Cancel or Confirm button
+    KNOWN_FAILING;
+#endif
     SetTestPartySize(B_TRAINER_PLAYER, PARTY_SIZE);
     SetTestPartySize(B_TRAINER_PARTNER, 2);
     gPartyMenu.layout = PARTY_LAYOUT_MULTI_FULL_PARTNER;
