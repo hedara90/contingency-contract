@@ -838,7 +838,7 @@ static inline bool32 ShouldCalcCritDamage(struct DamageContext *ctx)
     s32 critChanceIndex = 0;
 
     // Get crit chance
-    if (GetConfig(B_CRIT_CHANCE) == GEN_1)
+    if (GetConfig(B_CRIT_CHANCE) == GEN_1 || gRisks.hasGen1CritChance)
         critChanceIndex = CalcCritChanceStageGen1(ctx);
     else
         critChanceIndex = CalcCritChanceStage(ctx);
@@ -847,11 +847,11 @@ static inline bool32 ShouldCalcCritDamage(struct DamageContext *ctx)
         return TRUE;
     if (critChanceIndex >= RISKY_AI_CRIT_STAGE_THRESHOLD // Not guaranteed but above Risky threshold
         && (gAiThinkingStruct->aiFlags[ctx->battlerAtk] & AI_FLAG_RISKY)
-        && GetConfig(B_CRIT_CHANCE) != GEN_1)
+        && (GetConfig(B_CRIT_CHANCE) != GEN_1 && !gRisks.hasGen1CritChance))
         return TRUE;
     if (critChanceIndex >= RISKY_AI_CRIT_THRESHOLD_GEN_1 // Not guaranteed but above Risky threshold
         && (gAiThinkingStruct->aiFlags[ctx->battlerAtk] & AI_FLAG_RISKY)
-        && GetConfig(B_CRIT_CHANCE) == GEN_1)
+        && (GetConfig(B_CRIT_CHANCE) == GEN_1 || gRisks.hasGen1CritChance))
         return TRUE;
 
     return FALSE;
