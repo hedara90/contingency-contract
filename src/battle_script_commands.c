@@ -7727,7 +7727,8 @@ static void Cmd_setfocusenergy(void)
     else
     {
         if (GetConfig(B_FOCUS_ENERGY_CRIT_RATIO) >= GEN_3
-         || GetConfig(B_CRIT_CHANCE) == GEN_1)
+         || GetConfig(B_CRIT_CHANCE) == GEN_1
+         || gRisks.hasGen1CritChance)
             gBattleMons[battler].volatiles.focusEnergy = TRUE;
         else
             gBattleMons[battler].volatiles.dragonCheer = TRUE;

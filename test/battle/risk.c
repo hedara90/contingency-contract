@@ -689,3 +689,27 @@ AI_SINGLE_BATTLE_TEST("Risk: Opponent can't miss (AI)")
         TURN { MOVE(player, MOVE_CELEBRATE); EXPECT_MOVE(opponent, MOVE_FISSURE); }
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Gen 1 crit chance")
+{
+    u32 genConfig, passes, trials;
+    PARAMETRIZE { genConfig = GEN_9; passes = 1; trials = 16; gRisks.hasGen1CritChance = TRUE; } // Override gen config with risk
+    PARAMETRIZE { genConfig = GEN_1; passes = 1;  trials = 16; gRisks.hasGen1CritChance = FALSE; }   //  6.25% with Wobbuffet's base speed
+    PARAMETRIZE { genConfig = GEN_2; passes = 17; trials = 256; gRisks.hasGen1CritChance = FALSE; }  // ~6.64%
+    for (u32 j = GEN_3; j <= GEN_6; j++)
+        PARAMETRIZE { genConfig = j; passes = 1,  trials = 16; gRisks.hasGen1CritChance = FALSE; }  //  6.25%
+    for (u32 j = GEN_7; j <= GEN_9; j++)
+        PARAMETRIZE { genConfig = j; passes = 1,  trials = 24; gRisks.hasGen1CritChance = FALSE; }  // ~4.17%
+
+    PASSES_RANDOMLY(passes, trials, RNG_CRITICAL_HIT);
+    GIVEN {
+        WITH_CONFIG(B_CRIT_CHANCE, genConfig);
+        ASSUME(GetSpeciesBaseSpeed(SPECIES_WOBBUFFET) == 33);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_SCRATCH); }
+    } SCENE {
+        MESSAGE("A critical hit!");
+    }
+}
