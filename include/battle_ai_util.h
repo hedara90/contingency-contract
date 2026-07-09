@@ -7,7 +7,11 @@
 // Roll boundaries used by AI when scoring. Doesn't affect actual damage dealt.
 #define MAX_ROLL_PERCENTAGE DMG_ROLL_PERCENT_HI
 #define MIN_ROLL_PERCENTAGE DMG_ROLL_PERCENT_LO
+#define MAX_ROLL_PERCENTAGE_LOWER DMG_ROLL_PERCENT_LOWER_HI
+#define MIN_ROLL_PERCENTAGE_UPPER DMG_ROLL_PERCENT_UPPER_LO
 #define DMG_ROLL_PERCENTAGE ((MAX_ROLL_PERCENTAGE + MIN_ROLL_PERCENTAGE + 1) / 2) // Controls the damage roll the AI sees for the median roll. By default the 9th roll is seen
+#define DMG_ROLL_PERCENTAGE_LOWER ((MAX_ROLL_PERCENTAGE_LOWER + MIN_ROLL_PERCENTAGE + 1) / 2)
+#define DMG_ROLL_PERCENTAGE_UPPER ((MAX_ROLL_PERCENTAGE + MIN_ROLL_PERCENTAGE_UPPER + 1) / 2)
 
 enum DamageRollType
 {

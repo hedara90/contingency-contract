@@ -7644,7 +7644,12 @@ static inline s32 DoMoveDamageCalcVars(struct DamageContext *ctx)
 
     if (ctx->randomFactor)
     {
-        dmg *= DMG_ROLL_PERCENT_HI - RandomUniform(RNG_DAMAGE_MODIFIER, 0, DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_LO);
+        if (IsOnPlayerSide(ctx->battlerAtk) && gRisks.playerLowerHalfDamageRolls) 
+            dmg *= DMG_ROLL_PERCENT_HI - RandomUniform(RNG_DAMAGE_MODIFIER, DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_LOWER_HI, DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_LO);
+        else if (!IsOnPlayerSide(ctx->battlerAtk) && gRisks.opponentUpperHalfDamageRolls)
+            dmg *= DMG_ROLL_PERCENT_HI - RandomUniform(RNG_DAMAGE_MODIFIER, 0, DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_UPPER_LO);
+        else
+            dmg *= DMG_ROLL_PERCENT_HI - RandomUniform(RNG_DAMAGE_MODIFIER, 0, DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_LO);
         dmg /= 100;
     }
     else // Apply rest of modifiers in the ai function

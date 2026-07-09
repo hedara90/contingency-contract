@@ -713,3 +713,27 @@ SINGLE_BATTLE_TEST("Risk: Gen 1 crit chance")
         MESSAGE("A critical hit!");
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Player uses lower half of damage rolls (85 - 92)")
+{
+    GIVEN {
+        ASSUME(DMG_ROLL_PERCENT_HI - (DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_LOWER_HI) == 92); // Upper bound
+        ASSUME(DMG_ROLL_PERCENT_HI - (DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_LO) == 85); // Lower bound
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN {}
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Opponent uses upper half of damage rolls (93 - 100)")
+{
+    GIVEN {
+        ASSUME(DMG_ROLL_PERCENT_HI == 100); // Upper bound
+        ASSUME(DMG_ROLL_PERCENT_HI - (DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_UPPER_LO) == 93); // Lower bound
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN {}
+    }
+}

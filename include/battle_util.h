@@ -82,6 +82,9 @@ enum ItemEffect
 #define DMG_ROLL_PERCENT_LO 85
 #define DMG_ROLL_PERCENT_HI 100
 
+#define DMG_ROLL_PERCENT_LOWER_HI 92
+#define DMG_ROLL_PERCENT_UPPER_LO 93
+
 // Crit chance exceptions
 #define CRITICAL_HIT_BLOCKED -1
 #define CRITICAL_HIT_ALWAYS  -2
