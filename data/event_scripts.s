@@ -1681,6 +1681,9 @@ EventScript_PalletTown_PlayersHouse_2F_TurnOnPC::
 	releaseall
 	end
 
+EventScript_GiveGachaMon::
+	givemon VAR_TEMP_1, level=50, nature=NATURE_HARDY, abilityNum=0, hpIv=31, atkIv=31, defIv=31, spAtkIv=31, spDefIv=31, speedIv=31, shinyMode=SHINY_MODE_NEVER
+	end
 
 	.include "data/scripts/pc_transfer.inc"
 	.include "data/scripts/questionnaire.inc"

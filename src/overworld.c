@@ -2139,6 +2139,16 @@ void CB2_ContinueSavedGame(void)
         SetMainCallback1(CB1_Overworld);
         CB2_ReturnToField();
     }
+
+    //  Add handling to initialize random states
+    if (gSaveBlock1Ptr->gameVersion != CC_GAME_VERSION)
+    {
+        switch (gSaveBlock1Ptr->gameVersion)
+        {
+        case CC_GAME_VERSION_1:
+            break;
+        }
+    }
 }
 
 static void FieldClearVBlankHBlankCallbacks(void)
