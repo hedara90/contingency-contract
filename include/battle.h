@@ -29,6 +29,11 @@
 #include "move.h"
 #include "random.h" // for rng_value_t
 #include "trainer_slide.h"
+#include "even_80px_trainers.h"
+
+
+extern struct Even_BigSprite gBigSprite1;
+extern struct Even_BigSprite gBigSprite2;
 
 // Used to exclude moves learned temporarily by Transform or Mimic
 #define MOVE_IS_PERMANENT(battler, moveSlot)                        \

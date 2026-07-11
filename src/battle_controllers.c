@@ -35,6 +35,7 @@
 #include "constants/songs.h"
 #include "test/battle.h"
 #include "test/test.h"
+#include "even_80px_trainers.h"
 
 static EWRAM_DATA u8 sLinkSendTaskId = 0;
 static EWRAM_DATA u8 sLinkReceiveTaskId = 0;
@@ -2156,11 +2157,22 @@ static void Controller_HandleTrainerSlideBack(enum BattlerId battler)
 {
     if (gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback == SpriteCallbackDummy)
     {
-        if (!IsOnPlayerSide(battler))
-            FreeTrainerFrontPicPalette(gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].oam.affineParam);
-        FreeSpriteOamMatrix(&gSprites[gBattleStruct->trainerSlideSpriteIds[battler]]);
-        DestroySprite(&gSprites[gBattleStruct->trainerSlideSpriteIds[battler]]);
-        BtlController_Complete(battler);
+        if (battler & 1)
+        {
+            if (battler == 1)
+                Even_FreeBigSprite(&gBigSprite1);
+            else
+                Even_FreeBigSprite(&gBigSprite2);
+            BtlController_Complete(battler);
+        }
+        else
+        {
+            if (!IsOnPlayerSide(battler))
+                FreeTrainerFrontPicPalette(gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].oam.affineParam);
+            FreeSpriteOamMatrix(&gSprites[gBattleStruct->trainerSlideSpriteIds[battler]]);
+            DestroySprite(&gSprites[gBattleStruct->trainerSlideSpriteIds[battler]]);
+            BtlController_Complete(battler);
+        }
     }
 }
 
@@ -2432,6 +2444,7 @@ void BtlController_HandleDrawTrainerPic(enum BattlerId battler, enum TrainerPicI
 {
     if (!IsOnPlayerSide(battler)) // Always the front sprite for the opponent.
     {
+        /*
         DecompressTrainerFrontPic(trainerPicId, battler);
         SetMultiuseSpriteTemplateToTrainerFront(trainerPicId, GetBattlerPosition(battler));
         if (subpriority == -1)
@@ -2445,6 +2458,39 @@ void BtlController_HandleDrawTrainerPic(enum BattlerId battler, enum TrainerPicI
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].x2 = -DISPLAY_WIDTH;
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].sSpeedX = 2;
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].oam.affineParam = trainerPicId;
+        */
+
+        struct Even_BigSprite *pBigSprite;
+        struct Even_BigSpriteSheet bigSheet;
+        bigSheet.palette = gTrainerPicInfo[trainerPicId].frontPic->paletteData;
+        bigSheet.sprite = gTrainerPicInfo[trainerPicId].frontPic->imageData;
+        if (battler == 1)
+            bigSheet.tileTag = GetTrainerPicTag(trainerPicId, TRUE);
+        else
+            bigSheet.tileTag = GetTrainerPicTag(trainerPicId, TRUE) + (1 << 15);
+        bigSheet.palTag = GetTrainerPicTag(trainerPicId, TRUE);
+        bigSheet.posX = xPos;
+        bigSheet.posY = yPos;
+        bigSheet.subpriority = subpriority;
+        bigSheet.compressed = TRUE;
+
+        if (battler == 1)
+            pBigSprite = &gBigSprite1;
+        else
+            pBigSprite = &gBigSprite2;
+
+        Even_CreateBigSprite(&bigSheet, pBigSprite);
+
+        for (u32 i = 0; i < 6; i++)
+        {
+            gSprites[pBigSprite->spriteIds[i]].x2 = -DISPLAY_WIDTH;
+            gSprites[pBigSprite->spriteIds[i]].sSpeedX = 2;
+            gSprites[pBigSprite->spriteIds[i]].oam.affineParam = trainerPicId;
+            if (B_FAST_INTRO_NO_SLIDE || gTestRunnerHeadless)
+                gSprites[pBigSprite->spriteIds[i]].callback = SpriteCB_TrainerSpawn;
+            else
+                gSprites[pBigSprite->spriteIds[i]].callback = SpriteCB_TrainerSlideIn;
+        }
     }
     else // Player's side
     {
@@ -2483,11 +2529,12 @@ void BtlController_HandleDrawTrainerPic(enum BattlerId battler, enum TrainerPicI
         }
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].x2 = DISPLAY_WIDTH;
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].sSpeedX = -2;
+
+        if (B_FAST_INTRO_NO_SLIDE || gTestRunnerHeadless)
+            gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = SpriteCB_TrainerSpawn;
+        else
+            gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = SpriteCB_TrainerSlideIn;
     }
-    if (B_FAST_INTRO_NO_SLIDE || gTestRunnerHeadless)
-        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = SpriteCB_TrainerSpawn;
-    else
-        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = SpriteCB_TrainerSlideIn;
 
     gBattlerControllerFuncs[battler] = Controller_WaitForTrainerPic;
 }
@@ -2509,9 +2556,12 @@ void BtlController_HandleTrainerSlide(enum BattlerId battler, enum TrainerPicID 
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].oam.paletteNum = IndexOfSpritePaletteTag(GetTrainerPicTag(trainerPicId, FALSE));
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].x2 = -96;
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].sSpeedX = 2;
+
+        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = SpriteCB_TrainerSlideIn;
     }
     else
     {
+        /*
         DecompressTrainerFrontPic(trainerPicId, battler);
         SetMultiuseSpriteTemplateToTrainerFront(trainerPicId, GetBattlerPosition(battler));
         gBattleStruct->trainerSlideSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate, 176, 40, 0);
@@ -2520,8 +2570,35 @@ void BtlController_HandleTrainerSlide(enum BattlerId battler, enum TrainerPicID 
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].x2 = 96;
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].x += 32;
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].sSpeedX = -2;
+        */
+
+        struct Even_BigSprite *pBigSprite;
+        struct Even_BigSpriteSheet bigSheet;
+        bigSheet.palette = gTrainerPicInfo[trainerPicId].frontPic->paletteData;
+        bigSheet.sprite = gTrainerPicInfo[trainerPicId].frontPic->imageData;
+        bigSheet.tileTag = GetTrainerPicTag(trainerPicId, TRUE);
+        bigSheet.palTag = GetTrainerPicTag(trainerPicId, TRUE);
+        bigSheet.posX = 176;
+        bigSheet.posY = 40;
+        bigSheet.subpriority = 0;
+        bigSheet.compressed = TRUE;
+
+        if (battler == 1)
+            pBigSprite = &gBigSprite1;
+        else
+            pBigSprite = &gBigSprite2;
+
+        Even_CreateBigSprite(&bigSheet, pBigSprite);
+
+        for (u32 i = 0; i < 6; i++)
+        {
+            gSprites[pBigSprite->spriteIds[i]].x2 = 96;
+            gSprites[pBigSprite->spriteIds[i]].x += 32;
+            gSprites[pBigSprite->spriteIds[i]].sSpeedX = -2;
+
+            gSprites[pBigSprite->spriteIds[i]].callback = SpriteCB_TrainerSlideIn;
+        }
     }
-    gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = SpriteCB_TrainerSlideIn;
 
     gBattlerControllerFuncs[battler] = Controller_WaitForTrainerPic;
 }
@@ -2530,15 +2607,40 @@ void BtlController_HandleTrainerSlide(enum BattlerId battler, enum TrainerPicID 
 
 void BtlController_HandleTrainerSlideBack(enum BattlerId battler, s16 data0, bool32 startAnim)
 {
-    SetSpritePrimaryCoordsFromSecondaryCoords(&gSprites[gBattleStruct->trainerSlideSpriteIds[battler]]);
-    gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].data[0] = data0;
-    gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].data[2] = IsOnPlayerSide(battler) ? -40 : 280;
-    gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].data[4] = gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].y;
-    gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = StartAnimLinearTranslation;
-    StoreSpriteCallbackInData6(&gSprites[gBattleStruct->trainerSlideSpriteIds[battler]], SpriteCallbackDummy);
-    if (startAnim)
-        StartSpriteAnim(&gSprites[gBattleStruct->trainerSlideSpriteIds[battler]], 1);
-    gBattlerControllerFuncs[battler] = Controller_HandleTrainerSlideBack;
+    //  Fix this slideout
+    if (IsOnPlayerSide(battler))
+    {
+        SetSpritePrimaryCoordsFromSecondaryCoords(&gSprites[gBattleStruct->trainerSlideSpriteIds[battler]]);
+        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].data[0] = data0;
+        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].data[2] =  -40;
+        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].data[4] = gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].y;
+        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = StartAnimLinearTranslation;
+        StoreSpriteCallbackInData6(&gSprites[gBattleStruct->trainerSlideSpriteIds[battler]], SpriteCallbackDummy);
+        if (startAnim)
+            StartSpriteAnim(&gSprites[gBattleStruct->trainerSlideSpriteIds[battler]], 1);
+        gBattlerControllerFuncs[battler] = Controller_HandleTrainerSlideBack;
+    }
+    else
+    {
+        struct Even_BigSprite *currSprite;
+        if (battler == 1)
+            currSprite = &gBigSprite1;
+        else
+            currSprite = &gBigSprite2;
+        for (u32 i = 0; i < 6; i++)
+        {
+            u32 spriteId = currSprite->spriteIds[i];
+            SetSpritePrimaryCoordsFromSecondaryCoords(&gSprites[spriteId]);
+            gSprites[spriteId].data[0] = data0;
+            gSprites[spriteId].data[2] = 280;
+            gSprites[spriteId].data[4] = gSprites[spriteId].y;
+            gSprites[spriteId].callback = StartAnimLinearTranslation;
+            StoreSpriteCallbackInData6(&gSprites[spriteId], SpriteCallbackDummy);
+            if (startAnim)
+                StartSpriteAnim(&gSprites[spriteId], 1);
+        }
+        gBattlerControllerFuncs[battler] = Controller_HandleTrainerSlideBack;
+    }
 }
 
 #define sSpeedX data[1]
@@ -2863,16 +2965,32 @@ void BtlController_HandleIntroTrainerBallThrow(enum BattlerId battler, u16 tagTr
     {
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].data[0] = 50;
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].data[2] = -40;
+
+        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].data[4] = gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].y;
+        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = StartAnimLinearTranslation;
+        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].sBattlerId = battler;
     }
     else
     {
-        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].data[0] = 35;
-        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].data[2] = 280;
+        struct Even_BigSprite *pBigSprite;
+        if (battler == 1)
+            pBigSprite = &gBigSprite1;
+        else
+            pBigSprite = &gBigSprite2;
+
+        for (u32 i = 0; i < 6; i++)
+        {
+            gSprites[pBigSprite->spriteIds[i]].data[0] = 35;
+            gSprites[pBigSprite->spriteIds[i]].data[2] = 280 + Even_GetBigSubspriteOffsetX(i);
+
+            gSprites[pBigSprite->spriteIds[i]].data[4] = gSprites[pBigSprite->spriteIds[i]].y;
+            gSprites[pBigSprite->spriteIds[i]].callback = StartAnimLinearTranslation;
+            gSprites[pBigSprite->spriteIds[i]].sBattlerId = battler;
+
+            StoreSpriteCallbackInData6(&gSprites[pBigSprite->spriteIds[i]], SpriteCB_FreeOpponentSprite);
+        }
     }
 
-    gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].data[4] = gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].y;
-    gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].callback = StartAnimLinearTranslation;
-    gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].sBattlerId = battler;
 
     if (side == B_SIDE_PLAYER)
     {
@@ -2881,7 +2999,7 @@ void BtlController_HandleIntroTrainerBallThrow(enum BattlerId battler, u16 tagTr
     }
     else
     {
-        StoreSpriteCallbackInData6(&gSprites[gBattleStruct->trainerSlideSpriteIds[battler]], SpriteCB_FreeOpponentSprite);
+        //StoreSpriteCallbackInData6(&gSprites[gBattleStruct->trainerSlideSpriteIds[battler]], SpriteCB_FreeOpponentSprite);
     }
 
     taskId = CreateTask(Task_StartSendOutAnim, 5);
@@ -2971,9 +3089,8 @@ static void SpriteCB_FreePlayerSpriteLoadMonSprite(struct Sprite *sprite)
 
 static void SpriteCB_FreeOpponentSprite(struct Sprite *sprite)
 {
-    FreeTrainerFrontPicPalette(sprite->oam.affineParam);
-    FreeSpriteOamMatrix(sprite);
-    DestroySprite(sprite);
+    Even_FreeBigSprite(&gBigSprite1);
+    Even_FreeBigSprite(&gBigSprite2);
 }
 
 #undef sBattlerId
