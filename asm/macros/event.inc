@@ -2949,3 +2949,9 @@
 	getbraillestringwidth \text
 	call EventScript_BrailleCursorWaitButton
 	.endm
+
+	@ Opens the specified Gacha UI
+	.macro gachaui banner:req
+	callnative Gacha_InitFromScript
+	.4byte \banner
+	.endm

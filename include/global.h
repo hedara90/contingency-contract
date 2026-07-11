@@ -1093,14 +1093,6 @@ struct Bag
     struct ItemSlot berries[BAG_BERRIES_COUNT];
 };
 
-enum Banner
-{
-    BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT,
-    BANNER_FURY_OF_THE_EARTHERN_CORE,
-    BANNER_MEMORIES_OF_MONTHS_PAST,
-    BANNER_COUNT,
-};
-
 struct SaveBlock1
 {
     /*0x00*/ struct Coords16 pos;
