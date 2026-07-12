@@ -589,6 +589,99 @@ void HandleHuffDecompressCommand(char *inputPath, char *outputPath, int argc UNU
     free(uncompressedData);
 }
 
+void HandleBigSpriteCommand(char *inputPath, char *outputPath, int argc UNUSED, char **argv UNUSED)
+{
+    int size;
+    unsigned char *fileContents = ReadWholeFile(inputPath, &size);
+
+    if (size != 3200)
+        FATAL_ERROR("Input (\"%s\") for BigSprite conversion not 80px\n", inputPath);
+
+    unsigned char *outputContents = malloc(80 * 80 / 2);
+
+    unsigned int indexI = 0;
+    unsigned int index0 = 0;
+    unsigned int index1 = 64 * 64 / 2;
+    unsigned int index2 = index1 + 16 * 32 / 2;
+    unsigned int index3 = index2 + 16 * 32 / 2;
+    unsigned int index4 = index3 + 16 * 32 / 2;
+    unsigned int index5 = index4 + 16 * 32 / 2;
+
+    //  To 64x64 0
+    for (int i = 0; i < 64*4; i++)
+        outputContents[index0++] = fileContents[indexI++];
+    //  To 16x32 1
+    for (int i = 0; i < 64; i++)
+        outputContents[index1++] = fileContents[indexI++];
+    //  To 64x64 0
+    for (int i = 0; i < 64*4; i++)
+        outputContents[index0++] = fileContents[indexI++];
+    //  To 16x32 1
+    for (int i = 0; i < 64; i++)
+        outputContents[index1++] = fileContents[indexI++];
+    //  To 64x64 0
+    for (int i = 0; i < 64*4; i++)
+        outputContents[index0++] = fileContents[indexI++];
+    //  To 16x32 1
+    for (int i = 0; i < 64; i++)
+        outputContents[index1++] = fileContents[indexI++];
+    //  To 64x64 0
+    for (int i = 0; i < 64*4; i++)
+        outputContents[index0++] = fileContents[indexI++];
+    //  To 16x32 1
+    for (int i = 0; i < 64; i++)
+        outputContents[index1++] = fileContents[indexI++];
+
+    //  To 64x64 0
+    for (int i = 0; i < 64*4; i++)
+        outputContents[index0++] = fileContents[indexI++];
+    //  To 16x32 2
+    for (int i = 0; i < 64; i++)
+        outputContents[index2++] = fileContents[indexI++];
+    //  To 64x64 0
+    for (int i = 0; i < 64*4; i++)
+        outputContents[index0++] = fileContents[indexI++];
+    //  To 16x32 2
+    for (int i = 0; i < 64; i++)
+        outputContents[index2++] = fileContents[indexI++];
+    //  To 64x64 0
+    for (int i = 0; i < 64*4; i++)
+        outputContents[index0++] = fileContents[indexI++];
+    //  To 16x32 2
+    for (int i = 0; i < 64; i++)
+        outputContents[index2++] = fileContents[indexI++];
+    //  To 64x64 0
+    for (int i = 0; i < 64*4; i++)
+        outputContents[index0++] = fileContents[indexI++];
+    //  To 16x32 2
+    for (int i = 0; i < 64; i++)
+        outputContents[index2++] = fileContents[indexI++];
+
+    //  To 32x16 3
+    for (int i = 0; i < 64*2; i++)
+        outputContents[index3++] = fileContents[indexI++];
+    //  To 32x16 4
+    for (int i = 0; i < 64*2; i++)
+        outputContents[index4++] = fileContents[indexI++];
+    //  To 16x16 5
+    for (int i = 0; i < 64; i++)
+        outputContents[index5++] = fileContents[indexI++];
+    //  To 32x16 3
+    for (int i = 0; i < 64*2; i++)
+        outputContents[index3++] = fileContents[indexI++];
+    //  To 32x16 4
+    for (int i = 0; i < 64*2; i++)
+        outputContents[index4++] = fileContents[indexI++];
+    //  To 16x16 5
+    for (int i = 0; i < 64; i++)
+        outputContents[index5++] = fileContents[indexI++];
+
+    WriteWholeFile(outputPath, outputContents, size);
+
+    free(fileContents);
+    free(outputContents);
+}
+
 int main(int argc, char **argv)
 {
     char converted = 0;
@@ -620,6 +713,7 @@ int main(int argc, char **argv)
         { "lz", NULL, HandleLZDecompressCommand },
         { NULL, "rl", HandleRLCompressCommand },
         { "rl", NULL, HandleRLDecompressCommand },
+        { "4bpp", "big", HandleBigSpriteCommand },
         { NULL, NULL, NULL }
     };
 
