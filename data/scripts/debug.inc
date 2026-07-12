@@ -201,7 +201,6 @@ Debug_EventScript_Text_DefensiveIVs:
 	.string "HP IVs: {STR_VAR_1}, DEF IVs: {STR_VAR_2}, SPDEF IVs: {STR_VAR_3}$"
 
 Debug_EventScript_Script_1::
-	fadescreen FADE_TO_BLACK
 	gachaui BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT
 	release
 	end

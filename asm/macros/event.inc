@@ -2952,6 +2952,7 @@
 
 	@ Opens the specified Gacha UI
 	.macro gachaui banner:req
+	fadescreen FADE_TO_BLACK
 	callnative Gacha_InitFromScript
 	.4byte \banner
 	.endm

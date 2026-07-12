@@ -93,21 +93,23 @@ static const struct BgTemplate sGachaUiBgTemplates[] =
     {
         .bg = 0,
         .charBaseIndex = 0,
-        .mapBaseIndex = 22,
-        .priority = 1
+        .mapBaseIndex = 28,
+        .priority = 1,
+        .screenSize = 2,
     },
     {
         .bg = 1,
-        .charBaseIndex = 3,
-        .mapBaseIndex = 20,
-        .priority = 2
+        .charBaseIndex = 1,
+        .mapBaseIndex = 24,
+        .priority = 2,
+        .screenSize = 2,
     }
 };
 
 #define MONEY_WIDTH     8
 #define MONEY_HEIGHT    2
 #define PITY_WIDTH      8
-#define PITY_HEIGHT     4
+#define PITY_HEIGHT     2
 #define PULL_1_WIDTH    8
 #define PULL_1_HEIGHT   2
 #define PULL_10_WIDTH   8
@@ -128,7 +130,7 @@ static const struct WindowTemplate sGachaUiWindowTemplates[] =
     [WIN_MONEY] =
     {
         .bg = 0,
-        .tilemapLeft = 30 - MONEY_WIDTH,
+        .tilemapLeft = 0,
         .tilemapTop = 0,
         .width = MONEY_WIDTH,
         .height = MONEY_HEIGHT,
@@ -138,7 +140,7 @@ static const struct WindowTemplate sGachaUiWindowTemplates[] =
     [WIN_PITY] =
     {
         .bg = 0,
-        .tilemapLeft = 2,
+        .tilemapLeft = 0,
         .tilemapTop = 3,
         .width = PITY_WIDTH,
         .height = PITY_HEIGHT,
@@ -148,8 +150,8 @@ static const struct WindowTemplate sGachaUiWindowTemplates[] =
     [WIN_PULL_1] =
     {
         .bg = 0,
-        .tilemapLeft = 16,
-        .tilemapTop = 1,
+        .tilemapLeft = 0,
+        .tilemapTop = 6,
         .width = PULL_1_WIDTH,
         .height = PULL_1_HEIGHT,
         .paletteNum = 15,
@@ -158,8 +160,8 @@ static const struct WindowTemplate sGachaUiWindowTemplates[] =
     [WIN_PULL_10] =
     {
         .bg = 0,
-        .tilemapLeft = 16,
-        .tilemapTop = 1,
+        .tilemapLeft = 0,
+        .tilemapTop = 9,
         .width = PULL_10_WIDTH,
         .height = PULL_10_HEIGHT,
         .paletteNum = 15,
@@ -196,6 +198,10 @@ static bool8 GachaUi_LoadGraphics(void);
 static void GachaUi_InitWindows(void);
 static void Task_GachaUiWaitFadeIn(u8 taskId);
 static void Task_GachaUiMainInput(u8 taskId);
+static void DrawText(void);
+static void DrawMoney(void);
+static void DrawPity(void);
+static void DrawPull(void);
 
 static void Task_GachaUiWaitFadeAndExitGracefully(u8 taskId);
 
@@ -259,14 +265,18 @@ static void GachaUi_SetupCB(void)
         gMain.state++;
         break;
     case 5:
-        CreateTask(Task_GachaUiWaitFadeIn, 0);
+        DrawText();
         gMain.state++;
         break;
     case 6:
-        BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+        CreateTask(Task_GachaUiWaitFadeIn, 0);
         gMain.state++;
         break;
     case 7:
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+        gMain.state++;
+        break;
+    case 8:
         SetVBlankCallback(GachaUi_VBlankCB);
         SetMainCallback2(GachaUi_MainCB);
         break;
@@ -442,4 +452,35 @@ static void Task_GachaUiWaitFadeAndExitGracefully(u8 taskId)
         GachaUi_FreeResources();
         DestroyTask(taskId);
     }
+}
+
+static void DrawText(void)
+{
+    DrawMoney();
+    DrawPity();
+    DrawPull();
+}
+
+static void DrawMoney(void)
+{
+    u8 str[32];
+    str[0] = CHAR_H;
+    str[1] = EOS;
+
+    FillWindowPixelBuffer(WIN_MONEY, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    AddTextPrinterParameterized4(WIN_MONEY,
+                                 FONT_NORMAL,
+                                 0, 0, 0, 0,
+                                 sGachaUiWindowFontColors[FONT_WHITE],
+                                 TEXT_SKIP_DRAW,
+                                 str);
+    CopyWindowToVram(WIN_MONEY, COPYWIN_GFX);
+}
+
+static void DrawPity(void)
+{
+}
+
+static void DrawPull(void)
+{
 }
