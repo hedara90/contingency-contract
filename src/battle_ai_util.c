@@ -618,6 +618,64 @@ static __attribute__((noinline)) ARM_FUNC s32 RandomRollDmg(s32 dmg)
     return dmg;
 }
 
+static __attribute__((noinline)) ARM_FUNC s32 LowestRollDmgLower(s32 dmg)
+{
+    dmg *= MIN_ROLL_PERCENTAGE;
+    dmg /= 100;
+    return dmg;
+}
+
+static inline s32 HighestRollDmgLower(s32 dmg)
+{
+    dmg *= MAX_ROLL_PERCENTAGE_LOWER;
+    dmg /= 100;
+    return dmg;
+}
+
+static __attribute__((noinline)) ARM_FUNC s32 DmgRollLower(s32 dmg)
+{
+    dmg *= DMG_ROLL_PERCENTAGE_LOWER;
+    dmg /= 100;
+    return dmg;
+}
+
+static __attribute__((noinline)) ARM_FUNC s32 RandomRollDmgLower(s32 dmg)
+{
+    u32 randomRollPercentage = RandomUniform(RNG_AI_DMG_ROLL_RANDOM, MIN_ROLL_PERCENTAGE, MAX_ROLL_PERCENTAGE_LOWER);
+    dmg *= randomRollPercentage;
+    dmg /= 100;
+    return dmg;
+}
+
+static __attribute__((noinline)) ARM_FUNC s32 LowestRollDmgUpper(s32 dmg)
+{
+    dmg *= MIN_ROLL_PERCENTAGE_UPPER;
+    dmg /= 100;
+    return dmg;
+}
+
+static inline s32 HighestRollDmgUpper(s32 dmg)
+{
+    dmg *= MAX_ROLL_PERCENTAGE;
+    dmg /= 100;
+    return dmg;
+}
+
+static __attribute__((noinline)) ARM_FUNC s32 DmgRollUpper(s32 dmg)
+{
+    dmg *= DMG_ROLL_PERCENTAGE_UPPER;
+    dmg /= 100;
+    return dmg;
+}
+
+static __attribute__((noinline)) ARM_FUNC s32 RandomRollDmgUpper(s32 dmg)
+{
+    u32 randomRollPercentage = RandomUniform(RNG_AI_DMG_ROLL_RANDOM, MIN_ROLL_PERCENTAGE_UPPER, MAX_ROLL_PERCENTAGE);
+    dmg *= randomRollPercentage;
+    dmg /= 100;
+    return dmg;
+}
+
 bool32 IsDamageMoveUnusable(struct DamageContext *ctx)
 {
     enum Ability battlerDefAbility;
@@ -732,6 +790,30 @@ static inline s32 GetDamageByRollType(s32 dmg, enum DamageRollType rollType)
         return DmgRoll(dmg);
 }
 
+static inline s32 GetDamageByRollTypeLower(s32 dmg, enum DamageRollType rollType)
+{
+    if (rollType == DMG_ROLL_LOWEST)
+        return LowestRollDmgLower(dmg);
+    else if (rollType == DMG_ROLL_HIGHEST)
+        return HighestRollDmgLower(dmg);
+    else if (rollType == DMG_ROLL_RANDOM)
+        return RandomRollDmgLower(dmg);
+    else
+        return DmgRollLower(dmg);
+}
+
+static inline s32 GetDamageByRollTypeUpper(s32 dmg, enum DamageRollType rollType)
+{
+    if (rollType == DMG_ROLL_LOWEST)
+        return LowestRollDmgUpper(dmg);
+    else if (rollType == DMG_ROLL_HIGHEST)
+        return HighestRollDmgUpper(dmg);
+    else if (rollType == DMG_ROLL_RANDOM)
+        return RandomRollDmgUpper(dmg);
+    else
+        return DmgRollUpper(dmg);
+}
+
 static inline void AI_StoreBattlerTypes(enum BattlerId battlerAtk, enum Type *types)
 {
     types[0] = gBattleMons[battlerAtk].types[0];
@@ -838,7 +920,7 @@ static inline bool32 ShouldCalcCritDamage(struct DamageContext *ctx)
     s32 critChanceIndex = 0;
 
     // Get crit chance
-    if (GetConfig(B_CRIT_CHANCE) == GEN_1)
+    if (GetConfig(B_CRIT_CHANCE) == GEN_1 || gRisks.hasGen1CritChance)
         critChanceIndex = CalcCritChanceStageGen1(ctx);
     else
         critChanceIndex = CalcCritChanceStage(ctx);
@@ -847,11 +929,11 @@ static inline bool32 ShouldCalcCritDamage(struct DamageContext *ctx)
         return TRUE;
     if (critChanceIndex >= RISKY_AI_CRIT_STAGE_THRESHOLD // Not guaranteed but above Risky threshold
         && (gAiThinkingStruct->aiFlags[ctx->battlerAtk] & AI_FLAG_RISKY)
-        && GetConfig(B_CRIT_CHANCE) != GEN_1)
+        && (GetConfig(B_CRIT_CHANCE) != GEN_1 && !gRisks.hasGen1CritChance))
         return TRUE;
     if (critChanceIndex >= RISKY_AI_CRIT_THRESHOLD_GEN_1 // Not guaranteed but above Risky threshold
         && (gAiThinkingStruct->aiFlags[ctx->battlerAtk] & AI_FLAG_RISKY)
-        && GetConfig(B_CRIT_CHANCE) == GEN_1)
+        && (GetConfig(B_CRIT_CHANCE) == GEN_1 || gRisks.hasGen1CritChance))
         return TRUE;
 
     return FALSE;
@@ -976,34 +1058,96 @@ struct SimulatedDamage AI_CalcDamage(enum Move move, enum BattlerId battlerAtk, 
 
                 s32 oneTripleKickHit = CalculateMoveDamageVars(&ctx);
 
-                damageByRollType = GetDamageByRollType(oneTripleKickHit, DMG_ROLL_LOWEST);
-                simDamage.minimum += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+                if (IsOnPlayerSide(battlerAtk) && gRisks.playerLowerHalfDamageRolls)
+                {
+                    damageByRollType = GetDamageByRollTypeLower(oneTripleKickHit, DMG_ROLL_LOWEST);
+                    simDamage.minimum += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
 
-                damageByRollType = GetDamageByRollType(oneTripleKickHit, DMG_ROLL_MEDIAN);
-                simDamage.median += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+                    damageByRollType = GetDamageByRollTypeLower(oneTripleKickHit, DMG_ROLL_MEDIAN);
+                    simDamage.median += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
 
-                damageByRollType = GetDamageByRollType(oneTripleKickHit, DMG_ROLL_HIGHEST);
-                simDamage.maximum += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+                    damageByRollType = GetDamageByRollTypeLower(oneTripleKickHit, DMG_ROLL_HIGHEST);
+                    simDamage.maximum += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
 
-                damageByRollType = GetDamageByRollType(oneTripleKickHit, DMG_ROLL_RANDOM);
-                simDamage.random += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+                    damageByRollType = GetDamageByRollTypeLower(oneTripleKickHit, DMG_ROLL_RANDOM);
+                    simDamage.random += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+                }
+                else if (!IsOnPlayerSide(battlerAtk) && gRisks.opponentUpperHalfDamageRolls)
+                {
+                    damageByRollType = GetDamageByRollTypeUpper(oneTripleKickHit, DMG_ROLL_LOWEST);
+                    simDamage.minimum += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+
+                    damageByRollType = GetDamageByRollTypeUpper(oneTripleKickHit, DMG_ROLL_MEDIAN);
+                    simDamage.median += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+
+                    damageByRollType = GetDamageByRollTypeUpper(oneTripleKickHit, DMG_ROLL_HIGHEST);
+                    simDamage.maximum += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+
+                    damageByRollType = GetDamageByRollTypeUpper(oneTripleKickHit, DMG_ROLL_RANDOM);
+                    simDamage.random += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+                }
+                else
+                {
+                    damageByRollType = GetDamageByRollType(oneTripleKickHit, DMG_ROLL_LOWEST);
+                    simDamage.minimum += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+
+                    damageByRollType = GetDamageByRollType(oneTripleKickHit, DMG_ROLL_MEDIAN);
+                    simDamage.median += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+
+                    damageByRollType = GetDamageByRollType(oneTripleKickHit, DMG_ROLL_HIGHEST);
+                    simDamage.maximum += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+
+                    damageByRollType = GetDamageByRollType(oneTripleKickHit, DMG_ROLL_RANDOM);
+                    simDamage.random += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
+                }
+                
             }
         }
         else
         {
             u32 damage = CalculateMoveDamageVars(&ctx);
+            if (IsOnPlayerSide(battlerAtk) && gRisks.playerLowerHalfDamageRolls)
+            {
+                simDamage.minimum = GetDamageByRollType(damage, DMG_ROLL_LOWEST);
+                simDamage.minimum = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.minimum);
 
-            simDamage.minimum = GetDamageByRollType(damage, DMG_ROLL_LOWEST);
-            simDamage.minimum = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.minimum);
+                simDamage.median = GetDamageByRollType(damage, DMG_ROLL_MEDIAN);
+                simDamage.median = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.median);
 
-            simDamage.median = GetDamageByRollType(damage, DMG_ROLL_MEDIAN);
-            simDamage.median = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.median);
+                simDamage.maximum = GetDamageByRollType(damage, DMG_ROLL_HIGHEST);
+                simDamage.maximum = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.maximum);
 
-            simDamage.maximum = GetDamageByRollType(damage, DMG_ROLL_HIGHEST);
-            simDamage.maximum = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.maximum);
+                simDamage.random = GetDamageByRollType(damage, DMG_ROLL_RANDOM);
+                simDamage.random = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.random);
+            }
+            else if (!IsOnPlayerSide(battlerAtk) && gRisks.opponentUpperHalfDamageRolls)
+            {
+                simDamage.minimum = GetDamageByRollType(damage, DMG_ROLL_LOWEST);
+                simDamage.minimum = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.minimum);
 
-            simDamage.random = GetDamageByRollType(damage, DMG_ROLL_RANDOM);
-            simDamage.random = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.random);
+                simDamage.median = GetDamageByRollType(damage, DMG_ROLL_MEDIAN);
+                simDamage.median = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.median);
+
+                simDamage.maximum = GetDamageByRollType(damage, DMG_ROLL_HIGHEST);
+                simDamage.maximum = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.maximum);
+
+                simDamage.random = GetDamageByRollType(damage, DMG_ROLL_RANDOM);
+                simDamage.random = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.random);
+            }
+            else
+            {
+                simDamage.minimum = GetDamageByRollType(damage, DMG_ROLL_LOWEST);
+                simDamage.minimum = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.minimum);
+
+                simDamage.median = GetDamageByRollType(damage, DMG_ROLL_MEDIAN);
+                simDamage.median = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.median);
+
+                simDamage.maximum = GetDamageByRollType(damage, DMG_ROLL_HIGHEST);
+                simDamage.maximum = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.maximum);
+
+                simDamage.random = GetDamageByRollType(damage, DMG_ROLL_RANDOM);
+                simDamage.random = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.random);
+            }
         }
 
         if (GetActiveGimmick(battlerAtk) != GIMMICK_Z_MOVE)
@@ -1423,6 +1567,9 @@ s32 AI_WhoStrikesFirst(enum BattlerId battlerAI, enum BattlerId battler, enum Mo
         else if (aiPriority < playerPriority)
             return AI_IS_SLOWER;
     }
+
+    if (gRisks.opponentMovesFirst)
+        return AI_IS_FASTER;
 
     speedBattlerAI = gAiLogicData->speedStats[battlerAI];
     speedBattler   = gAiLogicData->speedStats[battler];
@@ -3409,7 +3556,7 @@ enum AIPivot ShouldPivot(enum BattlerId battlerAtk, enum BattlerId battlerDef, e
     if (!IsBattleMoveStatus(move) && BattlerHasMaxHPProtection(battlerDef) && hasGoodSwitchin && RandomPercentage(RNG_AI_SHOULD_PIVOT_BREAK_SASH, SHOULD_PIVOT_BREAK_SASH_CHANCE))
         return SHOULD_PIVOT;
     // Would benefit from Regenerator and have a good switchin
-    if (gAiLogicData->abilities[battlerAtk] == ABILITY_REGENERATOR && ShouldRecover(battlerAtk, battlerDef, move, 33) && hasGoodSwitchin)
+    if ((gAiLogicData->abilities[battlerAtk] == ABILITY_REGENERATOR || (!IsOnPlayerSide(battlerAtk) && gRisks.hasRegenerator)) && ShouldRecover(battlerAtk, battlerDef, move, 33) && hasGoodSwitchin)
         return SHOULD_PIVOT;
     // Palafin always wants to activate Zero to Hero via pivoting when able
     if (gAiLogicData->abilities[battlerAtk] == ABILITY_ZERO_TO_HERO && gBattleMons[battlerAtk].species == SPECIES_PALAFIN_ZERO && CountUsablePartyMons(battlerAtk) != 0)

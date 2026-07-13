@@ -386,7 +386,7 @@ static bool32 ShouldSwitchIfHasBadOdds(struct SwitchAiContext *switchContext)
     // Start assessing whether or not mon has bad odds
     // Jump straight to switching out in cases where mon gets OHKO'd
     if ((switchContext->battlerGetsOHKOd && !switchContext->canBattlerWin1v1) && (gBattleMons[switchContext->battler].hp >= gBattleMons[switchContext->battler].maxHP / 2 // And the current mon has at least 1/2 their HP, or 1/4 HP and Regenerator
-            || (gAiLogicData->abilities[switchContext->battler] == ABILITY_REGENERATOR && gBattleMons[switchContext->battler].hp >= gBattleMons[switchContext->battler].maxHP / 4)))
+            || ((gAiLogicData->abilities[switchContext->battler] == ABILITY_REGENERATOR || (!IsOnPlayerSide(switchContext->battler) && gRisks.hasRegenerator)) && gBattleMons[switchContext->battler].hp >= gBattleMons[switchContext->battler].maxHP / 4)))
     {
         // 50% chance to stay in regardless
         if (RandomPercentage(RNG_AI_SWITCH_HASBADODDS, (100 - GetSwitchChance(SHOULD_SWITCH_HASBADODDS))) && !gAiLogicData->aiPredictionInProgress)
@@ -401,7 +401,7 @@ static bool32 ShouldSwitchIfHasBadOdds(struct SwitchAiContext *switchContext)
     {
         if (!switchContext->hasEffectiveMove // If the AI doesn't have a super effective move
         && (gBattleMons[switchContext->battler].hp >= gBattleMons[switchContext->battler].maxHP / 2 // And the current mon has at least 1/2 their HP, or 1/4 HP and Regenerator
-            || (gAiLogicData->abilities[switchContext->battler] == ABILITY_REGENERATOR
+            || ((gAiLogicData->abilities[switchContext->battler] == ABILITY_REGENERATOR || (!IsOnPlayerSide(switchContext->battler) && gRisks.hasRegenerator))
             && gBattleMons[switchContext->battler].hp >= gBattleMons[switchContext->battler].maxHP / 4)))
         {
             // Then check if they have an important status move, which is worth using even in a bad matchup
@@ -1114,7 +1114,8 @@ static bool32 CanMonSurviveHazardSwitchin(struct SwitchAiContext *switchContext)
     enum Ability ability = gAiLogicData->abilities[switchContext->battler];
     enum Move aiMove;
 
-    if (ability == ABILITY_REGENERATOR)
+    if (ability == ABILITY_REGENERATOR
+        || (!IsOnPlayerSide(switchContext->battler) && gRisks.hasRegenerator))
         battlerHp = (battlerHp * 133) / 100; // Account for Regenerator healing
 
     hazardDamage = GetSwitchinHazardsDamage(switchContext->battler);

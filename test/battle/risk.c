@@ -205,6 +205,25 @@ DOUBLE_BATTLE_TEST("Risk: Opponent moves first (Double)")
     }
 }
 
+AI_SINGLE_BATTLE_TEST("Risk: Opponent moves first (AI)")
+{
+    u32 odds;
+    PARAMETRIZE { odds = 100; gRisks.opponentMovesFirst = TRUE; }
+    PARAMETRIZE { odds = SHOULD_SWITCH_HASBADODDS_PERCENTAGE; gRisks.opponentMovesFirst = FALSE; }
+    PASSES_RANDOMLY(odds, 100, RNG_AI_SWITCH_HASBADODDS);
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_SWITCHING | AI_FLAG_SMART_MON_CHOICES | AI_FLAG_OMNISCIENT);
+        PLAYER(SPECIES_ELECTRODE) { HP(1); MaxHP(100); Moves(MOVE_THUNDERBOLT, MOVE_THUNDER_WAVE, MOVE_THUNDER_SHOCK); }
+        OPPONENT(SPECIES_PELIPPER) { Moves(MOVE_EARTHQUAKE); }
+        OPPONENT(SPECIES_RHYDON) { Moves(MOVE_EARTHQUAKE); Ability(ABILITY_ROCK_HEAD); }
+    } WHEN {
+        if (!gRisks.opponentMovesFirst)
+            TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_SWITCH(opponent, 1); }
+        else
+            TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_MOVE(opponent, MOVE_EARTHQUAKE); }
+    }
+}
+
 SINGLE_BATTLE_TEST("Risk: Opponent has Regenerator")
 {
     //  Also checking that it doesn't break other switchout abilities
@@ -467,6 +486,25 @@ SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches")
     }
 }
 
+AI_SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches (AI)")
+{
+    u32 odds;
+    PARAMETRIZE { odds = SHOULD_SWITCH_HASBADODDS_PERCENTAGE; gRisks.opponentAttacksSwitches = TRUE; }
+    PARAMETRIZE { odds = 100; gRisks.opponentAttacksSwitches = FALSE; }
+    PASSES_RANDOMLY(odds, 100, RNG_AI_SWITCH_HASBADODDS);
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_SWITCHING | AI_FLAG_SMART_MON_CHOICES | AI_FLAG_OMNISCIENT);
+        PLAYER(SPECIES_ELECTRODE) { HP(1); Speed(5); MaxHP(100); Moves(MOVE_THUNDERBOLT, MOVE_THUNDER_WAVE, MOVE_THUNDER_SHOCK); }
+        OPPONENT(SPECIES_PELIPPER) { Speed(10); Moves(MOVE_EARTHQUAKE); }
+        OPPONENT(SPECIES_RHYDON) { Speed(4); Moves(MOVE_EARTHQUAKE); Ability(ABILITY_ROCK_HEAD); }
+    } WHEN {
+        if (!gRisks.opponentAttacksSwitches)
+            TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_MOVE(opponent, MOVE_EARTHQUAKE); }
+        else
+            TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_SWITCH(opponent, 1); }
+    }
+}
+
 SINGLE_BATTLE_TEST("Risk: Opponent attacks apply disable")
 {
     GIVEN {
@@ -649,5 +687,53 @@ AI_SINGLE_BATTLE_TEST("Risk: Opponent can't miss (AI)")
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
     } WHEN {
         TURN { MOVE(player, MOVE_CELEBRATE); EXPECT_MOVE(opponent, MOVE_FISSURE); }
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Gen 1 crit chance")
+{
+    u32 genConfig, passes, trials;
+    PARAMETRIZE { genConfig = GEN_9; passes = 1; trials = 16; gRisks.hasGen1CritChance = TRUE; } // Override gen config with risk
+    PARAMETRIZE { genConfig = GEN_1; passes = 1;  trials = 16; gRisks.hasGen1CritChance = FALSE; }   //  6.25% with Wobbuffet's base speed
+    PARAMETRIZE { genConfig = GEN_2; passes = 17; trials = 256; gRisks.hasGen1CritChance = FALSE; }  // ~6.64%
+    for (u32 j = GEN_3; j <= GEN_6; j++)
+        PARAMETRIZE { genConfig = j; passes = 1,  trials = 16; gRisks.hasGen1CritChance = FALSE; }  //  6.25%
+    for (u32 j = GEN_7; j <= GEN_9; j++)
+        PARAMETRIZE { genConfig = j; passes = 1,  trials = 24; gRisks.hasGen1CritChance = FALSE; }  // ~4.17%
+
+    PASSES_RANDOMLY(passes, trials, RNG_CRITICAL_HIT);
+    GIVEN {
+        WITH_CONFIG(B_CRIT_CHANCE, genConfig);
+        ASSUME(GetSpeciesBaseSpeed(SPECIES_WOBBUFFET) == 33);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_SCRATCH); }
+    } SCENE {
+        MESSAGE("A critical hit!");
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Player uses lower half of damage rolls (85 - 92)")
+{
+    GIVEN {
+        ASSUME(DMG_ROLL_PERCENT_HI - (DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_LOWER_HI) == 92); // Upper bound
+        ASSUME(DMG_ROLL_PERCENT_HI - (DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_LO) == 85); // Lower bound
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN {}
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Opponent uses upper half of damage rolls (93 - 100)")
+{
+    GIVEN {
+        ASSUME(DMG_ROLL_PERCENT_HI == 100); // Upper bound
+        ASSUME(DMG_ROLL_PERCENT_HI - (DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_UPPER_LO) == 93); // Lower bound
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN {}
     }
 }
