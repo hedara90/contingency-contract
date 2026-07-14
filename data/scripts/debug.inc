@@ -206,14 +206,17 @@ Debug_EventScript_Script_1::
 	end
 
 Debug_EventScript_Script_2::
+	gachaui BANNER_FURY_OF_THE_EARTHEN_CORE
 	release
 	end
 
 Debug_EventScript_Script_3::
+	gachaui BANNER_MEMORIES_OF_MONTHS_PAST
 	release
 	end
 
 Debug_EventScript_Script_4::
+	gachaui BANNER_ITEMS
 	release
 	end
 

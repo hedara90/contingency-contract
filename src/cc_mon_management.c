@@ -4,19 +4,9 @@
 #include "event_data.h"
 #include "event_scripts.h"
 #include "pokemon_storage_system.h"
+#include "constants/pokeball.h"
 
-#define ODDS_6_STAR 100
-#define ODDS_5_STAR 4
-#define PITY_6_STAR 80
-#define PITY_5_STAR 3
-
-struct GachaResult
-{
-    enum Species species;
-    enum GiveResult result;
-};
-
-EWRAM_DATA struct GachaResult sGachaResults[10] = {0};
+EWRAM_DATA struct GachaResult gGachaResults[10] = {0};
 
 const enum Species sIndomitability4Stars[] =
 {
@@ -135,32 +125,32 @@ const struct GachaBanner sBannerIndomitability =
 
 const struct GachaBanner sBannerFury =
 {
-    .num4Stars = NELEMS(sIndomitability4Stars),
-    .num5Stars = NELEMS(sIndomitability5Stars),
-    .num6Stars = NELEMS(sIndomitability6Stars),
-    .mons4Star = sIndomitability4Stars,
-    .mons5Star = sIndomitability5Stars,
-    .mons6Star = sIndomitability6Stars,
+    .num4Stars = NELEMS(sFury4Stars),
+    .num5Stars = NELEMS(sFury5Stars),
+    .num6Stars = NELEMS(sFury6Stars),
+    .mons4Star = sFury4Stars,
+    .mons5Star = sFury5Stars,
+    .mons6Star = sFury6Stars,
 };
 
 const struct GachaBanner sBannerMemories =
 {
-    .num4Stars = NELEMS(sIndomitability4Stars),
-    .num5Stars = NELEMS(sIndomitability5Stars),
-    .num6Stars = NELEMS(sIndomitability6Stars),
-    .mons4Star = sIndomitability4Stars,
-    .mons5Star = sIndomitability5Stars,
-    .mons6Star = sIndomitability6Stars,
+    .num4Stars = NELEMS(sMemories4Stars),
+    .num5Stars = NELEMS(sMemories5Stars),
+    .num6Stars = NELEMS(sMemories6Stars),
+    .mons4Star = sMemories4Stars,
+    .mons5Star = sMemories5Stars,
+    .mons6Star = sMemories6Stars,
 };
 
 const struct GachaBanner sGachaBanners[BANNER_COUNT] =
 {
     [BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT] = sBannerIndomitability,
-    [BANNER_FURY_OF_THE_EARTHERN_CORE] = sBannerFury,
+    [BANNER_FURY_OF_THE_EARTHEN_CORE] = sBannerFury,
     [BANNER_MEMORIES_OF_MONTHS_PAST] = sBannerMemories,
 };
 
-enum GiveResult GiveGachaMon(enum Species species)
+enum GiveResult GiveGachaMon(enum Species species, u32 star)
 {
     //  First see if the player has the mon at all, done with dex flags
     bool32 hasMon = GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT);
@@ -222,6 +212,59 @@ enum GiveResult GiveGachaMon(enum Species species)
         //  Give the mon to the player
         VarSet(VAR_TEMP_1, species);
         RunScriptImmediately(EventScript_GiveGachaMon);
+        //  Find the newly given mon and set its ball properly
+        bool32 found = FALSE;
+        for (u32 i = 0; i < 6; i++)
+        {
+            if (GetMonData(&gParties[0][i], MON_DATA_SPECIES) == species)
+            {
+                found = TRUE;
+                enum PokeBall ball = BALL_POKE;
+                switch (star)
+                {
+                case 4:
+                    ball = BALL_4_STAR;
+                    break;
+                case 5:
+                    ball = BALL_6_STAR;
+                    break;
+                case 6:
+                    ball = BALL_5_STAR;
+                    break;
+                }
+                SetMonData(&gParties[0][i], MON_DATA_POKEBALL, &ball);
+            }
+        }
+
+        if (!found)
+        {
+            for (u32 box = 0; box < TOTAL_BOXES_COUNT; box++)
+            {
+                for (u32 index = 0; index < 30; index++)
+                {
+                    struct BoxPokemon *mon = GetBoxedMonPtr(box, index);
+                    if (GetBoxMonData(mon, MON_DATA_SPECIES) == species)
+                    {
+                        found = TRUE;
+                        enum PokeBall ball = BALL_POKE;
+                        switch (star)
+                        {
+                        case 4:
+                            ball = BALL_4_STAR;
+                            break;
+                        case 5:
+                            ball = BALL_6_STAR;
+                            break;
+                        case 6:
+                            ball = BALL_5_STAR;
+                            break;
+                        }
+                        SetBoxMonData(mon, MON_DATA_POKEBALL, &ball);
+                    }
+                }
+            }
+        }
+
         return GIVE_RESULT_FIRST;
     }
 }
@@ -230,11 +273,9 @@ void TestThing(void)
 {
     DebugPrintf("Doing 10-pull");
     Do10Pull(BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT);
-    //GiveGachaMon(SPECIES_MUDKIP);
-    //GiveGachaMon(SPECIES_ZYGARDE);
 }
 
-enum Species RollGachaMon(enum Banner banner)
+enum Species RollGachaMon(enum Banner banner, u32 *star)
 {
     enum Species species = SPECIES_NONE;
     const struct GachaBanner *bannerData = &sGachaBanners[banner];
@@ -243,11 +284,12 @@ enum Species RollGachaMon(enum Banner banner)
     switch (banner)
     {
     case BANNER_COUNT:
+    case BANNER_ITEMS:
     case BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT:
         rnd = LocalRandom32(&gSaveBlock1Ptr->bannerRng[BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT]);
         break;
-    case BANNER_FURY_OF_THE_EARTHERN_CORE:
-        rnd = LocalRandom32(&gSaveBlock1Ptr->bannerRng[BANNER_FURY_OF_THE_EARTHERN_CORE]);
+    case BANNER_FURY_OF_THE_EARTHEN_CORE:
+        rnd = LocalRandom32(&gSaveBlock1Ptr->bannerRng[BANNER_FURY_OF_THE_EARTHEN_CORE]);
         break;
     case BANNER_MEMORIES_OF_MONTHS_PAST:
         rnd = LocalRandom32(&gSaveBlock1Ptr->bannerRng[BANNER_MEMORIES_OF_MONTHS_PAST]);
@@ -269,7 +311,7 @@ enum Species RollGachaMon(enum Banner banner)
         starToUse = 5;
     }
 
-    if (gSaveBlock1Ptr->pity6 == PITY_6_STAR)
+    if (gSaveBlock1Ptr->pity6 == PITY_6_STAR - 1)
     {
         gSaveBlock1Ptr->pity5 = 0;
         gSaveBlock1Ptr->pity6 = 0;
@@ -287,6 +329,7 @@ enum Species RollGachaMon(enum Banner banner)
         gSaveBlock1Ptr->pity6++;
     }
 
+    *star = starToUse;
     switch (starToUse)
     {
     case 6:
@@ -309,23 +352,27 @@ void DoSinglePull(enum Banner banner)
     {
         enum Species species = SPECIES_NONE;
         enum GiveResult result = GIVE_RESULT_FIRST;
-        sGachaResults[i].species = species;
-        sGachaResults[i].result = result;
+        gGachaResults[i].species = species;
+        gGachaResults[i].result = result;
     }
 
-    enum Species species = RollGachaMon(banner);
-    enum GiveResult result = GiveGachaMon(species);
-    sGachaResults[0].species = species;
-    sGachaResults[0].result = result;
+    u32 star;
+    enum Species species = RollGachaMon(banner, &star);
+    enum GiveResult result = GiveGachaMon(species, star);
+    gGachaResults[0].species = species;
+    gGachaResults[0].result = result;
+    gGachaResults[0].stars = star;
 }
 
 void Do10Pull(enum Banner banner)
 {
     for (u32 i = 0; i < 10; i++)
     {
-        enum Species species = RollGachaMon(banner);
-        enum GiveResult result = GiveGachaMon(species);
-        sGachaResults[i].species = species;
-        sGachaResults[i].result = result;
+        u32 star;
+        enum Species species = RollGachaMon(banner, &star);
+        enum GiveResult result = GiveGachaMon(species, star);
+        gGachaResults[i].species = species;
+        gGachaResults[i].result = result;
+        gGachaResults[i].stars = star;
     }
 }

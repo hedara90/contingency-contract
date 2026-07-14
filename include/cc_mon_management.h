@@ -23,9 +23,18 @@ struct GachaBanner
     const enum Species *const mons6Star;
 };
 
-enum GiveResult GiveGachaMon(enum Species species);
-enum Species RollGachaMon(enum Banner banner);
+struct GachaResult
+{
+    enum Species species;
+    enum GiveResult result;
+    u32 stars;
+};
+
+enum GiveResult GiveGachaMon(enum Species species, u32 star);
+enum Species RollGachaMon(enum Banner banner, u32 *star);
 void DoSinglePull(enum Banner banner);
 void Do10Pull(enum Banner banner);
+
+extern struct GachaResult gGachaResults[10];
 
 #endif
