@@ -53,6 +53,7 @@ struct GachaUiState
     u16 pullState;
     u8 iconSpriteIds[10];
     u8 ballSpriteIds[10];
+    u8 indicatorIds[10];
     u16 ballAnimState;
     u16 ballAnimIndex;
     enum Banner banner;
@@ -85,6 +86,9 @@ static const u16 sFuryPalette[] = INCGFX_U16("graphics/gacha/fury_tiles.png", ".
 static const u32 sMemoriesTiles[] = INCGFX_U32("graphics/gacha/memories_tiles.png", ".4bpp.smol");
 static const u32 sMemoriesTilemap[] = INCBIN_U32("graphics/gacha/memories_tiles.bin.smolTM");
 static const u16 sMemoriesPalette[] = INCGFX_U16("graphics/gacha/memories_tiles.png", ".gbapal");
+
+static const u32 sNewGfx[] = INCGFX_U32("graphics/gacha/new.png", ".4bpp");
+static const u16 sNewPal[] = INCGFX_U16("graphics/gacha/new.png", ".gbapal");
 
 struct GachaGraphics
 {
@@ -779,10 +783,46 @@ static void Task_PullAnim(u8 taskId)
             sGachaUiState->pullState++;
         break;
     case 6:
+        //  Display the result indicators
+        //  and give max dupe resources
+        for (u32 i = 0; i < sGachaUiState->numToPull; i++)
+        {
+            if (gGachaResults[i].result == GIVE_RESULT_FIRST)
+            {
+                struct Even_CreateSpriteStruct cs = {0};
+                cs.sprite = sNewGfx;
+                cs.tileTag = 10;
+                cs.palette = sNewPal;
+                cs.palTag = 10;
+                cs.spriteSize = SPRITE_SIZE(32x16);
+                cs.spriteShape = SPRITE_SHAPE(32x16);
+                cs.posX = (i % 5) * 48 + 24;
+                cs.posY = (i / 5) * 50 + 50 - 24;
+                sGachaUiState->indicatorIds[i] = Even_CreateSprite(&cs);
+            }
+            else
+            {
+                if (gGachaResults[i].result == GIVE_RESULT_CAP)
+                {
+                    //  Refund some money
+                    u32 newMoney = GetMoney(&gSaveBlock1Ptr->money) + PULL_1_COST / 4;
+                    if (newMoney > 999999)
+                        newMoney = 999999;
+                    SetMoney(&gSaveBlock1Ptr->money, newMoney);
+                }
+                sGachaUiState->indicatorIds[i] = SPRITE_NONE;
+            }
+        }
+        sGachaUiState->pullState++;
+        break;
+    case 7:
         if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
         {
             for (u32 i = 0; i < sGachaUiState->numToPull; i++)
             {
+                if (sGachaUiState->indicatorIds[i] != SPRITE_NONE)
+                    DestroySprite(&gSprites[sGachaUiState->indicatorIds[i]]);
+
                 DestroySprite(&gSprites[sGachaUiState->ballSpriteIds[i]]);
                 DestroySprite(&gSprites[sGachaUiState->iconSpriteIds[i]]);
                 FreeSpriteTilesByTag(i);
@@ -790,6 +830,8 @@ static void Task_PullAnim(u8 taskId)
                 sGachaUiState->iconSpriteIds[i] = SPRITE_NONE;
                 sGachaUiState->ballSpriteIds[i] = SPRITE_NONE;
             }
+            FreeSpriteTilesByTag(10);
+            FreeSpritePaletteByTag(10);
             FreeBallGfx(BALL_4_STAR);
             FreeBallGfx(BALL_5_STAR);
             FreeBallGfx(BALL_6_STAR);
@@ -921,16 +963,62 @@ static void Task_PullAnimItem(u8 taskId)
         }
         break;
     case 4:
+        //  Display the result indicators
+        //  and give dupe resources
+        for (u32 i = 0; i < sGachaUiState->numToPull; i++)
+        {
+            if (gGachaResults[i].result == GIVE_RESULT_FIRST)
+            {
+                struct Even_CreateSpriteStruct cs = {0};
+                cs.sprite = sNewGfx;
+                cs.tileTag = 10;
+                cs.palette = sNewPal;
+                cs.palTag = 10;
+                cs.spriteSize = SPRITE_SIZE(32x16);
+                cs.spriteShape = SPRITE_SHAPE(32x16);
+                cs.posX = (i % 5) * 48 + 24;
+                cs.posY = (i / 5) * 50 + 50 - 24;
+                sGachaUiState->indicatorIds[i] = Even_CreateSprite(&cs);
+            }
+            else
+            {
+                //  Give some BP
+                u32 newBp = gSaveBlock1Ptr->battlePoints;
+                switch (gGachaResults[i].stars)
+                {
+                case 4:
+                    newBp += 1;
+                    break;
+                case 5:
+                    newBp += 4;
+                    break;
+                case 6:
+                    newBp += 100;
+                    break;
+                }
+                if (newBp > 999)
+                    newBp = 999;
+                gSaveBlock1Ptr->battlePoints = newBp;
+                sGachaUiState->indicatorIds[i] = SPRITE_NONE;
+            }
+        }
+        sGachaUiState->pullState++;
+        break;
+    case 5:
         if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
         {
             ReleaseComfyAnims();
             for (u32 i = 0; i < sGachaUiState->numToPull; i++)
             {
+                if (sGachaUiState->indicatorIds[i] != SPRITE_NONE)
+                    DestroySprite(&gSprites[sGachaUiState->indicatorIds[i]]);
                 DestroySprite(&gSprites[sGachaUiState->ballSpriteIds[i]]);
                 FreeSpriteTilesByTag(i);
                 FreeSpritePaletteByTag(i);
                 sGachaUiState->ballSpriteIds[i] = SPRITE_NONE;
             }
+            FreeSpriteTilesByTag(10);
+            FreeSpritePaletteByTag(10);
             SetGpuReg(REG_OFFSET_BG0VOFS, 0);
             SetGpuReg(REG_OFFSET_BG1VOFS, 0);
             gTasks[taskId].func = Task_GachaUiMainInput;
