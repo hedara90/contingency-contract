@@ -234,6 +234,13 @@ void NewGameInitData(void)
     ResetItemFlags();
     ResetDexNav();
     ClearFollowerNPCData();
+
+    gSaveBlock1Ptr->gameVersion = CC_GAME_VERSION;
+
+    for (u32 i = 0; i < BANNER_COUNT; i++)
+    {
+        gSaveBlock1Ptr->bannerRng[i] = LocalRandomSeed(Random32());
+    }
 }
 
 static void ResetMiniGamesRecords(void)

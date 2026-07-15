@@ -10,6 +10,7 @@
 #include "siirtc.h"
 #include "fpmath.h"
 #include "metaprogram.h"
+#include "random.h"
 #include "constants/global.h"
 #include "constants/flags.h"
 #include "constants/vars.h"
@@ -25,6 +26,7 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "config/save.h"
+#include "constants/cc_version.h"
 
 // Prevent cross-jump optimization.
 #define BLOCK_CROSS_JUMP asm("");
@@ -1173,7 +1175,10 @@ struct SaveBlock1
     /*0x3150*/ struct LinkBattleRecords linkBattleRecords;
 #endif //FREE_LINK_BATTLE_RECORDS
     /*0x31A8*/ u8 giftRibbons[NUM_GIFT_RIBBONS];
-               u8 padding[4];
+               u8 pity5;
+               u8 pity6;
+               u8 pityItem5;
+               u8 pityItem6;
     /*0x31B3*/ struct ExternalEventData externalEventData;
     /*0x31C7*/ struct ExternalEventFlags externalEventFlags;
     /*0x31DC*/ struct Roamer roamer[ROAMER_COUNT];
@@ -1210,6 +1215,8 @@ struct SaveBlock1
     struct DaycareMon route5DayCareMon;
 #endif
     // sizeof: 0x3???
+    u32 gameVersion;
+    rng_value_t bannerRng[BANNER_COUNT];
 };
 
 extern struct SaveBlock1 *gSaveBlock1Ptr;

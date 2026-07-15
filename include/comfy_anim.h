@@ -81,7 +81,7 @@ struct ComfyAnim {
     bool32 inUse;
 };
 
-#define NUM_COMFY_ANIMS     8
+#define NUM_COMFY_ANIMS     16
 #define INVALID_COMFY_ANIM  NUM_COMFY_ANIMS
 extern struct ComfyAnim gComfyAnims[NUM_COMFY_ANIMS];
 

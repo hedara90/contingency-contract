@@ -864,6 +864,22 @@ static u32 GetRelearnerLevelUpMoves(struct BoxPokemon *mon, u16 *moves)
 {
     enum Species species = GetBoxMonData(mon, MON_DATA_SPECIES);
     u32 level = (P_ENABLE_ALL_LEVEL_UP_MOVES ? MAX_LEVEL : GetLevelFromBoxMonExp(mon));
+    u32 mark = GetBoxMonData(mon, MON_DATA_MARKINGS);
+    switch (mark)
+    {
+    case 1:
+        level += 1;
+        break;
+    case 3:
+        level += 2;
+        break;
+    case 7:
+        level += 3;
+        break;
+    case 15:
+        level += 4;
+        break;
+    }
     u32 numMoves = 0;
     do
     {

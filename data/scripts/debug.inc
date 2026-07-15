@@ -201,18 +201,22 @@ Debug_EventScript_Text_DefensiveIVs:
 	.string "HP IVs: {STR_VAR_1}, DEF IVs: {STR_VAR_2}, SPDEF IVs: {STR_VAR_3}$"
 
 Debug_EventScript_Script_1::
+	gachaui BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT
 	release
 	end
 
 Debug_EventScript_Script_2::
+	gachaui BANNER_FURY_OF_THE_EARTHEN_CORE
 	release
 	end
 
 Debug_EventScript_Script_3::
+	gachaui BANNER_MEMORIES_OF_MONTHS_PAST
 	release
 	end
 
 Debug_EventScript_Script_4::
+	gachaui BANNER_ITEMS
 	release
 	end
 
