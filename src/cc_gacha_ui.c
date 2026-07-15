@@ -573,7 +573,6 @@ static void DrawPity(void)
         toGuaranteed = PITY_ITEM_6_STAR - gSaveBlock1Ptr->pityItem6;
     else
         toGuaranteed = PITY_6_STAR - gSaveBlock1Ptr->pity6;
-    DebugPrintf("Pity item: %u", gSaveBlock1Ptr->pityItem6);
 
     u8 str[32];
 
@@ -657,7 +656,6 @@ static void Task_PullAnim(u8 taskId)
     case 0:
         SetGpuReg(REG_OFFSET_BG0VOFS, 160);
         SetGpuReg(REG_OFFSET_BG1VOFS, 160);
-        DrawText();
         sGachaUiState->pullState++;
         break;
     case 1:
@@ -819,6 +817,8 @@ static void Task_PullAnim(u8 taskId)
     case 7:
         if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
         {
+            DrawText();
+            ReleaseComfyAnims();
             for (u32 i = 0; i < sGachaUiState->numToPull; i++)
             {
                 if (sGachaUiState->indicatorIds[i] != SPRITE_NONE)
@@ -866,7 +866,6 @@ static void Task_PullAnimItem(u8 taskId)
     case 0:
         SetGpuReg(REG_OFFSET_BG0VOFS, 160);
         SetGpuReg(REG_OFFSET_BG1VOFS, 160);
-        DrawText();
         sGachaUiState->pullState++;
         break;
     case 1:
@@ -1008,6 +1007,7 @@ static void Task_PullAnimItem(u8 taskId)
     case 5:
         if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
         {
+            DrawText();
             ReleaseComfyAnims();
             for (u32 i = 0; i < sGachaUiState->numToPull; i++)
             {
