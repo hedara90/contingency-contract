@@ -1177,7 +1177,8 @@ struct SaveBlock1
     /*0x31A8*/ u8 giftRibbons[NUM_GIFT_RIBBONS];
                u8 pity5;
                u8 pity6;
-               u8 padding[2];
+               u8 pityItem5;
+               u8 pityItem6;
     /*0x31B3*/ struct ExternalEventData externalEventData;
     /*0x31C7*/ struct ExternalEventFlags externalEventFlags;
     /*0x31DC*/ struct Roamer roamer[ROAMER_COUNT];

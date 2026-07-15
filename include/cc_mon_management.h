@@ -18,14 +18,26 @@ struct GachaBanner
     u16 num4Stars;
     u16 num5Stars;
     u16 num6Stars;
-    const enum Species *const mons4Star;
-    const enum Species *const mons5Star;
-    const enum Species *const mons6Star;
+    union {
+        const enum Species *const mons4Star;
+        const enum Item *const items4Star;
+    };
+    union {
+        const enum Species *const mons5Star;
+        const enum Item *const items5Star;
+    };
+    union {
+        const enum Species *const mons6Star;
+        const enum Item *const items6Star;
+    };
 };
 
 struct GachaResult
 {
-    enum Species species;
+    union {
+        enum Species species;
+        enum Item item;
+    };
     enum GiveResult result;
     u32 stars;
 };

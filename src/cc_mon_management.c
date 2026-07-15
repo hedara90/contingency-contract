@@ -1,12 +1,100 @@
 #include "cc_mon_management.h"
+#include "item.h"
 #include "pokedex.h"
 #include "script.h"
 #include "event_data.h"
 #include "event_scripts.h"
 #include "pokemon_storage_system.h"
 #include "constants/pokeball.h"
+#include "constants/items.h"
 
 EWRAM_DATA struct GachaResult gGachaResults[10] = {0};
+
+const enum Item sItems4Stars[] =
+{
+//  Status Berries
+    ITEM_CHERI_BERRY,
+    ITEM_CHESTO_BERRY,
+    ITEM_PECHA_BERRY,
+    ITEM_RAWST_BERRY,
+    ITEM_ASPEAR_BERRY,
+    ITEM_PERSIM_BERRY,
+//  Resist Berries
+    ITEM_OCCA_BERRY,
+    ITEM_PASSHO_BERRY,
+    ITEM_WACAN_BERRY,
+    ITEM_RINDO_BERRY,
+    ITEM_YACHE_BERRY,
+    ITEM_CHOPLE_BERRY,
+    ITEM_KEBIA_BERRY,
+    ITEM_SHUCA_BERRY,
+    ITEM_COBA_BERRY,
+    ITEM_PAYAPA_BERRY,
+    ITEM_TANGA_BERRY,
+    ITEM_CHARTI_BERRY,
+    ITEM_KASIB_BERRY,
+    ITEM_HABAN_BERRY,
+    ITEM_COLBUR_BERRY,
+    ITEM_BABIRI_BERRY,
+    ITEM_CHILAN_BERRY,
+    ITEM_ROSELI_BERRY,
+//  Typal damage boosters
+    ITEM_BLACK_BELT,
+    ITEM_BLACK_GLASSES,
+    ITEM_CHARCOAL,
+    ITEM_DRAGON_FANG,
+    ITEM_FAIRY_FEATHER,
+    ITEM_HARD_STONE,
+    ITEM_MAGNET,
+    ITEM_METAL_COAT,
+    ITEM_MIRACLE_SEED,
+    ITEM_MYSTIC_WATER,
+    ITEM_NEVER_MELT_ICE,
+    ITEM_POISON_BARB,
+    ITEM_SHARP_BEAK,
+    ITEM_SILK_SCARF,
+    ITEM_SILVER_POWDER,
+    ITEM_SOFT_SAND,
+    ITEM_SPELL_TAG,
+    ITEM_TWISTED_SPOON,
+};
+
+const enum Item sItems5Stars[] =
+{
+    ITEM_RED_CARD,
+    ITEM_LUM_BERRY,
+    ITEM_SITRUS_BERRY,
+    ITEM_EXPERT_BELT,
+    ITEM_CUSTAP_BERRY,
+    ITEM_AIR_BALLOON,
+    ITEM_BLACK_SLUDGE,
+    ITEM_LEFTOVERS,
+    ITEM_EVIOLITE,
+    ITEM_FOCUS_SASH,
+    ITEM_HEAVY_DUTY_BOOTS,
+    ITEM_IRON_BALL,
+    ITEM_LOADED_DICE,
+    ITEM_POWER_HERB,
+    ITEM_PROTECTIVE_PADS,
+    ITEM_ROCKY_HELMET,
+    ITEM_THROAT_SPRAY,
+    ITEM_WHITE_HERB,
+    ITEM_WISE_GLASSES,
+    ITEM_MUSCLE_BAND,
+    ITEM_TOXIC_ORB,
+    ITEM_FLAME_ORB,
+    ITEM_SCOPE_LENS,
+};
+
+const enum Item sItems6Stars[] =
+{
+    ITEM_CHOICE_BAND,
+    ITEM_CHOICE_SPECS,
+    ITEM_CHOICE_SCARF,
+    ITEM_EJECT_BUTTON,
+    ITEM_EJECT_PACK,
+    ITEM_ASSAULT_VEST,
+};
 
 const enum Species sIndomitability4Stars[] =
 {
@@ -113,6 +201,16 @@ const enum Species sMemories6Stars[] =
     SPECIES_DRAGAPULT,
 };
 
+const struct GachaBanner sBannerItems =
+{
+    .num4Stars = NELEMS(sItems4Stars),
+    .num5Stars = NELEMS(sItems5Stars),
+    .num6Stars = NELEMS(sItems6Stars),
+    .items4Star = sItems4Stars,
+    .items5Star = sItems5Stars,
+    .items6Star = sItems6Stars,
+};
+
 const struct GachaBanner sBannerIndomitability =
 {
     .num4Stars = NELEMS(sIndomitability4Stars),
@@ -145,6 +243,7 @@ const struct GachaBanner sBannerMemories =
 
 const struct GachaBanner sGachaBanners[BANNER_COUNT] =
 {
+    [BANNER_ITEMS] = sBannerItems,
     [BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT] = sBannerIndomitability,
     [BANNER_FURY_OF_THE_EARTHEN_CORE] = sBannerFury,
     [BANNER_MEMORIES_OF_MONTHS_PAST] = sBannerMemories,
@@ -346,6 +445,130 @@ enum Species RollGachaMon(enum Banner banner, u32 *star)
     return species;
 }
 
+static enum Item RollGachaItem(enum Banner banner, u32 *star)
+{
+    enum Item item = ITEM_NONE;
+    const struct GachaBanner *bannerData = &sGachaBanners[banner];
+
+    u32 rnd = 0;
+    switch (banner)
+    {
+    case BANNER_COUNT:
+    case BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT:
+    case BANNER_FURY_OF_THE_EARTHEN_CORE:
+    case BANNER_MEMORIES_OF_MONTHS_PAST:
+    case BANNER_ITEMS:
+        rnd = LocalRandom32(&gSaveBlock1Ptr->bannerRng[BANNER_ITEMS]);
+    }
+    u32 rndHigh = rnd >> 16;
+    u32 rndLow = rnd & 0xFFFF;
+
+    u32 starToUse = 4;
+    if (rndHigh % ODDS_ITEM_6_STAR == 0)
+    {
+        gSaveBlock1Ptr->pityItem5 = 0;
+        gSaveBlock1Ptr->pityItem6 = 0;
+        starToUse = 6;
+    }
+    else if (rndHigh % ODDS_ITEM_5_STAR == 0)
+    {
+        gSaveBlock1Ptr->pityItem5 = 0;
+        starToUse = 5;
+    }
+
+    if (gSaveBlock1Ptr->pityItem6 == PITY_ITEM_6_STAR - 1)
+    {
+        gSaveBlock1Ptr->pity5 = 0;
+        gSaveBlock1Ptr->pity6 = 0;
+        starToUse = 6;
+    }
+    else if (gSaveBlock1Ptr->pityItem5 == PITY_ITEM_5_STAR)
+    {
+        gSaveBlock1Ptr->pityItem6++;
+        gSaveBlock1Ptr->pityItem5 = 0;
+        starToUse = 5;
+    }
+    else
+    {
+        gSaveBlock1Ptr->pityItem5++;
+        gSaveBlock1Ptr->pityItem6++;
+    }
+
+    *star = starToUse;
+    switch (starToUse)
+    {
+    case 6:
+        item = bannerData->items6Star[rndLow % bannerData->num6Stars];
+        break;
+    case 5:
+        item = bannerData->items5Star[rndLow % bannerData->num5Stars];
+        break;
+    case 4:
+        item = bannerData->items4Star[rndLow % bannerData->num4Stars];
+        break;
+    }
+
+    return item;
+}
+
+enum GiveResult GiveGachaItem(enum Item item, u32 star)
+{
+    //  Look in bag for item
+    bool32 hasItem = CheckBagHasItem(item, 1);
+    if (!hasItem)
+    {
+        //  Look in party for item
+        for (u32 i = 0; i < 6; i++)
+        {
+            if (GetMonData(&gParties[0][i], MON_DATA_SPECIES) != SPECIES_NONE)
+            {
+                if (GetMonData(&gParties[0][i], MON_DATA_HELD_ITEM) == item)
+                {
+                    hasItem = TRUE;
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    if (!hasItem)
+    {
+        //  Look in boxes for item
+        for (u32 box = 0; box < TOTAL_BOXES_COUNT; box++)
+        {
+            for (u32 index = 0; index < 30; index++)
+            {
+                struct BoxPokemon *mon = GetBoxedMonPtr(box, index);
+                if (GetBoxMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
+                {
+                    if (GetBoxMonData(mon, MON_DATA_HELD_ITEM) == item)
+                    {
+                        hasItem = TRUE;
+                        break;
+                    }
+                }
+            }
+
+            if (hasItem)
+                break;
+        }
+    }
+
+    if (!hasItem)
+    {
+        AddBagItem(item, 1);
+        return GIVE_RESULT_FIRST;
+    }
+    else
+    {
+        return GIVE_RESULT_DUPE;
+    }
+}
+
 void DoSinglePull(enum Banner banner)
 {
     for (u32 i = 0; i < 10; i++)
@@ -356,10 +579,20 @@ void DoSinglePull(enum Banner banner)
         gGachaResults[i].result = result;
     }
 
-    u32 star;
-    enum Species species = RollGachaMon(banner, &star);
-    enum GiveResult result = GiveGachaMon(species, star);
-    gGachaResults[0].species = species;
+    enum GiveResult result;
+    u32 star = 4;;
+    if (banner == BANNER_ITEMS)
+    {
+        enum Item item = RollGachaItem(banner, &star);
+        result = GiveGachaItem(item, star);
+        gGachaResults[0].item = item;
+    }
+    else
+    {
+        enum Species species = RollGachaMon(banner, &star);
+        result = GiveGachaMon(species, star);
+        gGachaResults[0].species = species;
+    }
     gGachaResults[0].result = result;
     gGachaResults[0].stars = star;
 }
@@ -368,10 +601,20 @@ void Do10Pull(enum Banner banner)
 {
     for (u32 i = 0; i < 10; i++)
     {
-        u32 star;
-        enum Species species = RollGachaMon(banner, &star);
-        enum GiveResult result = GiveGachaMon(species, star);
-        gGachaResults[i].species = species;
+        enum GiveResult result;
+        u32 star = 4;
+        if (banner == BANNER_ITEMS)
+        {
+            enum Item item = RollGachaItem(banner, &star);
+            result = GiveGachaItem(item, star);
+            gGachaResults[i].item = item;
+        }
+        else
+        {
+            enum Species species = RollGachaMon(banner, &star);
+            result = GiveGachaMon(species, star);
+            gGachaResults[i].species = species;
+        }
         gGachaResults[i].result = result;
         gGachaResults[i].stars = star;
     }

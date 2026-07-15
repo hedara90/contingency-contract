@@ -9,6 +9,8 @@
 #include "gpu_regs.h"
 #include "graphics.h"
 #include "international_string_util.h"
+#include "item.h"
+#include "item_icon.h"
 #include "line_break.h"
 #include "list_menu.h"
 #include "main.h"
@@ -51,8 +53,8 @@ struct GachaUiState
     u16 pullState;
     u8 iconSpriteIds[10];
     u8 ballSpriteIds[10];
-    u8 ballAnimState;
-    u8 ballAnimIndex;
+    u16 ballAnimState;
+    u16 ballAnimIndex;
     enum Banner banner;
 };
 
@@ -243,6 +245,7 @@ static void DrawMoney(void);
 static void DrawPity(void);
 static void DrawPull(void);
 static void Task_PullAnim(u8 taskId);
+static void Task_PullAnimItem(u8 taskId);
 
 static void Task_GachaUiWaitFadeAndExitGracefully(u8 taskId);
 
@@ -400,7 +403,6 @@ static void Task_GachaUiWaitFadeAndBail(u8 taskId)
 
 static void GachaUi_VBlankCB(void)
 {
-
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
@@ -492,7 +494,10 @@ static void Task_GachaUiMainInput(u8 taskId)
         {
             sGachaUiState->pullState = 0;
             sGachaUiState->numToPull = 1;
-            gTasks[taskId].func = Task_PullAnim;
+            if (sGachaUiState->banner == BANNER_ITEMS)
+                gTasks[taskId].func = Task_PullAnimItem;
+            else
+                gTasks[taskId].func = Task_PullAnim;
             SetMoney(&gSaveBlock1Ptr->money, money - PULL_1_COST);
         }
         else
@@ -507,7 +512,10 @@ static void Task_GachaUiMainInput(u8 taskId)
         {
             sGachaUiState->pullState = 0;
             sGachaUiState->numToPull = 10;
-            gTasks[taskId].func = Task_PullAnim;
+            if (sGachaUiState->banner == BANNER_ITEMS)
+                gTasks[taskId].func = Task_PullAnimItem;
+            else
+                gTasks[taskId].func = Task_PullAnim;
             SetMoney(&gSaveBlock1Ptr->money, money - PULL_10_COST);
         }
         else
@@ -556,7 +564,12 @@ const u8 sPityStr[] = _(" pulls to\nguaranteed 6-star");
 
 static void DrawPity(void)
 {
-    u32 toGuaranteed = PITY_6_STAR - gSaveBlock1Ptr->pity6;
+    u32 toGuaranteed;
+    if (sGachaUiState->banner == BANNER_ITEMS)
+        toGuaranteed = PITY_ITEM_6_STAR - gSaveBlock1Ptr->pityItem6;
+    else
+        toGuaranteed = PITY_6_STAR - gSaveBlock1Ptr->pity6;
+
     u8 str[32];
 
     u8 *strPtr = ConvertIntToDecimalStringN(str, toGuaranteed, STR_CONV_MODE_LEFT_ALIGN, 2);
@@ -784,5 +797,144 @@ static void Task_PullAnim(u8 taskId)
             SetGpuReg(REG_OFFSET_BG1VOFS, 0);
             gTasks[taskId].func = Task_GachaUiMainInput;
         }
+    }
+}
+
+static void SkipItemPullAnim(void)
+{
+    for (u32 i = 0; i < sGachaUiState->numToPull; i++)
+    {
+        if (gSprites[sGachaUiState->ballSpriteIds[i]].callback == UpdateBall)
+        {
+            gSprites[sGachaUiState->ballSpriteIds[i]].callback = SpriteCallbackDummy;
+            ReleaseComfyAnim(gSprites[sGachaUiState->ballSpriteIds[i]].data[0]);
+        }
+        gSprites[sGachaUiState->ballSpriteIds[i]].x = (i  % 5) * 48 + 24 + 4;
+    }
+    sGachaUiState->pullState = 4;
+    sGachaUiState->ballAnimState = 0;
+    sGachaUiState->ballAnimIndex = 0;
+}
+
+static void Task_PullAnimItem(u8 taskId)
+{
+    switch (sGachaUiState->pullState)
+    {
+    case 0:
+        SetGpuReg(REG_OFFSET_BG0VOFS, 160);
+        SetGpuReg(REG_OFFSET_BG1VOFS, 160);
+        DrawText();
+        sGachaUiState->pullState++;
+        break;
+    case 1:
+        switch (sGachaUiState->numToPull)
+        {
+        case 1:
+            DoSinglePull(sGachaUiState->banner);
+            break;
+        case 10:
+            Do10Pull(sGachaUiState->banner);
+            break;
+        }
+        sGachaUiState->pullState++;
+        sGachaUiState->ballAnimState = 0;
+        sGachaUiState->ballAnimIndex = 0;
+        break;
+    case 2:
+        //  Set up all item sprites
+        u32 *fuckingItemGfxBuffer = Alloc(32 * 32 / 2);
+        for (u32 i = 0; i < sGachaUiState->numToPull; i++)
+        {
+            DecompressDataWithHeaderWram(gItemsInfo[gGachaResults[i].item].iconPic, fuckingItemGfxBuffer);
+            for (u32 i = 0; i < 8; i++)
+            {
+                fuckingItemGfxBuffer[8 * 10 + i] = fuckingItemGfxBuffer[8 * 8 + i];
+                fuckingItemGfxBuffer[8 * 9 + i] = fuckingItemGfxBuffer[8 * 7 + i];
+                fuckingItemGfxBuffer[8 * 8 + i] = fuckingItemGfxBuffer[8 * 6 + i];
+
+                fuckingItemGfxBuffer[8 * 6 + i] = fuckingItemGfxBuffer[8 * 5 + i];
+                fuckingItemGfxBuffer[8 * 5 + i] = fuckingItemGfxBuffer[8 * 4 + i];
+                fuckingItemGfxBuffer[8 * 4 + i] = fuckingItemGfxBuffer[8 * 3 + i];
+
+                fuckingItemGfxBuffer[8 * 3 + i] = 0;
+                fuckingItemGfxBuffer[8 * 7 + i] = 0;
+                fuckingItemGfxBuffer[8 * 11 + i] = 0;
+                fuckingItemGfxBuffer[8 * 12 + i] = 0;
+                fuckingItemGfxBuffer[8 * 13 + i] = 0;
+                fuckingItemGfxBuffer[8 * 14 + i] = 0;
+                fuckingItemGfxBuffer[8 * 15 + i] = 0;
+            }
+            struct Even_CreateSpriteStruct cs = {0};
+            cs.sprite = fuckingItemGfxBuffer;
+            cs.tileTag = i;
+            cs.palette = gItemsInfo[gGachaResults[i].item].iconPalette;
+            cs.palTag = i;
+            cs.spriteSize = SPRITE_SIZE(32x32);
+            cs.spriteShape =  SPRITE_SHAPE(32x32);
+            cs.posX = 260;
+            cs.posY = (i / 5) * 50 + 50 + 4;
+            sGachaUiState->ballSpriteIds[i] = Even_CreateSprite(&cs);
+        }
+        Free(fuckingItemGfxBuffer);
+        sGachaUiState->ballAnimIndex = 0;
+        sGachaUiState->ballAnimState = 0;
+        sGachaUiState->pullState++;
+        break;
+    case 3:
+        //  Slide in the items one by one
+        if (JOY_NEW(A_BUTTON))
+        {
+            SkipItemPullAnim();
+            break;
+        }
+
+        if (sGachaUiState->ballAnimIndex < sGachaUiState->numToPull && sGachaUiState->ballAnimState % 10 == 0)
+        {
+            struct ComfyAnimEasingConfig config;
+            InitComfyAnimConfig_Easing(&config);
+            config.durationFrames = 60;
+            config.from = Q_24_8(260);
+            config.to = Q_24_8((sGachaUiState->ballAnimIndex % 5) * 48 + 24 + 4);
+            config.easingFunc = ComfyAnimEasing_EaseInOutCubic;
+            gSprites[sGachaUiState->ballSpriteIds[sGachaUiState->ballAnimIndex]].data[0] = CreateComfyAnim_Easing(&config);
+            gSprites[sGachaUiState->ballSpriteIds[sGachaUiState->ballAnimIndex]].callback = UpdateBall;
+            sGachaUiState->ballAnimIndex++;
+        }
+
+        sGachaUiState->ballAnimState++;
+
+        bool32 animsDone = TRUE;
+        for (u32 i = 0; i < sGachaUiState->numToPull; i++)
+        {
+            if (gSprites[sGachaUiState->ballSpriteIds[i]].callback == UpdateBall)
+            {
+                animsDone = FALSE;
+                break;
+            }
+        }
+
+        if (animsDone)
+        {
+            sGachaUiState->ballAnimState = 0;
+            sGachaUiState->ballAnimIndex = 0;
+            sGachaUiState->pullState++;
+        }
+        break;
+    case 4:
+        if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
+        {
+            ReleaseComfyAnims();
+            for (u32 i = 0; i < sGachaUiState->numToPull; i++)
+            {
+                DestroySprite(&gSprites[sGachaUiState->ballSpriteIds[i]]);
+                FreeSpriteTilesByTag(i);
+                FreeSpritePaletteByTag(i);
+                sGachaUiState->ballSpriteIds[i] = SPRITE_NONE;
+            }
+            SetGpuReg(REG_OFFSET_BG0VOFS, 0);
+            SetGpuReg(REG_OFFSET_BG1VOFS, 0);
+            gTasks[taskId].func = Task_GachaUiMainInput;
+        }
+        break;
     }
 }

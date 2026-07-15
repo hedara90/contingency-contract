@@ -24,8 +24,13 @@ enum Banner
 
 #define ODDS_6_STAR 100
 #define ODDS_5_STAR 4
-#define PITY_6_STAR 10
+#define PITY_6_STAR 80
 #define PITY_5_STAR 3
+
+#define ODDS_ITEM_6_STAR 40
+#define ODDS_ITEM_5_STAR 4
+#define PITY_ITEM_6_STAR 40
+#define PITY_ITEM_5_STAR 3
 
 #define BALL_4_STAR BALL_POKE
 #define BALL_5_STAR BALL_PREMIER
