@@ -573,6 +573,7 @@ static void DrawPity(void)
         toGuaranteed = PITY_ITEM_6_STAR - gSaveBlock1Ptr->pityItem6;
     else
         toGuaranteed = PITY_6_STAR - gSaveBlock1Ptr->pity6;
+    DebugPrintf("Pity item: %u", gSaveBlock1Ptr->pityItem6);
 
     u8 str[32];
 
@@ -983,7 +984,7 @@ static void Task_PullAnimItem(u8 taskId)
             else
             {
                 //  Give some BP
-                u32 newBp = gSaveBlock1Ptr->battlePoints;
+                u32 newBp = gSaveBlock2Ptr->frontier.battlePoints;
                 switch (gGachaResults[i].stars)
                 {
                 case 4:
@@ -998,7 +999,7 @@ static void Task_PullAnimItem(u8 taskId)
                 }
                 if (newBp > 999)
                     newBp = 999;
-                gSaveBlock1Ptr->battlePoints = newBp;
+                gSaveBlock2Ptr->frontier.battlePoints = newBp;
                 sGachaUiState->indicatorIds[i] = SPRITE_NONE;
             }
         }
