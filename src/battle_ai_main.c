@@ -649,7 +649,7 @@ void RecordMovesBasedOnStab(enum BattlerId battler)
     for (u32 moveIndex = 0; moveIndex < MAX_MON_MOVES; moveIndex++)
     {
         enum Move playerMove = gBattleMons[battler].moves[moveIndex];
-        if (IsSpeciesOfType(gBattleMons[battler].species, GetMoveType(playerMove)) && GetMovePower(playerMove != 0))
+        if (IsSpeciesOfType(gBattleMons[battler].species, GetMoveType(playerMove)) && GetMovePower(playerMove) != 0)
             RecordKnownMove(battler, playerMove);
     }
 }
@@ -1543,7 +1543,7 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
             if (!IS_BATTLER_OF_TYPE(battler, TYPE_GRASS))
                 continue;
 
-            if (AI_CanAnyStatChange(battlerAtk, battlerDef, move))
+            if (AI_CanAnyStatChange(battlerAtk, battler, move))
                 decreaseScore = FALSE;
         }
 
@@ -1563,7 +1563,7 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
              && gAiLogicData->abilities[battler] != ABILITY_MINUS)
                 continue;
 
-            if (AI_CanAnyStatChange(battlerAtk, battlerDef, move))
+            if (AI_CanAnyStatChange(battlerAtk, battler, move))
                 decreaseScore = FALSE;
         }
 
@@ -5602,6 +5602,7 @@ static s32 AI_CalcAdditionalEffectScore(enum BattlerId battlerAtk, enum BattlerI
             switch (additionalEffect->moveEffect)
             {
             case MOVE_EFFECT_STAT_PLUS:
+            case MOVE_EFFECT_STAT_MINUS:
                 for (enum Stat i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
                 {
                     enum Stat stat = sAccurateStatOrder[i];
@@ -5610,31 +5611,15 @@ static s32 AI_CalcAdditionalEffectScore(enum BattlerId battlerAtk, enum BattlerI
                     if (stage == 0)
                         continue;
 
-                    if (aiData->abilities[battlerAtk] == ABILITY_CONTRARY)
+                    if (additionalEffect->moveEffect == MOVE_EFFECT_STAT_MINUS)
                         stage = -1 * stage;
+
+                    stage = AI_GetAdjustedStatStage(battlerAtk, move, stage);
 
                     if (stage < 0)
                         continue;
 
                     ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, stat, stage));
-                }
-                break;
-            case MOVE_EFFECT_STAT_MINUS:
-                for (enum Stat i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
-                {
-                    enum Stat stat = sAccurateStatOrder[i];
-                    s32 stage = -1 * GetStatStage(stat, additionalEffect);
-
-                    if (stage == 0)
-                        continue;
-
-                    if (aiData->abilities[battlerAtk] == ABILITY_CONTRARY)
-                        stage = -1 * stage;
-
-                    if (stage < 0)
-                        continue;
-
-                    ADJUST_SCORE(IncreaseStatDownScore(battlerAtk, battlerDef, stat));
                 }
                 break;
             case MOVE_EFFECT_ORDER_UP:
@@ -6414,7 +6399,7 @@ bool32 DoesSideHaveDamagingHazards(enum BattleSide side)
         case HAZARDS_STEELSURGE:
             return TRUE;
         default:
-            return FALSE;
+            break;
         }
     }
     return FALSE;

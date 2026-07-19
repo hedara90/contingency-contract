@@ -244,7 +244,6 @@ enum {
     GFXTAG_TYPE_ICON,
     GFXTAG_SHINY_ICON,
     GFXTAG_STAT_LABELS,
-    GFXTAG_BOX_TITLE,
     GFXTAG_BOX_TITLE_FRAME,
     GFXTAG_BOX_TITLE_ARROW,
     GFXTAG_ITEM_ICON_0,
@@ -370,13 +369,14 @@ struct ChooseBoxMenu
     struct Sprite *hoverSprite;
     s8 savedCursorArea;
     s8 savedCursorPosition;
+    u8 chooseBoxGridTimer;
 #else
     struct Sprite *boxNameSprites[2];
     struct Sprite *arrowSprites[2];
     u8 ALIGNED(4) boxNameTiles[512];
-#endif
     struct Sprite *monCountSprite;
     u8 ALIGNED(4) monCountTiles[256];
+#endif
     bool32 loadedPalette;
     u16 tileTag;
     u16 paletteTag;
@@ -440,15 +440,12 @@ struct PokemonStorageSystemData
     s16 newCurrBoxId;
     s16 scrollSpeed;
     u16 scrollTimer;
-    u8 ALIGNED(2) boxTitleTiles[1024];
-    u8 boxTitleCycleId;
     u8 wallpaperLoadBoxId;
     s8 wallpaperLoadDir;
     u16 boxTitlePal[16];
     u16 boxTitlePalOffset;
     u16 boxTitleAltPalOffset;
-    struct Sprite *curBoxTitleSprites[2];
-    struct Sprite *nextBoxTitleSprites[2];
+    u8 boxTitleTextBuffer;
     struct Sprite *boxTitleFrameSprites[4];
     struct Sprite *arrowSprites[2];
     u32 wallpaperPalBits;
@@ -677,7 +674,7 @@ static bool8 IsMonBeingMoved(void);
 static void TryRefreshDisplayMon(void);
 static void ReshowDisplayMon(void);
 static void SetDisplayMonData(void *, u8);
-static u16 GetSpeciesAtCursorPosition(void);
+static enum Species GetSpeciesAtCursorPosition(void);
 
 // Moving multiple Pokémon at once
 static void MultiMove_Free(void);
@@ -1174,7 +1171,7 @@ static void SpriteCB_HeldMonInChooseBoxGrid(struct Sprite *sprite)
 
 static void LoadChooseBoxGfx(struct ChooseBoxMenu *menu, u16 tileTag, u16 palTag, bool32 loadPal)
 {
-    LoadCompressedSpriteSheet(&sSpriteSheet_ChooseBoxGrid_Hover);
+    LoadSpriteSheet(&sSpriteSheet_ChooseBoxGrid_Hover);
     sChooseBoxMenu = menu;
     menu->tileTag = tileTag;
     menu->paletteTag = palTag;
@@ -1184,51 +1181,39 @@ static void LoadChooseBoxGfx(struct ChooseBoxMenu *menu, u16 tileTag, u16 palTag
 static void ChooseBox_PrintInfo(void)
 {
     u8 numBoxMonsText[16];
-    struct WindowTemplate template;
-    struct SpriteSheet spriteSheet;
-    u8 windowId;
     u8 numInBox = CountMonsInBox(sChooseBoxMenu->curBox);
-    u32 winTileData;
-    s16 x;
-    u8 spriteId;
-    u8 col = sChooseBoxMenu->curBox % 5;
-    u8 row = sChooseBoxMenu->curBox / 5;
+    u32 spriteId;
+    s16 xOffset;
+    union TextColor color = {
+        .background = sTextColors[2][0],
+        .foreground = sTextColors[2][1],
+        .shadow = sTextColors[2][2],
+    };
 
-    if (sChooseBoxMenu->monCountSprite)
-    {
-        DestroySprite(sChooseBoxMenu->monCountSprite);
-        sChooseBoxMenu->monCountSprite = NULL;
-    }
+    if (sChooseBoxMenu->hoverSprite == NULL)
+        return;
 
-    UpdateBoxTitle(sChooseBoxMenu->curBox);
-    UpdateBoxTitlePalette();
+    ConvertIntToDecimalStringN(numBoxMonsText, numInBox, STR_CONV_MODE_LEFT_ALIGN, 2);
+    xOffset = 16 - GetStringWidth(FONT_NORMAL, numBoxMonsText, 0) / 2;
+    if (xOffset < 0)
+        xOffset = 0;
 
-    memset(&template, 0, sizeof(template));
-    template.width = 2;
-    template.height = 2;
+    spriteId = sChooseBoxMenu->hoverSprite - gSprites;
+    FillSpriteRectSpriteWithSprite(spriteId, 0, 0, 32, 32, (u32 *)sChooseBoxGrid_Hover_Gfx);
+    AddSpriteTextPrinterParameterized6(spriteId, FONT_NORMAL, xOffset, 11, 0, 0, color, 0, numBoxMonsText);
+}
 
-    windowId = AddWindow(&template);
-    FillWindowPixelBuffer(windowId, PIXEL_FILL(0));
-    ConvertIntToDecimalStringN(numBoxMonsText, numInBox, STR_CONV_MODE_RIGHT_ALIGN, 2);
-    AddTextPrinterParameterized3(windowId, FONT_NORMAL, 0, 1, sTextColors[2], TEXT_SKIP_DRAW, numBoxMonsText);
+static void SpriteCB_ChooseBoxGridHover(struct Sprite *sprite)
+{
+    if (sChooseBoxMenu == NULL || sChooseBoxMenu->chooseBoxGridTimer == 0)
+        return;
 
-    winTileData = GetWindowAttribute(windowId, WINDOW_TILE_DATA);
-    CpuCopy32((void *)winTileData, sChooseBoxMenu->monCountTiles, 0x100);
-    RemoveWindow(windowId);
-
-    FreeSpriteTilesByTag(GFXTAG_CHOOSE_BOX_MON_COUNT);
-    spriteSheet = (struct SpriteSheet){sChooseBoxMenu->monCountTiles, 0x100, GFXTAG_CHOOSE_BOX_MON_COUNT};
-    LoadSpriteSheet(&spriteSheet);
-    x = 90 + col * 32;
-    if (numInBox < 10)
-        x -= 3;
-    spriteId = CreateSprite(&sSpriteTemplate_ChooseBoxGrid_MonCount, x, 66 + row * 32, 2);
-    if (spriteId != MAX_SPRITES)
-    {
-        sChooseBoxMenu->monCountSprite = &gSprites[spriteId];
-        sChooseBoxMenu->monCountSprite->oam.priority = 1;
-        sChooseBoxMenu->monCountSprite->subpriority = 2;
-    }
+    // Reprint only once the hidden state has reached OAM, so the old
+    // on-screen sprite never shows the new count
+    if (--sChooseBoxMenu->chooseBoxGridTimer == 2)
+        ChooseBox_PrintInfo();
+    else if (sChooseBoxMenu->chooseBoxGridTimer == 0)
+        sprite->invisible = FALSE;
 }
 
 static u8 ChooseBoxGrid_GetRowLength(u8 row)
@@ -1245,8 +1230,23 @@ static void ChooseBoxGrid_UpdateHover(void)
 
     if (sChooseBoxMenu->hoverSprite)
     {
-        sChooseBoxMenu->hoverSprite->x = 88 + col * 32;
-        sChooseBoxMenu->hoverSprite->y = 64 + row * 32;
+        struct Sprite *sprite = sChooseBoxMenu->hoverSprite;
+        s16 x = 88 + col * 32;
+        s16 y = 64 + row * 32;
+
+        if (sprite->x == x && sprite->y == y)
+        {
+            sChooseBoxMenu->chooseBoxGridTimer = 0;
+            sprite->invisible = FALSE;
+            ChooseBox_PrintInfo();
+        }
+        else
+        {
+            sprite->x = x;
+            sprite->y = y;
+            sprite->invisible = TRUE;
+            sChooseBoxMenu->chooseBoxGridTimer = 4;
+        }
     }
 
     if (sStorage->cursorSprite)
@@ -1256,7 +1256,8 @@ static void ChooseBoxGrid_UpdateHover(void)
         sStorage->cursorFlipTimer = 0;
         SetCursorPosition(CURSOR_AREA_IN_CHOOSE_BOX, sChooseBoxMenu->curBox);
     }
-    ChooseBox_PrintInfo();
+    UpdateBoxTitle(sChooseBoxMenu->curBox);
+    UpdateBoxTitlePalette();
 }
 
 static void ChooseBoxGrid_MoveCursor(s8 dcol, s8 drow)
@@ -1320,9 +1321,14 @@ static void ChooseBox_CreateSprites(u8 curBox)
     spriteId = CreateSprite(&sSpriteTemplate_ChooseBoxGrid_Hover, 88 + col * 32, 64 + row * 32, 3);
     if (spriteId != MAX_SPRITES)
     {
+        const u32 *hoverSrc = sChooseBoxGrid_Hover_Gfx;
+
         sChooseBoxMenu->hoverSprite = &gSprites[spriteId];
         sChooseBoxMenu->hoverSprite->oam.priority = 1;
         sChooseBoxMenu->hoverSprite->subpriority = 3;
+        sChooseBoxMenu->hoverSprite->callback = SpriteCB_ChooseBoxGridHover;
+        sChooseBoxMenu->chooseBoxGridTimer = 0;
+        SetupSpritesForTextPrinting(&spriteId, &hoverSrc, 1, 1);
     }
     else
     {
@@ -1377,11 +1383,6 @@ static void ChooseBox_DestroySprites(void)
     {
         DestroySprite(sChooseBoxMenu->hoverSprite);
         sChooseBoxMenu->hoverSprite = NULL;
-    }
-    if (sChooseBoxMenu->monCountSprite)
-    {
-        DestroySprite(sChooseBoxMenu->monCountSprite);
-        sChooseBoxMenu->monCountSprite = NULL;
     }
     for (tx = 0; tx < IN_BOX_COUNT; tx++)
     {
@@ -1456,7 +1457,6 @@ static void FreeChooseBox(void)
     if (sChooseBoxMenu->loadedPalette)
         FreeSpritePaletteByTag(sChooseBoxMenu->paletteTag);
     FreeSpriteTilesByTag(sChooseBoxMenu->tileTag);
-    FreeSpriteTilesByTag(GFXTAG_CHOOSE_BOX_MON_COUNT);
     sChooseBoxMenu = NULL;
 }
 
@@ -3792,7 +3792,7 @@ static bool8 InitPalettesAndSprites(void)
         sStorage->graphicsLoadState++;
         break;
     case 9:
-        LoadCompressedSpriteSheet(&sSpriteSheet_BoxTitleFrame);
+        LoadSpriteSheet(&sSpriteSheet_BoxTitleFrame);
         sStorage->graphicsLoadState++;
         break;
     case 10:
@@ -4803,7 +4803,7 @@ static void CreateBoxMonIconAtPos(u8 boxPosition)
     }
 }
 
-#define sDistance      data[1]
+#define sDistance      data[7]
 #define sSpeed         data[2]
 #define sScrollInDestX data[3]
 #define sDelay         data[4]
@@ -5103,7 +5103,7 @@ static u8 GetNumPartySpritesCompacting(void)
     return sStorage->numPartyToCompact;
 }
 
-#define sPartyId   data[1]
+#define sPartyId   data[7]
 #define sMonX      data[2]
 #define sMonY      data[3]
 #define sSpeedX    data[4]
@@ -5328,24 +5328,23 @@ static void SpriteCB_HeldMon(struct Sprite *sprite)
     sprite->y = sStorage->cursorSprite->y + (sStorage->cursorSprite->y2 / 2) + 4;
 }
 
-static u16 TryLoadMonIconTiles(enum Species species, u32 personality, bool32 isEgg)
+static u32 MakeIconIdFromSpeciesAndIconType(enum Species species, enum SpeciesIconType iconType)
 {
-    u16 i, offset;
+    if (iconType == FEMALE_ICON)
+        return (species | (1 << 15));
+    if (iconType == EGG_ICON)
+        return (species | (1 << 14));
+    return species;
+}
 
-#if P_GENDER_DIFFERENCES
-    // Treat female mons as a seperate species as they may have a different icon than males
-    if (gSpeciesInfo[species].iconSpriteFemale != NULL && IsPersonalityFemale(species, personality))
-        species |= (1 << 15);
-#endif
+static u16 TryLoadMonIconTiles(enum Species species, enum SpeciesIconType iconType)
+{
+    u32 i, offset;
+    u32 iconId = MakeIconIdFromSpeciesAndIconType(species, iconType);
 
-    // Treat eggs as a seperate species as they might have unique sprites
-    if (isEgg)
-        species |= (1 << 14);
-
-    // Search icon list for this species
     for (i = 0; i < MAX_MON_ICONS; i++)
     {
-        if (sStorage->iconSpeciesList[i] == species)
+        if (sStorage->iconSpeciesList[i] == iconId)
             break;
     }
 
@@ -5365,32 +5364,22 @@ static u16 TryLoadMonIconTiles(enum Species species, u32 personality, bool32 isE
     }
 
     // Add species to icon list and load tiles
-    sStorage->iconSpeciesList[i] = species;
+    sStorage->iconSpeciesList[i] = iconId;
     sStorage->numIconsPerSpecies[i]++;
     offset = 16 * i;
     species &= SPECIES_MASK;
-    CpuCopy32(GetMonIconTilesIsEgg(species, personality, isEgg), (void *)(OBJ_VRAM0) + offset * TILE_SIZE_4BPP, 0x200);
+    CpuCopy32(GetMonIconTilesByIconType(species, iconType), (void *)(OBJ_VRAM0) + offset * TILE_SIZE_4BPP, 0x200);
 
     return offset;
 }
 
-static void RemoveSpeciesFromIconList(enum Species species)
+static void RemoveSpeciesFromIconList(enum Species species, enum SpeciesIconType iconType)
 {
-    u16 i;
-    bool8 hasFemale = FALSE;
+    u32 iconId = MakeIconIdFromSpeciesAndIconType(species, iconType);
 
-    for (i = 0; i < MAX_MON_ICONS; i++)
+    for (u32 i = 0; i < MAX_MON_ICONS; i++)
     {
-        if (sStorage->iconSpeciesList[i] == (species | 0x8000))
-        {
-            hasFemale = TRUE;
-            break;
-        }
-    }
-
-    for (i = 0; i < MAX_MON_ICONS; i++)
-    {
-        if (sStorage->iconSpeciesList[i] == species && !hasFemale)
+        if (sStorage->iconSpeciesList[i] == iconId)
         {
             if (--sStorage->numIconsPerSpecies[i] == 0)
                 sStorage->iconSpeciesList[i] = SPECIES_NONE;
@@ -5404,19 +5393,27 @@ static struct Sprite *CreateMonIconSprite(enum Species species, u32 personality,
     u16 tileNum;
     u8 spriteId;
     struct SpriteTemplate template = sSpriteTemplate_MonIcon;
+    u32 iconType = NORMAL_ICON;
 
     species = GetIconSpecies(species, personality);
     if (isEgg)
     {
         if (gSpeciesInfo[species].eggId != EGG_ID_NONE)
+        {
             template.paletteTag = PALTAG_MON_ICON_0 + gEggDatas[gSpeciesInfo[species].eggId].eggIconPalIndex;
+            iconType = EGG_ICON;
+        }
         else
+        {
+            species = SPECIES_EGG;
             template.paletteTag = PALTAG_MON_ICON_0 + gSpeciesInfo[SPECIES_EGG].iconPalIndex;
+        }
     }
 #if P_GENDER_DIFFERENCES
     else if (gSpeciesInfo[species].iconSpriteFemale != NULL && IsPersonalityFemale(species, personality))
     {
         template.paletteTag = PALTAG_MON_ICON_0 + gSpeciesInfo[species].iconPalIndexFemale;
+        iconType = FEMALE_ICON;
     }
 #endif
     else
@@ -5424,26 +5421,28 @@ static struct Sprite *CreateMonIconSprite(enum Species species, u32 personality,
         template.paletteTag = PALTAG_MON_ICON_0 + gSpeciesInfo[species].iconPalIndex;
     }
 
-    tileNum = TryLoadMonIconTiles(species, personality, isEgg);
+    tileNum = TryLoadMonIconTiles(species, iconType);
     if (tileNum == 0xFFFF)
         return NULL;
 
     spriteId = CreateSprite(&template, x, y, subpriority);
     if (spriteId == MAX_SPRITES)
     {
-        RemoveSpeciesFromIconList(species);
+        RemoveSpeciesFromIconList(species, iconType);
         return NULL;
     }
 
     gSprites[spriteId].oam.tileNum = tileNum;
     gSprites[spriteId].oam.priority = oamPriority;
     gSprites[spriteId].data[0] = species;
+    gSprites[spriteId].data[1] = iconType;
+
     return &gSprites[spriteId];
 }
 
 static void DestroyBoxMonIcon(struct Sprite *sprite)
 {
-    RemoveSpeciesFromIconList(sprite->data[0]);
+    RemoveSpeciesFromIconList(sprite->data[0], sprite->data[1]);
     DestroySprite(sprite);
 }
 
@@ -5531,24 +5530,9 @@ static void SetUpScrollToBox(u8 boxId)
     sStorage->scrollState = 0;
 }
 
-#define BOX_TITLE_SPRITE_X  (DISPLAY_WIDTH - 76 - 32)
-
 static void UpdateBoxTitle(u8 boxId)
 {
-    u16 i;
     u16 colors[2];
-    struct SpriteSheet spriteSheet = {sStorage->boxTitleTiles, 0x200, GFXTAG_BOX_TITLE};
-    struct SpriteTemplate template = sSpriteTemplate_BoxTitle;
-
-    for (i = 0; i < 2; i++)
-    {
-        if (sStorage->curBoxTitleSprites[i])
-            DestroySprite(sStorage->curBoxTitleSprites[i]);
-    }
-
-    FreeSpriteTilesByTag(GFXTAG_BOX_TITLE);
-    RenderBoxTitleCentered(GetBoxNamePtr(boxId));
-    LoadSpriteSheet(&spriteSheet);
 
     if (sCursorArea == CURSOR_AREA_BOX_TITLE)
     {
@@ -5561,13 +5545,7 @@ static void UpdateBoxTitle(u8 boxId)
         colors[1] = BOX_TITLE_TEXT_MAIN;
     }
     LoadPalette(colors, sStorage->boxTitlePalOffset, PLTT_SIZEOF(2));
-
-    for (i = 0; i < 2; i++)
-    {
-        u8 spriteId = CreateSprite(&template, BOX_TITLE_SPRITE_X + i * 32, 20, 24);
-        sStorage->curBoxTitleSprites[i] = &gSprites[spriteId];
-        StartSpriteAnim(sStorage->curBoxTitleSprites[i], i);
-    }
+    RenderBoxTitleCentered(GetBoxNamePtr(boxId));
 }
 
 static bool8 ScrollToBox(void)
@@ -5740,9 +5718,13 @@ static bool32 WaitForWallpaperGfxLoad(void)
 //  SECTION: Box Title
 //------------------------------------------------------------------------------
 
+#define BOX_TITLE_FRAME_SIZE ((8 * TILE_SIZE_4BPP) / sizeof(u32))
+
 static void CreateBoxTitleFrame(u8 boxId)
 {
     u8 i;
+    u8 middleIds[2];
+    const u32 *middleSrcs[2];
     struct SpriteTemplate template = sSpriteTemplate_BoxTitleFrame;
     template.paletteTag = PALTAG_MISC_1;
 
@@ -5751,14 +5733,19 @@ static void CreateBoxTitleFrame(u8 boxId)
         u8 spriteId = CreateSprite(&template, 100 + i * 32, 21, 25);
         sStorage->boxTitleFrameSprites[i] = &gSprites[spriteId];
         StartSpriteAnim(sStorage->boxTitleFrameSprites[i], sBoxTitleFrameAnims[i]);
+        SetSpriteSheetFrameTileNum(sStorage->boxTitleFrameSprites[i]);
     }
+
+    middleIds[0] = sStorage->boxTitleFrameSprites[1] - gSprites;
+    middleIds[1] = sStorage->boxTitleFrameSprites[2] - gSprites;
+    middleSrcs[0] = &sBoxTitleFrame_Gfx[BOX_TITLE_FRAME_SIZE];
+    middleSrcs[1] = &sBoxTitleFrame_Gfx[BOX_TITLE_FRAME_SIZE * 2];
+    SetupSpritesForTextPrinting(middleIds, middleSrcs, 2, 1);
 }
 
 static void InitBoxTitle(u8 boxId)
 {
     u8 tagIndex;
-    u16 i;
-    struct SpriteSheet spriteSheet = {sStorage->boxTitleTiles, 0x200, GFXTAG_BOX_TITLE};
 
     CpuCopy16(sCursor_Pal, sStorage->boxTitlePal, sizeof(sStorage->boxTitlePal));
 
@@ -5785,17 +5772,8 @@ static void InitBoxTitle(u8 boxId)
     sStorage->boxTitleAltPalOffset = OBJ_PLTT_ID(tagIndex) + 14;
     sStorage->wallpaperPalBits |= (1 << 16) << tagIndex;
 
-    RenderBoxTitleCentered(GetBoxNamePtr(boxId));
-    LoadSpriteSheet(&spriteSheet);
-
-    for (i = 0; i < 2; i++)
-    {
-        u8 spriteId = CreateSprite(&sSpriteTemplate_BoxTitle, BOX_TITLE_SPRITE_X + i * 32, 20, 23);
-        sStorage->curBoxTitleSprites[i] = &gSprites[spriteId];
-        StartSpriteAnim(sStorage->curBoxTitleSprites[i], i);
-    }
-    sStorage->boxTitleCycleId = 0;
     CreateBoxTitleFrame(boxId);
+    RenderBoxTitleCentered(GetBoxNamePtr(boxId));
 }
 
 static void UpdateBoxTitlePalette(void)
@@ -5822,32 +5800,31 @@ static void UpdateBoxTitlePalette(void)
 
 static void RenderBoxTitleCentered(const u8 *boxName)
 {
-    u16 i;
-    u8 *tileData1, *tileData2;
-    u8 txtColor[3];
-    struct WindowTemplate winTemplate = {0};
-    u16 windowId;
+    u32 i;
+    u32 spriteId;
+    union TextColor color = {
+        .background = TEXT_COLOR_TRANSPARENT,
+        .foreground = TEXT_DYNAMIC_COLOR_6,
+        .shadow = TEXT_DYNAMIC_COLOR_5,
+    };
     s16 xOffset = 32 - GetStringWidth(FONT_NORMAL, boxName, 0) / 2;
 
+    if (sStorage->boxTitleFrameSprites[1] == NULL)
+        return;
     if (xOffset < 0)
         xOffset = 0;
 
-    winTemplate.width = 24;
-    winTemplate.height = 2;
-    windowId = AddWindow(&winTemplate);
-    FillWindowPixelBuffer(windowId, PIXEL_FILL(0));
-    tileData1 = (u8 *)GetWindowAttribute(windowId, WINDOW_TILE_DATA);
-    tileData2 = tileData1 + winTemplate.width * TILE_SIZE_4BPP;
-    txtColor[0] = TEXT_COLOR_TRANSPARENT;
-    txtColor[1] = TEXT_DYNAMIC_COLOR_6;
-    txtColor[2] = TEXT_DYNAMIC_COLOR_5;
-    AddTextPrinterParameterized4(windowId, FONT_NORMAL, xOffset, 1, 0, 0, txtColor, TEXT_SKIP_DRAW, boxName);
-    for (i = 0; i < 2; i++, tileData1 += 0x80, tileData2 += 0x80)
+    sStorage->boxTitleTextBuffer ^= 1;
+    for (i = 0; i < 2; i++)
     {
-        CpuCopy16(tileData1, sStorage->boxTitleTiles + i * 0x100, 0x80);
-        CpuCopy16(tileData2, sStorage->boxTitleTiles + i * 0x100 + 0x80, 0x80);
+        struct Sprite *sprite = sStorage->boxTitleFrameSprites[1 + i];
+        StartSpriteAnim(sprite, sBoxTitleMidAnims[sStorage->boxTitleTextBuffer][i]);
+        SetSpriteSheetFrameTileNum(sprite);
     }
-    RemoveWindow(windowId);
+
+    spriteId = sStorage->boxTitleFrameSprites[1] - gSprites;
+    FillSpriteRectSpriteWithSprite(spriteId, 0, 0, 64, 16, (u32 *)&sBoxTitleFrame_Gfx[BOX_TITLE_FRAME_SIZE]);
+    AddSpriteTextPrinterParameterized6(spriteId, FONT_NORMAL, xOffset, 0, 0, 0, color, 0, boxName);
 }
 
 
@@ -5994,7 +5971,7 @@ static void GetCursorCoordsByPos(u8 cursorArea, u8 cursorPosition, u16 *x, u16 *
     }
 }
 
-static u16 GetSpeciesAtCursorPosition(void)
+static enum Species GetSpeciesAtCursorPosition(void)
 {
     switch (sCursorArea)
     {
