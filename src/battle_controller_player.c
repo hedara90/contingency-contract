@@ -48,6 +48,7 @@
 #include "type_icons.h"
 #include "pokedex.h"
 #include "test/battle.h"
+#include "risk.h"
 
 static void PlayerHandleLoadMonSprite(enum BattlerId battler);
 static void PlayerHandleDrawTrainerPic(enum BattlerId battler);
@@ -1672,7 +1673,13 @@ static void MoveSelectionDisplayMoveNames(enum BattlerId battler)
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
     gNumberOfMovesToChoose = 0;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    u32 moveLimit;
+    if (GetBattlerSide(battler) == B_SIDE_PLAYER && gRisks.canOnlyUseTopMoves1)
+        moveLimit = 2;
+    else
+        moveLimit = MAX_MON_MOVES;
+
+    for (i = 0; i < moveLimit; i++)
     {
         MoveSelectionDestroyCursorAt(i);
         if (IsGimmickSelected(battler, GIMMICK_DYNAMAX) || GetActiveGimmick(battler) == GIMMICK_DYNAMAX)

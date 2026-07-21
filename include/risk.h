@@ -49,7 +49,8 @@ struct Risks
     bool32 hasGen1CritChance:1;
     bool32 playerLowerHalfDamageRolls:1;
     bool32 opponentUpperHalfDamageRolls:1;
-    bool32 padding:31;
+    bool32 canOnlyUseTopMoves1:1;
+    bool32 padding:30;
 };
 
 extern struct Risks gRisks;
