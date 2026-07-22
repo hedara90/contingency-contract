@@ -1588,7 +1588,19 @@ u32 CheckMoveLimitations(enum BattlerId battler, u8 unusableMoves, u16 check)
 
     gPotentialItemEffectBattler = battler;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    u32 moveLimit;
+    if (GetBattlerSide(battler) == B_SIDE_PLAYER && gRisks.canOnlyUseTopMoves1)
+    {
+        unusableMoves |= 1u << 2;
+        unusableMoves |= 1u << 3;
+        moveLimit = 2;
+    }
+    else
+    {
+        moveLimit = MAX_MON_MOVES;
+    }
+
+    for (i = 0; i < moveLimit; i++)
     {
         move = gBattleMons[battler].moves[i];
         moveEffect = GetMoveEffect(move);
