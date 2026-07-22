@@ -221,6 +221,7 @@ Debug_EventScript_Script_4::
 	end
 
 Debug_EventScript_Script_5::
+	callnative SetRisks
 	release
 	end
 
