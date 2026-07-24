@@ -1741,3 +1741,5 @@ EventScript_GiveGachaMon::
 	.include "data/scripts/battle_frontier.inc"
 	.include "data/scripts/apricorn_tree.inc"
 	.include "data/scripts/wild_encounter.inc"
+
+	.include "data/maps/ConventionCenter/scripts.inc"
