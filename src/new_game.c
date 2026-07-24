@@ -51,6 +51,7 @@
 #include "constants/items.h"
 #include "difficulty.h"
 #include "follower_npc.h"
+#include "event_scripts.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 extern const u8 EventScript_ResetAllMapFlagsFrlg[];
@@ -241,6 +242,25 @@ void NewGameInitData(void)
     {
         gSaveBlock1Ptr->bannerRng[i] = LocalRandomSeed(Random32());
     }
+    VarSet(VAR_TEMP_1, SPECIES_VAPOREON);
+    RunScriptImmediately(EventScript_GiveGachaMon);
+    VarSet(VAR_TEMP_1, SPECIES_JOLTEON);
+    RunScriptImmediately(EventScript_GiveGachaMon);
+    VarSet(VAR_TEMP_1, SPECIES_FLAREON);
+    RunScriptImmediately(EventScript_GiveGachaMon);
+    VarSet(VAR_TEMP_1, SPECIES_ESPEON);
+    RunScriptImmediately(EventScript_GiveGachaMon);
+    VarSet(VAR_TEMP_1, SPECIES_UMBREON);
+    RunScriptImmediately(EventScript_GiveGachaMon);
+    VarSet(VAR_TEMP_1, SPECIES_LEAFEON);
+    RunScriptImmediately(EventScript_GiveGachaMon);
+    VarSet(VAR_TEMP_1, SPECIES_GLACEON);
+    RunScriptImmediately(EventScript_GiveGachaMon);
+    VarSet(VAR_TEMP_1, SPECIES_SYLVEON);
+    RunScriptImmediately(EventScript_GiveGachaMon);
+    FlagSet(FLAG_SYS_POKEMON_GET);
+    FlagSet(FLAG_RECEIVED_RUNNING_SHOES);
+    FlagSet(FLAG_SYS_B_DASH);
 }
 
 static void ResetMiniGamesRecords(void)
