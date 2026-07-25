@@ -1932,6 +1932,8 @@ void ShowPokemonSummaryScreen_SwSh(u8 mode, void *mons, u8 monIndex, u8 maxMonIn
     if (mode != SUMMARY_MODE_SELECT_MOVE && mode != SUMMARY_MODE_RELEARNER_BATTLE && mode != SUMMARY_MODE_RELEARNER_CONTEST)
         gMoveRelearnerState = MOVE_RELEARNER_LEVEL_UP_MOVES;
 
+    sMonSummaryScreen->maxPageIndex--;
+
     SetMainCallback2(CB2_InitSummaryScreen);
 }
 
@@ -3074,12 +3076,14 @@ static void ChangePage(u8 taskId, s8 delta)
     }
 
     // Wrap around pages (after clearing the old page's tilemaps)
-    if (delta == -1 && sMonSummaryScreen->currPageIndex == sMonSummaryScreen->minPageIndex)
-        sMonSummaryScreen->currPageIndex = sMonSummaryScreen->maxPageIndex + 1;
-    else if (delta == 1 && sMonSummaryScreen->currPageIndex == sMonSummaryScreen->maxPageIndex)
-        sMonSummaryScreen->currPageIndex = sMonSummaryScreen->minPageIndex - 1;
+    if (delta == -1 && sMonSummaryScreen->currPageIndex == 0)
+        sMonSummaryScreen->currPageIndex = 2;
+    else if (delta == 1 && sMonSummaryScreen->currPageIndex == 2)
+        sMonSummaryScreen->currPageIndex = 0;
+    else
+        sMonSummaryScreen->currPageIndex += delta;
 
-    currPageIndex = sMonSummaryScreen->currPageIndex += delta;
+    currPageIndex = sMonSummaryScreen->currPageIndex;
 
 #if !SWSH_SUMMARY_SHOW_CONTEST_PAGES
     if (sMonSummaryScreen->currPageIndex == PSS_PAGE_CONTEST_MOVES)
