@@ -248,6 +248,7 @@ static EWRAM_DATA struct PokemonSummaryScreenData
         u8 evSpatk;
         u8 evSpdef;
         u8 evSpeed; // 0x56
+        u8 markings;
     } summary;
     u16 bg3TilemapBuffers[PSS_BUFFER_SIZE];
     u16 bg2TilemapBuffers[PSS_PAGE_COUNT][PSS_BUFFER_SIZE];
@@ -1913,6 +1914,11 @@ void ShowPokemonSummaryScreen_SwSh(u8 mode, void *mons, u8 monIndex, u8 maxMonIn
         break;
     }
 
+    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(MAP_CONVENTION_CENTER))
+    {
+        sMonSummaryScreen->lockMovesFlag = TRUE;
+    }
+
     if (mode == SUMMARY_MODE_RELEARNER_BATTLE)
         sMonSummaryScreen->currPageIndex = PSS_PAGE_BATTLE_MOVES;
     else if (mode == SUMMARY_MODE_RELEARNER_CONTEST)
@@ -2485,6 +2491,7 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
         sum->ribbonCount = GetMonData(mon, MON_DATA_RIBBON_COUNT);
         sum->teraType = GetMonData(mon, MON_DATA_TERA_TYPE);
         sum->isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
+        sum->markings = GetMonData(mon, MON_DATA_MARKINGS);
         return TRUE;
     }
     sMonSummaryScreen->switchCounter++;
@@ -2744,6 +2751,7 @@ static void Task_HandleInput(u8 taskId)
             PlaySE(SE_SELECT);
             CloseSummaryScreen(taskId);
         }
+        /*
         else if (JOY_NEW(R_BUTTON)) // R means increase. Level -> Egg -> TM -> Tutor
         {
             if (P_SUMMARY_SCREEN_MOVE_RELEARNER && IS_MOVE_PAGE(sMonSummaryScreen->currPageIndex) && !gMain.inBattle)
@@ -2764,6 +2772,7 @@ static void Task_HandleInput(u8 taskId)
                 PlaySE(SE_SELECT);
             }
         }
+        */
     }
 }
 
@@ -6712,6 +6721,7 @@ static inline bool32 ShouldShowMoveRelearner(void)
 {
     return (P_SUMMARY_SCREEN_MOVE_RELEARNER
          && !sMonSummaryScreen->lockMovesFlag
+         && sMonSummaryScreen->summary.markings > 0
          && sMonSummaryScreen->mode != SUMMARY_MODE_BOX_CURSOR
          && sMonSummaryScreen->hasRelearnableMoves
          && !InBattleFactory()
@@ -6723,7 +6733,6 @@ static void RefreshRelearnModePrompt(void)
     FillWindowPixelRect(PSS_LABEL_WINDOW_PROMPT_MOVES, PIXEL_FILL(0), 0, 0, 120, 16);
     if (ShouldShowMoveRelearner())
     {
-        PrintButtonIcon(PSS_LABEL_WINDOW_PROMPT_MOVES, BUTTON_LR, 8, 4);
         PrintButtonIcon(PSS_LABEL_WINDOW_PROMPT_MOVES, BUTTON_START, 27, 4);
         PrintTextOnWindowWithFont(PSS_LABEL_WINDOW_PROMPT_MOVES, sText_Relearn, 53, 0, 0, 1, FONT_SMALL);
         PrintTextOnWindowWithFont(PSS_LABEL_WINDOW_PROMPT_MOVES, sRelearnModeNames[gMoveRelearnerState],
@@ -6737,7 +6746,6 @@ static void PrintMovesPagePrompt(void)
     FillWindowPixelBuffer(PSS_LABEL_WINDOW_PROMPT_MOVES, PIXEL_FILL(0));
     if (ShouldShowMoveRelearner())
     {
-        PrintButtonIcon(PSS_LABEL_WINDOW_PROMPT_MOVES, BUTTON_LR, 8, 4);
         PrintButtonIcon(PSS_LABEL_WINDOW_PROMPT_MOVES, BUTTON_START, 27, 4);
         PrintTextOnWindowWithFont(PSS_LABEL_WINDOW_PROMPT_MOVES, sText_Relearn, 53, 0, 0, 1, FONT_SMALL);
         PrintTextOnWindowWithFont(PSS_LABEL_WINDOW_PROMPT_MOVES, sRelearnModeNames[gMoveRelearnerState],
@@ -6927,26 +6935,23 @@ static void ChangeMonAbility(void)
     FillWindowPixelBuffer(sMonSummaryScreen->windowIds[1], PIXEL_FILL(0));
 
     u32 index;
-    u32 markings;
     enum Species species = sMonSummaryScreen->summary.species;
     if (sMonSummaryScreen->isBoxMon)
     {
-        markings = GetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
         index = GetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_ABILITY_NUM);
     }
     else
     {
-        markings = GetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
         index = GetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_ABILITY_NUM);
     }
     u32 numDupes = 0;
-    if (markings == 0xF)
+    if (sMonSummaryScreen->summary.markings == 0xF)
         numDupes = 4;
-    else if (markings == 0x7)
+    else if (sMonSummaryScreen->summary.markings == 0x7)
         numDupes = 3;
-    else if (markings == 0x3)
+    else if (sMonSummaryScreen->summary.markings == 0x3)
         numDupes = 2;
-    else if (markings == 0x1)
+    else if (sMonSummaryScreen->summary.markings == 0x1)
         numDupes = 1;
 
     bool32 canUse2Ability = FALSE;
