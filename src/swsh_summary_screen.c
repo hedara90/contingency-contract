@@ -444,6 +444,9 @@ static void CB2_PssChangePokemonNickname(void);
 static void UpdateMoveRelearnerState(bool32 goingDown);
 static void PrintRightAlignedPrompt(u8, u8, const u8*, int, u8);
 
+static bool32 CanShowAbilityChange(void);
+static void ChangeMonAbility(void);
+
 // const rom data
 
 static const u8 sMemoNatureTextColor[]          = _("{COLOR LIGHT_BLUE}{SHADOW DYNAMIC_COLOR1}");
@@ -2625,16 +2628,11 @@ static void PrintRightAlignedPrompt(u8 windowId, u8 button, const u8 *text, int 
 // draw button prompts when cycling between stats, IVs and EVs
 static void DrawNextSkillsButtonPrompt(u8 mode)
 {
-    const u8 *text;
-
-    switch (mode)
-    {
-    case SKILL_STATE_STATS: text = sText_ViewIVs;   break;
-    case SKILL_STATE_IVS:   text = sText_ViewEVs;   break;
-    default:                text = sText_ViewStats; break;
-    }
     FillWindowPixelBuffer(PSS_LABEL_WINDOW_PROMPT_IV_EV_STATS, PIXEL_FILL(0));
-    PrintRightAlignedPrompt(PSS_LABEL_WINDOW_PROMPT_IV_EV_STATS, BUTTON_A, text, 76, 1);
+    if (CanShowAbilityChange())
+    {
+        PrintRightAlignedPrompt(PSS_LABEL_WINDOW_PROMPT_IV_EV_STATS, BUTTON_A, COMPOUND_STRING("Change Ability"), 76, 1);
+    }
     ScheduleBgCopyTilemapToVram(0);
 }
 
@@ -2677,13 +2675,16 @@ static void Task_HandleInput(u8 taskId)
             }
             else if (sMonSummaryScreen->currPageIndex == PSS_PAGE_SKILLS)
             {
-                if (SWSH_SUMMARY_SHOW_IV_EV)
+                if (CanShowAbilityChange())
                 {
                     // Cycle through IVs/EVs/stats on pressing A
-                    ChangeSummaryState(data, taskId);
+                    //ChangeSummaryState(data, taskId);
+                    ChangeMonAbility();
                     DrawNextSkillsButtonPrompt(tSkillsState);
                     PlaySE(SE_SELECT);
-                    PrintStats(tSkillsState);
+                    //PrintStats(tSkillsState);
+                    PrintMonAbilityName();
+                    PrintMonAbilityDescription();
                 }
             }
         }
@@ -3956,8 +3957,7 @@ static void PrintPagePrompts(void)
     ShowCancelOrRenamePrompt();
     PrintRightAlignedPrompt(PSS_LABEL_WINDOW_PROMPT_SWITCH, BUTTON_A, sText_Switch, 60, 0);
 
-    if (SWSH_SUMMARY_SHOW_IV_EV)
-        DrawNextSkillsButtonPrompt(SKILL_STATE_STATS);
+    DrawNextSkillsButtonPrompt(SKILL_STATE_STATS);
 
     if (IS_MOVE_PAGE(sMonSummaryScreen->currPageIndex)
         && sMonSummaryScreen->mode != SUMMARY_MODE_SELECT_MOVE)
@@ -6874,3 +6874,95 @@ static bool32 ShouldRemoveHyphen(const u8 *p, const u8 *start, const u8 *end)
 }
 
 #endif
+
+static bool32 CanShowAbilityChange(void)
+{
+    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_CONVENTION_CENTER))
+    {
+        u32 markings;
+        enum Species species = sMonSummaryScreen->summary.species;
+        if (sMonSummaryScreen->isBoxMon)
+        {
+            markings = GetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
+        }
+        else
+        {
+            markings = GetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
+        }
+        u32 numDupes = 0;
+        if (markings == 0xF)
+            numDupes = 4;
+        else if (markings == 0x7)
+            numDupes = 3;
+        else if (markings == 0x3)
+            numDupes = 2;
+        else if (markings == 0x1)
+            numDupes = 1;
+        bool32 canUse1Ability = FALSE;
+
+        if (gSpeciesInfo[species].ability1Threshold != 0 && numDupes >= gSpeciesInfo[species].ability1Threshold)
+            canUse1Ability = TRUE;
+
+        if (!canUse1Ability)
+        {
+            FillWindowPixelBuffer(PSS_LABEL_WINDOW_PROMPT_IV_EV_STATS, PIXEL_FILL(0));
+            PrintTextOnWindowWithFont(PSS_LABEL_WINDOW_PROMPT_IV_EV_STATS, COMPOUND_STRING(""), 0, 0, 0, 0, FONT_SMALL);
+            ScheduleBgCopyTilemapToVram(0);
+        }
+        return canUse1Ability;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
+static void ChangeMonAbility(void)
+{
+    FillWindowPixelBuffer(sMonSummaryScreen->windowIds[0], PIXEL_FILL(0));
+    FillWindowPixelBuffer(sMonSummaryScreen->windowIds[1], PIXEL_FILL(0));
+
+    u32 index;
+    u32 markings;
+    enum Species species = sMonSummaryScreen->summary.species;
+    if (sMonSummaryScreen->isBoxMon)
+    {
+        markings = GetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
+        index = GetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_ABILITY_NUM);
+    }
+    else
+    {
+        markings = GetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
+        index = GetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_ABILITY_NUM);
+    }
+    u32 numDupes = 0;
+    if (markings == 0xF)
+        numDupes = 4;
+    else if (markings == 0x7)
+        numDupes = 3;
+    else if (markings == 0x3)
+        numDupes = 2;
+    else if (markings == 0x1)
+        numDupes = 1;
+
+    bool32 canUse2Ability = FALSE;
+
+    if (gSpeciesInfo[species].ability2Threshold != 0 && numDupes >= gSpeciesInfo[species].ability2Threshold)
+        canUse2Ability = TRUE;
+
+    if (index == 2)
+        index = 0;
+    else if (index == 1 && canUse2Ability)
+        index = 2;
+    else if (index == 1)
+        index = 0;
+    else
+        index = 1;
+
+    if (sMonSummaryScreen->isBoxMon)
+        SetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_ABILITY_NUM, &index);
+    else
+        SetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_ABILITY_NUM, &index);
+
+    sMonSummaryScreen->summary.abilityNum = index;
+}
