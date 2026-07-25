@@ -1983,6 +1983,7 @@ void Task_HandleChooseMonInput(u8 taskId)
             }
 #if SWSH_PARTY_MENU_PC_ACCESS
             else if (gPartyMenu.action == PARTY_ACTION_CHOOSE_MON
+                    && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_CONVENTION_CENTER)
                     && gPartyMenu.layout == PARTY_LAYOUT_SINGLE
                     && (gPartyMenu.menuType == PARTY_MENU_TYPE_FIELD
                         || gPartyMenu.menuType == PARTY_MENU_TYPE_DAYCARE))
@@ -3067,6 +3068,7 @@ static void ShowButtonPrompt(u8 type)
             }
 
             if (SWSH_PARTY_MENU_PC_ACCESS
+                && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_CONVENTION_CENTER)
                 && gPartyMenu.action == PARTY_ACTION_CHOOSE_MON
                 && gPartyMenu.layout == PARTY_LAYOUT_SINGLE
                 && (gPartyMenu.menuType == PARTY_MENU_TYPE_FIELD
