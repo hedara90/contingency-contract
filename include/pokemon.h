@@ -521,6 +521,8 @@ struct SpeciesInfo /*0xC4*/
 #endif //OW_PKMN_OBJECTS_SHARE_PALETTES
 #endif //OW_POKEMON_OBJECT_EVENTS
     enum OverworldWildEncounterBehaviors overworldEncounterBehavior;
+    u8 ability1Threshold;
+    u8 ability2Threshold;
 };
 
 struct EggData
