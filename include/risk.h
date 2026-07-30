@@ -50,7 +50,16 @@ struct Risks
     bool32 playerLowerHalfDamageRolls:1;
     bool32 opponentUpperHalfDamageRolls:1;
     bool32 canOnlyUseTopMoves1:1;
-    bool32 padding:30;
+    bool32 playerStartsSpikes1:1;
+    bool32 playerStartsSpikes2:1;
+    bool32 playerStartsSpikes3:1;
+    bool32 playerStartsTSpikes1:1;
+    bool32 playerStartsTSpikes2:1;
+    bool32 playerStartsStickyWeb:1;
+    bool32 playerStartsStealthRock:1;
+    bool32 playerStartsSharpSteel:1;
+    bool32 playerHazardsNotRemovable:1;
+    bool32 padding:21;
 };
 
 extern struct Risks gRisks;

@@ -3762,6 +3762,28 @@ static void DoBattleIntro(void)
             struct StartingStatuses statusesOpponentA = {0};
             struct StartingStatuses statusesOpponentB = {0};
 
+            // Risk Spikes
+            if (gRisks.playerStartsSpikes3)
+                SetStartingStatus(STARTING_STATUS_SPIKES_PLAYER_L3);
+            else if (gRisks.playerStartsSpikes2)
+                SetStartingStatus(STARTING_STATUS_SPIKES_PLAYER_L2);
+            else if (gRisks.playerStartsSpikes1)
+                SetStartingStatus(STARTING_STATUS_SPIKES_PLAYER_L1);
+
+            // Risks TSpikes
+            if (gRisks.playerStartsTSpikes2)
+                SetStartingStatus(STARTING_STATUS_TOXIC_SPIKES_PLAYER_L2);
+            else if (gRisks.playerStartsTSpikes1)
+                SetStartingStatus(STARTING_STATUS_TOXIC_SPIKES_PLAYER_L1);
+
+            // Risks Other Hazards
+            if (gRisks.playerStartsStealthRock)
+                SetStartingStatus(STARTING_STATUS_STEALTH_ROCK_PLAYER);
+            if (gRisks.playerStartsSharpSteel)
+                SetStartingStatus(STARTING_STATUS_SHARP_STEEL_PLAYER);
+            if (gRisks.playerStartsStickyWeb)
+                SetStartingStatus(STARTING_STATUS_STICKY_WEB_PLAYER);
+
             // Try to set a status to start the battle with
             if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !IsSpecialTrainer(TRAINER_BATTLE_PARAM.opponentA))
             {

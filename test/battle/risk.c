@@ -756,3 +756,167 @@ SINGLE_BATTLE_TEST("Risk: Player can only use 2 moves, but get Parental Bond")
         EXPECT_MUL_EQ(dmg1, Q_4_12(0.25), dmg2);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Player starts with spikes", s16 damage)
+{
+    u32 divisor;
+    PARAMETRIZE { gRisks.playerStartsSpikes1 = TRUE; divisor = 8; }
+    PARAMETRIZE { gRisks.playerStartsSpikes2 = TRUE; divisor = 6; }
+    PARAMETRIZE { gRisks.playerStartsSpikes3 = TRUE; divisor = 4; }
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_WYNAUT);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { SWITCH(player, 1); }
+    } SCENE {
+        MESSAGE("Go! Wynaut!");
+        s32 maxHP = GetMonData(&PLAYER_PARTY[1], MON_DATA_MAX_HP);
+        HP_BAR(player, damage: maxHP / divisor);
+        MESSAGE("Wynaut was hurt by the spikes!");
+    } FINALLY {
+        ResetStartingStatuses();
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Player starts with toxic spikes")
+{
+    PARAMETRIZE { gRisks.playerStartsTSpikes1 = TRUE; }
+    PARAMETRIZE { gRisks.playerStartsTSpikes2 = TRUE; }
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_WYNAUT);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { SWITCH(player, 1); }
+    } SCENE {
+        if (gRisks.playerStartsTSpikes2)
+        {
+            MESSAGE("Go! Wynaut!");
+            MESSAGE("Wynaut was badly poisoned!");
+            STATUS_ICON(player, badPoison: TRUE);
+        }
+        else
+        {
+            MESSAGE("Go! Wynaut!");
+            MESSAGE("Wynaut was poisoned!");
+            STATUS_ICON(player, poison: TRUE);
+            NOT STATUS_ICON(player, badPoison: TRUE);
+            }
+    } FINALLY {
+        ResetStartingStatuses();
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Player starts with sticky web")
+{
+    GIVEN {
+        gRisks.playerStartsStickyWeb = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_WYNAUT);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { SWITCH(player, 1); }
+    } SCENE {
+        MESSAGE("Go! Wynaut!");
+        MESSAGE("Wynaut was caught in a sticky web!");
+        MESSAGE("Wynaut's Speed fell!");
+    } THEN {
+        ResetStartingStatuses();
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Player starts with stealth rock")
+{
+    GIVEN {
+        gRisks.playerStartsStealthRock = TRUE;
+        ASSUME(gSpeciesInfo[SPECIES_CHARIZARD].types[0] == TYPE_FIRE);
+        ASSUME(gSpeciesInfo[SPECIES_CHARIZARD].types[1] == TYPE_FLYING);
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_CHARIZARD);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { SWITCH(player, 1); }
+    } SCENE {
+        MESSAGE("Go! Charizard!");
+        s32 maxHP = GetMonData(&PLAYER_PARTY[1], MON_DATA_MAX_HP);
+        HP_BAR(player, damage: maxHP / 2);
+        MESSAGE("Pointed stones dug into Charizard!");
+    } THEN {
+        ResetStartingStatuses();
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Player starts with sharp steel")
+{
+    GIVEN {
+        gRisks.playerStartsSharpSteel = TRUE;
+        ASSUME(gSpeciesInfo[SPECIES_SYLVEON].types[0] == TYPE_FAIRY);
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_SYLVEON);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { SWITCH(player, 1); }
+    } SCENE {
+        MESSAGE("Go! Sylveon!");
+        s32 maxHP = GetMonData(&PLAYER_PARTY[1], MON_DATA_MAX_HP);
+        HP_BAR(player, damage: maxHP / 4);
+        MESSAGE("The sharp steel bit into Sylveon!");
+    } THEN {
+        ResetStartingStatuses();
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: All hazard risks at once")
+{
+    GIVEN {
+        gRisks.playerStartsSpikes3 = TRUE;
+        gRisks.playerStartsTSpikes2 = TRUE;
+        gRisks.playerStartsStealthRock = TRUE;
+        gRisks.playerStartsSharpSteel = TRUE;
+        gRisks.playerStartsStickyWeb = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { }
+    } SCENE {
+        MESSAGE("Wobbuffet was hurt by the spikes!");
+        MESSAGE("Wobbuffet was badly poisoned!");
+        MESSAGE("Wobbuffet was caught in a sticky web!");
+        MESSAGE("Pointed stones dug into Wobbuffet!");
+        MESSAGE("The sharp steel bit into Wobbuffet!");
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Player cannot remove hazards")
+{
+    // Not handling Court Change, we didn't give it to any mons
+    u32 move;
+    PARAMETRIZE { move = MOVE_RAPID_SPIN; } // Shared with Mortal Spin
+    PARAMETRIZE { move = MOVE_DEFOG; } // Shared with Tidy Up
+    GIVEN {
+        gRisks.playerHazardsNotRemovable = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_WYNAUT);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_STEALTH_ROCK); }
+        TURN { MOVE(opponent, MOVE_STICKY_WEB); }
+        TURN { MOVE(opponent, MOVE_TOXIC_SPIKES); }
+        TURN { MOVE(opponent, MOVE_SPIKES); MOVE(player, move); }
+        TURN { MOVE(opponent, MOVE_SPIKES); SWITCH(player, 1); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_STEALTH_ROCK, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, move, player);
+        NONE_OF {
+            MESSAGE("The spikes disappeared from the ground around your team!");
+            MESSAGE("The sticky web has disappeared from the ground around you!");
+            MESSAGE("The poison spikes disappeared from the ground around your team!");
+            MESSAGE("The pointed stones disappeared from around your team!");
+        }
+        MESSAGE("Pointed stones dug into Wynaut!");
+        MESSAGE("Wynaut was caught in a sticky web!");
+        MESSAGE("Wynaut was poisoned!");
+        MESSAGE("Wynaut was hurt by the spikes!");
+    }
+}
