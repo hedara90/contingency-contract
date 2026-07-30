@@ -3048,3 +3048,41 @@ const u16 ALIGNED(4) gTilesetPalettes_General_Frlg[][16] =
 const u32 gTilesetTiles_General_Frlg[] = INCGFX_U32("data/tilesets/primary/general_frlg/tiles.png", ".4bpp.smol");
 
 #endif // IS_FRLG
+
+const u16 gTilesetPalettes_hub[][16] =
+{
+    INCGFX_U16("data/tilesets/primary/hub/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/hub/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/hub/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/hub/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/hub/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/hub/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/hub/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/hub/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/hub/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/hub/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/hub/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/hub/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/hub/palettes/12.pal", ".gbapal"),
+};
+
+const u32 gTilesetTiles_hub[] = INCGFX_U32("data/tilesets/primary/hub/tiles.png", ".4bpp.smol");
+
+const u16 gTilesetPalettes_hubsecondary[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/hubsecondary/palettes/12.pal", ".gbapal"),
+};
+
+const u32 gTilesetTiles_hubsecondary[] = INCGFX_U32("data/tilesets/secondary/hubsecondary/tiles.png", ".4bpp.fastSmol");

@@ -738,6 +738,25 @@ SINGLE_BATTLE_TEST("Risk: Opponent uses upper half of damage rolls (93 - 100)")
     }
 }
 
+SINGLE_BATTLE_TEST("Risk: Player can only use 2 moves, but get Parental Bond")
+{
+    //  Can't test move selection
+    s16 dmg1, dmg2;
+    GIVEN {
+        gRisks.canOnlyUseTopMoves1 = TRUE;
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_SCRATCH); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+        HP_BAR(opponent, captureDamage: &dmg1);
+        HP_BAR(opponent, captureDamage: &dmg2);
+    } THEN {
+        EXPECT_MUL_EQ(dmg1, Q_4_12(0.25), dmg2);
+    }
+}
+
 SINGLE_BATTLE_TEST("Risk: Player starts with spikes", s16 damage)
 {
     u32 divisor;

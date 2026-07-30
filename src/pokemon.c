@@ -5670,16 +5670,12 @@ static void Task_AnimateAfterDelay(u8 taskId)
 
 #define tIsShadow data[4]
 
-static EWRAM_DATA u8 sShadowAnimDelayTaskId = 0;
-
 static void Task_PokemonSummaryAnimateAfterDelay(u8 taskId)
 {
     if (--gTasks[taskId].sAnimDelay == 0)
     {
         StartMonSummaryAnimation(READ_PTR_FROM_TASK(taskId, 0), gTasks[taskId].sAnimId);
-        if (gTasks[taskId].tIsShadow)
-            sShadowAnimDelayTaskId = TASK_NONE;
-        else
+        if (!gTasks[taskId].tIsShadow)
             SummaryScreen_SetAnimDelayTaskId(TASK_NONE);
         DestroyTask(taskId);
     }
@@ -5753,9 +5749,7 @@ void PokemonSummaryDoMonAnimation(struct Sprite *sprite, enum Species species, b
         gTasks[taskId].sAnimDelay = gSpeciesInfo[species].frontAnimDelay;
         gTasks[taskId].tIsShadow = isShadow;
 
-        if (isShadow)
-            sShadowAnimDelayTaskId = taskId;
-        else
+        if (!isShadow)
             SummaryScreen_SetAnimDelayTaskId(taskId);
 
         SetSpriteCB_MonAnimDummy(sprite);
@@ -5776,10 +5770,16 @@ void StopPokemonAnimationDelayTask(void)
 
 void StopShadowAnimDelayTask(void)
 {
-    if (sShadowAnimDelayTaskId != TASK_NONE)
+    u8 taskId;
+    for (taskId = 0; taskId < NUM_TASKS; taskId++)
     {
-        DestroyTask(sShadowAnimDelayTaskId);
-        sShadowAnimDelayTaskId = TASK_NONE;
+        if (gTasks[taskId].isActive
+            && gTasks[taskId].func == Task_PokemonSummaryAnimateAfterDelay
+            && gTasks[taskId].tIsShadow)
+        {
+            DestroyTask(taskId);
+            return;
+        }
     }
 }
 

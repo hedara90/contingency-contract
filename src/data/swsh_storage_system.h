@@ -49,115 +49,115 @@ struct StorageMessage
 // Graphics - Storage System UI
 // ============================================================================
 
-static const u32 sSwShStorage_Gfx[]           = INCBIN_U32("graphics/pokemon_storage/swsh/tiles.4bpp.smol");
-static const u16 sSwShStorage_Pal[]           = INCBIN_U16("graphics/pokemon_storage/swsh/tiles.gbapal");
-static const u32 sSwShStorage_BG1_Tilemap[]   = INCBIN_U32("graphics/pokemon_storage/swsh/bg1.bin.smolTM");
-static const u32 sSwShStorage_BG2_Tilemap[]   = INCBIN_U32("graphics/pokemon_storage/swsh/bg2.bin.smolTM");
-static const u32 sMonInfo_Gfx[]               = INCBIN_U32("graphics/pokemon_storage/swsh/mon_info.4bpp.smol");
-static const u32 sMonInfo_Tilemap[]           = INCBIN_U32("graphics/pokemon_storage/swsh/mon_info.bin.smolTM");
-static const u16 sTextWindows_Pal[]           = INCBIN_U16("graphics/pokemon_storage/swsh/text_windows.gbapal");
+static const u32 sSwShStorage_Gfx[]           = INCGFX_U32("graphics/pokemon_storage/swsh/tiles.png", ".4bpp.smol");
+static const u16 sSwShStorage_Pal[]           = INCGFX_U16("graphics/pokemon_storage/swsh/tiles.png", ".gbapal");
+static const u32 sSwShStorage_BG1_Tilemap[]   = INCGFX_U32("graphics/pokemon_storage/swsh/bg1.bin", ".smolTM");
+static const u32 sSwShStorage_BG2_Tilemap[]   = INCGFX_U32("graphics/pokemon_storage/swsh/bg2.bin", ".smolTM");
+static const u32 sMonInfo_Gfx[]               = INCGFX_U32("graphics/pokemon_storage/swsh/mon_info.png", ".4bpp.smol");
+static const u32 sMonInfo_Tilemap[]           = INCGFX_U32("graphics/pokemon_storage/swsh/mon_info.bin", ".smolTM");
+static const u16 sTextWindows_Pal[]           = INCGFX_U16("graphics/pokemon_storage/swsh/text_windows.pal", ".gbapal");
 
-static const u32 sBoxTitleFrame_Gfx[]         = INCBIN_U32("graphics/pokemon_storage/swsh/box_title_frame.4bpp.smol");
-static const u32 sBoxTitleArrow_Gfx[]         = INCBIN_U32("graphics/pokemon_storage/swsh/box_title_arrow.4bpp.smol");
+static const u32 sBoxTitleFrame_Gfx[]         = INCGFX_U32("graphics/pokemon_storage/swsh/box_title_frame.png", ".4bpp");
+static const u32 sBoxTitleArrow_Gfx[]         = INCGFX_U32("graphics/pokemon_storage/swsh/box_title_arrow.png", ".4bpp.smol");
 #if SWSH_STORAGE_CHOOSE_BOX_GRID
-static const u32 sChooseBoxGrid_Hover_Gfx[]   = INCBIN_U32("graphics/pokemon_storage/swsh/choose_box_grid_hover.4bpp.smol");
+static const u32 sChooseBoxGrid_Hover_Gfx[]   = INCGFX_U32("graphics/pokemon_storage/swsh/choose_box_grid_hover.png", ".4bpp");
 #else
 static const u8  sChooseBoxMenu_Tilemap[]     = INCBIN_U8("graphics/pokemon_storage/swsh/choose_box_menu.bin");
 #endif
-static const u32 sCursor_Gfx[]                = INCBIN_U32("graphics/pokemon_storage/swsh/cursor.4bpp.smol");
-static const u16 sCursor_Pal[]                = INCBIN_U16("graphics/pokemon_storage/swsh/cursor.gbapal");
-static const u32 sGenderIcons_Gfx[]           = INCBIN_U32("graphics/pokemon_storage/swsh/gender_icons.4bpp.smol");
-static const u16 sMarkings_Pal[]              = INCBIN_U16("graphics/pokemon_storage/swsh/markings.gbapal");
-static const u32 sMarkingsMenu_Gfx[]          = INCBIN_U32("graphics/pokemon_storage/swsh/markings_menu.4bpp.smol");
-static const u32 sMessageWindow_Gfx[]         = INCBIN_U32("graphics/pokemon_storage/swsh/message_window.4bpp.smol");
-static const u32 sShinyIcon_Gfx[]             = INCBIN_U32("graphics/pokemon_storage/swsh/shiny_icon.4bpp.smol");
-static const u32 sStatLabels_Gfx[]            = INCBIN_U32("graphics/pokemon_storage/swsh/stat_labels.4bpp.smol");
-static const ALIGNED(4) u8 sTypeIcons_Gfx[]   = INCBIN_U8("graphics/pokemon_storage/swsh/type_icons.4bpp");
-static const u16 sTypeIcons_Pal[]             = INCBIN_U16("graphics/pokemon_storage/swsh/type_icons.gbapal");
+static const u32 sCursor_Gfx[]                = INCGFX_U32("graphics/pokemon_storage/swsh/cursor.png", ".4bpp.smol");
+static const u16 sCursor_Pal[]                = INCGFX_U16("graphics/pokemon_storage/swsh/cursor.png", ".gbapal");
+static const u32 sGenderIcons_Gfx[]           = INCGFX_U32("graphics/pokemon_storage/swsh/gender_icons.png", ".4bpp.smol");
+static const u16 sMarkings_Pal[]              = INCGFX_U16("graphics/pokemon_storage/swsh/markings.pal", ".gbapal");
+static const u32 sMarkingsMenu_Gfx[]          = INCGFX_U32("graphics/pokemon_storage/swsh/markings_menu.png", ".4bpp.smol");
+static const u32 sMessageWindow_Gfx[]         = INCGFX_U32("graphics/pokemon_storage/swsh/message_window.png", ".4bpp.smol");
+static const u32 sShinyIcon_Gfx[]             = INCGFX_U32("graphics/pokemon_storage/swsh/shiny_icon.png", ".4bpp.smol");
+static const u32 sStatLabels_Gfx[]            = INCGFX_U32("graphics/pokemon_storage/swsh/stat_labels.png", ".4bpp.smol");
+static const ALIGNED(4) u8 sTypeIcons_Gfx[]   = INCGFX_U8("graphics/pokemon_storage/swsh/type_icons.png", ".4bpp");
+static const u16 sTypeIcons_Pal[]             = INCGFX_U16("graphics/pokemon_storage/swsh/type_icons.png", ".gbapal");
 
 // ============================================================================
 // Graphics - Wallpapers
 // ============================================================================
 
-static const u32 sWallpaperTiles_Base[]       = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/base.4bpp.smol");
-static const u32 sWallpaperTilemap_Base[]     = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/base.bin.smolTM");
-static const u16 sWallpaperPalette_Base[]     = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/base.gbapal");
+static const u32 sWallpaperTiles_Base[]       = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/base.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Base[]     = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/base.bin", ".smolTM");
+static const u16 sWallpaperPalette_Base[]     = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/base.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Normal[]     = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/normal.4bpp.smol");
-static const u32 sWallpaperTilemap_Normal[]   = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/normal.bin.smolTM");
-static const u16 sWallpaperPalette_Normal[]   = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/normal.gbapal");
+static const u32 sWallpaperTiles_Normal[]     = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/normal.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Normal[]   = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/normal.bin", ".smolTM");
+static const u16 sWallpaperPalette_Normal[]   = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/normal.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Fighting[]   = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/fighting.4bpp.smol");
-static const u32 sWallpaperTilemap_Fighting[] = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/fighting.bin.smolTM");
-static const u16 sWallpaperPalette_Fighting[] = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/fighting.gbapal");
+static const u32 sWallpaperTiles_Fighting[]   = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/fighting.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Fighting[] = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/fighting.bin", ".smolTM");
+static const u16 sWallpaperPalette_Fighting[] = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/fighting.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Flying[]     = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/flying.4bpp.smol");
-static const u32 sWallpaperTilemap_Flying[]   = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/flying.bin.smolTM");
-static const u16 sWallpaperPalette_Flying[]   = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/flying.gbapal");
+static const u32 sWallpaperTiles_Flying[]     = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/flying.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Flying[]   = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/flying.bin", ".smolTM");
+static const u16 sWallpaperPalette_Flying[]   = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/flying.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Poison[]     = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/poison.4bpp.smol");
-static const u32 sWallpaperTilemap_Poison[]   = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/poison.bin.smolTM");
-static const u16 sWallpaperPalette_Poison[]   = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/poison.gbapal");
+static const u32 sWallpaperTiles_Poison[]     = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/poison.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Poison[]   = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/poison.bin", ".smolTM");
+static const u16 sWallpaperPalette_Poison[]   = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/poison.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Ground[]     = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/ground.4bpp.smol");
-static const u32 sWallpaperTilemap_Ground[]   = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/ground.bin.smolTM");
-static const u16 sWallpaperPalette_Ground[]   = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/ground.gbapal");
+static const u32 sWallpaperTiles_Ground[]     = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/ground.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Ground[]   = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/ground.bin", ".smolTM");
+static const u16 sWallpaperPalette_Ground[]   = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/ground.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Rock[]       = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/rock.4bpp.smol");
-static const u32 sWallpaperTilemap_Rock[]     = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/rock.bin.smolTM");
-static const u16 sWallpaperPalette_Rock[]     = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/rock.gbapal");
+static const u32 sWallpaperTiles_Rock[]       = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/rock.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Rock[]     = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/rock.bin", ".smolTM");
+static const u16 sWallpaperPalette_Rock[]     = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/rock.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Bug[]        = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/bug.4bpp.smol");
-static const u32 sWallpaperTilemap_Bug[]      = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/bug.bin.smolTM");
-static const u16 sWallpaperPalette_Bug[]      = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/bug.gbapal");
+static const u32 sWallpaperTiles_Bug[]        = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/bug.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Bug[]      = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/bug.bin", ".smolTM");
+static const u16 sWallpaperPalette_Bug[]      = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/bug.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Ghost[]      = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/ghost.4bpp.smol");
-static const u32 sWallpaperTilemap_Ghost[]    = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/ghost.bin.smolTM");
-static const u16 sWallpaperPalette_Ghost[]    = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/ghost.gbapal");
+static const u32 sWallpaperTiles_Ghost[]      = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/ghost.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Ghost[]    = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/ghost.bin", ".smolTM");
+static const u16 sWallpaperPalette_Ghost[]    = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/ghost.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Steel[]      = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/steel.4bpp.smol");
-static const u32 sWallpaperTilemap_Steel[]    = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/steel.bin.smolTM");
-static const u16 sWallpaperPalette_Steel[]    = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/steel.gbapal");
+static const u32 sWallpaperTiles_Steel[]      = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/steel.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Steel[]    = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/steel.bin", ".smolTM");
+static const u16 sWallpaperPalette_Steel[]    = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/steel.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Fire[]       = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/fire.4bpp.smol");
-static const u32 sWallpaperTilemap_Fire[]     = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/fire.bin.smolTM");
-static const u16 sWallpaperPalette_Fire[]     = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/fire.gbapal");
+static const u32 sWallpaperTiles_Fire[]       = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/fire.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Fire[]     = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/fire.bin", ".smolTM");
+static const u16 sWallpaperPalette_Fire[]     = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/fire.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Water[]      = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/water.4bpp.smol");
-static const u32 sWallpaperTilemap_Water[]    = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/water.bin.smolTM");
-static const u16 sWallpaperPalette_Water[]    = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/water.gbapal");
+static const u32 sWallpaperTiles_Water[]      = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/water.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Water[]    = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/water.bin", ".smolTM");
+static const u16 sWallpaperPalette_Water[]    = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/water.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Grass[]      = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/grass.4bpp.smol");
-static const u32 sWallpaperTilemap_Grass[]    = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/grass.bin.smolTM");
-static const u16 sWallpaperPalette_Grass[]    = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/grass.gbapal");
+static const u32 sWallpaperTiles_Grass[]      = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/grass.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Grass[]    = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/grass.bin", ".smolTM");
+static const u16 sWallpaperPalette_Grass[]    = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/grass.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Electric[]   = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/electric.4bpp.smol");
-static const u32 sWallpaperTilemap_Electric[] = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/electric.bin.smolTM");
-static const u16 sWallpaperPalette_Electric[] = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/electric.gbapal");
+static const u32 sWallpaperTiles_Electric[]   = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/electric.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Electric[] = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/electric.bin", ".smolTM");
+static const u16 sWallpaperPalette_Electric[] = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/electric.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Psychic[]    = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/psychic.4bpp.smol");
-static const u32 sWallpaperTilemap_Psychic[]  = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/psychic.bin.smolTM");
-static const u16 sWallpaperPalette_Psychic[]  = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/psychic.gbapal");
+static const u32 sWallpaperTiles_Psychic[]    = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/psychic.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Psychic[]  = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/psychic.bin", ".smolTM");
+static const u16 sWallpaperPalette_Psychic[]  = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/psychic.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Ice[]        = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/ice.4bpp.smol");
-static const u32 sWallpaperTilemap_Ice[]      = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/ice.bin.smolTM");
-static const u16 sWallpaperPalette_Ice[]      = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/ice.gbapal");
+static const u32 sWallpaperTiles_Ice[]        = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/ice.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Ice[]      = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/ice.bin", ".smolTM");
+static const u16 sWallpaperPalette_Ice[]      = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/ice.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Dragon[]     = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/dragon.4bpp.smol");
-static const u32 sWallpaperTilemap_Dragon[]   = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/dragon.bin.smolTM");
-static const u16 sWallpaperPalette_Dragon[]   = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/dragon.gbapal");
+static const u32 sWallpaperTiles_Dragon[]     = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/dragon.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Dragon[]   = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/dragon.bin", ".smolTM");
+static const u16 sWallpaperPalette_Dragon[]   = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/dragon.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Dark[]       = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/dark.4bpp.smol");
-static const u32 sWallpaperTilemap_Dark[]     = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/dark.bin.smolTM");
-static const u16 sWallpaperPalette_Dark[]     = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/dark.gbapal");
+static const u32 sWallpaperTiles_Dark[]       = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/dark.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Dark[]     = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/dark.bin", ".smolTM");
+static const u16 sWallpaperPalette_Dark[]     = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/dark.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Fairy[]      = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/fairy.4bpp.smol");
-static const u32 sWallpaperTilemap_Fairy[]    = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/fairy.bin.smolTM");
-static const u16 sWallpaperPalette_Fairy[]    = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/fairy.gbapal");
+static const u32 sWallpaperTiles_Fairy[]      = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/fairy.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Fairy[]    = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/fairy.bin", ".smolTM");
+static const u16 sWallpaperPalette_Fairy[]    = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/fairy.png", ".gbapal");
 
-static const u32 sWallpaperTiles_Stellar[]    = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/stellar.4bpp.smol");
-static const u32 sWallpaperTilemap_Stellar[]  = INCBIN_U32("graphics/pokemon_storage/swsh/wallpapers/stellar.bin.smolTM");
-static const u16 sWallpaperPalette_Stellar[]  = INCBIN_U16("graphics/pokemon_storage/swsh/wallpapers/stellar.gbapal");
+static const u32 sWallpaperTiles_Stellar[]    = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/stellar.png", ".4bpp.smol");
+static const u32 sWallpaperTilemap_Stellar[]  = INCGFX_U32("graphics/pokemon_storage/swsh/wallpapers/stellar.bin", ".smolTM");
+static const u16 sWallpaperPalette_Stellar[]  = INCGFX_U16("graphics/pokemon_storage/swsh/wallpapers/stellar.png", ".gbapal");
 
 #define WALLPAPER_ENTRY(name) {sWallpaperTiles_##name, sWallpaperTilemap_##name, sWallpaperPalette_##name}
 
@@ -522,7 +522,7 @@ static const struct OamData sOamData_ChooseBoxGrid_Hover =
     .affineParam = 0,
 };
 
-static const struct CompressedSpriteSheet sSpriteSheet_ChooseBoxGrid_Hover =
+static const struct SpriteSheet sSpriteSheet_ChooseBoxGrid_Hover =
 {
     .data = sChooseBoxGrid_Hover_Gfx,
     .size = (32 * 32) / 2,
@@ -534,34 +534,6 @@ static const struct SpriteTemplate sSpriteTemplate_ChooseBoxGrid_Hover =
     .tileTag = GFXTAG_CHOOSE_BOX_GRID_HOVER,
     .paletteTag = PALTAG_MISC_3,
     .oam = &sOamData_ChooseBoxGrid_Hover,
-};
-
-// ============================================================================
-// Box Selection Mon Count Sprite (loaded dynamically)
-// ============================================================================
-
-static const struct OamData sOamData_ChooseBoxGrid_MonCount =
-{
-    .y = 0,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
-    .size = SPRITE_SIZE(16x16),
-    .x = 0,
-    .matrixNum = 0,
-    .shape = SPRITE_SHAPE(16x16),
-    .tileNum = 0,
-    .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
-};
-
-static const struct SpriteTemplate sSpriteTemplate_ChooseBoxGrid_MonCount =
-{
-    .tileTag = GFXTAG_CHOOSE_BOX_MON_COUNT,
-    .paletteTag = PALTAG_MISC_3,
-    .oam = &sOamData_ChooseBoxGrid_MonCount,
 };
 
 #else // !SWSH_STORAGE_CHOOSE_BOX_GRID
@@ -665,7 +637,22 @@ static const union AnimCmd sSpriteAnim_BoxTitleFrame_1[] = {
 };
 
 static const union AnimCmd sSpriteAnim_BoxTitleFrame_2[] = {
+    ANIMCMD_FRAME(16, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sSpriteAnim_BoxTitleFrame_3[] = {
     ANIMCMD_FRAME(0, 0, TRUE, FALSE),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sSpriteAnim_BoxTitleFrame_4[] = {
+    ANIMCMD_FRAME(24, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sSpriteAnim_BoxTitleFrame_5[] = {
+    ANIMCMD_FRAME(32, 0, FALSE, FALSE),
     ANIMCMD_END
 };
 
@@ -673,14 +660,20 @@ static const union AnimCmd *const sSpriteAnimTable_BoxTitleFrame[] = {
     sSpriteAnim_BoxTitleFrame_0,
     sSpriteAnim_BoxTitleFrame_1,
     sSpriteAnim_BoxTitleFrame_2,
+    sSpriteAnim_BoxTitleFrame_3,
+    sSpriteAnim_BoxTitleFrame_4,
+    sSpriteAnim_BoxTitleFrame_5,
 };
 
-static const u8 sBoxTitleFrameAnims[4] = {0, 1, 1, 2};
+static const u8 sBoxTitleFrameAnims[4] = {0, 1, 2, 3};
 
-static const struct CompressedSpriteSheet sSpriteSheet_BoxTitleFrame =
+// Two sets of middle frames, double-buffered to avoid flicker when updating
+static const u8 sBoxTitleMidAnims[2][2] = {{1, 2}, {4, 5}};
+
+static const struct SpriteSheet sSpriteSheet_BoxTitleFrame =
 {
     .data = sBoxTitleFrame_Gfx,
-    .size = (32 * 16 * 2) / 2,
+    .size = (32 * 16 * 5) / 2,
     .tag = GFXTAG_BOX_TITLE_FRAME,
 };
 
@@ -756,39 +749,6 @@ static const u16 sUnusedColor = RGB(26, 29, 8);
 #define BOX_TITLE_SHADOW_MAIN   RGB(26, 26, 25)
 #define BOX_TITLE_TEXT_MAIN     RGB_BLACK
 #define BOX_TITLE_FRAME_MAIN    RGB_WHITE
-
-static const struct OamData sOamData_BoxTitle =
-{
-    .shape = SPRITE_SHAPE(32x16),
-    .size = SPRITE_SIZE(32x16),
-    .priority = 2
-};
-
-static const union AnimCmd sAnim_BoxTitle_Left[] =
-{
-    ANIMCMD_FRAME(0, 5),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sAnim_BoxTitle_Right[] =
-{
-    ANIMCMD_FRAME(8, 5),
-    ANIMCMD_END
-};
-
-static const union AnimCmd *const sAnims_BoxTitle[] =
-{
-    sAnim_BoxTitle_Left,
-    sAnim_BoxTitle_Right
-};
-
-static const struct SpriteTemplate sSpriteTemplate_BoxTitle =
-{
-    .tileTag = GFXTAG_BOX_TITLE,
-    .paletteTag = PALTAG_MISC_1,
-    .oam = &sOamData_BoxTitle,
-    .anims = sAnims_BoxTitle,
-};
 
 // ============================================================================
 // Cursor Sprites

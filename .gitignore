@@ -67,3 +67,5 @@ tools/aif2pcm/aif2pcm
 __pycache__
 .map_version
 *.big
+
+data/maps/ConventionCenter/scripts.inc
