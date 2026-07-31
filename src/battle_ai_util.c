@@ -37,7 +37,7 @@ enum Ability AI_GetMoldBreakerSanitizedAbility(enum BattlerId battlerAtk, enum A
     if (holdEffectDef != HOLD_EFFECT_ABILITY_SHIELD && IsMoldBreakerTypeAbility(battlerAtk, abilityAtk))
         return ABILITY_NONE;
 
-    if (!IsOnPlayerSide(battlerAtk) && gRisks.hasMoldBreaker)
+    if (!IsOnPlayerSide(battlerAtk) && IsRiskActive(RISK_HAS_MOLD_BREAKER))
         return ABILITY_NONE;
 
     return abilityDef;
@@ -517,7 +517,7 @@ bool32 Ai_IsPriorityBlocked(enum BattlerId battlerAtk, enum BattlerId battlerDef
         return FALSE;
 
     if (IsMoldBreakerTypeAbility(battlerAtk, aiData->abilities[battlerAtk]) || MoveIgnoresTargetAbility(move)
-        || (!IsOnPlayerSide(battlerAtk) && gRisks.hasMoldBreaker))
+        || (!IsOnPlayerSide(battlerAtk) && IsRiskActive(RISK_HAS_MOLD_BREAKER)))
         return FALSE;
 
     if (IsDazzlingAbility(aiData->abilities[battlerDef]))
@@ -689,7 +689,7 @@ bool32 IsDamageMoveUnusable(struct DamageContext *ctx)
 
     // aiData->abilities does not check for Mold Breaker since it happens during combat so it needs to be done manually
     if (IsMoldBreakerTypeAbility(ctx->battlerAtk, ctx->abilities[ctx->battlerAtk]) || MoveIgnoresTargetAbility(ctx->move)
-        || (!IsOnPlayerSide(ctx->battlerAtk) && gRisks.hasMoldBreaker))
+        || (!IsOnPlayerSide(ctx->battlerAtk) && IsRiskActive(RISK_HAS_MOLD_BREAKER)))
     {
         battlerDefAbility = ABILITY_NONE;
         partnerDefAbility = ABILITY_NONE;
@@ -772,7 +772,7 @@ bool32 IsAdditionalEffectBlocked(enum BattlerId battlerAtk, u32 abilityAtk, enum
     if (gAiLogicData->holdEffects[battlerDef] == HOLD_EFFECT_COVERT_CLOAK)
         return TRUE;
 
-    if (abilityDef == ABILITY_SHIELD_DUST && !IsMoldBreakerTypeAbility(battlerAtk, abilityAtk) && !(!IsOnPlayerSide(battlerAtk) && gRisks.hasMoldBreaker))
+    if (abilityDef == ABILITY_SHIELD_DUST && !IsMoldBreakerTypeAbility(battlerAtk, abilityAtk) && !(!IsOnPlayerSide(battlerAtk) && IsRiskActive(RISK_HAS_MOLD_BREAKER)))
         return TRUE;
 
     return FALSE;
@@ -920,7 +920,7 @@ static inline bool32 ShouldCalcCritDamage(struct DamageContext *ctx)
     s32 critChanceIndex = 0;
 
     // Get crit chance
-    if (GetConfig(B_CRIT_CHANCE) == GEN_1 || gRisks.hasGen1CritChance)
+    if (GetConfig(B_CRIT_CHANCE) == GEN_1 || IsRiskActive(RISK_HAS_GEN_1_CRIT_CHANCE))
         critChanceIndex = CalcCritChanceStageGen1(ctx);
     else
         critChanceIndex = CalcCritChanceStage(ctx);
@@ -929,11 +929,11 @@ static inline bool32 ShouldCalcCritDamage(struct DamageContext *ctx)
         return TRUE;
     if (critChanceIndex >= RISKY_AI_CRIT_STAGE_THRESHOLD // Not guaranteed but above Risky threshold
         && (gAiThinkingStruct->aiFlags[ctx->battlerAtk] & AI_FLAG_RISKY)
-        && (GetConfig(B_CRIT_CHANCE) != GEN_1 && !gRisks.hasGen1CritChance))
+        && (GetConfig(B_CRIT_CHANCE) != GEN_1 && !IsRiskActive(RISK_HAS_GEN_1_CRIT_CHANCE)))
         return TRUE;
     if (critChanceIndex >= RISKY_AI_CRIT_THRESHOLD_GEN_1 // Not guaranteed but above Risky threshold
         && (gAiThinkingStruct->aiFlags[ctx->battlerAtk] & AI_FLAG_RISKY)
-        && (GetConfig(B_CRIT_CHANCE) == GEN_1 || gRisks.hasGen1CritChance))
+        && (GetConfig(B_CRIT_CHANCE) == GEN_1 || IsRiskActive(RISK_HAS_GEN_1_CRIT_CHANCE)))
         return TRUE;
 
     return FALSE;
@@ -1061,7 +1061,7 @@ struct SimulatedDamage AI_CalcDamage(enum Move move, enum BattlerId battlerAtk, 
 
                 s32 oneTripleKickHit = CalculateMoveDamageVars(&ctx);
 
-                if (IsOnPlayerSide(battlerAtk) && gRisks.playerLowerHalfDamageRolls)
+                if (IsOnPlayerSide(battlerAtk) && IsRiskActive(RISK_PLAYER_LOWER_DAMAGE_ROLLS))
                 {
                     damageByRollType = GetDamageByRollTypeLower(oneTripleKickHit, DMG_ROLL_LOWEST);
                     simDamage.minimum += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
@@ -1075,7 +1075,7 @@ struct SimulatedDamage AI_CalcDamage(enum Move move, enum BattlerId battlerAtk, 
                     damageByRollType = GetDamageByRollTypeLower(oneTripleKickHit, DMG_ROLL_RANDOM);
                     simDamage.random += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
                 }
-                else if (!IsOnPlayerSide(battlerAtk) && gRisks.opponentUpperHalfDamageRolls)
+                else if (!IsOnPlayerSide(battlerAtk) && IsRiskActive(RISK_OPPONENT_HIGHER_DAMAGE_ROLLS))
                 {
                     damageByRollType = GetDamageByRollTypeUpper(oneTripleKickHit, DMG_ROLL_LOWEST);
                     simDamage.minimum += AI_ApplyModifiersAfterDmgRoll(&ctx, damageByRollType);
@@ -1109,7 +1109,7 @@ struct SimulatedDamage AI_CalcDamage(enum Move move, enum BattlerId battlerAtk, 
         else
         {
             u32 damage = CalculateMoveDamageVars(&ctx);
-            if (IsOnPlayerSide(battlerAtk) && gRisks.playerLowerHalfDamageRolls)
+            if (IsOnPlayerSide(battlerAtk) && IsRiskActive(RISK_PLAYER_LOWER_DAMAGE_ROLLS))
             {
                 simDamage.minimum = GetDamageByRollType(damage, DMG_ROLL_LOWEST);
                 simDamage.minimum = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.minimum);
@@ -1123,7 +1123,7 @@ struct SimulatedDamage AI_CalcDamage(enum Move move, enum BattlerId battlerAtk, 
                 simDamage.random = GetDamageByRollType(damage, DMG_ROLL_RANDOM);
                 simDamage.random = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.random);
             }
-            else if (!IsOnPlayerSide(battlerAtk) && gRisks.opponentUpperHalfDamageRolls)
+            else if (!IsOnPlayerSide(battlerAtk) && IsRiskActive(RISK_OPPONENT_HIGHER_DAMAGE_ROLLS))
             {
                 simDamage.minimum = GetDamageByRollType(damage, DMG_ROLL_LOWEST);
                 simDamage.minimum = AI_ApplyModifiersAfterDmgRoll(&ctx, simDamage.minimum);
@@ -1571,7 +1571,7 @@ s32 AI_WhoStrikesFirst(enum BattlerId battlerAI, enum BattlerId battler, enum Mo
             return AI_IS_SLOWER;
     }
 
-    if (gRisks.opponentMovesFirst)
+    if (IsRiskActive(RISK_OPPONENT_MOVES_FIRST))
         return AI_IS_FASTER;
 
     speedBattlerAI = gAiLogicData->speedStats[battlerAI];
@@ -1621,7 +1621,7 @@ bool32 CanEndureHit(enum BattlerId battler, enum BattlerId battlerTarget, enum M
     if (!DoesBattlerIgnoreAbilityChecks(battler, gAiLogicData->abilities[battler], move))
     {
         if ((GetConfig(B_STURDY) >= GEN_5 && gAiLogicData->abilities[battlerTarget] == ABILITY_STURDY)
-            || (gRisks.hasSturdy && !IsOnPlayerSide(battlerTarget)))
+            || (IsRiskActive(RISK_HAS_STURDY) && !IsOnPlayerSide(battlerTarget)))
             return TRUE;
         if (IsMimikyuDisguised(battlerTarget))
             return TRUE;
@@ -1996,7 +1996,7 @@ bool32 DoesBattlerIgnoreAbilityChecks(enum BattlerId battlerAtk, enum Ability at
         return TRUE;
 
     if (IsMoldBreakerTypeAbility(battlerAtk, atkAbility) || MoveIgnoresTargetAbility(move)
-        || (!IsOnPlayerSide(battlerAtk) && gRisks.hasMoldBreaker))
+        || (!IsOnPlayerSide(battlerAtk) && IsRiskActive(RISK_HAS_MOLD_BREAKER)))
         return TRUE;
 
     return FALSE;
@@ -3559,7 +3559,7 @@ enum AIPivot ShouldPivot(enum BattlerId battlerAtk, enum BattlerId battlerDef, e
     if (!IsBattleMoveStatus(move) && BattlerHasMaxHPProtection(battlerDef) && hasGoodSwitchin && RandomPercentage(RNG_AI_SHOULD_PIVOT_BREAK_SASH, SHOULD_PIVOT_BREAK_SASH_CHANCE))
         return SHOULD_PIVOT;
     // Would benefit from Regenerator and have a good switchin
-    if ((gAiLogicData->abilities[battlerAtk] == ABILITY_REGENERATOR || (!IsOnPlayerSide(battlerAtk) && gRisks.hasRegenerator)) && ShouldRecover(battlerAtk, battlerDef, move, 33) && hasGoodSwitchin)
+    if ((gAiLogicData->abilities[battlerAtk] == ABILITY_REGENERATOR || (!IsOnPlayerSide(battlerAtk) && IsRiskActive(RISK_HAS_REGENERATOR))) && ShouldRecover(battlerAtk, battlerDef, move, 33) && hasGoodSwitchin)
         return SHOULD_PIVOT;
     // Palafin always wants to activate Zero to Hero via pivoting when able
     if (gAiLogicData->abilities[battlerAtk] == ABILITY_ZERO_TO_HERO && gBattleMons[battlerAtk].species == SPECIES_PALAFIN_ZERO && CountUsablePartyMons(battlerAtk) != 0)
@@ -3801,7 +3801,7 @@ bool32 AI_CanBeInfatuated(enum BattlerId battlerAtk, enum BattlerId battlerDef, 
 bool32 ShouldTryToFlinch(enum BattlerId battlerAtk, enum BattlerId battlerDef, enum Ability atkAbility, enum Ability defAbility, enum Move move)
 {
     enum Move predictedMove = GetPredictedMove(battlerAtk, battlerDef, gAiLogicData);
-    if (((!(IsMoldBreakerTypeAbility(battlerAtk, gAiLogicData->abilities[battlerAtk]) || (!IsOnPlayerSide(battlerAtk) && gRisks.hasMoldBreaker)) && (defAbility == ABILITY_SHIELD_DUST || defAbility == ABILITY_INNER_FOCUS))
+    if (((!(IsMoldBreakerTypeAbility(battlerAtk, gAiLogicData->abilities[battlerAtk]) || (!IsOnPlayerSide(battlerAtk) && IsRiskActive(RISK_HAS_MOLD_BREAKER))) && (defAbility == ABILITY_SHIELD_DUST || defAbility == ABILITY_INNER_FOCUS))
       || gAiLogicData->holdEffects[battlerDef] == HOLD_EFFECT_COVERT_CLOAK
       || DoesSubstituteBlockMove(battlerAtk, battlerDef, move)
       || AI_IsSlower(battlerAtk, battlerDef, move, predictedMove, CONSIDER_PRIORITY))) // Opponent goes first
@@ -3862,7 +3862,7 @@ bool32 IsFlinchGuaranteed(enum BattlerId battlerAtk, enum BattlerId battlerDef, 
         {
             if (gAiLogicData->holdEffects[battlerDef] == HOLD_EFFECT_COVERT_CLOAK
             || DoesSubstituteBlockMove(battlerAtk, battlerDef, move)
-            || (!(IsMoldBreakerTypeAbility(battlerAtk, gAiLogicData->abilities[battlerAtk]) || (!IsOnPlayerSide(battlerAtk) && gRisks.hasMoldBreaker))
+            || (!(IsMoldBreakerTypeAbility(battlerAtk, gAiLogicData->abilities[battlerAtk]) || (!IsOnPlayerSide(battlerAtk) && IsRiskActive(RISK_HAS_MOLD_BREAKER)))
             && (gAiLogicData->abilities[battlerDef] == ABILITY_SHIELD_DUST || gAiLogicData->abilities[battlerDef] == ABILITY_INNER_FOCUS)))
                 return FALSE;
             else
@@ -4926,13 +4926,13 @@ bool32 HasHPForDamagingSetup(enum BattlerId battlerAtk, enum BattlerId battlerDe
      && gAiLogicData->abilities[battlerAtk] == ABILITY_ICE_FACE
      && gBattleMons[battlerAtk].species == SPECIES_EISCUE_ICE
      && !IsMoldBreakerTypeAbility(battlerDef, gAiLogicData->abilities[battlerDef])
-     && !(!IsOnPlayerSide(battlerDef) && gRisks.hasMoldBreaker)) // ice face will absorb the hit, safe to use setup
+     && !(!IsOnPlayerSide(battlerDef) && IsRiskActive(RISK_HAS_MOLD_BREAKER))) // ice face will absorb the hit, safe to use setup
         return TRUE;
 
     if (gAiLogicData->abilities[battlerAtk] == ABILITY_DISGUISE
      && IsMimikyuDisguised(battlerAtk)
      && !IsMoldBreakerTypeAbility(battlerDef, gAiLogicData->abilities[battlerDef])
-     && !(!IsOnPlayerSide(battlerDef) && gRisks.hasMoldBreaker)) // disguise will absorb the hit, safe to use setup
+     && !(!IsOnPlayerSide(battlerDef) && IsRiskActive(RISK_HAS_MOLD_BREAKER))) // disguise will absorb the hit, safe to use setup
         return TRUE;
 
     return FALSE;

@@ -9,7 +9,7 @@
 SINGLE_BATTLE_TEST("Risk: Opponent has Sturdy")
 {
     GIVEN {
-        gRisks.hasSturdy = TRUE;
+        SetRisk(RISK_HAS_STURDY);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET) { Level(1); }
     } WHEN {
@@ -24,7 +24,7 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Sturdy")
 SINGLE_BATTLE_TEST("Risk: Opponent has Sturdy (breaks)")
 {
     GIVEN {
-        gRisks.hasSturdy = TRUE;
+        SetRisk(RISK_HAS_STURDY);
         PLAYER(SPECIES_RAMPARDOS) { Ability(ABILITY_MOLD_BREAKER); }
         OPPONENT(SPECIES_WOBBUFFET) { Level(1); }
     } WHEN {
@@ -39,16 +39,19 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Sturdy (breaks)")
 AI_SINGLE_BATTLE_TEST("Risk: Opponent has Sturdy (AI)")
 {
     u32 odds = 0;
-    PARAMETRIZE { gRisks.hasSturdy = FALSE; odds = SHOULD_SWITCH_HASBADODDS_PERCENTAGE; }
-    PARAMETRIZE { gRisks.hasSturdy = TRUE; odds = 100; }
+    bool32 hasSturdy = FALSE;
+    PARAMETRIZE { hasSturdy = FALSE; odds = SHOULD_SWITCH_HASBADODDS_PERCENTAGE; }
+    PARAMETRIZE { hasSturdy = TRUE; odds = 100; }
     PASSES_RANDOMLY(odds, 100, RNG_AI_SWITCH_HASBADODDS);
     GIVEN {
+        if (hasSturdy)
+            SetRisk(RISK_HAS_STURDY);
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_SWITCHING | AI_FLAG_SMART_MON_CHOICES | AI_FLAG_OMNISCIENT);
         PLAYER(SPECIES_ELECTRODE) { HP(1); MaxHP(400); Moves(MOVE_THUNDERBOLT, MOVE_THUNDER_WAVE, MOVE_THUNDER_SHOCK); }
         OPPONENT(SPECIES_PELIPPER) { Moves(MOVE_EARTHQUAKE); }
         OPPONENT(SPECIES_RHYDON) { Moves(MOVE_EARTHQUAKE); Ability(ABILITY_ROCK_HEAD); }
     } WHEN {
-        if (gRisks.hasSturdy)
+        if (IsRiskActive(RISK_HAS_STURDY))
             TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_MOVE(opponent, MOVE_EARTHQUAKE); }
         else
             TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_SWITCH(opponent, 1); }
@@ -58,7 +61,7 @@ AI_SINGLE_BATTLE_TEST("Risk: Opponent has Sturdy (AI)")
 SINGLE_BATTLE_TEST("Risk: Opponent has Mold Breaker")
 {
     GIVEN {
-        gRisks.hasMoldBreaker = TRUE;
+        SetRisk(RISK_HAS_MOLD_BREAKER);
         PLAYER(SPECIES_ONIX) { Ability(ABILITY_STURDY); Level(1); }
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -73,14 +76,17 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Mold Breaker")
 
 AI_SINGLE_BATTLE_TEST("Risk: Opponent has Mold Breaker (AI)")
 {
-    PARAMETRIZE { gRisks.hasMoldBreaker = FALSE; }
-    PARAMETRIZE { gRisks.hasMoldBreaker = TRUE; }
+    bool32 hasMoldBreaker = FALSE;
+    PARAMETRIZE { hasMoldBreaker = FALSE; }
+    PARAMETRIZE { hasMoldBreaker = TRUE; }
     GIVEN {
+        if (hasMoldBreaker)
+            SetRisk(RISK_HAS_MOLD_BREAKER);
         PLAYER(SPECIES_EELEKTROSS) { Moves(MOVE_TACKLE); }
         OPPONENT(SPECIES_GOLURK) { Moves(MOVE_TACKLE, MOVE_EARTHQUAKE); }
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
     } WHEN {
-        if (gRisks.hasMoldBreaker)
+        if (IsRiskActive(RISK_HAS_MOLD_BREAKER))
             TURN { MOVE(player, MOVE_TACKLE); EXPECT_MOVE(opponent, MOVE_EARTHQUAKE); }
         else
             TURN { MOVE(player, MOVE_TACKLE); EXPECT_MOVE(opponent, MOVE_TACKLE); }
@@ -92,7 +98,7 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Filter")
     s16 damageFoe;
     s16 damagePlayer;
     GIVEN {
-        gRisks.hasFilter = TRUE;
+        SetRisk(RISK_HAS_FILTER);
         PLAYER(SPECIES_AGGRON);
         OPPONENT(SPECIES_AGGRON);
     } WHEN {
@@ -112,7 +118,7 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Adaptability")
     s16 damageFoe;
     s16 damagePlayer;
     GIVEN {
-        gRisks.hasAdaptability = TRUE;
+        SetRisk(RISK_HAS_ADAPTABILITY);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -130,7 +136,7 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Adaptability")
 SINGLE_BATTLE_TEST("Risk: Opponent has Wonder Guard")
 {
     GIVEN {
-        gRisks.hasWonderGuard = TRUE;
+        SetRisk(RISK_HAS_WONDER_GUARD);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -153,7 +159,7 @@ SINGLE_BATTLE_TEST("Risk: Player can't crit")
     s16 damageFoe;
     s16 damagePlayer;
     GIVEN {
-        gRisks.cantCrit = TRUE;
+        SetRisk(RISK_CANT_CRIT);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -171,7 +177,7 @@ SINGLE_BATTLE_TEST("Risk: Player can't crit")
 SINGLE_BATTLE_TEST("Risk: Opponent moves first (Single)")
 {
     GIVEN {
-        gRisks.opponentMovesFirst = TRUE;
+        SetRisk(RISK_OPPONENT_MOVES_FIRST);
         PLAYER(SPECIES_WOBBUFFET) { Speed(2); }
         OPPONENT(SPECIES_WOBBUFFET) { Speed(1); }
     } WHEN {
@@ -185,7 +191,7 @@ SINGLE_BATTLE_TEST("Risk: Opponent moves first (Single)")
 DOUBLE_BATTLE_TEST("Risk: Opponent moves first (Double)")
 {
     GIVEN {
-        gRisks.opponentMovesFirst = TRUE;
+        SetRisk(RISK_OPPONENT_MOVES_FIRST);
         PLAYER(SPECIES_WOBBUFFET) { Speed(4); }
         PLAYER(SPECIES_WOBBUFFET) { Speed(3); }
         OPPONENT(SPECIES_WOBBUFFET) { Speed(2); }
@@ -208,8 +214,8 @@ DOUBLE_BATTLE_TEST("Risk: Opponent moves first (Double)")
 AI_SINGLE_BATTLE_TEST("Risk: Opponent moves first (AI)")
 {
     u32 odds;
-    PARAMETRIZE { odds = 100; gRisks.opponentMovesFirst = TRUE; }
-    PARAMETRIZE { odds = SHOULD_SWITCH_HASBADODDS_PERCENTAGE; gRisks.opponentMovesFirst = FALSE; }
+    PARAMETRIZE { odds = 100; SetRisk(RISK_OPPONENT_MOVES_FIRST); }
+    PARAMETRIZE { odds = SHOULD_SWITCH_HASBADODDS_PERCENTAGE; ClearRisk(RISK_OPPONENT_MOVES_FIRST); }
     PASSES_RANDOMLY(odds, 100, RNG_AI_SWITCH_HASBADODDS);
     GIVEN {
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_SWITCHING | AI_FLAG_SMART_MON_CHOICES | AI_FLAG_OMNISCIENT);
@@ -217,7 +223,7 @@ AI_SINGLE_BATTLE_TEST("Risk: Opponent moves first (AI)")
         OPPONENT(SPECIES_PELIPPER) { Moves(MOVE_EARTHQUAKE); }
         OPPONENT(SPECIES_RHYDON) { Moves(MOVE_EARTHQUAKE); Ability(ABILITY_ROCK_HEAD); }
     } WHEN {
-        if (!gRisks.opponentMovesFirst)
+        if (!IsRiskActive(RISK_OPPONENT_MOVES_FIRST))
             TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_SWITCH(opponent, 1); }
         else
             TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_MOVE(opponent, MOVE_EARTHQUAKE); }
@@ -228,7 +234,7 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Regenerator")
 {
     //  Also checking that it doesn't break other switchout abilities
     GIVEN {
-        gRisks.hasRegenerator = TRUE;
+        SetRisk(RISK_HAS_REGENERATOR);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WEEZING) { Ability(ABILITY_NEUTRALIZING_GAS); HP(100); MaxHP(300); }
         OPPONENT(SPECIES_WYNAUT);
@@ -244,18 +250,18 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Regenerator")
 
 TEST("Risk: Opponent has 1 extra mon in party")
 {
-    gRisks.opponentPartyPlus1 = TRUE;
+    SetRisk(RISK_OPPONENT_MORE_MONS);
     struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
     CreateNPCTrainerPartyFromTrainer(testParty, GetTrainerStructFromId(15), TRUE, BATTLE_TYPE_TRAINER);
     EXPECT_NE(GetMonData(&testParty[2], MON_DATA_SPECIES), SPECIES_NONE);
     Free(testParty);
-    gRisks.opponentPartyPlus1 = FALSE;
+    ClearRisk(RISK_OPPONENT_MORE_MONS);
 }
 
 SINGLE_BATTLE_TEST("Risk: Turn Limit 1")
 {
     GIVEN {
-        gRisks.turnLimit1 = TRUE;
+        SetRisk(RISK_TURN_LIMIT_1);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -270,7 +276,7 @@ SINGLE_BATTLE_TEST("Risk: Turn Limit 1")
 SINGLE_BATTLE_TEST("Risk: Turn Limit 2")
 {
     GIVEN {
-        gRisks.turnLimit2 = TRUE;
+        SetRisk(RISK_TURN_LIMIT_2);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -284,7 +290,7 @@ SINGLE_BATTLE_TEST("Risk: Turn Limit 2")
 SINGLE_BATTLE_TEST("Risk: Turn Limit 3")
 {
     GIVEN {
-        gRisks.turnLimit3 = TRUE;
+        SetRisk(RISK_TURN_LIMIT_3);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -297,7 +303,7 @@ SINGLE_BATTLE_TEST("Risk: Turn Limit 3")
 SINGLE_BATTLE_TEST("Risk: Turn Limit win")
 {
     GIVEN {
-        gRisks.turnLimit3 = TRUE;
+        SetRisk(RISK_TURN_LIMIT_3);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -310,7 +316,7 @@ SINGLE_BATTLE_TEST("Risk: Turn Limit win")
 SINGLE_BATTLE_TEST("Risk: Flip type chart")
 {
     GIVEN {
-        gRisks.flipTypeChart = TRUE;
+        SetRisk(RISK_FLIP_TYPE_CHART);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -323,7 +329,7 @@ SINGLE_BATTLE_TEST("Risk: Flip type chart")
 SINGLE_BATTLE_TEST("Risk: Attacker gets Drowsy")
 {
     GIVEN {
-        gRisks.attackGetsDrowsy = TRUE;
+        SetRisk(RISK_ATTACK_GETS_DROWSY);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -340,7 +346,7 @@ SINGLE_BATTLE_TEST("Risk: Attacker gets Drowsy")
 SINGLE_BATTLE_TEST("Risk: Status gets Para")
 {
     GIVEN {
-        gRisks.statusGetsPara = TRUE;
+        SetRisk(RISK_STATUS_GETS_PARA);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -355,7 +361,7 @@ SINGLE_BATTLE_TEST("Risk: Foe has Metronome (item)")
 {
     s16 damage[7];
     GIVEN {
-        gRisks.foeHasMetronome = TRUE;
+        SetRisk(RISK_FOE_HAS_METRONOME);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -397,7 +403,7 @@ SINGLE_BATTLE_TEST("Risk: Player has negative Metronome (item)")
 {
     s16 damage[7];
     GIVEN {
-        gRisks.playerHasNegativeMetronome = TRUE;
+        SetRisk(RISK_PLAYER_HAS_NEGATIVE_METRONOME);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -440,7 +446,7 @@ SINGLE_BATTLE_TEST("Risk: Player has recoil")
     s16 damageAtk;
     s16 damageRecoil;
     GIVEN {
-        gRisks.playerHasRecoil = TRUE;
+        SetRisk(RISK_PLAYER_HAS_RECOIL);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -457,7 +463,7 @@ SINGLE_BATTLE_TEST("Risk: Player has recoil")
 SINGLE_BATTLE_TEST("Risk: Opponent inflicts Gastro Acid on attack")
 {
     GIVEN {
-        gRisks.opponentInflictsGastroAcid = TRUE;
+        SetRisk(RISK_OPPONENT_INFLICTS_GASTRO_ACID);
         PLAYER(SPECIES_FLYGON) { Ability(ABILITY_LEVITATE); }
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -474,7 +480,7 @@ SINGLE_BATTLE_TEST("Risk: Opponent inflicts Gastro Acid on attack")
 SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches")
 {
     GIVEN {
-        gRisks.opponentAttacksSwitches = TRUE;
+        SetRisk(RISK_OPPONENT_ATTACKS_SWITCHES);
         PLAYER(SPECIES_WOBBUFFET);
         PLAYER(SPECIES_WYNAUT);
         OPPONENT(SPECIES_WOBBUFFET);
@@ -489,8 +495,8 @@ SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches")
 AI_SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches (AI)")
 {
     u32 odds;
-    PARAMETRIZE { odds = SHOULD_SWITCH_HASBADODDS_PERCENTAGE; gRisks.opponentAttacksSwitches = TRUE; }
-    PARAMETRIZE { odds = 100; gRisks.opponentAttacksSwitches = FALSE; }
+    PARAMETRIZE { odds = SHOULD_SWITCH_HASBADODDS_PERCENTAGE; SetRisk(RISK_OPPONENT_ATTACKS_SWITCHES); }
+    PARAMETRIZE { odds = 100; ClearRisk(RISK_OPPONENT_ATTACKS_SWITCHES); }
     PASSES_RANDOMLY(odds, 100, RNG_AI_SWITCH_HASBADODDS);
     GIVEN {
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_SWITCHING | AI_FLAG_SMART_MON_CHOICES | AI_FLAG_OMNISCIENT);
@@ -498,7 +504,7 @@ AI_SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches (AI)")
         OPPONENT(SPECIES_PELIPPER) { Speed(10); Moves(MOVE_EARTHQUAKE); }
         OPPONENT(SPECIES_RHYDON) { Speed(4); Moves(MOVE_EARTHQUAKE); Ability(ABILITY_ROCK_HEAD); }
     } WHEN {
-        if (!gRisks.opponentAttacksSwitches)
+        if (!IsRiskActive(RISK_OPPONENT_ATTACKS_SWITCHES))
             TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_MOVE(opponent, MOVE_EARTHQUAKE); }
         else
             TURN { MOVE(player, MOVE_THUNDERBOLT); EXPECT_SWITCH(opponent, 1); }
@@ -508,7 +514,7 @@ AI_SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches (AI)")
 SINGLE_BATTLE_TEST("Risk: Opponent attacks apply disable")
 {
     GIVEN {
-        gRisks.opponentAttacksDisable = TRUE;
+        SetRisk(RISK_OPPONENT_ATTACKS_DISABLE);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -525,7 +531,7 @@ SINGLE_BATTLE_TEST("Risk: Opponent attacks apply disable")
 SINGLE_BATTLE_TEST("Risk: Opponent attacks apply torment")
 {
     GIVEN {
-        gRisks.opponentAttacksTorment = TRUE;
+        SetRisk(RISK_OPPONENT_ATTACKS_TORMENT);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -542,7 +548,7 @@ SINGLE_BATTLE_TEST("Risk: Opponent attacks apply torment")
 SINGLE_BATTLE_TEST("Risk: Player starts with burn")
 {
     GIVEN {
-        gRisks.playerStartsWithBurn = TRUE;
+        SetRisk(RISK_PLAYER_STARTS_WITH_BURN);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -555,7 +561,7 @@ SINGLE_BATTLE_TEST("Risk: Player starts with burn")
 SINGLE_BATTLE_TEST("Risk: Player starts with paralysis")
 {
     GIVEN {
-        gRisks.playerStartsWithParalysis = TRUE;
+        SetRisk(RISK_PLAYER_STARTS_WITH_PARALYSIS);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -568,7 +574,7 @@ SINGLE_BATTLE_TEST("Risk: Player starts with paralysis")
 SINGLE_BATTLE_TEST("Risk: Player starts with frostbite")
 {
     GIVEN {
-        gRisks.playerStartsWithFrostbite = TRUE;
+        SetRisk(RISK_PLAYER_STARTS_WITH_FROSTBITE);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -580,16 +586,19 @@ SINGLE_BATTLE_TEST("Risk: Player starts with frostbite")
 
 AI_SINGLE_BATTLE_TEST("Risk: Opponent has Omniscient AI")
 {
-    PARAMETRIZE { gRisks.hasOmniscientAi = FALSE; }
-    PARAMETRIZE { gRisks.hasOmniscientAi = TRUE; }
+    bool32 hasOmniscientAi;
+    PARAMETRIZE { hasOmniscientAi = FALSE; }
+    PARAMETRIZE { hasOmniscientAi = TRUE; }
     GIVEN {
+        if (hasOmniscientAi)
+            SetRisk(RISK_HAS_OMNISCIENT_AI);
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_MON_CHOICES);
         PLAYER(SPECIES_TYPHLOSION) { Speed(5); Moves(MOVE_TACKLE, MOVE_FLAMETHROWER); }
         OPPONENT(SPECIES_ZIGZAGOON) { Speed(1); Moves(MOVE_TACKLE); Level(1); }
         OPPONENT(SPECIES_SCIZOR) { Speed(4); Moves(MOVE_TACKLE); }
         OPPONENT(SPECIES_BLISSEY) { Speed(4); Moves(MOVE_TACKLE); }
     } WHEN {
-        if (gRisks.hasOmniscientAi == TRUE)
+        if (IsRiskActive(RISK_HAS_OMNISCIENT_AI))
             TURN { MOVE(player, MOVE_TACKLE); EXPECT_MOVE(opponent, MOVE_TACKLE); EXPECT_SEND_OUT(opponent, 2); }
         else
             TURN { MOVE(player, MOVE_TACKLE); EXPECT_MOVE(opponent, MOVE_TACKLE); EXPECT_SEND_OUT(opponent, 1); }
@@ -599,10 +608,13 @@ AI_SINGLE_BATTLE_TEST("Risk: Opponent has Omniscient AI")
 AI_SINGLE_BATTLE_TEST("Risk: Opponent has Prediction AI (switches)")
 {
     u32 odds = 0;
-    PARAMETRIZE { gRisks.hasPredictionAi = FALSE; odds = 0; }
-    PARAMETRIZE { gRisks.hasPredictionAi = TRUE; odds = PREDICT_SWITCH_CHANCE; }
+    bool32 hasPredictionAi;
+    PARAMETRIZE { hasPredictionAi = FALSE; odds = 0; }
+    PARAMETRIZE { hasPredictionAi = TRUE; odds = PREDICT_SWITCH_CHANCE; }
     PASSES_RANDOMLY(odds, 100, RNG_AI_PREDICT_SWITCH);
     GIVEN {
+        if (hasPredictionAi)
+            SetRisk(RISK_HAS_PREDICTION_AI);
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_TRY_TO_FAINT | AI_FLAG_CHECK_VIABILITY | AI_FLAG_OMNISCIENT | AI_FLAG_SMART_SWITCHING | AI_FLAG_SMART_MON_CHOICES);
         PLAYER(SPECIES_BRONZONG) { Moves(MOVE_PSYCHIC); }
         PLAYER(SPECIES_CONKELDURR) { Moves(MOVE_HAMMER_ARM); }
@@ -616,10 +628,13 @@ AI_SINGLE_BATTLE_TEST("Risk: Opponent has Prediction AI (switches)")
 AI_SINGLE_BATTLE_TEST("Risk: Opponent has Prediction AI (moves)")
 {
     u32 odds = 0;
-    PARAMETRIZE { gRisks.hasPredictionAi = FALSE; odds = 0; }
-    PARAMETRIZE { gRisks.hasPredictionAi = TRUE; odds = PREDICT_MOVE_CHANCE; }
+    bool32 hasPredictionAi;
+    PARAMETRIZE { hasPredictionAi = FALSE; odds = 0; }
+    PARAMETRIZE { hasPredictionAi = TRUE; odds = PREDICT_MOVE_CHANCE; }
     PASSES_RANDOMLY(odds, 100, RNG_AI_PREDICT_MOVE);
     GIVEN {
+        if (hasPredictionAi)
+            SetRisk(RISK_HAS_PREDICTION_AI);
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_TRY_TO_FAINT | AI_FLAG_CHECK_VIABILITY | AI_FLAG_OMNISCIENT | AI_FLAG_SMART_SWITCHING | AI_FLAG_SMART_MON_CHOICES);
         PLAYER(SPECIES_VAPOREON) { Ability(ABILITY_WATER_ABSORB); Moves(MOVE_SURF, MOVE_TACKLE); }
         OPPONENT(SPECIES_NUMEL) { Moves(MOVE_TACKLE); }
@@ -631,9 +646,9 @@ AI_SINGLE_BATTLE_TEST("Risk: Opponent has Prediction AI (moves)")
 
 SINGLE_BATTLE_TEST("Risk: Opponent has guaranteed secondary effects")
 {
-    PARAMETRIZE { gRisks.hasGuaranteedEffects = TRUE; }
-    PARAMETRIZE { gRisks.hasGuaranteedEffects = FALSE; }
-    if (gRisks.hasGuaranteedEffects)
+    PARAMETRIZE { SetRisk(RISK_HAS_GUARANTEED_EFFECTS); }
+    PARAMETRIZE { ClearRisk(RISK_HAS_GUARANTEED_EFFECTS); }
+    if (IsRiskActive(RISK_HAS_GUARANTEED_EFFECTS))
         PASSES_RANDOMLY(100, 100);
     else
         PASSES_RANDOMLY(30, 100, RNG_SECONDARY_EFFECT);
@@ -650,14 +665,17 @@ SINGLE_BATTLE_TEST("Risk: Opponent has guaranteed secondary effects")
 
 AI_SINGLE_BATTLE_TEST("Risk: Opponent has guaranteed secondary effects (AI)")
 {
-    PARAMETRIZE { gRisks.hasGuaranteedEffects = TRUE; }
-    PARAMETRIZE { gRisks.hasGuaranteedEffects = FALSE; }
+    bool32 hasGuaranteedEffects;
+    PARAMETRIZE { hasGuaranteedEffects = TRUE; }
+    PARAMETRIZE { hasGuaranteedEffects = FALSE; }
     GIVEN {
+        if (hasGuaranteedEffects)
+            SetRisk(RISK_HAS_GUARANTEED_EFFECTS);
         PLAYER(SPECIES_AGGRON) { Speed(1); Moves(MOVE_TACKLE); }
         OPPONENT(SPECIES_ZIGZAGOON) { Speed(2); Moves(MOVE_HEADBUTT, MOVE_KARATE_CHOP); }
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
     } WHEN {
-        if (gRisks.hasGuaranteedEffects)
+        if (IsRiskActive(RISK_HAS_GUARANTEED_EFFECTS))
             TURN { EXPECT_MOVE(opponent, MOVE_HEADBUTT); MOVE(player, MOVE_TACKLE); }
         else
             TURN { EXPECT_MOVE(opponent, MOVE_KARATE_CHOP); MOVE(player, MOVE_TACKLE); }
@@ -668,7 +686,7 @@ SINGLE_BATTLE_TEST("Risk: Opponent can't miss")
 {
     PASSES_RANDOMLY(100, 100);
     GIVEN {
-        gRisks.hasGuaranteedAccuracy = TRUE;
+        SetRisk(RISK_HAS_GUARANTEED_ACCURACY);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -681,7 +699,7 @@ SINGLE_BATTLE_TEST("Risk: Opponent can't miss")
 AI_SINGLE_BATTLE_TEST("Risk: Opponent can't miss (AI)")
 {
     GIVEN {
-        gRisks.hasGuaranteedAccuracy = TRUE;
+        SetRisk(RISK_HAS_GUARANTEED_ACCURACY);
         PLAYER(SPECIES_WOBBUFFET) { Moves(MOVE_CELEBRATE); }
         OPPONENT(SPECIES_ZIGZAGOON) { Moves(MOVE_DOUBLE_EDGE, MOVE_FISSURE); }
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
@@ -693,13 +711,13 @@ AI_SINGLE_BATTLE_TEST("Risk: Opponent can't miss (AI)")
 SINGLE_BATTLE_TEST("Risk: Gen 1 crit chance")
 {
     u32 genConfig, passes, trials;
-    PARAMETRIZE { genConfig = GEN_9; passes = 1; trials = 16; gRisks.hasGen1CritChance = TRUE; } // Override gen config with risk
-    PARAMETRIZE { genConfig = GEN_1; passes = 1;  trials = 16; gRisks.hasGen1CritChance = FALSE; }   //  6.25% with Wobbuffet's base speed
-    PARAMETRIZE { genConfig = GEN_2; passes = 17; trials = 256; gRisks.hasGen1CritChance = FALSE; }  // ~6.64%
+    PARAMETRIZE { genConfig = GEN_9; passes = 1; trials = 16; SetRisk(RISK_HAS_GEN_1_CRIT_CHANCE); } // Override gen config with risk
+    PARAMETRIZE { genConfig = GEN_1; passes = 1;  trials = 16; ClearRisk(RISK_HAS_GEN_1_CRIT_CHANCE); }   //  6.25% with Wobbuffet's base speed
+    PARAMETRIZE { genConfig = GEN_2; passes = 17; trials = 256; ClearRisk(RISK_HAS_GEN_1_CRIT_CHANCE); }  // ~6.64%
     for (u32 j = GEN_3; j <= GEN_6; j++)
-        PARAMETRIZE { genConfig = j; passes = 1,  trials = 16; gRisks.hasGen1CritChance = FALSE; }  //  6.25%
+        PARAMETRIZE { genConfig = j; passes = 1,  trials = 16; ClearRisk(RISK_HAS_GEN_1_CRIT_CHANCE); }  //  6.25%
     for (u32 j = GEN_7; j <= GEN_9; j++)
-        PARAMETRIZE { genConfig = j; passes = 1,  trials = 24; gRisks.hasGen1CritChance = FALSE; }  // ~4.17%
+        PARAMETRIZE { genConfig = j; passes = 1,  trials = 24; ClearRisk(RISK_HAS_GEN_1_CRIT_CHANCE); }  // ~4.17%
 
     PASSES_RANDOMLY(passes, trials, RNG_CRITICAL_HIT);
     GIVEN {
@@ -743,7 +761,7 @@ SINGLE_BATTLE_TEST("Risk: Player can only use 2 moves, but get Parental Bond")
     //  Can't test move selection
     s16 dmg1, dmg2;
     GIVEN {
-        gRisks.canOnlyUseTopMoves1 = TRUE;
+        SetRisk(RISK_CAN_ONLY_USE_TOP_MOVES);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -760,10 +778,23 @@ SINGLE_BATTLE_TEST("Risk: Player can only use 2 moves, but get Parental Bond")
 SINGLE_BATTLE_TEST("Risk: Player starts with spikes", s16 damage)
 {
     u32 divisor;
-    PARAMETRIZE { gRisks.playerStartsSpikes1 = TRUE; divisor = 8; }
-    PARAMETRIZE { gRisks.playerStartsSpikes2 = TRUE; divisor = 6; }
-    PARAMETRIZE { gRisks.playerStartsSpikes3 = TRUE; divisor = 4; }
+    u32 spikeLayers;
+    PARAMETRIZE { spikeLayers = 1; divisor = 8; }
+    PARAMETRIZE { spikeLayers = 2; divisor = 6; }
+    PARAMETRIZE { spikeLayers = 3; divisor = 4; }
     GIVEN {
+        switch (spikeLayers)
+        {
+        case 1:
+            SetRisk(RISK_PLAYER_SPIKES_1);
+            break;
+        case 2:
+            SetRisk(RISK_PLAYER_SPIKES_2);
+            break;
+        case 3:
+            SetRisk(RISK_PLAYER_SPIKES_3);
+            break;
+        }
         PLAYER(SPECIES_WOBBUFFET);
         PLAYER(SPECIES_WYNAUT);
         OPPONENT(SPECIES_WOBBUFFET);
@@ -781,16 +812,26 @@ SINGLE_BATTLE_TEST("Risk: Player starts with spikes", s16 damage)
 
 SINGLE_BATTLE_TEST("Risk: Player starts with toxic spikes")
 {
-    PARAMETRIZE { gRisks.playerStartsTSpikes1 = TRUE; }
-    PARAMETRIZE { gRisks.playerStartsTSpikes2 = TRUE; }
+    u32 spikeLayers;
+    PARAMETRIZE { spikeLayers = 1; }
+    PARAMETRIZE { spikeLayers = 2; }
     GIVEN {
+        switch (spikeLayers)
+        {
+        case 1:
+            SetRisk(RISK_PLAYER_TOXIC_SPIKES_1);
+            break;
+        case 2:
+            SetRisk(RISK_PLAYER_TOXIC_SPIKES_2);
+            break;
+        }
         PLAYER(SPECIES_WOBBUFFET);
         PLAYER(SPECIES_WYNAUT);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { SWITCH(player, 1); }
     } SCENE {
-        if (gRisks.playerStartsTSpikes2)
+        if (IsRiskActive(RISK_PLAYER_TOXIC_SPIKES_2))
         {
             MESSAGE("Go! Wynaut!");
             MESSAGE("Wynaut was badly poisoned!");
@@ -802,7 +843,7 @@ SINGLE_BATTLE_TEST("Risk: Player starts with toxic spikes")
             MESSAGE("Wynaut was poisoned!");
             STATUS_ICON(player, poison: TRUE);
             NOT STATUS_ICON(player, badPoison: TRUE);
-            }
+        }
     } FINALLY {
         ResetStartingStatuses();
     }
@@ -811,7 +852,7 @@ SINGLE_BATTLE_TEST("Risk: Player starts with toxic spikes")
 SINGLE_BATTLE_TEST("Risk: Player starts with sticky web")
 {
     GIVEN {
-        gRisks.playerStartsStickyWeb = TRUE;
+        SetRisk(RISK_PLAYER_STICKY_WEB);
         PLAYER(SPECIES_WOBBUFFET);
         PLAYER(SPECIES_WYNAUT);
         OPPONENT(SPECIES_WOBBUFFET);
@@ -829,7 +870,7 @@ SINGLE_BATTLE_TEST("Risk: Player starts with sticky web")
 SINGLE_BATTLE_TEST("Risk: Player starts with stealth rock")
 {
     GIVEN {
-        gRisks.playerStartsStealthRock = TRUE;
+        SetRisk(RISK_PLAYER_STEALTH_ROCK);
         ASSUME(gSpeciesInfo[SPECIES_CHARIZARD].types[0] == TYPE_FIRE);
         ASSUME(gSpeciesInfo[SPECIES_CHARIZARD].types[1] == TYPE_FLYING);
         PLAYER(SPECIES_WOBBUFFET);
@@ -850,7 +891,7 @@ SINGLE_BATTLE_TEST("Risk: Player starts with stealth rock")
 SINGLE_BATTLE_TEST("Risk: Player starts with sharp steel")
 {
     GIVEN {
-        gRisks.playerStartsSharpSteel = TRUE;
+        SetRisk(RISK_PLAYER_SHARP_STEEL);
         ASSUME(gSpeciesInfo[SPECIES_SYLVEON].types[0] == TYPE_FAIRY);
         PLAYER(SPECIES_WOBBUFFET);
         PLAYER(SPECIES_SYLVEON);
@@ -870,11 +911,11 @@ SINGLE_BATTLE_TEST("Risk: Player starts with sharp steel")
 SINGLE_BATTLE_TEST("Risk: All hazard risks at once")
 {
     GIVEN {
-        gRisks.playerStartsSpikes3 = TRUE;
-        gRisks.playerStartsTSpikes2 = TRUE;
-        gRisks.playerStartsStealthRock = TRUE;
-        gRisks.playerStartsSharpSteel = TRUE;
-        gRisks.playerStartsStickyWeb = TRUE;
+        SetRisk(RISK_PLAYER_SPIKES_3);
+        SetRisk(RISK_PLAYER_TOXIC_SPIKES_2);
+        SetRisk(RISK_PLAYER_STEALTH_ROCK);
+        SetRisk(RISK_PLAYER_SHARP_STEEL);
+        SetRisk(RISK_PLAYER_STICKY_WEB);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -895,7 +936,7 @@ SINGLE_BATTLE_TEST("Risk: Player cannot remove hazards")
     PARAMETRIZE { move = MOVE_RAPID_SPIN; } // Shared with Mortal Spin
     PARAMETRIZE { move = MOVE_DEFOG; } // Shared with Tidy Up
     GIVEN {
-        gRisks.playerHazardsNotRemovable = TRUE;
+        SetRisk(RISK_PLAYER_HAZARDS_NOT_REMOVABLE);
         PLAYER(SPECIES_WOBBUFFET);
         PLAYER(SPECIES_WYNAUT);
         OPPONENT(SPECIES_WOBBUFFET);
