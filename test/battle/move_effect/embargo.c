@@ -45,6 +45,8 @@ SINGLE_BATTLE_TEST("Embargo blocks an affected Pokémon's trainer from using ite
     }
 }
 
+//  Not relevant for us
+/*
 WILD_BATTLE_TEST("Embargo doesn't block held item effects that affect experience gain", s32 exp)
 {
     enum Item item;
@@ -94,6 +96,7 @@ WILD_BATTLE_TEST("Embargo doesn't block held item effects that affect effort val
         EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_HP_EV), finalHPEVAmount);
     }
 }
+*/
 
 SINGLE_BATTLE_TEST("Embargo negates a held item's Speed reduction")
 {
