@@ -1589,7 +1589,7 @@ u32 CheckMoveLimitations(enum BattlerId battler, u8 unusableMoves, u16 check)
     gPotentialItemEffectBattler = battler;
 
     u32 moveLimit;
-    if (GetBattlerSide(battler) == B_SIDE_PLAYER && gRisks.canOnlyUseTopMoves1)
+    if (GetBattlerSide(battler) == B_SIDE_PLAYER && IsRiskActive(RISK_CAN_ONLY_USE_TOP_MOVES))
     {
         unusableMoves |= 1u << 2;
         unusableMoves |= 1u << 3;
@@ -7265,7 +7265,7 @@ static inline uq4_12_t GetSameTypeAttackBonusModifier(struct DamageContext *ctx)
     {
         return UQ_4_12(1.0);
     }
-    else if (!IsOnPlayerSide(ctx->battlerAtk) && gRisks.hasAdaptability)
+    else if (!IsOnPlayerSide(ctx->battlerAtk) && IsRiskActive(RISK_HAS_ADAPTABILITY))
     {
         return UQ_4_12(2.0);
     }
@@ -7479,7 +7479,7 @@ static inline uq4_12_t GetDefenderAbilitiesModifier(struct DamageContext *ctx)
     if (recordAbility && ctx->updateFlags)
         RecordAbilityBattle(ctx->battlerDef, ctx->abilities[ctx->battlerDef]);
 
-    if (!IsOnPlayerSide(ctx->battlerDef) && gRisks.hasFilter)
+    if (!IsOnPlayerSide(ctx->battlerDef) && IsRiskActive(RISK_HAS_FILTER))
     {
         switch (ctx->abilities[ctx->battlerDef])
         {
@@ -7608,7 +7608,7 @@ static inline uq4_12_t GetOtherModifiers(struct DamageContext *ctx)
         DAMAGE_MULTIPLY_MODIFIER(GetAttackerItemsModifier(ctx->battlerAtk, ctx->typeEffectivenessModifier, ctx->holdEffects[ctx->battlerAtk]));
     }
     //  Apply Risk metronome modifier
-    if (gRisks.foeHasMetronome && !IsOnPlayerSide(ctx->battlerAtk))
+    if (IsRiskActive(RISK_FOE_HAS_METRONOME) && !IsOnPlayerSide(ctx->battlerAtk))
     {
         u32 metronomeTurns;
         uq4_12_t metronomeBoostBase;
@@ -7617,7 +7617,7 @@ static inline uq4_12_t GetOtherModifiers(struct DamageContext *ctx)
         DAMAGE_MULTIPLY_MODIFIER(uq4_12_add(UQ_4_12(1.0), metronomeBoostBase * metronomeTurns));
     }
 
-    if (gRisks.playerHasNegativeMetronome && IsOnPlayerSide(ctx->battlerAtk))
+    if (IsRiskActive(RISK_PLAYER_HAS_NEGATIVE_METRONOME) && IsOnPlayerSide(ctx->battlerAtk))
     {
         u32 metronomeTurns;
         uq4_12_t metronomeBoostBase;
@@ -7658,9 +7658,9 @@ static inline s32 DoMoveDamageCalcVars(struct DamageContext *ctx)
 
     if (ctx->randomFactor)
     {
-        if (IsOnPlayerSide(ctx->battlerAtk) && gRisks.playerLowerHalfDamageRolls) 
+        if (IsOnPlayerSide(ctx->battlerAtk) && IsRiskActive(RISK_PLAYER_LOWER_DAMAGE_ROLLS))
             dmg *= DMG_ROLL_PERCENT_HI - RandomUniform(RNG_DAMAGE_MODIFIER, DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_LOWER_HI, DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_LO);
-        else if (!IsOnPlayerSide(ctx->battlerAtk) && gRisks.opponentUpperHalfDamageRolls)
+        else if (!IsOnPlayerSide(ctx->battlerAtk) && IsRiskActive(RISK_OPPONENT_HIGHER_DAMAGE_ROLLS))
             dmg *= DMG_ROLL_PERCENT_HI - RandomUniform(RNG_DAMAGE_MODIFIER, 0, DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_UPPER_LO);
         else
             dmg *= DMG_ROLL_PERCENT_HI - RandomUniform(RNG_DAMAGE_MODIFIER, 0, DMG_ROLL_PERCENT_HI - DMG_ROLL_PERCENT_LO);
@@ -7891,7 +7891,7 @@ s32 CalcCritChanceStage(struct DamageContext *ctx)
     {
         critChance = CRITICAL_HIT_BLOCKED;
     }
-    else if (gRisks.cantCrit && IsOnPlayerSide(ctx->battlerAtk))
+    else if (IsRiskActive(RISK_CANT_CRIT) && IsOnPlayerSide(ctx->battlerAtk))
     {
         critChance = CRITICAL_HIT_BLOCKED;
     }
@@ -7997,7 +7997,7 @@ static bool32 IsCriticalHit(struct DamageContext *ctx)
     bool32 isCrit = FALSE;
     s32 critChance = 0;
 
-    if (GetConfig(B_CRIT_CHANCE) == GEN_1 || gRisks.hasGen1CritChance)
+    if (GetConfig(B_CRIT_CHANCE) == GEN_1 || IsRiskActive(RISK_HAS_GEN_1_CRIT_CHANCE))
         critChance = CalcCritChanceStageGen1(ctx);
     else
         critChance = CalcCritChanceStage(ctx);
@@ -8006,7 +8006,7 @@ static bool32 IsCriticalHit(struct DamageContext *ctx)
         isCrit = FALSE;
     else if (critChance == CRITICAL_HIT_ALWAYS)
         isCrit = TRUE;
-    else if (GetConfig(B_CRIT_CHANCE) == GEN_1 || gRisks.hasGen1CritChance)
+    else if (GetConfig(B_CRIT_CHANCE) == GEN_1 || IsRiskActive(RISK_HAS_GEN_1_CRIT_CHANCE))
         isCrit = RandomChance(RNG_CRITICAL_HIT, critChance, 256);
     else if (GetConfig(B_CRIT_CHANCE) == GEN_2)
         isCrit = RandomChance(RNG_CRITICAL_HIT, GetCriticalHitOdds(critChance), 256);
@@ -8047,7 +8047,7 @@ s32 GetAdjustedDamage(struct DamageContext *ctx, s32 damage)
     }
     else if (GetConfig(B_STURDY) >= GEN_5
           && (ctx->abilities[ctx->battlerDef] == ABILITY_STURDY
-           || (gRisks.hasSturdy && !IsOnPlayerSide(ctx->battlerDef) && !gBattleStruct->moldBreakerActive))
+           || (IsRiskActive(RISK_HAS_STURDY) && !IsOnPlayerSide(ctx->battlerDef) && !gBattleStruct->moldBreakerActive))
           && IsBattlerAtMaxHp(ctx->battlerDef))
     {
         if (ctx->abilities[ctx->battlerDef] != ABILITY_STURDY)
@@ -8287,7 +8287,7 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(struct DamageCont
             RecordAbilityBattle(ctx->battlerDef, gBattleMons[ctx->battlerDef].ability);
         }
     }
-    else if (gRisks.hasWonderGuard && !IsOnPlayerSide(ctx->battlerDef) && modifier <= UQ_4_12(1.0))
+    else if (IsRiskActive(RISK_HAS_WONDER_GUARD) && !IsOnPlayerSide(ctx->battlerDef) && modifier <= UQ_4_12(1.0))
     {
         modifier = UQ_4_12(0.0);
         if (ctx->updateFlags)
@@ -8391,7 +8391,7 @@ uq4_12_t GetOverworldTypeEffectiveness(struct Pokemon *mon, enum Type moveType)
 
 uq4_12_t GetTypeModifier(enum Type atkType, enum Type defType)
 {
-    if ((B_FLAG_INVERSE_BATTLE != 0 && FlagGet(B_FLAG_INVERSE_BATTLE)) || gRisks.flipTypeChart)
+    if ((B_FLAG_INVERSE_BATTLE != 0 && FlagGet(B_FLAG_INVERSE_BATTLE)) || IsRiskActive(RISK_FLIP_TYPE_CHART))
         return GetInverseTypeMultiplier(gTypeEffectivenessTable[atkType][defType]);
     return gTypeEffectivenessTable[atkType][defType];
 }
@@ -9521,7 +9521,7 @@ u32 CalcSecondaryEffectChance(enum BattlerId battler, enum Ability battlerAbilit
     bool8 hasRainbow = (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_RAINBOW) != 0;
     u16 secondaryEffectChance = additionalEffect->chance;
 
-    if (!IsOnPlayerSide(battler) && gRisks.hasGuaranteedEffects)
+    if (!IsOnPlayerSide(battler) && IsRiskActive(RISK_HAS_GUARANTEED_EFFECTS))
         return 100;
 
     if (hasRainbow && hasSereneGrace && additionalEffect->moveEffect == MOVE_EFFECT_FLINCH)
@@ -9883,8 +9883,8 @@ void ClearDamageCalcResults(void)
     gBattleScripting.savedDmg = 0;
     if (gCurrentMove != MOVE_NONE)
     {
-        if ((!IsOnPlayerSide(gBattlerAttacker) && gRisks.hasMoldBreaker)
-         || (IsMoldBreakerTypeAbility(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker)) || MoveIgnoresTargetAbility(gCurrentMove) || (!IsOnPlayerSide(gBattlerAttacker) && gRisks.hasMoldBreaker)))
+        if ((!IsOnPlayerSide(gBattlerAttacker) && IsRiskActive(RISK_HAS_MOLD_BREAKER))
+         || (IsMoldBreakerTypeAbility(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker)) || MoveIgnoresTargetAbility(gCurrentMove) || (!IsOnPlayerSide(gBattlerAttacker) && IsRiskActive(RISK_HAS_MOLD_BREAKER))))
         {
             gBattleStruct->moldBreakerActive = TRUE;
         }
@@ -10270,7 +10270,7 @@ bool32 CanMoveSkipAccuracyCalc(enum BattlerId battlerAtk, enum BattlerId battler
     enum BattlerId abilityBattler = battlerAtk;
     enum BattleMoveEffects moveEffect = GetMoveEffect(move);
 
-    if (!IsOnPlayerSide(battlerAtk) && gRisks.hasGuaranteedAccuracy)
+    if (!IsOnPlayerSide(battlerAtk) && IsRiskActive(RISK_HAS_GUARANTEED_ACCURACY))
         effect = TRUE;
     if (gBattleMons[battlerAtk].volatiles.battlerWithSureHit == battlerDef + 1
      || CanMoveSkipAccuracyCheck(battlerAtk, move)
@@ -10507,7 +10507,7 @@ bool32 DoesOHKOMoveMissTarget(struct BattleCalcValues *cv)
      || gBattleMons[cv->battlerAtk].volatiles.battlerWithSureHit == cv->battlerDef + 1
      || IsAbilityAndRecord(cv->battlerAtk, cv->abilities[cv->battlerAtk], ABILITY_NO_GUARD)
      || IsAbilityAndRecord(cv->battlerDef, cv->abilities[cv->battlerDef], ABILITY_NO_GUARD)
-     || (!IsOnPlayerSide(cv->battlerAtk) && gRisks.hasGuaranteedAccuracy))
+     || (!IsOnPlayerSide(cv->battlerAtk) && IsRiskActive(RISK_HAS_GUARANTEED_ACCURACY)))
     {
         lands = SURE_HIT;
     }

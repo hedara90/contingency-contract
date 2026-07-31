@@ -1674,7 +1674,7 @@ static void MoveSelectionDisplayMoveNames(enum BattlerId battler)
     gNumberOfMovesToChoose = 0;
 
     u32 moveLimit;
-    if (GetBattlerSide(battler) == B_SIDE_PLAYER && gRisks.canOnlyUseTopMoves1)
+    if (GetBattlerSide(battler) == B_SIDE_PLAYER && IsRiskActive(RISK_CAN_ONLY_USE_TOP_MOVES))
         moveLimit = 2;
     else
         moveLimit = MAX_MON_MOVES;

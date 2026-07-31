@@ -295,9 +295,9 @@ static u64 GetAiFlags(u16 trainerId, enum BattlerId battler)
         flags |= AI_FLAG_PREDICT_SWITCH;
 
     // Risk flags
-    if (gRisks.hasOmniscientAi)
+    if (IsRiskActive(RISK_HAS_OMNISCIENT_AI))
         flags |= AI_FLAG_OMNISCIENT;
-    if (gRisks.hasPredictionAi)
+    if (IsRiskActive(RISK_HAS_PREDICTION_AI))
     {
         flags |= AI_FLAG_PREDICT_SWITCH;
         flags |= AI_FLAG_PREDICT_MOVE;
@@ -4191,7 +4191,7 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
          || aiData->abilities[battlerDef] == ABILITY_MYCELIUM_MIGHT
          || IsMoldBreakerTypeAbility(BATTLE_PARTNER(battlerDef), aiData->abilities[BATTLE_PARTNER(battlerDef)])
          || aiData->abilities[BATTLE_PARTNER(battlerDef)] == ABILITY_MYCELIUM_MIGHT
-         || (!IsOnPlayerSide(battlerDef) && gRisks.hasMoldBreaker))
+         || (!IsOnPlayerSide(battlerDef) && IsRiskActive(RISK_HAS_MOLD_BREAKER)))
             return score;
      }
 

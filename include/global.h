@@ -27,6 +27,7 @@
 #include "constants/moves.h"
 #include "config/save.h"
 #include "constants/cc_version.h"
+#include "risk.h"
 
 // Prevent cross-jump optimization.
 #define BLOCK_CROSS_JUMP asm("");
@@ -1215,6 +1216,7 @@ struct SaveBlock1
     struct DaycareMon route5DayCareMon;
 #endif
     // sizeof: 0x3???
+    struct Risks risks;
     u32 gameVersion;
     rng_value_t bannerRng[BANNER_COUNT];
 };

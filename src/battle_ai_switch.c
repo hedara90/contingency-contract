@@ -386,7 +386,7 @@ static bool32 ShouldSwitchIfHasBadOdds(struct SwitchAiContext *switchContext)
     // Start assessing whether or not mon has bad odds
     // Jump straight to switching out in cases where mon gets OHKO'd
     if ((switchContext->battlerGetsOHKOd && !switchContext->canBattlerWin1v1) && (gBattleMons[switchContext->battler].hp >= gBattleMons[switchContext->battler].maxHP / 2 // And the current mon has at least 1/2 their HP, or 1/4 HP and Regenerator
-            || ((gAiLogicData->abilities[switchContext->battler] == ABILITY_REGENERATOR || (!IsOnPlayerSide(switchContext->battler) && gRisks.hasRegenerator)) && gBattleMons[switchContext->battler].hp >= gBattleMons[switchContext->battler].maxHP / 4)))
+            || ((gAiLogicData->abilities[switchContext->battler] == ABILITY_REGENERATOR || (!IsOnPlayerSide(switchContext->battler) && IsRiskActive(RISK_HAS_REGENERATOR))) && gBattleMons[switchContext->battler].hp >= gBattleMons[switchContext->battler].maxHP / 4)))
     {
         // 50% chance to stay in regardless
         if (RandomPercentage(RNG_AI_SWITCH_HASBADODDS, (100 - GetSwitchChance(SHOULD_SWITCH_HASBADODDS))) && !gAiLogicData->aiPredictionInProgress)
@@ -401,7 +401,7 @@ static bool32 ShouldSwitchIfHasBadOdds(struct SwitchAiContext *switchContext)
     {
         if (!switchContext->hasEffectiveMove // If the AI doesn't have a super effective move
         && (gBattleMons[switchContext->battler].hp >= gBattleMons[switchContext->battler].maxHP / 2 // And the current mon has at least 1/2 their HP, or 1/4 HP and Regenerator
-            || ((gAiLogicData->abilities[switchContext->battler] == ABILITY_REGENERATOR || (!IsOnPlayerSide(switchContext->battler) && gRisks.hasRegenerator))
+            || ((gAiLogicData->abilities[switchContext->battler] == ABILITY_REGENERATOR || (!IsOnPlayerSide(switchContext->battler) && IsRiskActive(RISK_HAS_REGENERATOR)))
             && gBattleMons[switchContext->battler].hp >= gBattleMons[switchContext->battler].maxHP / 4)))
         {
             // Then check if they have an important status move, which is worth using even in a bad matchup
@@ -579,7 +579,7 @@ static bool32 FindMonThatAbsorbsOpponentsMove(struct SwitchAiContext *switchCont
     if (AreStatsRaised(switchContext->battler))
         return FALSE;
     if (IsMoldBreakerTypeAbility(switchContext->opposingBattler, gAiLogicData->abilities[switchContext->opposingBattler])
-        || (!IsOnPlayerSide(switchContext->opposingBattler) && gRisks.hasMoldBreaker))
+        || (!IsOnPlayerSide(switchContext->opposingBattler) && IsRiskActive(RISK_HAS_MOLD_BREAKER)))
         return FALSE;
     if (switchContext->canBattlerWin1v1)
         return FALSE;
@@ -1117,7 +1117,7 @@ static bool32 CanMonSurviveHazardSwitchin(struct SwitchAiContext *switchContext)
     enum Move aiMove;
 
     if (ability == ABILITY_REGENERATOR
-        || (!IsOnPlayerSide(switchContext->battler) && gRisks.hasRegenerator))
+        || (!IsOnPlayerSide(switchContext->battler) && IsRiskActive(RISK_HAS_REGENERATOR)))
         battlerHp = (battlerHp * 133) / 100; // Account for Regenerator healing
 
     hazardDamage = GetSwitchinHazardsDamage(switchContext->battler);
@@ -1894,7 +1894,7 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, enum BattlerId battler, const st
     u8 weatherDuration = gBattleStruct->weatherDuration;
     enum BattlerId opposingBattler = GetOppositeBattler(battler);
     enum Ability opposingAbility = gAiLogicData->abilities[opposingBattler], ability = gAiLogicData->abilities[battler];
-    bool32 usedSingleUseHealingItem = FALSE, opponentCanBreakMold = IsMoldBreakerTypeAbility(opposingBattler, opposingAbility) || (!IsOnPlayerSide(opposingBattler) && gRisks.hasMoldBreaker);
+    bool32 usedSingleUseHealingItem = FALSE, opponentCanBreakMold = IsMoldBreakerTypeAbility(opposingBattler, opposingAbility) || (!IsOnPlayerSide(opposingBattler) && IsRiskActive(RISK_HAS_MOLD_BREAKER));
     s32 currentHP = startingHP, singleUseItemHeal = 0;
     bool32 applyWishNow = healInfo->healEndOfTurn && healInfo->wishCounter == 1;
 
@@ -1917,7 +1917,7 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, enum BattlerId battler, const st
         currentHP = currentHP - damageTaken;
 
         // One shot prevention effects
-        if (damageTaken >= maxHP && startingHP == maxHP && (heldItemEffect == HOLD_EFFECT_FOCUS_SASH || (!opponentCanBreakMold && ((GetConfig(B_STURDY) >= GEN_5 && ability == ABILITY_STURDY) || (gRisks.hasSturdy && !IsOnPlayerSide(battler))))) && hitsToKO < 1)
+        if (damageTaken >= maxHP && startingHP == maxHP && (heldItemEffect == HOLD_EFFECT_FOCUS_SASH || (!opponentCanBreakMold && ((GetConfig(B_STURDY) >= GEN_5 && ability == ABILITY_STURDY) || (IsRiskActive(RISK_HAS_STURDY) && !IsOnPlayerSide(battler))))) && hitsToKO < 1)
             currentHP = 1;
 
         // If mon is still alive, apply weather impact first, as it might KO the mon before it can heal with its item (order is weather -> item -> status)
