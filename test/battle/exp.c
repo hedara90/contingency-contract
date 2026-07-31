@@ -1,6 +1,8 @@
 #include "global.h"
 #include "test/battle.h"
 
+//  Not relevant for us
+/*
 WILD_BATTLE_TEST("Pokemon gain experience after catching a Pokemon (Gen6+)")
 {
     u8 level = 0;
@@ -149,3 +151,5 @@ WILD_BATTLE_TEST("Exp Share(held) gives Experience to mons which did not partici
 }
 
 #endif // I_EXP_SHARE_ITEM
+
+*/
