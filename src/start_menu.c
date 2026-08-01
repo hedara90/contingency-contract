@@ -51,6 +51,8 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+#include "even_sprite.h"
+
 // Menu actions
 enum
 {
@@ -144,6 +146,21 @@ static void SaveGameTask(u8 taskId);
 static void Task_SaveAfterLinkBattle(u8 taskId);
 static void Task_WaitForBattleTowerLinkSave(u8 taskId);
 static bool8 FieldCB_ReturnToFieldStartMenu(void);
+
+//  CC stuff
+static void ShowCCStartMenu(void);
+static void HideCCSTartMenu(void);
+static void SetCCStartSpriteToActive(u32 id);
+
+const u16 gCCStart_PalActive[] = INCGFX_U16("graphics/cc_start_menu/active.pal", ".gbapal");
+const u16 gCCStart_PalInactive[] = INCGFX_U16("graphics/cc_start_menu/inactive.pal", ".gbapal");
+const u32 gCCStart_Party[] = INCGFX_U32("graphics/cc_start_menu/party.png", ".4bpp");
+const u32 gCCStart_Bag[] = INCGFX_U32("graphics/cc_start_menu/bag.png", ".4bpp");
+const u32 gCCStart_Save[] = INCGFX_U32("graphics/cc_start_menu/save.png", ".4bpp");
+const u32 gCCStart_Options[] = INCGFX_U32("graphics/cc_start_menu/options.png", ".4bpp");
+
+EWRAM_DATA static u8 sCCMenuSpriteIds[4];
+EWRAM_DATA static u8 sCCMenuPalSlots[2];
 
 static const struct WindowTemplate sWindowTemplate_SafariBalls = {
     .bg = 0,
@@ -331,6 +348,7 @@ static void AddStartMenuAction(u8 action)
 
 static void BuildNormalStartMenu(void)
 {
+    /*
     if (FlagGet(FLAG_SYS_POKEDEX_GET) == TRUE)
         AddStartMenuAction(MENU_ACTION_POKEDEX);
 
@@ -344,8 +362,11 @@ static void BuildNormalStartMenu(void)
 
     if (FlagGet(FLAG_SYS_POKENAV_GET) == TRUE)
         AddStartMenuAction(MENU_ACTION_POKENAV);
+    */
 
-    AddStartMenuAction(MENU_ACTION_PLAYER);
+    AddStartMenuAction(MENU_ACTION_POKEMON);
+    AddStartMenuAction(MENU_ACTION_BAG);
+    //AddStartMenuAction(MENU_ACTION_PLAYER);
     AddStartMenuAction(MENU_ACTION_SAVE);
     AddStartMenuAction(MENU_ACTION_OPTION);
     AddStartMenuAction(MENU_ACTION_EXIT);
@@ -532,8 +553,8 @@ static bool32 InitStartMenuStep(void)
         sInitStartMenuData[0]++;
         break;
     case 2:
-        LoadMessageBoxAndBorderGfx();
-        DrawStdWindowFrame(AddStartMenuWindow(sNumStartMenuActions), FALSE);
+        //LoadMessageBoxAndBorderGfx();
+        //DrawStdWindowFrame(AddStartMenuWindow(sNumStartMenuActions), FALSE);
         sInitStartMenuData[1] = 0;
         sInitStartMenuData[0]++;
         break;
@@ -545,12 +566,14 @@ static bool32 InitStartMenuStep(void)
         sInitStartMenuData[0]++;
         break;
     case 4:
-        if (PrintStartMenuActions(&sInitStartMenuData[1], 2))
-            sInitStartMenuData[0]++;
+        //if (PrintStartMenuActions(&sInitStartMenuData[1], 2))
+        //    sInitStartMenuData[0]++;
+        ShowCCStartMenu();
+        sInitStartMenuData[0]++;
         break;
     case 5:
-        sStartMenuCursorPos = InitMenuNormal(GetStartMenuWindowId(), FONT_NORMAL, 0, 9, 16, sNumStartMenuActions, sStartMenuCursorPos);
-        CopyWindowToVram(GetStartMenuWindowId(), COPYWIN_MAP);
+        //sStartMenuCursorPos = InitMenuNormal(GetStartMenuWindowId(), FONT_NORMAL, 0, 9, 16, sNumStartMenuActions, sStartMenuCursorPos);
+        //CopyWindowToVram(GetStartMenuWindowId(), COPYWIN_MAP);
         return TRUE;
     }
 
@@ -636,18 +659,32 @@ static bool8 HandleStartMenuInput(void)
     if (JOY_NEW(DPAD_UP))
     {
         PlaySE(SE_SELECT);
-        sStartMenuCursorPos = Menu_MoveCursor(-1);
+        sStartMenuCursorPos = 0;
+        SetCCStartSpriteToActive(0);
     }
-
-    if (JOY_NEW(DPAD_DOWN))
+    else if (JOY_NEW(DPAD_DOWN))
     {
         PlaySE(SE_SELECT);
-        sStartMenuCursorPos = Menu_MoveCursor(1);
+        sStartMenuCursorPos = 1;
+        SetCCStartSpriteToActive(1);
+    }
+    else if (JOY_NEW(DPAD_RIGHT))
+    {
+        PlaySE(SE_SELECT);
+        sStartMenuCursorPos = 2;
+        SetCCStartSpriteToActive(2);
+    }
+    else if (JOY_NEW(DPAD_LEFT))
+    {
+        PlaySE(SE_SELECT);
+        sStartMenuCursorPos = 3;
+        SetCCStartSpriteToActive(3);
     }
 
     if (JOY_NEW(A_BUTTON))
     {
         PlaySE(SE_SELECT);
+        /*
         if (sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func.u8_void == StartMenuPokedexCallback)
         {
             if (GetNationalPokedexCount(FLAG_GET_SEEN) == 0)
@@ -656,6 +693,7 @@ static bool8 HandleStartMenuInput(void)
         if (sCurrentStartMenuActions[sStartMenuCursorPos] == MENU_ACTION_DEXNAV
           && MapHasNoEncounterData())
             return FALSE;
+        */
 
         gMenuCallback = sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func.u8_void;
 
@@ -667,6 +705,11 @@ static bool8 HandleStartMenuInput(void)
         {
            FadeScreen(FADE_TO_BLACK, 0);
         }
+        else
+        {
+            HideCCSTartMenu();
+        }
+        sStartMenuCursorPos = 4;
 
         return FALSE;
     }
@@ -675,6 +718,7 @@ static bool8 HandleStartMenuInput(void)
     {
         RemoveExtraStartMenuWindows();
         HideStartMenu();
+        HideCCSTartMenu();
         return TRUE;
     }
 
@@ -1517,4 +1561,74 @@ void Script_ForceSaveGame(struct ScriptContext *ctx)
     ShowSaveInfoWindow();
     gMenuCallback = SaveCallback;
     sSaveDialogCallback = SaveSavingMessageCallback;
+}
+
+static void ShowCCStartMenu(void)
+{
+    struct SpritePalette spritePalette;
+    spritePalette.tag = 0xDED1;
+    spritePalette.data = gCCStart_PalActive;
+    sCCMenuPalSlots[0] = LoadSpritePalette(&spritePalette);
+
+    spritePalette.tag = 0xDED2;
+    spritePalette.data = gCCStart_PalInactive;
+    sCCMenuPalSlots[1] = LoadSpritePalette(&spritePalette);
+
+    struct Even_CreateSpriteStruct cs = {0};
+    cs.spriteCompressed = FALSE;
+    cs.palette = gCCStart_PalInactive;
+    cs.palTag = 0xDED2;
+    cs.spriteSize = SPRITE_SIZE(64x32);
+    cs.spriteShape = SPRITE_SHAPE(64x32);
+    cs.subpriority = 0;
+
+    cs.sprite = gCCStart_Party;
+    cs.tileTag = 0xDED1;
+    cs.posX = 120;
+    cs.posY = 48;
+    sCCMenuSpriteIds[0] = Even_CreateSprite(&cs);
+
+    cs.sprite = gCCStart_Bag;
+    cs.tileTag = 0xDED2;
+    cs.posY = 104;
+    sCCMenuSpriteIds[1] = Even_CreateSprite(&cs);
+
+    cs.sprite = gCCStart_Save;
+    cs.tileTag = 0xDED3;
+    cs.posX = 160;
+    cs.posY = 76;
+    sCCMenuSpriteIds[2] = Even_CreateSprite(&cs);
+
+    cs.sprite = gCCStart_Options;
+    cs.tileTag = 0xDED4;
+    cs.posX = 80;
+    cs.posY = 76;
+    sCCMenuSpriteIds[3] = Even_CreateSprite(&cs);
+}
+
+static void HideCCSTartMenu(void)
+{
+    for (u32 i = 0; i < 4; i++)
+    {
+        DestroySprite(&gSprites[sCCMenuSpriteIds[i]]);
+    }
+    FreeSpritePaletteByTag(0xDED1);
+    FreeSpritePaletteByTag(0xDED2);
+    FreeSpriteTilesByTag(0xDED1);
+    FreeSpriteTilesByTag(0xDED2);
+    FreeSpriteTilesByTag(0xDED3);
+    FreeSpriteTilesByTag(0xDED4);
+}
+
+static void SetCCStartSpriteToActive(u32 id)
+{
+    for (u32 i = 0; i < 4; i++)
+    {
+        u32 slot;
+        if (i == id)
+            slot = sCCMenuPalSlots[0];
+        else
+            slot = sCCMenuPalSlots[1];
+        gSprites[sCCMenuSpriteIds[i]].oam.paletteNum = slot;
+    }
 }
