@@ -59,6 +59,9 @@ enum Risk
     RISK_PLAYER_STEALTH_ROCK,
     RISK_PLAYER_SHARP_STEEL,
     RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+    RISK_OPPONENT_HP_1,
+    RISK_OPPONENT_HP_2,
+    RISK_OPPONENT_HP_3,
 };
 
 struct Risks
@@ -106,7 +109,10 @@ struct Risks
     bool32 playerStartsStealthRock:1;
     bool32 playerStartsSharpSteel:1;
     bool32 playerHazardsNotRemovable:1;
-    bool32 padding:21;
+    bool32 opponentHP1:1;
+    bool32 opponentHP2:1;
+    bool32 opponentHP3:1;
+    bool32 padding:18;
 };
 
 void ClearRisks(void);
