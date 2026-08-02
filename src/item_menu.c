@@ -1393,6 +1393,11 @@ static void SwitchBagPocket(u8 taskId, s16 deltaBagPocketId, bool16 skipEraseLis
     s16 *data = gTasks[taskId].data;
     u8 newPocket;
 
+    if (gBagPosition.pocket == POCKET_ITEMS)
+        deltaBagPocketId = 3;
+    else
+        deltaBagPocketId = -3;
+
     tPocketSwitchState = 0;
     tPocketSwitchTimer = 0;
     tPocketSwitchDir = deltaBagPocketId;
