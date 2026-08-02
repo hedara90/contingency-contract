@@ -97,6 +97,24 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.playerStartsSharpSteel;
     case RISK_PLAYER_HAZARDS_NOT_REMOVABLE:
         return gSaveBlock1Ptr->risks.playerHazardsNotRemovable;
+    case RISK_OPPONENT_HP_1:
+        return gSaveBlock1Ptr->risks.opponentHP1;
+    case RISK_OPPONENT_HP_2:
+        return gSaveBlock1Ptr->risks.opponentHP2;
+    case RISK_OPPONENT_HP_3:
+        return gSaveBlock1Ptr->risks.opponentHP3;
+    case RISK_CANT_SWITCH:
+        return gSaveBlock1Ptr->risks.cantSwitch;
+    case RISK_MUST_SWITCH_1:
+        return gSaveBlock1Ptr->risks.mustSwitch1;
+    case RISK_MUST_SWITCH_2:
+        return gSaveBlock1Ptr->risks.mustSwitch2;
+    case RISK_MUST_SWITCH_3:
+        return gSaveBlock1Ptr->risks.mustSwitch3;
+    case RISK_PLAYER_JUST_BERRIES:
+        return gSaveBlock1Ptr->risks.playerJustBerries;
+    case RISK_OPPONENT_HAS_ITEMS:
+        return gSaveBlock1Ptr->risks.opponentHasItems;
     }
     return FALSE;
 }
@@ -234,6 +252,33 @@ void SetRisk(enum Risk risk)
     case RISK_PLAYER_HAZARDS_NOT_REMOVABLE:
         gSaveBlock1Ptr->risks.playerHazardsNotRemovable = TRUE;
         break;
+    case RISK_OPPONENT_HP_1:
+        gSaveBlock1Ptr->risks.opponentHP1 = TRUE;
+        break;
+    case RISK_OPPONENT_HP_2:
+        gSaveBlock1Ptr->risks.opponentHP2 = TRUE;
+        break;
+    case RISK_OPPONENT_HP_3:
+        gSaveBlock1Ptr->risks.opponentHP3 = TRUE;
+        break;
+    case RISK_CANT_SWITCH:
+        gSaveBlock1Ptr->risks.cantSwitch = TRUE;
+        break;
+    case RISK_MUST_SWITCH_1:
+        gSaveBlock1Ptr->risks.mustSwitch1 = TRUE;
+        break;
+    case RISK_MUST_SWITCH_2:
+        gSaveBlock1Ptr->risks.mustSwitch2 = TRUE;
+        break;
+    case RISK_MUST_SWITCH_3:
+        gSaveBlock1Ptr->risks.mustSwitch3 = TRUE;
+        break;
+    case RISK_PLAYER_JUST_BERRIES:
+        gSaveBlock1Ptr->risks.playerJustBerries = TRUE;
+        break;
+    case RISK_OPPONENT_HAS_ITEMS:
+        gSaveBlock1Ptr->risks.opponentHasItems = TRUE;
+        break;
     }
 }
 
@@ -369,6 +414,33 @@ void ClearRisk(enum Risk risk)
         break;
     case RISK_PLAYER_HAZARDS_NOT_REMOVABLE:
         gSaveBlock1Ptr->risks.playerHazardsNotRemovable = FALSE;
+        break;
+    case RISK_OPPONENT_HP_1:
+        gSaveBlock1Ptr->risks.opponentHP1 = FALSE;
+        break;
+    case RISK_OPPONENT_HP_2:
+        gSaveBlock1Ptr->risks.opponentHP2 = FALSE;
+        break;
+    case RISK_OPPONENT_HP_3:
+        gSaveBlock1Ptr->risks.opponentHP3 = FALSE;
+        break;
+    case RISK_CANT_SWITCH:
+        gSaveBlock1Ptr->risks.cantSwitch = FALSE;
+        break;
+    case RISK_MUST_SWITCH_1:
+        gSaveBlock1Ptr->risks.mustSwitch1 = FALSE;
+        break;
+    case RISK_MUST_SWITCH_2:
+        gSaveBlock1Ptr->risks.mustSwitch2 = FALSE;
+        break;
+    case RISK_MUST_SWITCH_3:
+        gSaveBlock1Ptr->risks.mustSwitch3 = FALSE;
+        break;
+    case RISK_PLAYER_JUST_BERRIES:
+        gSaveBlock1Ptr->risks.playerJustBerries = FALSE;
+        break;
+    case RISK_OPPONENT_HAS_ITEMS:
+        gSaveBlock1Ptr->risks.opponentHasItems = FALSE;
         break;
     }
 }

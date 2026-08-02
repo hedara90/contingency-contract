@@ -620,6 +620,25 @@ static void CB2_InitBattleInternal(void)
             TryFormChange(&gParties[trainer][i], FORM_CHANGE_BEGIN_BATTLE, trainer);
     }
 
+    if (IsRiskActive(RISK_PLAYER_JUST_BERRIES))
+    {
+        for (u32 i = 0; i < 6; i++)
+        {
+            struct Pokemon *mon = &gParties[0][i];
+            if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
+            {
+                enum Item currItem = GetMonData(mon, MON_DATA_HELD_ITEM);
+                if (currItem != ITEM_NONE
+                 && gItemsInfo[currItem].pocket != POCKET_BERRIES)
+                {
+                    AddBagItem(currItem, 1);
+                    currItem = ITEM_NONE;
+                    SetMonData(mon, MON_DATA_HELD_ITEM, &currItem);
+                }
+            }
+        }
+    }
+
     bool32 skipStatusSet = FALSE;
     if (IsRiskActive(RISK_PERMANENT_SUN))
     {
@@ -1998,7 +2017,10 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
                 otId.value = HIHALF(personalityValue) ^ LOHALF(personalityValue);
             }
             CreateMon(&party[i], partyData[monIndex].species, partyData[monIndex].lvl, personalityValue, otId);
-            SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[monIndex].heldItem);
+            if (TESTING || IsRiskActive(RISK_OPPONENT_HAS_ITEMS))
+                SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[monIndex].heldItem);
+            bool32 thing = TRUE;
+            SetMonData(&party[i], MON_DATA_EARTH_RIBBON, &thing);
 
             CustomTrainerPartyAssignMoves(&party[i], &partyData[monIndex]);
             SetMonData(&party[i], MON_DATA_IVS, &(partyData[monIndex].iv));
@@ -5335,6 +5357,32 @@ static void TryChangingTurnOrderEffects(struct BattleCalcValues *calcValues, u32
 static void CheckChangingTurnOrderEffects(void)
 {
     enum BattlerId i, battler;
+    gBattleStruct->cantSwitchBit = FALSE;
+
+    if ((IsRiskActive(RISK_MUST_SWITCH_1) || IsRiskActive(RISK_MUST_SWITCH_2) || IsRiskActive(RISK_MUST_SWITCH_3))
+     && HasMonToSwitchInto()
+     && !IsPlayerTrapped())
+    {
+        if (IsDoubleBattle())
+        {
+            if (gChosenActionByBattler[0] != B_ACTION_SWITCH
+             && gChosenActionByBattler[2] != B_ACTION_SWITCH)
+            {
+                gBattleStruct->turnsWithoutSwitching++;
+            }
+            else
+            {
+                gBattleStruct->turnsWithoutSwitching = 0;
+            }
+        }
+        else
+        {
+            if (gChosenActionByBattler[0] != B_ACTION_SWITCH)
+                gBattleStruct->turnsWithoutSwitching++;
+            else
+                gBattleStruct->turnsWithoutSwitching = 0;
+        }
+    }
 
     if (!(gHitMarker & HITMARKER_RUN))
     {

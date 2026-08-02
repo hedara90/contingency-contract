@@ -14,6 +14,10 @@
 #define TURN_LIMIT_3 10
 #endif
 
+#define MUST_SWITCH_TURN_LIMIT_1 4
+#define MUST_SWITCH_TURN_LIMIT_2 3
+#define MUST_SWITCH_TURN_LIMIT_3 2
+
 enum Risk
 {
     RISK_HAS_STURDY,
@@ -59,6 +63,15 @@ enum Risk
     RISK_PLAYER_STEALTH_ROCK,
     RISK_PLAYER_SHARP_STEEL,
     RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+    RISK_OPPONENT_HP_1,
+    RISK_OPPONENT_HP_2,
+    RISK_OPPONENT_HP_3,
+    RISK_CANT_SWITCH,
+    RISK_MUST_SWITCH_1,
+    RISK_MUST_SWITCH_2,
+    RISK_MUST_SWITCH_3,
+    RISK_PLAYER_JUST_BERRIES,
+    RISK_OPPONENT_HAS_ITEMS,
 };
 
 struct Risks
@@ -106,7 +119,16 @@ struct Risks
     bool32 playerStartsStealthRock:1;
     bool32 playerStartsSharpSteel:1;
     bool32 playerHazardsNotRemovable:1;
-    bool32 padding:21;
+    bool32 opponentHP1:1;
+    bool32 opponentHP2:1;
+    bool32 opponentHP3:1;
+    bool32 cantSwitch:1;
+    bool32 mustSwitch1:1;
+    bool32 mustSwitch2:1;
+    bool32 mustSwitch3:1;
+    bool32 playerJustBerries:1;
+    bool32 opponentHasItems:1;
+    bool32 padding:12;
 };
 
 void ClearRisks(void);

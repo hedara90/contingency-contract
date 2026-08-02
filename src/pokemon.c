@@ -1427,6 +1427,22 @@ void CalculateMonStats(struct Pokemon *mon)
         newMaxHP = (((n + ev[STAT_HP] / 4) * level) / 100) + level + 10;
     }
 
+    if (GetMonData(mon, MON_DATA_EARTH_RIBBON))
+    {
+        if (IsRiskActive(RISK_OPPONENT_HP_1))
+        {
+            newMaxHP = 110 * newMaxHP / 100;
+        }
+        else if (IsRiskActive(RISK_OPPONENT_HP_2))
+        {
+            newMaxHP = 125 * newMaxHP / 100;
+        }
+        else if (IsRiskActive(RISK_OPPONENT_HP_3))
+        {
+            newMaxHP = 150 * newMaxHP / 100;
+        }
+    }
+
     gBattleScripting.levelUpHP = newMaxHP - oldMaxHP;
     if (gBattleScripting.levelUpHP == 0)
         gBattleScripting.levelUpHP = 1;

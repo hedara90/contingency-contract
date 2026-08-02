@@ -9393,6 +9393,13 @@ static bool8 TrySwitchInPokemon(void)
     GetPartyAndSlotFromPartyMenuId(slot, &party, &partySlot);
     battlePartyId = GetPartyIdFromBattleSlot(slot);
 
+    // Trying to manually switch while Cant Switch risk is active
+    if (IsRiskActive(RISK_CANT_SWITCH) && gBattleStruct->cantSwitchBit)
+    {
+        StringExpandPlaceholders(gStringVar4, COMPOUND_STRING("Can't switch due to Risk!{PAUSE_UNTIL_PRESS}"));
+        return FALSE;
+    }
+
     // In a 6v6 multi battle, slots 3-5 are the partner's Pokémon
     if (IsMultiBattle() == TRUE
         && slot >= MULTI_PARTY_SIZE

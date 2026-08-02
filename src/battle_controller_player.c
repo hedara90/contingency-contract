@@ -305,6 +305,33 @@ static void HandleInputChooseAction(enum BattlerId battler)
 
     if (JOY_NEW(A_BUTTON))
     {
+        if (((IsRiskActive(RISK_MUST_SWITCH_1) && gBattleStruct->turnsWithoutSwitching >= MUST_SWITCH_TURN_LIMIT_1)
+          || (IsRiskActive(RISK_MUST_SWITCH_2) && gBattleStruct->turnsWithoutSwitching >= MUST_SWITCH_TURN_LIMIT_2)
+          || (IsRiskActive(RISK_MUST_SWITCH_3) && gBattleStruct->turnsWithoutSwitching >= MUST_SWITCH_TURN_LIMIT_3))
+         && gActionSelectionCursor[battler] != 2
+         && HasMonToSwitchInto()
+         && !IsPlayerTrapped())
+        {
+            bool32 takeInput = TRUE;
+            if (IsDoubleBattle())
+            {
+                if (battler == 2)
+                {
+                    if (gChosenActionByBattler[0] != B_ACTION_SWITCH)
+                        takeInput = FALSE;
+                }
+            }
+            else
+            {
+                takeInput = FALSE;
+            }
+
+            if (!takeInput)
+            {
+                PlaySE(SE_PC_OFF);
+                return;
+            }
+        }
         PlaySE(SE_SELECT);
         TryHideLastUsedBall();
 
@@ -317,6 +344,8 @@ static void HandleInputChooseAction(enum BattlerId battler)
             BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_USE_ITEM, 0);
             break;
         case 2: // Bottom left
+            if (IsRiskActive(RISK_CANT_SWITCH))
+                gBattleStruct->cantSwitchBit = TRUE;
             BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_SWITCH, 0);
             break;
         case 3: // Bottom right
