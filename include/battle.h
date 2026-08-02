@@ -739,7 +739,8 @@ struct BattleStruct
     u8 adrenalineOrbActivated:1; // prevents looping after an adrenaline stat changed
     u32 skipSturdyPopup:2;
     u32 skipQuickDrawPopup:2;
-    bool32 riskPadding:28;
+    bool32 cantSwitchBit:1;
+    bool32 riskPadding:27;
 };
 
 struct AiBattleData

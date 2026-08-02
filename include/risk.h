@@ -62,6 +62,7 @@ enum Risk
     RISK_OPPONENT_HP_1,
     RISK_OPPONENT_HP_2,
     RISK_OPPONENT_HP_3,
+    RISK_CANT_SWITCH,
 };
 
 struct Risks
@@ -112,7 +113,8 @@ struct Risks
     bool32 opponentHP1:1;
     bool32 opponentHP2:1;
     bool32 opponentHP3:1;
-    bool32 padding:18;
+    bool32 cantSwitch:1;
+    bool32 padding:17;
 };
 
 void ClearRisks(void);

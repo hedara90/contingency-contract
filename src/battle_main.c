@@ -5337,6 +5337,7 @@ static void TryChangingTurnOrderEffects(struct BattleCalcValues *calcValues, u32
 static void CheckChangingTurnOrderEffects(void)
 {
     enum BattlerId i, battler;
+    gBattleStruct->cantSwitchBit = FALSE;
 
     if (!(gHitMarker & HITMARKER_RUN))
     {
