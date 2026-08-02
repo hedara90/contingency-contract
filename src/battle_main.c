@@ -2017,7 +2017,7 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
                 otId.value = HIHALF(personalityValue) ^ LOHALF(personalityValue);
             }
             CreateMon(&party[i], partyData[monIndex].species, partyData[monIndex].lvl, personalityValue, otId);
-            if (IsRiskActive(RISK_OPPONENT_HAS_ITEMS))
+            if (TESTING || IsRiskActive(RISK_OPPONENT_HAS_ITEMS))
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[monIndex].heldItem);
             bool32 thing = TRUE;
             SetMonData(&party[i], MON_DATA_EARTH_RIBBON, &thing);
