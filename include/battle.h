@@ -740,7 +740,8 @@ struct BattleStruct
     u32 skipSturdyPopup:2;
     u32 skipQuickDrawPopup:2;
     bool32 cantSwitchBit:1;
-    bool32 riskPadding:27;
+    u32 turnsWithoutSwitching:3;
+    bool32 riskPadding:24;
 };
 
 struct AiBattleData

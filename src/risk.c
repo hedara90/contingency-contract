@@ -105,6 +105,12 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.opponentHP3;
     case RISK_CANT_SWITCH:
         return gSaveBlock1Ptr->risks.cantSwitch;
+    case RISK_MUST_SWITCH_1:
+        return gSaveBlock1Ptr->risks.mustSwitch1;
+    case RISK_MUST_SWITCH_2:
+        return gSaveBlock1Ptr->risks.mustSwitch2;
+    case RISK_MUST_SWITCH_3:
+        return gSaveBlock1Ptr->risks.mustSwitch3;
     }
     return FALSE;
 }
@@ -254,6 +260,15 @@ void SetRisk(enum Risk risk)
     case RISK_CANT_SWITCH:
         gSaveBlock1Ptr->risks.cantSwitch = TRUE;
         break;
+    case RISK_MUST_SWITCH_1:
+        gSaveBlock1Ptr->risks.mustSwitch1 = TRUE;
+        break;
+    case RISK_MUST_SWITCH_2:
+        gSaveBlock1Ptr->risks.mustSwitch2 = TRUE;
+        break;
+    case RISK_MUST_SWITCH_3:
+        gSaveBlock1Ptr->risks.mustSwitch3 = TRUE;
+        break;
     }
 }
 
@@ -401,6 +416,15 @@ void ClearRisk(enum Risk risk)
         break;
     case RISK_CANT_SWITCH:
         gSaveBlock1Ptr->risks.cantSwitch = FALSE;
+        break;
+    case RISK_MUST_SWITCH_1:
+        gSaveBlock1Ptr->risks.mustSwitch1 = FALSE;
+        break;
+    case RISK_MUST_SWITCH_2:
+        gSaveBlock1Ptr->risks.mustSwitch2 = FALSE;
+        break;
+    case RISK_MUST_SWITCH_3:
+        gSaveBlock1Ptr->risks.mustSwitch3 = FALSE;
         break;
     }
 }

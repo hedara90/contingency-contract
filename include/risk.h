@@ -14,6 +14,10 @@
 #define TURN_LIMIT_3 10
 #endif
 
+#define MUST_SWITCH_TURN_LIMIT_1 4
+#define MUST_SWITCH_TURN_LIMIT_2 3
+#define MUST_SWITCH_TURN_LIMIT_3 2
+
 enum Risk
 {
     RISK_HAS_STURDY,
@@ -63,6 +67,9 @@ enum Risk
     RISK_OPPONENT_HP_2,
     RISK_OPPONENT_HP_3,
     RISK_CANT_SWITCH,
+    RISK_MUST_SWITCH_1,
+    RISK_MUST_SWITCH_2,
+    RISK_MUST_SWITCH_3,
 };
 
 struct Risks
@@ -114,7 +121,10 @@ struct Risks
     bool32 opponentHP2:1;
     bool32 opponentHP3:1;
     bool32 cantSwitch:1;
-    bool32 padding:17;
+    bool32 mustSwitch1:1;
+    bool32 mustSwitch2:1;
+    bool32 mustSwitch3:1;
+    bool32 padding:14;
 };
 
 void ClearRisks(void);

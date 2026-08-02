@@ -5339,6 +5339,31 @@ static void CheckChangingTurnOrderEffects(void)
     enum BattlerId i, battler;
     gBattleStruct->cantSwitchBit = FALSE;
 
+    if ((IsRiskActive(RISK_MUST_SWITCH_1) || IsRiskActive(RISK_MUST_SWITCH_2) || IsRiskActive(RISK_MUST_SWITCH_3))
+     && HasMonToSwitchInto()
+     && !IsPlayerTrapped())
+    {
+        if (IsDoubleBattle())
+        {
+            if (gChosenActionByBattler[0] != B_ACTION_SWITCH
+             && gChosenActionByBattler[2] != B_ACTION_SWITCH)
+            {
+                gBattleStruct->turnsWithoutSwitching++;
+            }
+            else
+            {
+                gBattleStruct->turnsWithoutSwitching = 0;
+            }
+        }
+        else
+        {
+            if (gChosenActionByBattler[0] != B_ACTION_SWITCH)
+                gBattleStruct->turnsWithoutSwitching++;
+            else
+                gBattleStruct->turnsWithoutSwitching = 0;
+        }
+    }
+
     if (!(gHitMarker & HITMARKER_RUN))
     {
         while (gBattleScripting.battler < gBattlersCount)

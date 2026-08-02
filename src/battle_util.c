@@ -11122,3 +11122,44 @@ void SetValuesOnFaint(enum BattlerId battler)
         gSideTimers[B_SIDE_OPPONENT].retaliateTimer = 2;
     }
 }
+
+bool32 HasMonToSwitchInto(void)
+{
+    u32 numLiveMons = 0;
+    for (u32 i = 0; i < 6; i++)
+    {
+        struct Pokemon *mon = &gParties[0][i];
+        if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE
+         && GetMonData(mon, MON_DATA_HP) > 0)
+        {
+            numLiveMons++;
+        }
+    }
+    if (IsDoubleBattle())
+        return numLiveMons > 2;
+    else
+        return numLiveMons > 1;
+}
+
+bool32 IsPlayerTrapped(void)
+{
+    bool32 mon1Trapped = FALSE;
+    bool32 mon2Trapped = FALSE;
+
+    if (IsAbilityPreventingEscape(0)
+     || gBattleMons[0].volatiles.escapePrevention)
+    {
+        mon1Trapped = TRUE;
+    }
+
+    if (IsDoubleBattle())
+    {
+        if (IsAbilityPreventingEscape(2)
+         || gBattleMons[2].volatiles.escapePrevention)
+        {
+            mon2Trapped = TRUE;
+        }
+        return mon1Trapped || mon2Trapped;
+    }
+    return mon1Trapped;
+}

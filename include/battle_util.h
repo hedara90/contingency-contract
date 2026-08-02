@@ -424,4 +424,7 @@ bool32 IsBattlersFirstTurn(enum BattlerId battler);
 struct PartyState *GetBattlerPartyState(enum BattlerId battler);
 void SetValuesOnFaint(enum BattlerId battler);
 
+bool32 HasMonToSwitchInto(void);
+bool32 IsPlayerTrapped(void);
+
 #endif // GUARD_BATTLE_UTIL_H
