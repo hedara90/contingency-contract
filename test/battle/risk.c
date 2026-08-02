@@ -985,3 +985,41 @@ SINGLE_BATTLE_TEST("Risk: Opponent has extra HP", s16 damage)
     }
 }
 */
+
+SINGLE_BATTLE_TEST("Risk: Player can't have non-berry items, item removed")
+{
+    PARAMETRIZE { }
+    PARAMETRIZE { SetRisk(RISK_PLAYER_JUST_BERRIES); }
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET) { Item(ITEM_AIR_BALLOON); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_EARTHQUAKE); }
+    } SCENE {
+        if (IsRiskActive(RISK_PLAYER_JUST_BERRIES))
+        {
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_EARTHQUAKE, opponent);
+        }
+        else
+        {
+            NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_EARTHQUAKE, opponent);
+        }
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Player can't have non-berry items, berry stays")
+{
+    PARAMETRIZE { }
+    PARAMETRIZE { SetRisk(RISK_PLAYER_JUST_BERRIES); }
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET) { Item(ITEM_SITRUS_BERRY); HP(400); MaxHP(400); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_SUPER_FANG); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SUPER_FANG, opponent);
+        HP_BAR(player);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_BERRY, player);
+        HP_BAR(player);
+    }
+}

@@ -620,6 +620,25 @@ static void CB2_InitBattleInternal(void)
             TryFormChange(&gParties[trainer][i], FORM_CHANGE_BEGIN_BATTLE, trainer);
     }
 
+    if (IsRiskActive(RISK_PLAYER_JUST_BERRIES))
+    {
+        for (u32 i = 0; i < 6; i++)
+        {
+            struct Pokemon *mon = &gParties[0][i];
+            if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
+            {
+                enum Item currItem = GetMonData(mon, MON_DATA_HELD_ITEM);
+                if (currItem != ITEM_NONE
+                 && gItemsInfo[currItem].pocket != POCKET_BERRIES)
+                {
+                    AddBagItem(currItem, 1);
+                    currItem = ITEM_NONE;
+                    SetMonData(mon, MON_DATA_HELD_ITEM, &currItem);
+                }
+            }
+        }
+    }
+
     bool32 skipStatusSet = FALSE;
     if (IsRiskActive(RISK_PERMANENT_SUN))
     {

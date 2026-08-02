@@ -70,6 +70,7 @@ enum Risk
     RISK_MUST_SWITCH_1,
     RISK_MUST_SWITCH_2,
     RISK_MUST_SWITCH_3,
+    RISK_PLAYER_JUST_BERRIES,
 };
 
 struct Risks
@@ -124,7 +125,8 @@ struct Risks
     bool32 mustSwitch1:1;
     bool32 mustSwitch2:1;
     bool32 mustSwitch3:1;
-    bool32 padding:14;
+    bool32 playerJustBerries:1;
+    bool32 padding:13;
 };
 
 void ClearRisks(void);
