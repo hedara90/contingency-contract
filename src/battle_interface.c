@@ -830,6 +830,17 @@ u8 CreateBattlerHealthboxSprites(enum BattlerId battler)
     healthBarSpritePtr->subspriteMode = SUBSPRITES_IGNORE_PRIORITY;
     healthBarSpritePtr->oam.priority = 1;
 
+    if (battler == 0)
+    {
+        gSprites[healthboxLeftSpriteId].oam.priority = 0;
+        gSprites[healthboxRightSpriteId].oam.priority = 0;
+
+        gSprites[healthboxLeftSpriteId].subpriority = 0;
+        gSprites[healthboxRightSpriteId].subpriority = 0;
+
+        healthBarSpritePtr->oam.priority = 0;
+    }
+
     CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_1), (void *)(OBJ_VRAM0 + healthBarSpritePtr->oam.tileNum * TILE_SIZE_4BPP), 64);
 
     gSprites[healthboxLeftSpriteId].hMain_HealthBarSpriteId = healthbarSpriteId;
