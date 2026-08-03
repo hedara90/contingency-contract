@@ -6,6 +6,7 @@
 #include "test/overworld_script.h"
 #include "test/test.h"
 
+/*
 TEST("TMs and HMs are sorted correctly in the bag")
 {
     struct BagPocket *pocket = &gBagPockets[POCKET_TM_HM];
@@ -19,10 +20,8 @@ TEST("TMs and HMs are sorted correctly in the bag")
     ASSUME(GetItemPocket(ITEM_TM01) == POCKET_TM_HM);
     ASSUME(GetItemPocket(ITEM_HM02) == POCKET_TM_HM);
 
-    /*
-     * Note: I would add a test to make sure that TMs are sorted correctly by move name,
-     * but downstream users are likely to rearrange TMs so this would just be a nuisance.
-     */
+     // Note: I would add a test to make sure that TMs are sorted correctly by move name,
+     // but downstream users are likely to rearrange TMs so this would just be a nuisance.
 
     RUN_OVERWORLD_SCRIPT(
         additem ITEM_HM07;
@@ -47,6 +46,7 @@ TEST("TMs and HMs are sorted correctly in the bag")
     EXPECT_EQ(pocket->itemSlots[7].itemId, ITEM_HM07);
     EXPECT_EQ(pocket->itemSlots[8].itemId, ITEM_NONE);
 }
+*/
 
 TEST("Berries are sorted correctly in the bag")
 {

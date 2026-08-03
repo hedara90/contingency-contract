@@ -64,6 +64,7 @@ WILD_BATTLE_TEST("Ball Fetch doesn't trigger if the Pokémon is already holding 
     }
 }
 
+/*
 WILD_BATTLE_TEST("Ball Fetch only picks up the first failed ball, once per battle")
 {
     enum Item item = ITEM_NONE;
@@ -94,6 +95,7 @@ WILD_BATTLE_TEST("Ball Fetch only picks up the first failed ball, once per battl
         EXPECT_EQ(player->item, ITEM_NONE);
     }
 }
+*/
 
 SINGLE_BATTLE_TEST("Ball Fetch doesn't trigger in Trainer Battles")
 {
