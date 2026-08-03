@@ -1994,7 +1994,7 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
             MoveBattleBar(battler, healthboxSpriteId, HEALTH_BAR, 0);
         }
 
-        if (!isDoubles && (elementId == HEALTHBOX_EXP_BAR || elementId == HEALTHBOX_ALL))
+        if (FALSE && (elementId == HEALTHBOX_EXP_BAR || elementId == HEALTHBOX_ALL))
         {
             enum Species species;
             u32 exp, currLevelExp;
