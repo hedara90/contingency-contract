@@ -2794,6 +2794,29 @@ static bool32 HasAnyRelearnableMoves(enum MoveRelearnerStates state)
 
 static void UpdateMoveRelearnerState(bool32 goingDown)
 {
+    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_CONVENTION_CENTER))
+    {
+        u32 markings;
+        enum Species species = sMonSummaryScreen->summary.species;
+        if (sMonSummaryScreen->isBoxMon)
+        {
+            markings = GetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
+        }
+        else
+        {
+            markings = GetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
+        }
+
+        if (markings != 0)
+            sMonSummaryScreen->hasRelearnableMoves = TRUE;
+        else
+            sMonSummaryScreen->hasRelearnableMoves = FALSE;
+    }
+    else
+    {
+        sMonSummaryScreen->hasRelearnableMoves = FALSE;
+    }
+    /*
     s32 state;
 
     sMonSummaryScreen->hasRelearnableMoves = FALSE;
@@ -2807,6 +2830,7 @@ static void UpdateMoveRelearnerState(bool32 goingDown)
             break;
         }
     }
+    */
 }
 
 static void ChangeSummaryPokemon(u8 taskId, s8 delta)
