@@ -1,9 +1,12 @@
 #include "global.h"
 #include "graphics.h"
 
-const u32 gBattleTextboxTiles[] = INCGFX_U32("graphics/battle_interface/textbox.png", ".4bpp.smol");
-const u16 gBattleTextboxPalette[] = INCBIN_U16("graphics/battle_interface/textbox.gbapal");
-const u32 gBattleTextboxTilemap[] = INCGFX_U32("graphics/battle_interface/textbox_map.bin", ".smolTM");
+//const u32 gBattleTextboxTiles[] = INCGFX_U32("graphics/battle_interface/textbox.png", ".4bpp.smol");
+//const u16 gBattleTextboxPalette[] = INCBIN_U16("graphics/battle_interface/textbox.gbapal");
+//const u32 gBattleTextboxTilemap[] = INCGFX_U32("graphics/battle_interface/textbox_map.bin", ".smolTM");
+const u32 gBattleTextboxTiles[] = INCGFX_U32("graphics/battle_interface/cc_textbox.png", ".4bpp.smol");
+const u16 gBattleTextboxPalette[] = INCGFX_U16("graphics/battle_interface/cc_textbox.png", ".gbapal");
+const u32 gBattleTextboxTilemap[] = INCGFX_U32("graphics/battle_interface/cc_textbox.bin", ".smolTM");
 
 const u32 gUnusedGfx_OldCharmap[] = INCGFX_U32("graphics/unused/old_charmap.png", ".4bpp.smol"); // japanese table and bunch of stuff
 const u32 gUnusedTimemap_OldCharmap[] = INCGFX_U32("graphics/unused/old_charmap.bin", ".smolTM");
