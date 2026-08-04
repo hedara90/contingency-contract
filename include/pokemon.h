@@ -523,6 +523,7 @@ struct SpeciesInfo /*0xC4*/
     enum OverworldWildEncounterBehaviors overworldEncounterBehavior;
     u8 ability1Threshold;
     u8 ability2Threshold;
+    u8 rarity;
 };
 
 struct EggData
