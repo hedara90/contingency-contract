@@ -1843,7 +1843,7 @@ static void MoveSelectionDisplayMoveDescription(enum BattlerId battler)
     BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_DESCRIPTION);
 
     if (gCategoryIconSpriteId == 0xFF)
-        gCategoryIconSpriteId = CreateSprite(&gSpriteTemplate_CategoryIcons, 38, 64, 1);
+        gCategoryIconSpriteId = CreateSprite(&gSpriteTemplate_CategoryIcons, 38 + 24, 64, 1);
 
     StartSpriteAnim(&gSprites[gCategoryIconSpriteId], cat);
 
