@@ -885,6 +885,8 @@ static void LoadBattleEnvironmentEntryGfx(u16 environment)
 
 static u8 GetBattleEnvironmentOverride(void)
 {
+    return BATTLE_ENVIRONMENT_BUILDING;
+    /*
     u8 battleScene = GetCurrentMapBattleScene();
 
     if (TestRunner_Battle_GetForcedEnvironment()
@@ -922,6 +924,7 @@ static u8 GetBattleEnvironmentOverride(void)
         return gBattleEnvironment;
 
     return GetBattleEnvironmentByMapScene(battleScene);
+    */
 }
 
 void BattleInitBgsAndWindows(void)
