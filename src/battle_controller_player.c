@@ -366,7 +366,7 @@ static void HandleInputChooseAction(enum BattlerId battler)
     }
     else if (JOY_NEW(DPAD_RIGHT))
     {
-        if (!(gActionSelectionCursor[battler] & 1)) // if is B_ACTION_USE_MOVE or B_ACTION_SWITCH
+        if (gActionSelectionCursor[battler] == B_ACTION_SWITCH) // if is B_ACTION_USE_MOVE or B_ACTION_SWITCH
         {
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[battler]);
@@ -376,7 +376,7 @@ static void HandleInputChooseAction(enum BattlerId battler)
     }
     else if (JOY_NEW(DPAD_UP))
     {
-        if (gActionSelectionCursor[battler] & 2) // if is B_ACTION_SWITCH or B_ACTION_RUN
+        if (gActionSelectionCursor[battler] == B_ACTION_SWITCH) // if is B_ACTION_SWITCH or B_ACTION_RUN
         {
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[battler]);
@@ -1843,7 +1843,7 @@ static void MoveSelectionDisplayMoveDescription(enum BattlerId battler)
     BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_DESCRIPTION);
 
     if (gCategoryIconSpriteId == 0xFF)
-        gCategoryIconSpriteId = CreateSprite(&gSpriteTemplate_CategoryIcons, 38, 64, 1);
+        gCategoryIconSpriteId = CreateSprite(&gSpriteTemplate_CategoryIcons, 38 + 24, 64, 1);
 
     StartSpriteAnim(&gSprites[gCategoryIconSpriteId], cat);
 
@@ -1856,7 +1856,7 @@ void MoveSelectionCreateCursorAt(u8 cursorPosition, u8 baseTileNum)
     src[0] = baseTileNum + 1;
     src[1] = baseTileNum + 2;
 
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 9 * (cursorPosition & 1) + 1, 55 + (cursorPosition & 2), 1, 2, 0x11);
+    CopyToBgTilemapBufferRect_ChangePalette(0, src, 9 * (cursorPosition & 1) + 2, 55 + (cursorPosition & 2), 1, 2, 0);
     CopyBgTilemapBufferToVram(0);
 }
 
@@ -1866,7 +1866,7 @@ void MoveSelectionDestroyCursorAt(u8 cursorPosition)
     src[0] = 0x1016;
     src[1] = 0x1016;
 
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 9 * (cursorPosition & 1) + 1, 55 + (cursorPosition & 2), 1, 2, 0x11);
+    CopyToBgTilemapBufferRect_ChangePalette(0, src, 9 * (cursorPosition & 1) + 2, 55 + (cursorPosition & 2), 1, 2, 0);
     CopyBgTilemapBufferToVram(0);
 }
 
@@ -1876,7 +1876,7 @@ void ActionSelectionCreateCursorAt(u8 cursorPosition, u8 baseTileNum)
     src[0] = 1;
     src[1] = 2;
 
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 7 * (cursorPosition & 1) + 16, 35 + (cursorPosition & 2), 1, 2, 0x11);
+    CopyToBgTilemapBufferRect_ChangePalette(0, src, 7 * (cursorPosition & 1) + 17, 35 + (cursorPosition & 2), 1, 2, 0);
     CopyBgTilemapBufferToVram(0);
 }
 
@@ -1886,7 +1886,7 @@ void ActionSelectionDestroyCursorAt(u8 cursorPosition)
     src[0] = 0x1016;
     src[1] = 0x1016;
 
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 7 * (cursorPosition & 1) + 16, 35 + (cursorPosition & 2), 1, 2, 0x11);
+    CopyToBgTilemapBufferRect_ChangePalette(0, src, 7 * (cursorPosition & 1) + 17, 35 + (cursorPosition & 2), 1, 2, 0);
     CopyBgTilemapBufferToVram(0);
 }
 
