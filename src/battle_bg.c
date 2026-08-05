@@ -173,16 +173,16 @@ static const struct WindowTemplate sStandardBattleWindowTemplates[] =
     },
     [B_WIN_ACTION_MENU] = {
         .bg = 0,
-        .tilemapLeft = 17,
+        .tilemapLeft = 18,
         .tilemapTop = 35,
-        .width = 12,
+        .width = 11,
         .height = 4,
         .paletteNum = 5,
         .baseBlock = 0x0190,
     },
     [B_WIN_MOVE_NAME_1] = {
         .bg = 0,
-        .tilemapLeft = 2,
+        .tilemapLeft = 3,
         .tilemapTop = 55,
         .width = 16,    //for z move names
         .height = 2,
@@ -191,7 +191,7 @@ static const struct WindowTemplate sStandardBattleWindowTemplates[] =
     },
     [B_WIN_MOVE_NAME_2] = {
         .bg = 0,
-        .tilemapLeft = 11,
+        .tilemapLeft = 12,
         .tilemapTop = 55,
         .width = 8,
         .height = 2,
@@ -200,7 +200,7 @@ static const struct WindowTemplate sStandardBattleWindowTemplates[] =
     },
     [B_WIN_MOVE_NAME_3] = {
         .bg = 0,
-        .tilemapLeft = 2,
+        .tilemapLeft = 3,
         .tilemapTop = 57,
         .width = 16,    //for z effect descriptions
         .height = 2,
@@ -209,7 +209,7 @@ static const struct WindowTemplate sStandardBattleWindowTemplates[] =
     },
     [B_WIN_MOVE_NAME_4] = {
         .bg = 0,
-        .tilemapLeft = 11,
+        .tilemapLeft = 12,
         .tilemapTop = 57,
         .width = 8,
         .height = 2,
@@ -974,6 +974,10 @@ void LoadBattleMenuWindowGfx(void)
         gPlttBufferUnfaded[BG_PLTT_ID(7) + 6] = 0;
         CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(7) + 6], &gPlttBufferFaded[BG_PLTT_ID(7) + 6], PLTT_SIZEOF(1));
     }
+
+    //  Set colour of yes/no box manually
+    gPlttBufferUnfaded[BG_PLTT_ID(1) + 14] = 0b0111001110011100;
+    gPlttBufferFaded[BG_PLTT_ID(1) + 14] = 0b0111001110011100;
 }
 
 void DrawMainBattleBackground(void)
