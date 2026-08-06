@@ -115,6 +115,12 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.playerJustBerries;
     case RISK_OPPONENT_HAS_ITEMS:
         return gSaveBlock1Ptr->risks.opponentHasItems;
+    case RISK_PARTY_MINUS_1:
+        return gSaveBlock1Ptr->risks.partyMinus1;
+    case RISK_PARTY_MINUS_2:
+        return gSaveBlock1Ptr->risks.partyMinus2;
+    case RISK_PARTY_MINUS_3:
+        return gSaveBlock1Ptr->risks.partyMinus3;
     }
     return FALSE;
 }
@@ -279,6 +285,15 @@ void SetRisk(enum Risk risk)
     case RISK_OPPONENT_HAS_ITEMS:
         gSaveBlock1Ptr->risks.opponentHasItems = TRUE;
         break;
+    case RISK_PARTY_MINUS_1:
+        gSaveBlock1Ptr->risks.partyMinus1 = TRUE;
+        break;
+    case RISK_PARTY_MINUS_2:
+        gSaveBlock1Ptr->risks.partyMinus2 = TRUE;
+        break;
+    case RISK_PARTY_MINUS_3:
+        gSaveBlock1Ptr->risks.partyMinus3 = TRUE;
+        break;
     }
 }
 
@@ -441,6 +456,15 @@ void ClearRisk(enum Risk risk)
         break;
     case RISK_OPPONENT_HAS_ITEMS:
         gSaveBlock1Ptr->risks.opponentHasItems = FALSE;
+        break;
+    case RISK_PARTY_MINUS_1:
+        gSaveBlock1Ptr->risks.partyMinus1 = FALSE;
+        break;
+    case RISK_PARTY_MINUS_2:
+        gSaveBlock1Ptr->risks.partyMinus2 = FALSE;
+        break;
+    case RISK_PARTY_MINUS_3:
+        gSaveBlock1Ptr->risks.partyMinus3 = FALSE;
         break;
     }
 }

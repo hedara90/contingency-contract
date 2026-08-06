@@ -72,6 +72,9 @@ enum Risk
     RISK_MUST_SWITCH_3,
     RISK_PLAYER_JUST_BERRIES,
     RISK_OPPONENT_HAS_ITEMS,
+    RISK_PARTY_MINUS_1,
+    RISK_PARTY_MINUS_2,
+    RISK_PARTY_MINUS_3,
 };
 
 struct Risks
@@ -128,7 +131,10 @@ struct Risks
     bool32 mustSwitch3:1;
     bool32 playerJustBerries:1;
     bool32 opponentHasItems:1;
-    bool32 padding:12;
+    bool32 partyMinus1:1;
+    bool32 partyMinus2:1;
+    bool32 partyMinus3:1;
+    bool32 padding:9;
 };
 
 void ClearRisks(void);

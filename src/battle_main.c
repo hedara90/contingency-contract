@@ -639,6 +639,40 @@ static void CB2_InitBattleInternal(void)
         }
     }
 
+    if (IsRiskActive(RISK_PARTY_MINUS_1))
+    {
+        for (u32 i = 0; i < 1; i++)
+        {
+            if (GetMonData(&gParties[0][5 - i], MON_DATA_SPECIES) != SPECIES_NONE)
+            {
+                CopyMonToPC(&gParties[0][5 - i]);
+                ZeroMonData(&gParties[0][5 - i]);
+            }
+        }
+    }
+    else if (IsRiskActive(RISK_PARTY_MINUS_2))
+    {
+        for (u32 i = 0; i < 2; i++)
+        {
+            if (GetMonData(&gParties[0][5 - i], MON_DATA_SPECIES) != SPECIES_NONE)
+            {
+                CopyMonToPC(&gParties[0][5 - i]);
+                ZeroMonData(&gParties[0][5 - i]);
+            }
+        }
+    }
+    else if (IsRiskActive(RISK_PARTY_MINUS_3))
+    {
+        for (u32 i = 0; i < 3; i++)
+        {
+            if (GetMonData(&gParties[0][5 - i], MON_DATA_SPECIES) != SPECIES_NONE)
+            {
+                CopyMonToPC(&gParties[0][5 - i]);
+                ZeroMonData(&gParties[0][5 - i]);
+            }
+        }
+    }
+
     bool32 skipStatusSet = FALSE;
     if (IsRiskActive(RISK_PERMANENT_SUN))
     {
