@@ -761,7 +761,7 @@ SINGLE_BATTLE_TEST("Risk: Player can only use 2 moves, but get Parental Bond")
     //  Can't test move selection
     s16 dmg1, dmg2;
     GIVEN {
-        SetRisk(RISK_CAN_ONLY_USE_TOP_MOVES);
+        SetRisk(RISK_PLAYER_HAS_PARENTAL_BOND);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {

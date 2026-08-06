@@ -53,7 +53,7 @@ enum Risk
     RISK_HAS_GEN_1_CRIT_CHANCE,
     RISK_PLAYER_LOWER_DAMAGE_ROLLS,
     RISK_OPPONENT_HIGHER_DAMAGE_ROLLS,
-    RISK_CAN_ONLY_USE_TOP_MOVES,
+    RISK_PLAYER_HAS_PARENTAL_BOND,
     RISK_PLAYER_SPIKES_1,
     RISK_PLAYER_SPIKES_2,
     RISK_PLAYER_SPIKES_3,
@@ -112,7 +112,7 @@ struct Risks
     bool32 hasGen1CritChance:1;
     bool32 playerLowerHalfDamageRolls:1;
     bool32 opponentUpperHalfDamageRolls:1;
-    bool32 canOnlyUseTopMoves1:1;
+    bool32 playerHasParentalBond:1;
     bool32 playerStartsSpikes1:1;
     bool32 playerStartsSpikes2:1;
     bool32 playerStartsSpikes3:1;

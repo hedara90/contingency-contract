@@ -77,8 +77,8 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.playerLowerHalfDamageRolls;
     case RISK_OPPONENT_HIGHER_DAMAGE_ROLLS:
         return gSaveBlock1Ptr->risks.opponentUpperHalfDamageRolls;
-    case RISK_CAN_ONLY_USE_TOP_MOVES:
-        return gSaveBlock1Ptr->risks.canOnlyUseTopMoves1;
+    case RISK_PLAYER_HAS_PARENTAL_BOND:
+        return gSaveBlock1Ptr->risks.playerHasParentalBond;
     case RISK_PLAYER_SPIKES_1:
         return gSaveBlock1Ptr->risks.playerStartsSpikes1;
     case RISK_PLAYER_SPIKES_2:
@@ -228,8 +228,8 @@ void SetRisk(enum Risk risk)
     case RISK_OPPONENT_HIGHER_DAMAGE_ROLLS:
         gSaveBlock1Ptr->risks.opponentUpperHalfDamageRolls = TRUE;
         break;
-    case RISK_CAN_ONLY_USE_TOP_MOVES:
-        gSaveBlock1Ptr->risks.canOnlyUseTopMoves1 = TRUE;
+    case RISK_PLAYER_HAS_PARENTAL_BOND:
+        gSaveBlock1Ptr->risks.playerHasParentalBond = TRUE;
         break;
     case RISK_PLAYER_SPIKES_1:
         gSaveBlock1Ptr->risks.playerStartsSpikes1 = TRUE;
@@ -400,8 +400,8 @@ void ClearRisk(enum Risk risk)
     case RISK_OPPONENT_HIGHER_DAMAGE_ROLLS:
         gSaveBlock1Ptr->risks.opponentUpperHalfDamageRolls = FALSE;
         break;
-    case RISK_CAN_ONLY_USE_TOP_MOVES:
-        gSaveBlock1Ptr->risks.canOnlyUseTopMoves1 = FALSE;
+    case RISK_PLAYER_HAS_PARENTAL_BOND:
+        gSaveBlock1Ptr->risks.playerHasParentalBond = FALSE;
         break;
     case RISK_PLAYER_SPIKES_1:
         gSaveBlock1Ptr->risks.playerStartsSpikes1 = FALSE;

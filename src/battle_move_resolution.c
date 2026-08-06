@@ -2280,7 +2280,7 @@ static enum CancelerResult CancelerAccuracyCheck(struct BattleCalcValues *cv)
 static bool32 IsMoveParentalBondAffected(struct BattleCalcValues *cv)
 {
     if (!(cv->abilities[cv->battlerAtk] == ABILITY_PARENTAL_BOND
-      || (GetBattlerSide(cv->battlerAtk) == B_SIDE_PLAYER && IsRiskActive(RISK_CAN_ONLY_USE_TOP_MOVES)))
+      || (GetBattlerSide(cv->battlerAtk) == B_SIDE_PLAYER && IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND)))
      || gBattleStruct->numSpreadTargets > 1
      || IsMoveParentalBondBanned(cv->move)
      || GetMoveCategory(cv->move) == DAMAGE_CATEGORY_STATUS

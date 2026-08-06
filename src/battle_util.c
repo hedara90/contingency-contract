@@ -1589,11 +1589,10 @@ u32 CheckMoveLimitations(enum BattlerId battler, u8 unusableMoves, u16 check)
     gPotentialItemEffectBattler = battler;
 
     u32 moveLimit;
-    if (GetBattlerSide(battler) == B_SIDE_PLAYER && IsRiskActive(RISK_CAN_ONLY_USE_TOP_MOVES))
+    if (GetBattlerSide(battler) == B_SIDE_PLAYER && IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND))
     {
-        unusableMoves |= 1u << 2;
         unusableMoves |= 1u << 3;
-        moveLimit = 2;
+        moveLimit = 3;
     }
     else
     {
