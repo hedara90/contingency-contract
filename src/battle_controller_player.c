@@ -1704,9 +1704,16 @@ static void MoveSelectionDisplayMoveNames(enum BattlerId battler)
 
     u32 moveLimit;
     if (GetBattlerSide(battler) == B_SIDE_PLAYER && IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND))
-        moveLimit = 3;
+    {
+        if (IsRiskActive(RISK_MINUS_1_MOVE))
+            moveLimit = 2;
+        else
+            moveLimit = 3;
+    }
     else
+    {
         moveLimit = MAX_MON_MOVES;
+    }
 
     for (i = 0; i < moveLimit; i++)
     {

@@ -75,6 +75,7 @@ enum Risk
     RISK_PARTY_MINUS_1,
     RISK_PARTY_MINUS_2,
     RISK_PARTY_MINUS_3,
+    RISK_MINUS_1_MOVE,
 };
 
 struct Risks
@@ -134,7 +135,8 @@ struct Risks
     bool32 partyMinus1:1;
     bool32 partyMinus2:1;
     bool32 partyMinus3:1;
-    bool32 padding:9;
+    bool32 minus1Move:1;
+    bool32 padding:8;
 };
 
 void ClearRisks(void);

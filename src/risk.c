@@ -121,6 +121,8 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.partyMinus2;
     case RISK_PARTY_MINUS_3:
         return gSaveBlock1Ptr->risks.partyMinus3;
+    case RISK_MINUS_1_MOVE:
+        return gSaveBlock1Ptr->risks.minus1Move;
     }
     return FALSE;
 }
@@ -294,6 +296,9 @@ void SetRisk(enum Risk risk)
     case RISK_PARTY_MINUS_3:
         gSaveBlock1Ptr->risks.partyMinus3 = TRUE;
         break;
+    case RISK_MINUS_1_MOVE:
+        gSaveBlock1Ptr->risks.minus1Move = TRUE;
+        break;
     }
 }
 
@@ -465,6 +470,9 @@ void ClearRisk(enum Risk risk)
         break;
     case RISK_PARTY_MINUS_3:
         gSaveBlock1Ptr->risks.partyMinus3 = FALSE;
+        break;
+    case RISK_MINUS_1_MOVE:
+        gSaveBlock1Ptr->risks.minus1Move = FALSE;
         break;
     }
 }

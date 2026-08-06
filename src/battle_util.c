@@ -1592,7 +1592,15 @@ u32 CheckMoveLimitations(enum BattlerId battler, u8 unusableMoves, u16 check)
     if (GetBattlerSide(battler) == B_SIDE_PLAYER && IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND))
     {
         unusableMoves |= 1u << 3;
-        moveLimit = 3;
+        if (IsRiskActive(RISK_MINUS_1_MOVE))
+        {
+            unusableMoves |= 1u << 2;
+            moveLimit = 2;
+        }
+        else
+        {
+            moveLimit = 3;
+        }
     }
     else
     {
