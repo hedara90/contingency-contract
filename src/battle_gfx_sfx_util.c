@@ -43,24 +43,24 @@ static void ClearSpritesBattlerHealthboxAnimData(void);
 // const rom data
 static const struct CompressedSpriteSheet sSpriteSheet_SinglesPlayerHealthbox =
 {
-    gHealthboxSinglesPlayerGfx, 0x1000, TAG_HEALTHBOX_PLAYER1_TILE
+    gHealthboxSinglesPlayerGfx, 0x800, TAG_HEALTHBOX_PLAYER1_TILE
 };
 
 static const struct CompressedSpriteSheet sSpriteSheet_SinglesOpponentHealthbox =
 {
-    gHealthboxSinglesOpponentGfx, 0x1000, TAG_HEALTHBOX_OPPONENT1_TILE
+    gHealthboxSinglesOpponentGfx, 0x800, TAG_HEALTHBOX_OPPONENT1_TILE
 };
 
 static const struct CompressedSpriteSheet sSpriteSheets_DoublesPlayerHealthbox[2] =
 {
-    {gHealthboxDoublesPlayerGfx, 0x800, TAG_HEALTHBOX_PLAYER1_TILE},
-    {gHealthboxDoublesPlayerGfx, 0x800, TAG_HEALTHBOX_PLAYER2_TILE}
+    {gHealthboxSinglesPlayerGfx, 0x800, TAG_HEALTHBOX_PLAYER1_TILE},
+    {gHealthboxSinglesPlayerGfx, 0x800, TAG_HEALTHBOX_PLAYER2_TILE}
 };
 
 static const struct CompressedSpriteSheet sSpriteSheets_DoublesOpponentHealthbox[2] =
 {
-    {gHealthboxDoublesOpponentGfx, 0x800, TAG_HEALTHBOX_OPPONENT1_TILE},
-    {gHealthboxDoublesOpponentGfx, 0x800, TAG_HEALTHBOX_OPPONENT2_TILE}
+    {gHealthboxSinglesOpponentGfx, 0x800, TAG_HEALTHBOX_OPPONENT1_TILE},
+    {gHealthboxSinglesOpponentGfx, 0x800, TAG_HEALTHBOX_OPPONENT2_TILE}
 };
 
 static const struct CompressedSpriteSheet sSpriteSheet_SafariHealthbox =

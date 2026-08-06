@@ -305,6 +305,33 @@ static void HandleInputChooseAction(enum BattlerId battler)
 
     if (JOY_NEW(A_BUTTON))
     {
+        if (((IsRiskActive(RISK_MUST_SWITCH_1) && gBattleStruct->turnsWithoutSwitching >= MUST_SWITCH_TURN_LIMIT_1)
+          || (IsRiskActive(RISK_MUST_SWITCH_2) && gBattleStruct->turnsWithoutSwitching >= MUST_SWITCH_TURN_LIMIT_2)
+          || (IsRiskActive(RISK_MUST_SWITCH_3) && gBattleStruct->turnsWithoutSwitching >= MUST_SWITCH_TURN_LIMIT_3))
+         && gActionSelectionCursor[battler] != 2
+         && HasMonToSwitchInto()
+         && !IsPlayerTrapped())
+        {
+            bool32 takeInput = TRUE;
+            if (IsDoubleBattle())
+            {
+                if (battler == 2)
+                {
+                    if (gChosenActionByBattler[0] != B_ACTION_SWITCH)
+                        takeInput = FALSE;
+                }
+            }
+            else
+            {
+                takeInput = FALSE;
+            }
+
+            if (!takeInput)
+            {
+                PlaySE(SE_PC_OFF);
+                return;
+            }
+        }
         PlaySE(SE_SELECT);
         TryHideLastUsedBall();
 
@@ -317,6 +344,8 @@ static void HandleInputChooseAction(enum BattlerId battler)
             BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_USE_ITEM, 0);
             break;
         case 2: // Bottom left
+            if (IsRiskActive(RISK_CANT_SWITCH))
+                gBattleStruct->cantSwitchBit = TRUE;
             BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_SWITCH, 0);
             break;
         case 3: // Bottom right
@@ -337,7 +366,7 @@ static void HandleInputChooseAction(enum BattlerId battler)
     }
     else if (JOY_NEW(DPAD_RIGHT))
     {
-        if (!(gActionSelectionCursor[battler] & 1)) // if is B_ACTION_USE_MOVE or B_ACTION_SWITCH
+        if (gActionSelectionCursor[battler] == B_ACTION_SWITCH) // if is B_ACTION_USE_MOVE or B_ACTION_SWITCH
         {
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[battler]);
@@ -347,7 +376,7 @@ static void HandleInputChooseAction(enum BattlerId battler)
     }
     else if (JOY_NEW(DPAD_UP))
     {
-        if (gActionSelectionCursor[battler] & 2) // if is B_ACTION_SWITCH or B_ACTION_RUN
+        if (gActionSelectionCursor[battler] == B_ACTION_SWITCH) // if is B_ACTION_SWITCH or B_ACTION_RUN
         {
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[battler]);
@@ -1674,7 +1703,7 @@ static void MoveSelectionDisplayMoveNames(enum BattlerId battler)
     gNumberOfMovesToChoose = 0;
 
     u32 moveLimit;
-    if (GetBattlerSide(battler) == B_SIDE_PLAYER && gRisks.canOnlyUseTopMoves1)
+    if (GetBattlerSide(battler) == B_SIDE_PLAYER && IsRiskActive(RISK_CAN_ONLY_USE_TOP_MOVES))
         moveLimit = 2;
     else
         moveLimit = MAX_MON_MOVES;
@@ -1814,7 +1843,7 @@ static void MoveSelectionDisplayMoveDescription(enum BattlerId battler)
     BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_DESCRIPTION);
 
     if (gCategoryIconSpriteId == 0xFF)
-        gCategoryIconSpriteId = CreateSprite(&gSpriteTemplate_CategoryIcons, 38, 64, 1);
+        gCategoryIconSpriteId = CreateSprite(&gSpriteTemplate_CategoryIcons, 38 + 24, 64, 1);
 
     StartSpriteAnim(&gSprites[gCategoryIconSpriteId], cat);
 
@@ -1827,7 +1856,7 @@ void MoveSelectionCreateCursorAt(u8 cursorPosition, u8 baseTileNum)
     src[0] = baseTileNum + 1;
     src[1] = baseTileNum + 2;
 
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 9 * (cursorPosition & 1) + 1, 55 + (cursorPosition & 2), 1, 2, 0x11);
+    CopyToBgTilemapBufferRect_ChangePalette(0, src, 9 * (cursorPosition & 1) + 2, 55 + (cursorPosition & 2), 1, 2, 0);
     CopyBgTilemapBufferToVram(0);
 }
 
@@ -1837,7 +1866,7 @@ void MoveSelectionDestroyCursorAt(u8 cursorPosition)
     src[0] = 0x1016;
     src[1] = 0x1016;
 
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 9 * (cursorPosition & 1) + 1, 55 + (cursorPosition & 2), 1, 2, 0x11);
+    CopyToBgTilemapBufferRect_ChangePalette(0, src, 9 * (cursorPosition & 1) + 2, 55 + (cursorPosition & 2), 1, 2, 0);
     CopyBgTilemapBufferToVram(0);
 }
 
@@ -1847,7 +1876,7 @@ void ActionSelectionCreateCursorAt(u8 cursorPosition, u8 baseTileNum)
     src[0] = 1;
     src[1] = 2;
 
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 7 * (cursorPosition & 1) + 16, 35 + (cursorPosition & 2), 1, 2, 0x11);
+    CopyToBgTilemapBufferRect_ChangePalette(0, src, 7 * (cursorPosition & 1) + 17, 35 + (cursorPosition & 2), 1, 2, 0);
     CopyBgTilemapBufferToVram(0);
 }
 
@@ -1857,7 +1886,7 @@ void ActionSelectionDestroyCursorAt(u8 cursorPosition)
     src[0] = 0x1016;
     src[1] = 0x1016;
 
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 7 * (cursorPosition & 1) + 16, 35 + (cursorPosition & 2), 1, 2, 0x11);
+    CopyToBgTilemapBufferRect_ChangePalette(0, src, 7 * (cursorPosition & 1) + 17, 35 + (cursorPosition & 2), 1, 2, 0);
     CopyBgTilemapBufferToVram(0);
 }
 

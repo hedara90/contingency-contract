@@ -4973,5 +4973,4 @@ void CheckEWRAMCounters(struct ScriptContext *ctx)
 
 void SetRisks(void)
 {
-    gRisks.canOnlyUseTopMoves1 = TRUE;
 }

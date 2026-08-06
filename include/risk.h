@@ -14,6 +14,66 @@
 #define TURN_LIMIT_3 10
 #endif
 
+#define MUST_SWITCH_TURN_LIMIT_1 4
+#define MUST_SWITCH_TURN_LIMIT_2 3
+#define MUST_SWITCH_TURN_LIMIT_3 2
+
+enum Risk
+{
+    RISK_HAS_STURDY,
+    RISK_HAS_MOLD_BREAKER,
+    RISK_HAS_FILTER,
+    RISK_HAS_ADAPTABILITY,
+    RISK_HAS_WONDER_GUARD,
+    RISK_HAS_REGENERATOR,
+    RISK_CANT_CRIT,
+    RISK_OPPONENT_MOVES_FIRST,
+    RISK_OPPONENT_MORE_MONS,
+    RISK_TURN_LIMIT_1,
+    RISK_TURN_LIMIT_2,
+    RISK_TURN_LIMIT_3,
+    RISK_FLIP_TYPE_CHART,
+    RISK_ATTACK_GETS_DROWSY,
+    RISK_STATUS_GETS_PARA,
+    RISK_FOE_HAS_METRONOME,
+    RISK_PLAYER_HAS_NEGATIVE_METRONOME,
+    RISK_PLAYER_HAS_RECOIL,
+    RISK_OPPONENT_INFLICTS_GASTRO_ACID,
+    RISK_OPPONENT_ATTACKS_SWITCHES,
+    RISK_OPPONENT_ATTACKS_DISABLE,
+    RISK_OPPONENT_ATTACKS_TORMENT,
+    RISK_PLAYER_STARTS_WITH_BURN,
+    RISK_PLAYER_STARTS_WITH_PARALYSIS,
+    RISK_PLAYER_STARTS_WITH_FROSTBITE,
+    RISK_PERMANENT_SUN,
+    RISK_HAS_OMNISCIENT_AI,
+    RISK_HAS_PREDICTION_AI,
+    RISK_HAS_GUARANTEED_EFFECTS,
+    RISK_HAS_GUARANTEED_ACCURACY,
+    RISK_HAS_GEN_1_CRIT_CHANCE,
+    RISK_PLAYER_LOWER_DAMAGE_ROLLS,
+    RISK_OPPONENT_HIGHER_DAMAGE_ROLLS,
+    RISK_CAN_ONLY_USE_TOP_MOVES,
+    RISK_PLAYER_SPIKES_1,
+    RISK_PLAYER_SPIKES_2,
+    RISK_PLAYER_SPIKES_3,
+    RISK_PLAYER_TOXIC_SPIKES_1,
+    RISK_PLAYER_TOXIC_SPIKES_2,
+    RISK_PLAYER_STICKY_WEB,
+    RISK_PLAYER_STEALTH_ROCK,
+    RISK_PLAYER_SHARP_STEEL,
+    RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+    RISK_OPPONENT_HP_1,
+    RISK_OPPONENT_HP_2,
+    RISK_OPPONENT_HP_3,
+    RISK_CANT_SWITCH,
+    RISK_MUST_SWITCH_1,
+    RISK_MUST_SWITCH_2,
+    RISK_MUST_SWITCH_3,
+    RISK_PLAYER_JUST_BERRIES,
+    RISK_OPPONENT_HAS_ITEMS,
+};
+
 struct Risks
 {
     bool32 hasSturdy:1;
@@ -50,11 +110,31 @@ struct Risks
     bool32 playerLowerHalfDamageRolls:1;
     bool32 opponentUpperHalfDamageRolls:1;
     bool32 canOnlyUseTopMoves1:1;
-    bool32 padding:30;
+    bool32 playerStartsSpikes1:1;
+    bool32 playerStartsSpikes2:1;
+    bool32 playerStartsSpikes3:1;
+    bool32 playerStartsTSpikes1:1;
+    bool32 playerStartsTSpikes2:1;
+    bool32 playerStartsStickyWeb:1;
+    bool32 playerStartsStealthRock:1;
+    bool32 playerStartsSharpSteel:1;
+    bool32 playerHazardsNotRemovable:1;
+    bool32 opponentHP1:1;
+    bool32 opponentHP2:1;
+    bool32 opponentHP3:1;
+    bool32 cantSwitch:1;
+    bool32 mustSwitch1:1;
+    bool32 mustSwitch2:1;
+    bool32 mustSwitch3:1;
+    bool32 playerJustBerries:1;
+    bool32 opponentHasItems:1;
+    bool32 padding:12;
 };
 
-extern struct Risks gRisks;
-
 void ClearRisks(void);
+
+bool32 IsRiskActive(enum Risk risk);
+void SetRisk(enum Risk risk);
+void ClearRisk(enum Risk risk);
 
 #endif // GUARD_RISK

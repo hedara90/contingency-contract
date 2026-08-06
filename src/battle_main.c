@@ -620,8 +620,27 @@ static void CB2_InitBattleInternal(void)
             TryFormChange(&gParties[trainer][i], FORM_CHANGE_BEGIN_BATTLE, trainer);
     }
 
+    if (IsRiskActive(RISK_PLAYER_JUST_BERRIES))
+    {
+        for (u32 i = 0; i < 6; i++)
+        {
+            struct Pokemon *mon = &gParties[0][i];
+            if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
+            {
+                enum Item currItem = GetMonData(mon, MON_DATA_HELD_ITEM);
+                if (currItem != ITEM_NONE
+                 && gItemsInfo[currItem].pocket != POCKET_BERRIES)
+                {
+                    AddBagItem(currItem, 1);
+                    currItem = ITEM_NONE;
+                    SetMonData(mon, MON_DATA_HELD_ITEM, &currItem);
+                }
+            }
+        }
+    }
+
     bool32 skipStatusSet = FALSE;
-    if (gRisks.permanentSun)
+    if (IsRiskActive(RISK_PERMANENT_SUN))
     {
         for (u32 i = 0; i < 6; i++)
         {
@@ -635,7 +654,7 @@ static void CB2_InitBattleInternal(void)
     if (skipStatusSet)
     {
     }
-    else if (gRisks.playerStartsWithBurn)
+    else if (IsRiskActive(RISK_PLAYER_STARTS_WITH_BURN))
     {
         u32 status = STATUS1_BURN;
         for (u32 i = 0; i < 6; i++)
@@ -655,7 +674,7 @@ static void CB2_InitBattleInternal(void)
             }
         }
     }
-    else if (gRisks.playerStartsWithParalysis)
+    else if (IsRiskActive(RISK_PLAYER_STARTS_WITH_PARALYSIS))
     {
         u32 status = STATUS1_PARALYSIS;
         for (u32 i = 0; i < 6; i++)
@@ -673,7 +692,7 @@ static void CB2_InitBattleInternal(void)
             }
         }
     }
-    else if (gRisks.playerStartsWithFrostbite)
+    else if (IsRiskActive(RISK_PLAYER_STARTS_WITH_FROSTBITE))
     {
         u32 status = STATUS1_FROSTBITE;
         for (u32 i = 0; i < 6; i++)
@@ -1959,7 +1978,7 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
             monsCount = trainer->partySize;
         }
 
-        if (gRisks.opponentPartyPlus1)
+        if (IsRiskActive(RISK_OPPONENT_MORE_MONS))
         {
             if (monsCount + 1 <= PARTY_SIZE)
                 monsCount++;
@@ -1998,7 +2017,10 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
                 otId.value = HIHALF(personalityValue) ^ LOHALF(personalityValue);
             }
             CreateMon(&party[i], partyData[monIndex].species, partyData[monIndex].lvl, personalityValue, otId);
-            SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[monIndex].heldItem);
+            if (TESTING || IsRiskActive(RISK_OPPONENT_HAS_ITEMS))
+                SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[monIndex].heldItem);
+            bool32 thing = TRUE;
+            SetMonData(&party[i], MON_DATA_EARTH_RIBBON, &thing);
 
             CustomTrainerPartyAssignMoves(&party[i], &partyData[monIndex]);
             SetMonData(&party[i], MON_DATA_IVS, &(partyData[monIndex].iv));
@@ -3762,6 +3784,28 @@ static void DoBattleIntro(void)
             struct StartingStatuses statusesOpponentA = {0};
             struct StartingStatuses statusesOpponentB = {0};
 
+            // Risk Spikes
+            if (IsRiskActive(RISK_PLAYER_SPIKES_3))
+                SetStartingStatus(STARTING_STATUS_SPIKES_PLAYER_L3);
+            else if (IsRiskActive(RISK_PLAYER_SPIKES_2))
+                SetStartingStatus(STARTING_STATUS_SPIKES_PLAYER_L2);
+            else if (IsRiskActive(RISK_PLAYER_SPIKES_1))
+                SetStartingStatus(STARTING_STATUS_SPIKES_PLAYER_L1);
+
+            // Risks TSpikes
+            if (IsRiskActive(RISK_PLAYER_TOXIC_SPIKES_2))
+                SetStartingStatus(STARTING_STATUS_TOXIC_SPIKES_PLAYER_L2);
+            else if (IsRiskActive(RISK_PLAYER_TOXIC_SPIKES_1))
+                SetStartingStatus(STARTING_STATUS_TOXIC_SPIKES_PLAYER_L1);
+
+            // Risks Other Hazards
+            if (IsRiskActive(RISK_PLAYER_STEALTH_ROCK))
+                SetStartingStatus(STARTING_STATUS_STEALTH_ROCK_PLAYER);
+            if (IsRiskActive(RISK_PLAYER_SHARP_STEEL))
+                SetStartingStatus(STARTING_STATUS_SHARP_STEEL_PLAYER);
+            if (IsRiskActive(RISK_PLAYER_STICKY_WEB))
+                SetStartingStatus(STARTING_STATUS_STICKY_WEB_PLAYER);
+
             // Try to set a status to start the battle with
             if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !IsSpecialTrainer(TRAINER_BATTLE_PARAM.opponentA))
             {
@@ -4823,7 +4867,7 @@ s32 GetBattleMovePriority(enum BattlerId battler, enum Ability ability, enum Mov
 
     priority = GetMovePriority(move);
 
-    if (gRisks.opponentAttacksSwitches && !IsOnPlayerSide(battler) && !IsBattleMoveStatus(move))
+    if (IsRiskActive(RISK_OPPONENT_ATTACKS_SWITCHES) && !IsOnPlayerSide(battler) && !IsBattleMoveStatus(move))
         priority = -6;
 
     // Max Guard check
@@ -5277,7 +5321,7 @@ static void TryChangingTurnOrderEffects(struct BattleCalcValues *calcValues, u32
      || (holdEffectBattler1 == HOLD_EFFECT_CUSTAP_BERRY && HasEnoughHpToEatBerry(battler1, ability1, 4, gBattleMons[battler1].item))))
         gProtectStructs[battler1].usedCustapBerry = TRUE;
 
-    if (gRisks.opponentMovesFirst)
+    if (IsRiskActive(RISK_OPPONENT_MOVES_FIRST))
     {
         if (!gProtectStructs[battler1].quickDraw
          && !gProtectStructs[battler1].usedCustapBerry
@@ -5298,7 +5342,7 @@ static void TryChangingTurnOrderEffects(struct BattleCalcValues *calcValues, u32
      || (holdEffectBattler2 == HOLD_EFFECT_CUSTAP_BERRY && HasEnoughHpToEatBerry(battler2, ability2, 4, gBattleMons[battler2].item))))
         gProtectStructs[battler2].usedCustapBerry = TRUE;
 
-    if (gRisks.opponentMovesFirst)
+    if (IsRiskActive(RISK_OPPONENT_MOVES_FIRST))
     {
         if (!gProtectStructs[battler2].quickDraw
          && !gProtectStructs[battler2].usedCustapBerry
@@ -5313,6 +5357,32 @@ static void TryChangingTurnOrderEffects(struct BattleCalcValues *calcValues, u32
 static void CheckChangingTurnOrderEffects(void)
 {
     enum BattlerId i, battler;
+    gBattleStruct->cantSwitchBit = FALSE;
+
+    if ((IsRiskActive(RISK_MUST_SWITCH_1) || IsRiskActive(RISK_MUST_SWITCH_2) || IsRiskActive(RISK_MUST_SWITCH_3))
+     && HasMonToSwitchInto()
+     && !IsPlayerTrapped())
+    {
+        if (IsDoubleBattle())
+        {
+            if (gChosenActionByBattler[0] != B_ACTION_SWITCH
+             && gChosenActionByBattler[2] != B_ACTION_SWITCH)
+            {
+                gBattleStruct->turnsWithoutSwitching++;
+            }
+            else
+            {
+                gBattleStruct->turnsWithoutSwitching = 0;
+            }
+        }
+        else
+        {
+            if (gChosenActionByBattler[0] != B_ACTION_SWITCH)
+                gBattleStruct->turnsWithoutSwitching++;
+            else
+                gBattleStruct->turnsWithoutSwitching = 0;
+        }
+    }
 
     if (!(gHitMarker & HITMARKER_RUN))
     {
@@ -5410,19 +5480,19 @@ static void RunTurnActionsFunctions(void)
 
     if (gCurrentTurnActionNumber >= gBattlersCount) // everyone did their actions, turn finished
     {
-        if ((gRisks.turnLimit1 || gRisks.turnLimit2 || gRisks.turnLimit3) && (gBattleOutcome & 0x7F) != B_OUTCOME_WON)
+        if ((IsRiskActive(RISK_TURN_LIMIT_1) || IsRiskActive(RISK_TURN_LIMIT_2) || IsRiskActive(RISK_TURN_LIMIT_3)) && (gBattleOutcome & 0x7F) != B_OUTCOME_WON)
         {
-            if (gRisks.turnLimit1)
+            if (IsRiskActive(RISK_TURN_LIMIT_1))
             {
                 if (gBattleTurnCounter == TURN_LIMIT_1 - 1)
                     gBattleOutcome = B_OUTCOME_LOST;
             }
-            else if (gRisks.turnLimit2)
+            else if (IsRiskActive(RISK_TURN_LIMIT_2))
             {
                 if (gBattleTurnCounter == TURN_LIMIT_2 - 1)
                     gBattleOutcome = B_OUTCOME_LOST;
             }
-            else if (gRisks.turnLimit3)
+            else if (IsRiskActive(RISK_TURN_LIMIT_3))
             {
                 if (gBattleTurnCounter == TURN_LIMIT_3 - 1)
                     gBattleOutcome = B_OUTCOME_LOST;

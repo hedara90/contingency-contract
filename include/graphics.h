@@ -2064,8 +2064,6 @@ extern const u32 gBattleAnimSpriteGfx_SubstituteBack[];
 extern const u16 gBattleAnimSpritePal_Substitute[];
 extern const u32 gHealthboxSinglesPlayerGfx[];
 extern const u32 gHealthboxSinglesOpponentGfx[];
-extern const u32 gHealthboxDoublesPlayerGfx[];
-extern const u32 gHealthboxDoublesOpponentGfx[];
 extern const u32 gHealthboxSafariGfx[];
 extern const u32 gBlankGfxCompressed[];
 extern const u16 gBattleInterface_BallStatusBarPal[];
@@ -3437,5 +3435,13 @@ extern const u16 gBattleIcons_Pal2[];
 
 extern const u32 gGhostFrontPic[];
 extern const u16 gGhostPalette[];
+
+//  CC start menu
+extern const u16 gCCStart_PalActive[];
+extern const u16 gCCStart_PalInactive[];
+extern const u32 gCCStart_Party[];
+extern const u32 gCCStart_Bag[];
+extern const u32 gCCStart_Save[];
+extern const u32 gCCStart_Options[];
 
 #endif //GUARD_GRAPHICS_H

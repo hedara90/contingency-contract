@@ -2280,7 +2280,7 @@ static enum CancelerResult CancelerAccuracyCheck(struct BattleCalcValues *cv)
 static bool32 IsMoveParentalBondAffected(struct BattleCalcValues *cv)
 {
     if (!(cv->abilities[cv->battlerAtk] == ABILITY_PARENTAL_BOND
-      || (GetBattlerSide(cv->battlerAtk) == B_SIDE_PLAYER && gRisks.canOnlyUseTopMoves1))
+      || (GetBattlerSide(cv->battlerAtk) == B_SIDE_PLAYER && IsRiskActive(RISK_CAN_ONLY_USE_TOP_MOVES)))
      || gBattleStruct->numSpreadTargets > 1
      || IsMoveParentalBondBanned(cv->move)
      || GetMoveCategory(cv->move) == DAMAGE_CATEGORY_STATUS
@@ -3339,7 +3339,7 @@ static enum MoveEndResult MoveEndAttackerDrowsy(struct BattleCalcValues *cv)
     while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
     {
         enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
-        if (gRisks.attackGetsDrowsy && battler == gBattlerAttacker && IsOnPlayerSide(gBattlerAttacker))
+        if (IsRiskActive(RISK_ATTACK_GETS_DROWSY) && battler == gBattlerAttacker && IsOnPlayerSide(gBattlerAttacker))
         {
             if (GetMoveCategory(cv->move) != DAMAGE_CATEGORY_STATUS
              && IsBattlerAlive(gBattlerAttacker)
@@ -3365,7 +3365,7 @@ static enum MoveEndResult MoveEndStatusGetsPara(struct BattleCalcValues *cv)
     while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
     {
         enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
-        if (gRisks.statusGetsPara && battler == gBattlerAttacker && IsOnPlayerSide(gBattlerAttacker))
+        if (IsRiskActive(RISK_STATUS_GETS_PARA) && battler == gBattlerAttacker && IsOnPlayerSide(gBattlerAttacker))
         {
             if (IsBattleMoveStatus(cv->move)
              && !gBattleStruct->unableToUseMove
@@ -3391,7 +3391,7 @@ static enum MoveEndResult MoveEndOpponentGastroAcid(struct BattleCalcValues *cv)
     while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
     {
         enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
-        if (gRisks.opponentInflictsGastroAcid
+        if (IsRiskActive(RISK_OPPONENT_INFLICTS_GASTRO_ACID)
          && battler == cv->battlerAtk
          && IsBattlerTurnDamaged(cv->battlerDef, EXCLUDING_SUBSTITUTES)
          && !gAbilitiesInfo[cv->abilities[cv->battlerDef]].cantBeSuppressed
@@ -3419,7 +3419,7 @@ static enum MoveEndResult MoveEndAttacksDisable(struct BattleCalcValues *cv)
     while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
     {
         enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
-        if (gRisks.opponentAttacksDisable
+        if (IsRiskActive(RISK_OPPONENT_ATTACKS_DISABLE)
          && battler == cv->battlerDef
          && IsBattlerTurnDamaged(battler, EXCLUDING_SUBSTITUTES)
          && gBattleMons[battler].volatiles.disabledMove == MOVE_NONE
@@ -3456,7 +3456,7 @@ static enum MoveEndResult MoveEndAttacksTorment(struct BattleCalcValues *cv)
     while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
     {
         enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
-        if (gRisks.opponentAttacksTorment
+        if (IsRiskActive(RISK_OPPONENT_ATTACKS_TORMENT)
          && battler == cv->battlerDef
          && IsBattlerTurnDamaged(battler, EXCLUDING_SUBSTITUTES)
          && !gBattleMons[battler].volatiles.torment
@@ -3546,7 +3546,7 @@ static enum MoveEndResult MoveEndMoveBlockRecoil(struct BattleCalcValues *cv)
         break;
     }
 
-    if (gRisks.playerHasRecoil
+    if (IsRiskActive(RISK_PLAYER_HAS_RECOIL)
      && IsOnPlayerSide(cv->battlerAtk)
      && result != MOVEEND_RESULT_RUN_SCRIPT
      && gBattleStruct->moveDamage[cv->battlerDef] != 0
@@ -3829,7 +3829,7 @@ static enum MoveEndResult MoveEndMoveBlock(struct BattleCalcValues *cv)
 
 static enum MoveEndResult MoveEndOpponentForceSwitches(struct BattleCalcValues *cv)
 {
-    if (gRisks.opponentAttacksSwitches)
+    if (IsRiskActive(RISK_OPPONENT_ATTACKS_SWITCHES))
     {
         while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
         {

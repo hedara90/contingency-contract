@@ -6736,6 +6736,9 @@ static bool32 DefogClearHazards(enum BattleSide side, bool32 clear)
     if (!AreAnyHazardsOnSide(side))
         return FALSE;
 
+    if (IsOnPlayerSide(gBattlerAttacker) && IsRiskActive(RISK_PLAYER_HAZARDS_NOT_REMOVABLE))
+        return FALSE;
+
     for (u32 hazardType = HAZARDS_NONE + 1; hazardType < HAZARDS_MAX_COUNT; hazardType++)
     {
         bool32 checkOrClear = clear ? IsHazardOnSideAndClear(side, hazardType) : IsHazardOnSide(side, hazardType);
@@ -7737,7 +7740,7 @@ static void Cmd_setfocusenergy(void)
     {
         if (GetConfig(B_FOCUS_ENERGY_CRIT_RATIO) >= GEN_3
          || GetConfig(B_CRIT_CHANCE) == GEN_1
-         || gRisks.hasGen1CritChance)
+         || IsRiskActive(RISK_HAS_GEN_1_CRIT_CHANCE))
             gBattleMons[battler].volatiles.focusEnergy = TRUE;
         else
             gBattleMons[battler].volatiles.dragonCheer = TRUE;
@@ -8588,6 +8591,12 @@ static void Cmd_rapidspinfree(void)
 
     u8 atkSide = GetBattlerSide(gBattlerAttacker);
 
+    if (IsOnPlayerSide(gBattlerAttacker) && IsRiskActive(RISK_PLAYER_HAZARDS_NOT_REMOVABLE))
+    {
+        gBattlescriptCurrInstr = cmd->nextInstr;
+        return;
+    }
+
     if (gBattleMons[gBattlerAttacker].volatiles.wrapped)
     {
         gBattleScripting.battler = gBattlerTarget;
@@ -9327,7 +9336,7 @@ static void Cmd_switchoutabilities(void)
 
     enum BattlerId battler = GetBattlerForBattleScript(cmd->battler);
 
-    if (!IsOnPlayerSide(battler) && gRisks.hasRegenerator && GetBattlerAbility(battler) != ABILITY_REGENERATOR)
+    if (!IsOnPlayerSide(battler) && IsRiskActive(RISK_HAS_REGENERATOR) && GetBattlerAbility(battler) != ABILITY_REGENERATOR)
     {
         u32 regenerate = GetNonDynamaxMaxHP(battler) / 3;
         regenerate += gBattleMons[battler].hp;
