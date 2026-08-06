@@ -123,6 +123,8 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.partyMinus3;
     case RISK_MINUS_1_MOVE:
         return gSaveBlock1Ptr->risks.minus1Move;
+    case RISK_PLAYER_HAS_PERISH_BODY:
+        return gSaveBlock1Ptr->risks.playerPerishBody;
     }
     return FALSE;
 }
@@ -299,6 +301,9 @@ void SetRisk(enum Risk risk)
     case RISK_MINUS_1_MOVE:
         gSaveBlock1Ptr->risks.minus1Move = TRUE;
         break;
+    case RISK_PLAYER_HAS_PERISH_BODY:
+        gSaveBlock1Ptr->risks.playerPerishBody = TRUE;
+        break;
     }
 }
 
@@ -473,6 +478,9 @@ void ClearRisk(enum Risk risk)
         break;
     case RISK_MINUS_1_MOVE:
         gSaveBlock1Ptr->risks.minus1Move = FALSE;
+        break;
+    case RISK_PLAYER_HAS_PERISH_BODY:
+        gSaveBlock1Ptr->risks.playerPerishBody = FALSE;
         break;
     }
 }

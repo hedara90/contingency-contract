@@ -2705,6 +2705,18 @@ static enum MoveEndResult MoveEndAbilities(struct BattleCalcValues *cv)
     return result;
 }
 
+static enum MoveEndResult MoveEndRiskAbilities(struct BattleCalcValues *cv)
+{
+    enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
+    enum Ability targetAbility = cv->abilities[cv->battlerDef];
+
+    if (AbilityBattleEffects(ABILITYEFFECT_RISK_CASE, cv->battlerDef, targetAbility, 0, TRUE))
+        result = MOVEEND_RESULT_RUN_SCRIPT;
+
+    gBattleScripting.moveendState++;
+    return result;
+}
+
 static enum MoveEndResult MoveEndFormChangeOnHit(struct BattleCalcValues *cv)
 {
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
@@ -4602,6 +4614,7 @@ static enum MoveEndResult (*const sMoveEndHandlers[])(struct BattleCalcValues *c
     [MOVEEND_ABSORB] = MoveEndAbsorb,
     [MOVEEND_RAGE] = MoveEndRage,
     [MOVEEND_ABILITIES] = MoveEndAbilities,
+    [MOVEEND_RISK_ABILITIES] = MoveEndRiskAbilities,
     [MOVEEND_FORM_CHANGE_ON_HIT] = MoveEndFormChangeOnHit,
     [MOVEEND_ABILITIES_ATTACKER] = MoveEndAbilitiesAttacker,
     [MOVEEND_QUEUE_DANCER] = MoveEndQueueDancer,

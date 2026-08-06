@@ -1023,3 +1023,28 @@ SINGLE_BATTLE_TEST("Risk: Player can't have non-berry items, berry stays")
         HP_BAR(player);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Player has Perish Body")
+{
+    GIVEN {
+        SetRisk(RISK_PLAYER_HAS_PERISH_BODY);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_SCRATCH); }
+        TURN { }
+        TURN { }
+        TURN { }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        HP_BAR(player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+        HP_BAR(player);
+        HP_BAR(opponent);
+    }
+}

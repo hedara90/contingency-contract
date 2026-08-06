@@ -1589,7 +1589,9 @@ u32 CheckMoveLimitations(enum BattlerId battler, u8 unusableMoves, u16 check)
     gPotentialItemEffectBattler = battler;
 
     u32 moveLimit;
-    if (GetBattlerSide(battler) == B_SIDE_PLAYER && IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND))
+    if (GetBattlerSide(battler) == B_SIDE_PLAYER
+     && (IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND)
+      || IsRiskActive(RISK_PLAYER_HAS_PERISH_BODY)))
     {
         unusableMoves |= 1u << 3;
         if (IsRiskActive(RISK_MINUS_1_MOVE))
@@ -4789,6 +4791,26 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
             break;
         default:
             break;
+        }
+        break;
+    case ABILITYEFFECT_RISK_CASE:
+        if (IsRiskActive(RISK_PLAYER_HAS_PERISH_BODY)
+         && IsOnPlayerSide(gBattlerTarget)
+         && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES)
+         && IsBattlerAlive(battler)
+         && !CanBattlerAvoidContactEffects(gBattlerAttacker, gBattlerTarget, GetBattlerAbility(gBattlerAttacker), GetBattlerHoldEffect(gBattlerAttacker), move)
+         && !gBattleMons[gBattlerAttacker].volatiles.perishSong)
+        {
+            CreateAbilityPopUp(gBattlerTarget, ABILITY_PERISH_BODY, (IsDoubleBattle()) != 0);
+            if (!gBattleMons[battler].volatiles.perishSong)
+            {
+                gBattleMons[battler].volatiles.perishSong = TRUE;
+                gBattleMons[battler].volatiles.perishSongTimer = 3;
+            }
+            gBattleMons[gBattlerAttacker].volatiles.perishSong = TRUE;
+            gBattleMons[gBattlerAttacker].volatiles.perishSongTimer = 3;
+            BattleScriptCall(BattleScript_RiskPerishBodyActivates);
+            effect++;
         }
         break;
     }

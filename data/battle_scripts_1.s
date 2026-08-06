@@ -3485,6 +3485,7 @@ BattleScript_PerishSongTakesLife::
 
 BattleScript_PerishBodyActivates::
 	call BattleScript_AbilityPopUp
+BattleScript_RiskPerishBodyActivates::
 	printstring STRINGID_PKMNSWILLPERISHIN3TURNS
 	waitmessage B_WAIT_TIME_LONG
 	return
