@@ -1706,6 +1706,7 @@ static void MoveSelectionDisplayMoveNames(enum BattlerId battler)
     if (IsRiskActive(RISK_MINUS_1_MOVE) && IsOnPlayerSide(battler))
     {
         if (IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND)
+         || IsRiskActive(RISK_PLAYER_HAS_FILTER)
          || IsRiskActive(RISK_PLAYER_HAS_BEAST_BOOST)
          || IsRiskActive(RISK_PLAYER_HAS_PERISH_BODY))
         {

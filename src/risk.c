@@ -127,6 +127,8 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.playerPerishBody;
     case RISK_PLAYER_HAS_BEAST_BOOST:
         return gSaveBlock1Ptr->risks.playerBeastBoost;
+    case RISK_PLAYER_HAS_FILTER:
+        return gSaveBlock1Ptr->risks.playerHasFilter;
     }
     return FALSE;
 }
@@ -309,6 +311,9 @@ void SetRisk(enum Risk risk)
     case RISK_PLAYER_HAS_BEAST_BOOST:
         gSaveBlock1Ptr->risks.playerBeastBoost = TRUE;
         break;
+    case RISK_PLAYER_HAS_FILTER:
+        gSaveBlock1Ptr->risks.playerHasFilter = TRUE;
+        break;
     }
 }
 
@@ -489,6 +494,9 @@ void ClearRisk(enum Risk risk)
         break;
     case RISK_PLAYER_HAS_BEAST_BOOST:
         gSaveBlock1Ptr->risks.playerBeastBoost = FALSE;
+        break;
+    case RISK_PLAYER_HAS_FILTER:
+        gSaveBlock1Ptr->risks.playerHasFilter = FALSE;
         break;
     }
 }

@@ -78,6 +78,7 @@ enum Risk
     RISK_MINUS_1_MOVE,
     RISK_PLAYER_HAS_PERISH_BODY,
     RISK_PLAYER_HAS_BEAST_BOOST,
+    RISK_PLAYER_HAS_FILTER,
 };
 
 struct Risks
@@ -140,7 +141,8 @@ struct Risks
     bool32 minus1Move:1;
     bool32 playerPerishBody:1;
     bool32 playerBeastBoost:1;
-    bool32 padding:7;
+    bool32 playerHasFilter:1;
+    bool32 padding:6;
 };
 
 void ClearRisks(void);

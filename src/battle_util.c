@@ -1593,6 +1593,7 @@ u32 CheckMoveLimitations(enum BattlerId battler, u8 unusableMoves, u16 check)
     {
         unusableMoves |= 1u << 3;
         if (IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND)
+         || IsRiskActive(RISK_PLAYER_HAS_FILTER)
          || IsRiskActive(RISK_PLAYER_HAS_BEAST_BOOST)
          || IsRiskActive(RISK_PLAYER_HAS_PERISH_BODY))
         {
@@ -7536,6 +7537,23 @@ static inline uq4_12_t GetDefenderAbilitiesModifier(struct DamageContext *ctx)
         RecordAbilityBattle(ctx->battlerDef, ctx->abilities[ctx->battlerDef]);
 
     if (!IsOnPlayerSide(ctx->battlerDef) && IsRiskActive(RISK_HAS_FILTER))
+    {
+        switch (ctx->abilities[ctx->battlerDef])
+        {
+        case ABILITY_FILTER:
+        case ABILITY_SOLID_ROCK:
+        case ABILITY_PRISM_ARMOR:
+            break;
+        default:
+            if (ctx->typeEffectivenessModifier >= UQ_4_12(2.0))
+            {
+                modifier = UQ_4_12(0.75);
+            }
+            break;
+        }
+    }
+
+    if (IsOnPlayerSide(ctx->battlerDef) && IsRiskActive(RISK_PLAYER_HAS_FILTER))
     {
         switch (ctx->abilities[ctx->battlerDef])
         {
