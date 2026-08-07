@@ -80,7 +80,7 @@ enum Risk
     RISK_PLAYER_HAS_FILTER,
     RISK_NO_PP_RESTORE,     //  Not implemented
     RISK_RANDOM_LEAD,       //  Not implemented
-    RISK_NO_ORDER_CHANGE,   //  Not implemented
+    RISK_NO_ORDER_CHANGE,
     RISK_USES_POOLS,        //  Not implemented
 };
 
@@ -146,7 +146,7 @@ struct Risks
     bool32 playerHasFilter:1;
     bool32 noPPRestore:1;   //  Not implemented
     bool32 randomLead:1;    //  Not implemented
-    bool32 noOrderChange:1; //  Not implemented
+    bool32 noOrderChange:1;
     bool32 usesPools:1;     //  Not implemented
     bool32 padding:2;
 };
