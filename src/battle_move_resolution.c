@@ -2710,7 +2710,7 @@ static enum MoveEndResult MoveEndRiskAbilities(struct BattleCalcValues *cv)
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
     enum Ability targetAbility = cv->abilities[cv->battlerDef];
 
-    if (AbilityBattleEffects(ABILITYEFFECT_RISK_CASE, cv->battlerDef, targetAbility, 0, TRUE))
+    if (AbilityBattleEffects(ABILITYEFFECT_RISK_1_CASE, cv->battlerDef, targetAbility, 0, TRUE))
         result = MOVEEND_RESULT_RUN_SCRIPT;
 
     gBattleScripting.moveendState++;
@@ -3913,6 +3913,17 @@ static enum MoveEndResult MoveEndAbilityEffectFoesFainted(struct BattleCalcValue
     return result;
 }
 
+static enum MoveEndResult MoveEndRiskAbilityEffectFoesFainted(struct BattleCalcValues *cv)
+{
+    enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
+
+    if (AbilityBattleEffects(ABILITYEFFECT_RISK_2_CASE, cv->battlerAtk, cv->abilities[cv->battlerAtk], cv->move, TRUE))
+        result = MOVEEND_RESULT_RUN_SCRIPT;
+
+    gBattleScripting.moveendState++;
+    return result;
+}
+
 static enum MoveEndResult MoveEndShellTrap(struct BattleCalcValues *cv)
 {
     for (enum BattlerId battlerDef = 0; battlerDef < gBattlersCount; battlerDef++)
@@ -4645,6 +4656,7 @@ static enum MoveEndResult (*const sMoveEndHandlers[])(struct BattleCalcValues *c
     [MOVEEND_OPPONENT_FORCE_SWITCHES] = MoveEndOpponentForceSwitches,
     [MOVEEND_ITEM_EFFECTS_ATTACKER_2] = MoveEndItemEffectsAttacker2,
     [MOVEEND_ABILITY_EFFECT_FOES_FAINTED] = MoveEndAbilityEffectFoesFainted,
+    [MOVEEND_RISK_ABILITY_EFFECT_FOES_FAINTED] = MoveEndRiskAbilityEffectFoesFainted,
     [MOVEEND_SHELL_TRAP] = MoveEndShellTrap,
     [MOVEEND_COLOR_CHANGE] = MoveEndColorChange,
     [MOVEEND_KEE_MARANGA_HP_THRESHOLD_ITEM_TARGET] = MoveEndKeeMarangaHpThresholdItemTarget,

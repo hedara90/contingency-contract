@@ -1048,3 +1048,19 @@ SINGLE_BATTLE_TEST("Risk: Player has Perish Body")
         HP_BAR(opponent);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Player has Beast Boost")
+{
+    GIVEN {
+        SetRisk(RISK_PLAYER_HAS_BEAST_BOOST);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WYNAUT);
+    } WHEN {
+        TURN { MOVE(player, MOVE_GUILLOTINE); SEND_OUT(opponent, 1); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+    } THEN {
+        EXPECT_EQ(player->statStages[STAT_DEF], DEFAULT_STAT_STAGE + 1);
+    }
+}

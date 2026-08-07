@@ -1705,6 +1705,7 @@ static void MoveSelectionDisplayMoveNames(enum BattlerId battler)
     u32 moveLimit;
     if (GetBattlerSide(battler) == B_SIDE_PLAYER
      && (IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND)
+      || IsRiskActive(RISK_PLAYER_HAS_BEAST_BOOST)
       || IsRiskActive(RISK_PLAYER_HAS_PERISH_BODY)))
     {
         if (IsRiskActive(RISK_MINUS_1_MOVE))

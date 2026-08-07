@@ -125,6 +125,8 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.minus1Move;
     case RISK_PLAYER_HAS_PERISH_BODY:
         return gSaveBlock1Ptr->risks.playerPerishBody;
+    case RISK_PLAYER_HAS_BEAST_BOOST:
+        return gSaveBlock1Ptr->risks.playerBeastBoost;
     }
     return FALSE;
 }
@@ -304,6 +306,9 @@ void SetRisk(enum Risk risk)
     case RISK_PLAYER_HAS_PERISH_BODY:
         gSaveBlock1Ptr->risks.playerPerishBody = TRUE;
         break;
+    case RISK_PLAYER_HAS_BEAST_BOOST:
+        gSaveBlock1Ptr->risks.playerBeastBoost = TRUE;
+        break;
     }
 }
 
@@ -481,6 +486,9 @@ void ClearRisk(enum Risk risk)
         break;
     case RISK_PLAYER_HAS_PERISH_BODY:
         gSaveBlock1Ptr->risks.playerPerishBody = FALSE;
+        break;
+    case RISK_PLAYER_HAS_BEAST_BOOST:
+        gSaveBlock1Ptr->risks.playerBeastBoost = FALSE;
         break;
     }
 }

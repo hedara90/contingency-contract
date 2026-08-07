@@ -1591,6 +1591,7 @@ u32 CheckMoveLimitations(enum BattlerId battler, u8 unusableMoves, u16 check)
     u32 moveLimit;
     if (GetBattlerSide(battler) == B_SIDE_PLAYER
      && (IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND)
+      || IsRiskActive(RISK_PLAYER_HAS_BEAST_BOOST)
       || IsRiskActive(RISK_PLAYER_HAS_PERISH_BODY)))
     {
         unusableMoves |= 1u << 3;
@@ -4793,7 +4794,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
             break;
         }
         break;
-    case ABILITYEFFECT_RISK_CASE:
+    case ABILITYEFFECT_RISK_1_CASE:
         if (IsRiskActive(RISK_PLAYER_HAS_PERISH_BODY)
          && IsOnPlayerSide(gBattlerTarget)
          && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES)
@@ -4811,6 +4812,32 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
             gBattleMons[gBattlerAttacker].volatiles.perishSongTimer = 3;
             BattleScriptCall(BattleScript_RiskPerishBodyActivates);
             effect++;
+        }
+        break;
+    case ABILITYEFFECT_RISK_2_CASE:
+        if (IsRiskActive(RISK_PLAYER_HAS_BEAST_BOOST)
+              && IsOnPlayerSide(battler))
+        {
+            if (NoAliveMonsForEitherParty())
+                break;
+
+            enum Stat stat = GetHighestStatId(battler);
+            u32 numMonsFainted = NumFaintedBattlersByAttacker(battler);
+
+            if (numMonsFainted && CompareStat(battler, stat, MAX_STAT_STAGE, CMP_LESS_THAN, ability))
+            {
+                CreateAbilityPopUp(battler, ABILITY_BEAST_BOOST, (IsDoubleBattle()) != 0);
+                gLastUsedAbility = ability;
+                if (ability == ABILITY_AS_ONE_ICE_RIDER)
+                    gBattleScripting.abilityPopupOverwrite = gLastUsedAbility = ABILITY_CHILLING_NEIGH;
+                else if (ability == ABILITY_AS_ONE_SHADOW_RIDER)
+                    gBattleScripting.abilityPopupOverwrite = gLastUsedAbility = ABILITY_GRIM_NEIGH;
+
+                gEffectBattler = gBattlerAbility = battler;
+                SetStatChange(battler, stat, numMonsFainted);
+                BattleScriptCall(BattleScript_RiskAbilityStatChange);
+                effect = TRUE;
+            }
         }
         break;
     }

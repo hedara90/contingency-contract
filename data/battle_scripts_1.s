@@ -163,6 +163,7 @@ BattleScript_TarShotMessage::
 
 BattleScript_AbilityStatChange::
 	call BattleScript_AbilityPopUp
+BattleScript_RiskAbilityStatChange::
 	trystatchanges BS_EFFECT_BATTLER, STAT_CHANGE_IGNORE_SELF
 	return
 
