@@ -639,22 +639,41 @@ static void CB2_InitBattleInternal(void)
         }
     }
 
-    bool32 skipStatusSet = FALSE;
-    if (IsRiskActive(RISK_PERMANENT_SUN))
+    if (IsRiskActive(RISK_PARTY_MINUS_1))
     {
-        for (u32 i = 0; i < 6; i++)
+        for (u32 i = 0; i < 1; i++)
         {
-            enum Species species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
-            enum Ability ability = gSpeciesInfo[species].abilities[GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_ABILITY_NUM)];
-            if (ability == ABILITY_LEAF_GUARD)
-                skipStatusSet = TRUE;
+            if (GetMonData(&gParties[0][5 - i], MON_DATA_SPECIES) != SPECIES_NONE)
+            {
+                CopyMonToPC(&gParties[0][5 - i]);
+                ZeroMonData(&gParties[0][5 - i]);
+            }
+        }
+    }
+    else if (IsRiskActive(RISK_PARTY_MINUS_2))
+    {
+        for (u32 i = 0; i < 2; i++)
+        {
+            if (GetMonData(&gParties[0][5 - i], MON_DATA_SPECIES) != SPECIES_NONE)
+            {
+                CopyMonToPC(&gParties[0][5 - i]);
+                ZeroMonData(&gParties[0][5 - i]);
+            }
+        }
+    }
+    else if (IsRiskActive(RISK_PARTY_MINUS_3))
+    {
+        for (u32 i = 0; i < 3; i++)
+        {
+            if (GetMonData(&gParties[0][5 - i], MON_DATA_SPECIES) != SPECIES_NONE)
+            {
+                CopyMonToPC(&gParties[0][5 - i]);
+                ZeroMonData(&gParties[0][5 - i]);
+            }
         }
     }
 
-    if (skipStatusSet)
-    {
-    }
-    else if (IsRiskActive(RISK_PLAYER_STARTS_WITH_BURN))
+    if (IsRiskActive(RISK_PLAYER_STARTS_WITH_BURN))
     {
         u32 status = STATUS1_BURN;
         for (u32 i = 0; i < 6; i++)

@@ -45,7 +45,6 @@ enum Risk
     RISK_PLAYER_STARTS_WITH_BURN,
     RISK_PLAYER_STARTS_WITH_PARALYSIS,
     RISK_PLAYER_STARTS_WITH_FROSTBITE,
-    RISK_PERMANENT_SUN,
     RISK_HAS_OMNISCIENT_AI,
     RISK_HAS_PREDICTION_AI,
     RISK_HAS_GUARANTEED_EFFECTS,
@@ -53,7 +52,7 @@ enum Risk
     RISK_HAS_GEN_1_CRIT_CHANCE,
     RISK_PLAYER_LOWER_DAMAGE_ROLLS,
     RISK_OPPONENT_HIGHER_DAMAGE_ROLLS,
-    RISK_CAN_ONLY_USE_TOP_MOVES,
+    RISK_PLAYER_HAS_PARENTAL_BOND,
     RISK_PLAYER_SPIKES_1,
     RISK_PLAYER_SPIKES_2,
     RISK_PLAYER_SPIKES_3,
@@ -72,6 +71,17 @@ enum Risk
     RISK_MUST_SWITCH_3,
     RISK_PLAYER_JUST_BERRIES,
     RISK_OPPONENT_HAS_ITEMS,
+    RISK_PARTY_MINUS_1,
+    RISK_PARTY_MINUS_2,
+    RISK_PARTY_MINUS_3,
+    RISK_MINUS_1_MOVE,
+    RISK_PLAYER_HAS_PERISH_BODY,
+    RISK_PLAYER_HAS_BEAST_BOOST,
+    RISK_PLAYER_HAS_FILTER,
+    RISK_NO_PP_RESTORE,     //  Not implemented
+    RISK_RANDOM_LEAD,       //  Not implemented
+    RISK_NO_ORDER_CHANGE,
+    RISK_USES_POOLS,        //  Not implemented
 };
 
 struct Risks
@@ -101,7 +111,6 @@ struct Risks
     bool32 playerStartsWithBurn:1;
     bool32 playerStartsWithParalysis:1;
     bool32 playerStartsWithFrostbite:1;
-    bool32 permanentSun:1;  //  Not implemented yet
     bool32 hasOmniscientAi:1;
     bool32 hasPredictionAi:1;
     bool32 hasGuaranteedEffects:1;
@@ -109,7 +118,7 @@ struct Risks
     bool32 hasGen1CritChance:1;
     bool32 playerLowerHalfDamageRolls:1;
     bool32 opponentUpperHalfDamageRolls:1;
-    bool32 canOnlyUseTopMoves1:1;
+    bool32 playerHasParentalBond:1;
     bool32 playerStartsSpikes1:1;
     bool32 playerStartsSpikes2:1;
     bool32 playerStartsSpikes3:1;
@@ -128,7 +137,18 @@ struct Risks
     bool32 mustSwitch3:1;
     bool32 playerJustBerries:1;
     bool32 opponentHasItems:1;
-    bool32 padding:12;
+    bool32 partyMinus1:1;
+    bool32 partyMinus2:1;
+    bool32 partyMinus3:1;
+    bool32 minus1Move:1;
+    bool32 playerPerishBody:1;
+    bool32 playerBeastBoost:1;
+    bool32 playerHasFilter:1;
+    bool32 noPPRestore:1;   //  Not implemented
+    bool32 randomLead:1;    //  Not implemented
+    bool32 noOrderChange:1;
+    bool32 usesPools:1;     //  Not implemented
+    bool32 padding:2;
 };
 
 void ClearRisks(void);
