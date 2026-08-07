@@ -731,5 +731,7 @@ extern const u8 BattleScript_StatusGetsPara[];
 extern const u8 BattleScript_OpponentInflictsGastroAcid[];
 extern const u8 BattleScript_AttackDisables[];
 extern const u8 BattleScript_AttackTorments[];
+extern const u8 BattleScript_RiskPerishBodyActivates[];
+extern const u8 BattleScript_RiskAbilityStatChange[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

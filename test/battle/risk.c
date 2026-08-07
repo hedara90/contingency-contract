@@ -761,7 +761,7 @@ SINGLE_BATTLE_TEST("Risk: Player can only use 2 moves, but get Parental Bond")
     //  Can't test move selection
     s16 dmg1, dmg2;
     GIVEN {
-        SetRisk(RISK_CAN_ONLY_USE_TOP_MOVES);
+        SetRisk(RISK_PLAYER_HAS_PARENTAL_BOND);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -1021,5 +1021,66 @@ SINGLE_BATTLE_TEST("Risk: Player can't have non-berry items, berry stays")
         HP_BAR(player);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_BERRY, player);
         HP_BAR(player);
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Player has Perish Body")
+{
+    GIVEN {
+        SetRisk(RISK_PLAYER_HAS_PERISH_BODY);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_SCRATCH); }
+        TURN { }
+        TURN { }
+        TURN { }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
+        HP_BAR(player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+        HP_BAR(player);
+        HP_BAR(opponent);
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Player has Beast Boost")
+{
+    GIVEN {
+        SetRisk(RISK_PLAYER_HAS_BEAST_BOOST);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WYNAUT);
+    } WHEN {
+        TURN { MOVE(player, MOVE_GUILLOTINE); SEND_OUT(opponent, 1); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+    } THEN {
+        EXPECT_EQ(player->statStages[STAT_DEF], DEFAULT_STAT_STAGE + 1);
+    }
+}
+
+SINGLE_BATTLE_TEST("Risk: Opponent has Filter")
+{
+    s16 damageFoe;
+    s16 damagePlayer;
+    GIVEN {
+        SetRisk(RISK_PLAYER_HAS_FILTER);
+        PLAYER(SPECIES_AGGRON);
+        OPPONENT(SPECIES_AGGRON);
+    } WHEN {
+        TURN { MOVE(player, MOVE_AURA_SPHERE); MOVE(opponent, MOVE_AURA_SPHERE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AURA_SPHERE, player);
+        HP_BAR(opponent, captureDamage: &damagePlayer);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AURA_SPHERE, opponent);
+        HP_BAR(player, captureDamage: &damageFoe);
+    } THEN {
+        EXPECT_MUL_EQ(damagePlayer, Q_4_12(0.75), damageFoe);
     }
 }
