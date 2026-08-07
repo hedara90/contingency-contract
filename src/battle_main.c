@@ -673,22 +673,7 @@ static void CB2_InitBattleInternal(void)
         }
     }
 
-    bool32 skipStatusSet = FALSE;
-    if (IsRiskActive(RISK_PERMANENT_SUN))
-    {
-        for (u32 i = 0; i < 6; i++)
-        {
-            enum Species species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
-            enum Ability ability = gSpeciesInfo[species].abilities[GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_ABILITY_NUM)];
-            if (ability == ABILITY_LEAF_GUARD)
-                skipStatusSet = TRUE;
-        }
-    }
-
-    if (skipStatusSet)
-    {
-    }
-    else if (IsRiskActive(RISK_PLAYER_STARTS_WITH_BURN))
+    if (IsRiskActive(RISK_PLAYER_STARTS_WITH_BURN))
     {
         u32 status = STATUS1_BURN;
         for (u32 i = 0; i < 6; i++)

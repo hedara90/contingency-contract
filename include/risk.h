@@ -45,7 +45,6 @@ enum Risk
     RISK_PLAYER_STARTS_WITH_BURN,
     RISK_PLAYER_STARTS_WITH_PARALYSIS,
     RISK_PLAYER_STARTS_WITH_FROSTBITE,
-    RISK_PERMANENT_SUN,
     RISK_HAS_OMNISCIENT_AI,
     RISK_HAS_PREDICTION_AI,
     RISK_HAS_GUARANTEED_EFFECTS,
@@ -79,6 +78,10 @@ enum Risk
     RISK_PLAYER_HAS_PERISH_BODY,
     RISK_PLAYER_HAS_BEAST_BOOST,
     RISK_PLAYER_HAS_FILTER,
+    RISK_NO_PP_RESTORE,     //  Not implemented
+    RISK_RANDOM_LEAD,       //  Not implemented
+    RISK_NO_ORDER_CHANGE,   //  Not implemented
+    RISK_USES_POOLS,        //  Not implemented
 };
 
 struct Risks
@@ -108,7 +111,6 @@ struct Risks
     bool32 playerStartsWithBurn:1;
     bool32 playerStartsWithParalysis:1;
     bool32 playerStartsWithFrostbite:1;
-    bool32 permanentSun:1;  //  Not implemented yet
     bool32 hasOmniscientAi:1;
     bool32 hasPredictionAi:1;
     bool32 hasGuaranteedEffects:1;
@@ -142,7 +144,11 @@ struct Risks
     bool32 playerPerishBody:1;
     bool32 playerBeastBoost:1;
     bool32 playerHasFilter:1;
-    bool32 padding:6;
+    bool32 noPPRestore:1;   //  Not implemented
+    bool32 randomLead:1;    //  Not implemented
+    bool32 noOrderChange:1; //  Not implemented
+    bool32 usesPools:1;     //  Not implemented
+    bool32 padding:2;
 };
 
 void ClearRisks(void);

@@ -61,8 +61,6 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.playerStartsWithParalysis;
     case RISK_PLAYER_STARTS_WITH_FROSTBITE:
         return gSaveBlock1Ptr->risks.playerStartsWithFrostbite;
-    case RISK_PERMANENT_SUN:
-        return gSaveBlock1Ptr->risks.permanentSun;
     case RISK_HAS_OMNISCIENT_AI:
         return gSaveBlock1Ptr->risks.hasOmniscientAi;
     case RISK_HAS_PREDICTION_AI:
@@ -129,6 +127,14 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.playerBeastBoost;
     case RISK_PLAYER_HAS_FILTER:
         return gSaveBlock1Ptr->risks.playerHasFilter;
+    case RISK_NO_PP_RESTORE:
+        return gSaveBlock1Ptr->risks.noPPRestore;
+    case RISK_RANDOM_LEAD:
+        return gSaveBlock1Ptr->risks.randomLead;
+    case RISK_NO_ORDER_CHANGE:
+        return gSaveBlock1Ptr->risks.noOrderChange;
+    case RISK_USES_POOLS:
+        return gSaveBlock1Ptr->risks.usesPools;
     }
     return FALSE;
 }
@@ -211,9 +217,6 @@ void SetRisk(enum Risk risk)
         break;
     case RISK_PLAYER_STARTS_WITH_FROSTBITE:
         gSaveBlock1Ptr->risks.playerStartsWithFrostbite = TRUE;
-        break;
-    case RISK_PERMANENT_SUN:
-        gSaveBlock1Ptr->risks.permanentSun = TRUE;
         break;
     case RISK_HAS_OMNISCIENT_AI:
         gSaveBlock1Ptr->risks.hasOmniscientAi = TRUE;
@@ -314,6 +317,14 @@ void SetRisk(enum Risk risk)
     case RISK_PLAYER_HAS_FILTER:
         gSaveBlock1Ptr->risks.playerHasFilter = TRUE;
         break;
+    case RISK_NO_PP_RESTORE:
+        gSaveBlock1Ptr->risks.noPPRestore = TRUE;
+    case RISK_RANDOM_LEAD:
+        gSaveBlock1Ptr->risks.randomLead = TRUE;
+    case RISK_NO_ORDER_CHANGE:
+        gSaveBlock1Ptr->risks.noOrderChange = TRUE;
+    case RISK_USES_POOLS:
+        gSaveBlock1Ptr->risks.usesPools = TRUE;
     }
 }
 
@@ -395,9 +406,6 @@ void ClearRisk(enum Risk risk)
         break;
     case RISK_PLAYER_STARTS_WITH_FROSTBITE:
         gSaveBlock1Ptr->risks.playerStartsWithFrostbite = FALSE;
-        break;
-    case RISK_PERMANENT_SUN:
-        gSaveBlock1Ptr->risks.permanentSun = FALSE;
         break;
     case RISK_HAS_OMNISCIENT_AI:
         gSaveBlock1Ptr->risks.hasOmniscientAi = FALSE;
@@ -498,5 +506,13 @@ void ClearRisk(enum Risk risk)
     case RISK_PLAYER_HAS_FILTER:
         gSaveBlock1Ptr->risks.playerHasFilter = FALSE;
         break;
+    case RISK_NO_PP_RESTORE:
+        gSaveBlock1Ptr->risks.noPPRestore = FALSE;
+    case RISK_RANDOM_LEAD:
+        gSaveBlock1Ptr->risks.randomLead = FALSE;
+    case RISK_NO_ORDER_CHANGE:
+        gSaveBlock1Ptr->risks.noOrderChange = FALSE;
+    case RISK_USES_POOLS:
+        gSaveBlock1Ptr->risks.usesPools = FALSE;
     }
 }
