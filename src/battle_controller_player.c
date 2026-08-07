@@ -1703,15 +1703,18 @@ static void MoveSelectionDisplayMoveNames(enum BattlerId battler)
     gNumberOfMovesToChoose = 0;
 
     u32 moveLimit;
-    if (GetBattlerSide(battler) == B_SIDE_PLAYER
-     && (IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND)
-      || IsRiskActive(RISK_PLAYER_HAS_BEAST_BOOST)
-      || IsRiskActive(RISK_PLAYER_HAS_PERISH_BODY)))
+    if (IsRiskActive(RISK_MINUS_1_MOVE) && IsOnPlayerSide(battler))
     {
-        if (IsRiskActive(RISK_MINUS_1_MOVE))
+        if (IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND)
+         || IsRiskActive(RISK_PLAYER_HAS_BEAST_BOOST)
+         || IsRiskActive(RISK_PLAYER_HAS_PERISH_BODY))
+        {
             moveLimit = 2;
+        }
         else
+        {
             moveLimit = 3;
+        }
     }
     else
     {
