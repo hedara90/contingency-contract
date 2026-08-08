@@ -41,6 +41,8 @@ struct RiskUiState
 {
     MainCallback savedCallback;
     u8 loadState;
+    s16 xSelector;
+    s16 ySelector;
     s16 xOffset;
     s16 yOffset;
     u8 selectorId;
@@ -53,6 +55,25 @@ enum WindowIds
     WIN_PULL_1,
     WIN_PULL_10,
     WIN_COUNT
+};
+
+struct RiskIcon
+{
+    enum Risk *linkedRisks;
+    enum Risk *unlockedRisks;
+    u16 tiles[4];
+    u8 linkedCount;
+    u8 unlockCount;
+    const u8 *name;
+    const u8 *description;
+};
+
+const enum Risk sRiskMap[64][64] =
+{
+    [0][0] = RISK_RESET,
+    [0][1] = RISK_RESET,
+    [1][0] = RISK_RESET,
+    [1][1] = RISK_RESET,
 };
 
 static EWRAM_DATA struct RiskUiState *sRiskUiState = NULL;
@@ -176,12 +197,17 @@ static void RiskUi_InitWindows(void);
 static void Task_RiskUiWaitFadeIn(u8 taskId);
 static void Task_RiskUiMainInput(u8 taskId);
 static void LoadSelector(void);
+static void MoveSelectorX(s32 distance);
+static void MoveSelectorY(s32 distance);
+static void GetSelectedTiles(u16 *tiles);
+static void FlipSelectedTiles(void);
 
 static void Task_RiskUiWaitFadeAndExitGracefully(u8 taskId);
 
+static void SetTilePalette(u32 tile, u32 palette);
+
 void RiskUi_Init(MainCallback callback)
 {
-    DebugPrintf("RiskUi_Init 1");
     sRiskUiState = AllocZeroed(sizeof(struct RiskUiState));
     if (sRiskUiState == NULL)
     {
@@ -236,22 +262,18 @@ static void RiskUi_SetupCB(void)
             gMain.state++;
         break;
     case 4:
-        DebugPrintf("Init windows");
         RiskUi_InitWindows();
         gMain.state++;
         break;
     case 5:
-        DebugPrintf("Wait fade-in");
         CreateTask(Task_RiskUiWaitFadeIn, 0);
         gMain.state++;
         break;
     case 6:
-        DebugPrintf("Begin Palette fade");
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         gMain.state++;
         break;
     case 7:
-        DebugPrintf("Setting callbacks");
         SetVBlankCallback(RiskUi_VBlankCB);
         SetMainCallback2(RiskUi_MainCB);
         break;
@@ -295,7 +317,6 @@ static bool8 RiskUi_InitBgs(void)
 
     ResetAllBgsCoordinates();
 
-    DebugPrintf("RiskUi_InitBgs 2");
     sBg1TilemapBuffer = AllocZeroed(TILEMAP_BUFFER_SIZE);
     if (sBg1TilemapBuffer == NULL)
         return FALSE;
@@ -310,7 +331,6 @@ static bool8 RiskUi_InitBgs(void)
     ShowBg(0);
     ShowBg(1);
 
-    DebugPrintf("Bgs done");
     return TRUE;
 }
 
@@ -370,14 +390,12 @@ static bool8 RiskUi_LoadGraphics(void)
     {
     case 0:
         ResetTempTileDataBuffers();
-        DebugPrintf("Loading tiles");
         DecompressAndCopyTileDataToVram(1, sBackgroundTiles, 0, 0, 0);
         sRiskUiState->loadState++;
         break;
     case 1:
         if (FreeTempTileDataBuffersIfPossible() != TRUE)
         {
-            DebugPrintf("Decompressing tilemap");
             DecompressDataWithHeaderWram(sBackgroundTilemap, sBg1TilemapBuffer);
             sRiskUiState->loadState++;
         }
@@ -385,10 +403,10 @@ static bool8 RiskUi_LoadGraphics(void)
     case 2:
         LoadPalette(sBackgroundPalette, BG_PLTT_ID(0), PLTT_SIZE_4BPP * 4);
         LoadPalette(gMessageBox_Pal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
+        LoadSelector();
         sRiskUiState->loadState++;
     default:
         sRiskUiState->loadState = 0;
-        DebugPrintf("Done loading graphics");
         return TRUE;
     }
     return FALSE;
@@ -424,42 +442,26 @@ static void Task_RiskUiMainInput(u8 taskId)
     }
     else if (JOY_NEW(A_BUTTON))
     {
-        LoadSelector();
+        FlipSelectedTiles();
     }
     else if (JOY_NEW(DPAD_ANY) || JOY_HELD(DPAD_ANY))
     {
         if (JOY_NEW(DPAD_UP) || JOY_HELD(DPAD_UP))
         {
-            if (sRiskUiState->yOffset != 0)
-            {
-                sRiskUiState->yOffset--;
-                SetGpuReg(REG_OFFSET_BG1VOFS, sRiskUiState->yOffset);
-            }
+            MoveSelectorY(-4);
         }
         else if (JOY_NEW(DPAD_DOWN) || JOY_HELD(DPAD_DOWN))
         {
-            if (sRiskUiState->yOffset != 352)
-            {
-                sRiskUiState->yOffset++;
-                SetGpuReg(REG_OFFSET_BG1VOFS, sRiskUiState->yOffset);
-            }
+            MoveSelectorY(4);
         }
 
         if (JOY_NEW(DPAD_LEFT) || JOY_HELD(DPAD_LEFT))
         {
-            if (sRiskUiState->xOffset != 0)
-            {
-                sRiskUiState->xOffset--;
-                SetGpuReg(REG_OFFSET_BG1HOFS, sRiskUiState->xOffset);
-            }
+            MoveSelectorX(-4);
         }
         else if (JOY_NEW(DPAD_RIGHT) || JOY_HELD(DPAD_RIGHT))
         {
-            if (sRiskUiState->xOffset != 272)
-            {
-                sRiskUiState->xOffset++;
-                SetGpuReg(REG_OFFSET_BG1HOFS, sRiskUiState->xOffset);
-            }
+            MoveSelectorX(4);
         }
     }
 }
@@ -486,4 +488,145 @@ static void LoadSelector(void)
     cs.posX = 120;
     cs.posY = 80;
     sRiskUiState->selectorId = Even_CreateSprite(&cs);
+    sRiskUiState->xSelector = 120;
+    sRiskUiState->ySelector = 80;
+}
+
+static void MoveSelectorX(s32 distance)
+{
+    if (distance > 0)
+    {
+        if (sRiskUiState->xSelector == 240 - 16)
+        {
+            if (sRiskUiState->xOffset != 272)
+            {
+                sRiskUiState->xOffset += distance;
+                SetGpuReg(REG_OFFSET_BG1HOFS, sRiskUiState->xOffset);
+            }
+        }
+        else
+        {
+            sRiskUiState->xSelector += distance;
+            gSprites[sRiskUiState->selectorId].x = sRiskUiState->xSelector;
+        }
+    }
+    else
+    {
+        if (sRiskUiState->xSelector == 16)
+        {
+            if (sRiskUiState->xOffset != 0)
+            {
+                sRiskUiState->xOffset += distance;
+                SetGpuReg(REG_OFFSET_BG1HOFS, sRiskUiState->xOffset);
+            }
+        }
+        else
+        {
+            sRiskUiState->xSelector += distance;
+            gSprites[sRiskUiState->selectorId].x = sRiskUiState->xSelector;
+        }
+    }
+}
+
+static void MoveSelectorY(s32 distance)
+{
+    if (distance > 0)
+    {
+        if (sRiskUiState->ySelector == 160 - 16)
+        {
+            if (sRiskUiState->yOffset != 352)
+            {
+                sRiskUiState->yOffset += distance;
+                SetGpuReg(REG_OFFSET_BG1VOFS, sRiskUiState->yOffset);
+            }
+        }
+        else
+        {
+            sRiskUiState->ySelector += distance;
+            gSprites[sRiskUiState->selectorId].y = sRiskUiState->ySelector;
+        }
+    }
+    else
+    {
+        if (sRiskUiState->ySelector == 16)
+        {
+            if (sRiskUiState->yOffset != 0)
+            {
+                sRiskUiState->yOffset += distance;
+                SetGpuReg(REG_OFFSET_BG1VOFS, sRiskUiState->yOffset);
+            }
+        }
+        else
+        {
+            sRiskUiState->ySelector += distance;
+            gSprites[sRiskUiState->selectorId].y = sRiskUiState->ySelector;
+        }
+    }
+}
+
+static void SetTilePalette(u32 tile, u32 palette)
+{
+    u16 *tilemapPtr = (u16 *)(BG_VRAM + sRiskUiBgTemplates[1].mapBaseIndex * BG_SCREEN_SIZE);
+    u16 palMask = palette << 12;
+    u16 currVal = tilemapPtr[tile] & 0xFFF;
+    tilemapPtr[tile] = palMask | currVal;
+}
+
+static void GetSelectedTiles(u16 *tiles)
+{
+    u32 xSel = (sRiskUiState->xSelector + sRiskUiState->xOffset) / 8 - 1;
+    u32 ySel = (sRiskUiState->ySelector + sRiskUiState->yOffset) / 8 - 1;
+
+
+    for (u32 x = 0; x < 2; x++)
+    {
+        for (u32 y = 0; y < 2; y++)
+        {
+            u32 currX = xSel + x;
+            u32 currY = ySel + y;
+            u32 tileArea = 0;
+
+            if (currX > 31)
+            {
+                currX -= 32;
+                tileArea += 1;
+            }
+
+            if (currY > 31)
+            {
+                currY -= 32;
+                tileArea += 2;
+            }
+
+            u32 tileBase = 0;
+
+            switch (tileArea)
+            {
+            case 0:
+                break;
+            case 1:
+                tileBase = 1024;
+                break;
+            case 2:
+                tileBase = 2 *1024;
+                break;
+            case 3:
+                tileBase = 3 *1024;
+                break;
+            }
+
+            tiles[y * 2 + x] = tileBase + currY * 32 + currX;
+        }
+    }
+}
+
+static void FlipSelectedTiles(void)
+{
+    u16 tiles[4];
+    GetSelectedTiles(tiles);
+    for (u32 i = 0; i < 4; i++)
+    {
+        DebugPrintf("%u", tiles[i]);
+        SetTilePalette(tiles[i], 1);
+    }
 }

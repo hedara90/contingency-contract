@@ -11,6 +11,9 @@ bool32 IsRiskActive(enum Risk risk)
 {
     switch (risk)
     {
+    case RISK_NONE:
+    case RISK_RESET:
+        return FALSE;
     case RISK_HAS_STURDY:
         return gSaveBlock1Ptr->risks.hasSturdy;
     case RISK_HAS_MOLD_BREAKER:
@@ -143,6 +146,10 @@ void SetRisk(enum Risk risk)
 {
     switch (risk)
     {
+    case RISK_NONE:
+        break;
+    case RISK_RESET:
+        break;
     case RISK_HAS_STURDY:
         gSaveBlock1Ptr->risks.hasSturdy = TRUE;
         break;
@@ -332,6 +339,10 @@ void ClearRisk(enum Risk risk)
 {
     switch (risk)
     {
+    case RISK_NONE:
+        break;
+    case RISK_RESET:
+        break;
     case RISK_HAS_STURDY:
         gSaveBlock1Ptr->risks.hasSturdy = FALSE;
         break;

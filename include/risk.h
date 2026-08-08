@@ -20,6 +20,8 @@
 
 enum Risk
 {
+    RISK_NONE,
+    RISK_RESET,
     RISK_HAS_STURDY,
     RISK_HAS_MOLD_BREAKER,
     RISK_HAS_FILTER,
