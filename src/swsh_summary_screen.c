@@ -61,6 +61,8 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+#include "even_sprite.h"
+
 #if SWSH_SUMMARY_SCREEN == TRUE
 enum SWSHPSSEffect
 {
@@ -271,6 +273,7 @@ static EWRAM_DATA struct PokemonSummaryScreenData
     s16 switchCounter; // Used for various switch statement cases that decompress/load graphics or Pokémon data
     u16 monAnimTimer; // tracks time between re-playing mon anims
     u8 monAnimPlayed; // tracks if anim has been played at least once
+    u8 changeFormId;
 #if SWSH_SUMMARY_SHOW_CONTEST_PAGES
     struct ConditionGraph conditionGraph;
     struct Sprite *conditionSparkles[MAX_CONDITION_SPARKLES];
@@ -447,6 +450,9 @@ static void PrintRightAlignedPrompt(u8, u8, const u8*, int, u8);
 
 static bool32 CanShowAbilityChange(void);
 static void ChangeMonAbility(void);
+static bool32 ShouldDisplayFormChangeText(void);
+static void DisplayFormChangeText(void);
+static void RemoveFormChangeText(void);
 
 // const rom data
 
@@ -635,6 +641,8 @@ static const u16 sMonShadow_Pal[]                   = INCGFX_U16("graphics/summa
     #endif
 #endif
 
+static const u32 sFormChangeGfx[] = INCGFX_U32("graphics/summary_screen/swsh/form_change.png", ".4bpp");
+static const u16 sFormChangePal[] = INCGFX_U16("graphics/summary_screen/swsh/form_change.png", ".gbapal");
 
 static const struct BgTemplate sBgTemplates[] =
 {
@@ -1869,6 +1877,7 @@ void ShowPokemonSummaryScreen_SwSh(u8 mode, void *mons, u8 monIndex, u8 maxMonIn
 
     sMonSummaryScreen = AllocZeroed(sizeof(*sMonSummaryScreen));
     sMonSummaryScreen->mode = mode;
+    sMonSummaryScreen->changeFormId = SPRITE_NONE;
     sHeldSlot = MOVE_SLOT_COUNT;
     sHeldAnimId = INVALID_COMFY_ANIM;
     if (monIndex == PC_MON_CHOSEN)
@@ -2176,6 +2185,10 @@ static bool8 LoadGraphics(void)
             || sMonSummaryScreen->mode == SUMMARY_MODE_RELEARNER_CONTEST)
         {
             PrintMovesPagePrompt();
+        }
+        else if (ShouldDisplayFormChangeText())
+        {
+            DisplayFormChangeText();
         }
         gMain.state++;
         break;
@@ -2647,6 +2660,122 @@ static void DrawNextSkillsButtonPrompt(u8 mode)
 
 #define IS_MOVE_PAGE(page) (page == PSS_PAGE_BATTLE_MOVES || page == PSS_PAGE_CONTEST_MOVES)
 
+const enum Species sRotomOrder[] =
+{
+    SPECIES_ROTOM,
+    SPECIES_ROTOM_FAN,
+    SPECIES_ROTOM_FROST,
+    SPECIES_ROTOM_MOW,
+    SPECIES_ROTOM_HEAT,
+    SPECIES_ROTOM_WASH,
+};
+
+static void TryRotateRotom(u8 taskId)
+{
+    enum Species species = sMonSummaryScreen->summary.species;
+    u32 markings;
+    if (sMonSummaryScreen->isBoxMon)
+        markings = GetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
+    else
+        markings = GetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
+
+    u32 rotomIndex = 0;
+
+    while (sRotomOrder[rotomIndex] != species)
+        rotomIndex++;
+
+    u32 maxIndex = 1;
+    switch (markings)
+    {
+    case 1:
+        maxIndex = 2;
+        break;
+    case 3:
+        maxIndex = 3;
+        break;
+    case 7:
+        maxIndex = 4;
+        break;
+    case 15:
+        maxIndex = 5;
+        break;
+    }
+
+    rotomIndex++;
+    if (rotomIndex > maxIndex)
+        rotomIndex = 0;
+    species = sRotomOrder[rotomIndex];
+
+    if (sMonSummaryScreen->isBoxMon)
+    {
+        SetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_SPECIES, &species);
+    }
+    else
+    {
+        SetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_SPECIES, &species);
+    }
+
+    sMonSummaryScreen->monAnimTimer = 0;
+    sMonSummaryScreen->monAnimPlayed = FALSE;
+    gTasks[taskId].data[0] = 0;
+    gTasks[taskId].func = Task_ChangeSummaryMon;
+}
+
+const enum Species sOricorioOrder[] =
+{
+    SPECIES_ORICORIO_BAILE,
+    SPECIES_ORICORIO_PAU,
+    SPECIES_ORICORIO_SENSU,
+    SPECIES_ORICORIO_POM_POM,
+};
+
+static void TryRotateOricorio(u8 taskId)
+{
+    enum Species species = sMonSummaryScreen->summary.species;
+    u32 markings;
+    if (sMonSummaryScreen->isBoxMon)
+        markings = GetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
+    else
+        markings = GetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
+    u32 oricorioIndex = 0;
+
+    while (sOricorioOrder[oricorioIndex] != species)
+        oricorioIndex++;
+
+    u32 maxIndex = 3;
+    switch (markings)
+    {
+    case 1:
+        maxIndex = 1;
+        break;
+    case 3:
+        maxIndex = 2;
+        break;
+    case 7:
+        maxIndex = 3;
+        break;
+    }
+
+    oricorioIndex++;
+    if (oricorioIndex > maxIndex)
+        oricorioIndex = 0;
+    species = sOricorioOrder[oricorioIndex];
+
+    if (sMonSummaryScreen->isBoxMon)
+    {
+        SetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_SPECIES, &species);
+    }
+    else
+    {
+        SetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_SPECIES, &species);
+    }
+
+    sMonSummaryScreen->monAnimTimer = 0;
+    sMonSummaryScreen->monAnimPlayed = FALSE;
+    gTasks[taskId].data[0] = 0;
+    gTasks[taskId].func = Task_ChangeSummaryMon;
+}
+
 static void Task_HandleInput(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
@@ -2656,27 +2785,45 @@ static void Task_HandleInput(u8 taskId)
     {
         if (JOY_NEW(DPAD_UP))
         {
+            RemoveFormChangeText();
             tSkillsState = defaultSkillsState;
             ChangeSummaryPokemon(taskId, -1);
         }
         else if (JOY_NEW(DPAD_DOWN))
         {
+            RemoveFormChangeText();
             tSkillsState = defaultSkillsState;
             ChangeSummaryPokemon(taskId, 1);
         }
         else if ((JOY_NEW(DPAD_LEFT)))
         {
+            RemoveFormChangeText();
             tSkillsState = defaultSkillsState;
             ChangePage(taskId, -1);
         }
         else if ((JOY_NEW(DPAD_RIGHT)))
         {
+            RemoveFormChangeText();
             tSkillsState = defaultSkillsState;
             ChangePage(taskId, 1);
         }
         else if (JOY_NEW(A_BUTTON))
         {
-            if (sMonSummaryScreen->currPageIndex == PSS_PAGE_BATTLE_MOVES
+            if (sMonSummaryScreen->currPageIndex == PSS_PAGE_INFO
+             && (sMonSummaryScreen->summary.species == SPECIES_ROTOM
+              || sMonSummaryScreen->summary.species == SPECIES_ROTOM_MOW
+              || sMonSummaryScreen->summary.species == SPECIES_ROTOM_FAN
+              || sMonSummaryScreen->summary.species == SPECIES_ROTOM_HEAT
+              || sMonSummaryScreen->summary.species == SPECIES_ROTOM_FROST
+              || sMonSummaryScreen->summary.species == SPECIES_ROTOM_WASH))
+            {
+                TryRotateRotom(taskId);
+            }
+            else if (ShouldDisplayFormChangeText())
+            {
+                TryRotateOricorio(taskId);
+            }
+            else if (sMonSummaryScreen->currPageIndex == PSS_PAGE_BATTLE_MOVES
                 || sMonSummaryScreen->currPageIndex == PSS_PAGE_CONTEST_MOVES)
             {
                 PlaySE(SE_SELECT);
@@ -2993,6 +3140,8 @@ static void Task_ChangeSummaryMon(u8 taskId)
         }
 #endif
         TryDrawExperienceProgressBar();
+        if (ShouldDisplayFormChangeText())
+            DisplayFormChangeText();
         break;
     case 13:
         gSprites[sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_MON]].sDelayAnim = 0;
@@ -3090,6 +3239,7 @@ static void ChangePage(u8 taskId, s8 delta)
     else if (sMonSummaryScreen->currPageIndex == PSS_PAGE_INFO)
     {
         DestroyHeldItemIconSprite();
+        RemoveFormChangeText();
     }
     else if (sMonSummaryScreen->currPageIndex == PSS_PAGE_BATTLE_MOVES)
     {
@@ -4190,6 +4340,8 @@ static void Task_PrintInfoPage(u8 taskId)
         PrintMonNature();
         break;
     case 6:
+        if (ShouldDisplayFormChangeText())
+            DisplayFormChangeText();
         DestroyTask(taskId);
         return;
     }
@@ -6998,4 +7150,60 @@ static void ChangeMonAbility(void)
         SetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_ABILITY_NUM, &index);
 
     sMonSummaryScreen->summary.abilityNum = index;
+}
+
+static bool32 ShouldDisplayFormChangeText(void)
+{
+    if (sMonSummaryScreen->currPageIndex == PSS_PAGE_INFO
+          && (sMonSummaryScreen->summary.species == SPECIES_ROTOM
+           || sMonSummaryScreen->summary.species == SPECIES_ROTOM_MOW
+           || sMonSummaryScreen->summary.species == SPECIES_ROTOM_FAN
+           || sMonSummaryScreen->summary.species == SPECIES_ROTOM_HEAT
+           || sMonSummaryScreen->summary.species == SPECIES_ROTOM_FROST
+           || sMonSummaryScreen->summary.species == SPECIES_ROTOM_WASH))
+    {
+        return TRUE;
+    }
+    else if (sMonSummaryScreen->currPageIndex == PSS_PAGE_INFO
+         && (sMonSummaryScreen->summary.species == SPECIES_ORICORIO_BAILE
+          || sMonSummaryScreen->summary.species == SPECIES_ORICORIO_PAU
+          || sMonSummaryScreen->summary.species == SPECIES_ORICORIO_SENSU
+          || sMonSummaryScreen->summary.species == SPECIES_ORICORIO_POM_POM))
+    {
+        u32 markings;
+        if (sMonSummaryScreen->isBoxMon)
+            markings = GetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
+        else
+            markings = GetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
+        return markings != 0;
+    }
+    return FALSE;
+}
+
+static void DisplayFormChangeText(void)
+{
+    if (sMonSummaryScreen->changeFormId != SPRITE_NONE)
+        return;
+
+    struct Even_CreateSpriteStruct cs = {0};
+    cs.sprite = sFormChangeGfx;
+    cs.tileTag = 0xCECE;
+    cs.palette = sFormChangePal;
+    cs.palTag = 0xCECE;
+    cs.spriteSize = SPRITE_SIZE(64x32);
+    cs.spriteShape = SPRITE_SHAPE(64x32);
+    cs.posX = 160;
+    cs.posY = 161;
+    sMonSummaryScreen->changeFormId =  Even_CreateSprite(&cs);
+}
+
+static void RemoveFormChangeText(void)
+{
+    if (sMonSummaryScreen->changeFormId != SPRITE_NONE);
+    {
+        DestroySprite(&gSprites[sMonSummaryScreen->changeFormId]);
+        FreeSpriteTilesByTag(0xCECE);
+        FreeSpritePaletteByTag(0xCECE);
+        sMonSummaryScreen->changeFormId = SPRITE_NONE;
+    }
 }
