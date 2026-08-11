@@ -37,6 +37,9 @@
 #include "palette.h"
 #include "even_sprite.h"
 
+#define CURSOR_SPEED 2
+#define COORD_TO_TILE(_x, _y) ((_x / 32 * 1024) + (_y / 32 * 2048) + (_x % 32) + ((_y % 32) * 32))
+
 struct RiskUiState
 {
     MainCallback savedCallback;
@@ -46,21 +49,23 @@ struct RiskUiState
     s16 xOffset;
     s16 yOffset;
     u8 selectorId;
+    u8 descriptionOffset;
+    bool8 isShowingDescription;
+    enum Risk prevRisk;
 };
 
 enum WindowIds
 {
-    WIN_MONEY,
-    WIN_PITY,
-    WIN_PULL_1,
-    WIN_PULL_10,
+    WIN_RISK_NAME,
+    WIN_RISK_DESCRIPTION,
+    WIN_RISK_TOTAL,
     WIN_COUNT
 };
 
 struct RiskIcon
 {
-    enum Risk *linkedRisks;
-    enum Risk *unlockedRisks;
+    const enum Risk *linkedRisks;
+    const enum Risk *unlockedRisks;
     u16 tiles[4];
     u8 linkedCount;
     u8 unlockCount;
@@ -68,12 +73,240 @@ struct RiskIcon
     const u8 *description;
 };
 
+const enum Risk sLinkedHpRisks[] = { RISK_OPPONENT_HP_1, RISK_OPPONENT_HP_2, RISK_OPPONENT_HP_3 };
+const enum Risk sLinkedTurnRisks[] = { RISK_TURN_LIMIT_1, RISK_TURN_LIMIT_2, RISK_TURN_LIMIT_3 };
+const enum Risk sLinkedTeamRisks[] = { RISK_PARTY_MINUS_1, RISK_PARTY_MINUS_2, RISK_PARTY_MINUS_3 };
+const enum Risk sLinkedSwitchRisks[] = { RISK_MUST_SWITCH_1, RISK_MUST_SWITCH_2, RISK_MUST_SWITCH_3, RISK_CANT_SWITCH };
+const enum Risk sLinkedStartStatusRisks[] = { RISK_PLAYER_STARTS_WITH_BURN, RISK_PLAYER_STARTS_WITH_FROSTBITE, RISK_PLAYER_STARTS_WITH_PARALYSIS };
+
+const struct RiskIcon sRiskData[] =
+{
+    [RISK_RESET] =
+    {
+        .linkedRisks = NULL,
+        .unlockedRisks = NULL,
+        .tiles = { COORD_TO_TILE(1, 1), COORD_TO_TILE(1, 2), COORD_TO_TILE(2, 1), COORD_TO_TILE(2, 2) },
+        .linkedCount = 0,
+        .unlockCount = 0,
+        .name = COMPOUND_STRING("Reset Risks"),
+        .description = COMPOUND_STRING("Reset all selected risks"),
+    },
+    [RISK_OPPONENT_HP_1] =
+    {
+        .linkedRisks = sLinkedHpRisks,
+        .tiles = { COORD_TO_TILE(4, 4), COORD_TO_TILE(4, 5), COORD_TO_TILE(5, 4), COORD_TO_TILE(5, 5) },
+        .linkedCount = 3,
+        .name = COMPOUND_STRING("Foe: HP 1"),
+        .description = COMPOUND_STRING("Foes have 10% more HP"),
+    },
+    [RISK_OPPONENT_HP_2] =
+    {
+        .linkedRisks = sLinkedHpRisks,
+        .tiles = { COORD_TO_TILE(4, 7), COORD_TO_TILE(4, 8), COORD_TO_TILE(5, 7), COORD_TO_TILE(5, 8) },
+        .linkedCount = 3,
+        .name = COMPOUND_STRING("Foe: HP 2"),
+        .description = COMPOUND_STRING("Foes have 25% more HP"),
+    },
+    [RISK_OPPONENT_HP_3] =
+    {
+        .linkedRisks = sLinkedHpRisks,
+        .tiles = { COORD_TO_TILE(4, 10), COORD_TO_TILE(4, 11), COORD_TO_TILE(5, 10), COORD_TO_TILE(5, 11) },
+        .linkedCount = 3,
+        .name = COMPOUND_STRING("Foe: HP 3"),
+        .description = COMPOUND_STRING("Foes have 25% more HP"),
+    },
+    [RISK_TURN_LIMIT_1] =
+    {
+        .linkedRisks = sLinkedTurnRisks,
+        .tiles = { COORD_TO_TILE(8, 4), COORD_TO_TILE(8, 5), COORD_TO_TILE(9, 4), COORD_TO_TILE(9, 5) },
+        .linkedCount = 3,
+        .name = COMPOUND_STRING("Turn Limit 1"),
+        .description = COMPOUND_STRING("Must win within 20 turns."),
+    },
+    [RISK_TURN_LIMIT_2] =
+    {
+        .linkedRisks = sLinkedTurnRisks,
+        .tiles = { COORD_TO_TILE(8, 7), COORD_TO_TILE(8, 8), COORD_TO_TILE(9, 7), COORD_TO_TILE(9, 8) },
+        .linkedCount = 3,
+        .name = COMPOUND_STRING("Turn Limit 2"),
+        .description = COMPOUND_STRING("Must win within 15 turns."),
+    },
+    [RISK_TURN_LIMIT_3] =
+    {
+        .linkedRisks = sLinkedTurnRisks,
+        .tiles = { COORD_TO_TILE(8, 10), COORD_TO_TILE(8, 11), COORD_TO_TILE(9, 10), COORD_TO_TILE(9, 11) },
+        .linkedCount = 3,
+        .name = COMPOUND_STRING("Turn Limit 3"),
+        .description = COMPOUND_STRING("Must win within 10 turns."),
+    },
+    [RISK_PARTY_MINUS_1] =
+    {
+        .linkedRisks = sLinkedTeamRisks,
+        .tiles = { COORD_TO_TILE(12, 4), COORD_TO_TILE(12, 5), COORD_TO_TILE(13, 4), COORD_TO_TILE(13, 5) },
+        .linkedCount = 3,
+        .name = COMPOUND_STRING("Part Minus 1"),
+        .description = COMPOUND_STRING("Player can only have 5 mons."),
+    },
+    [RISK_PARTY_MINUS_2] =
+    {
+        .linkedRisks = sLinkedTeamRisks,
+        .tiles = { COORD_TO_TILE(12, 7), COORD_TO_TILE(12, 8), COORD_TO_TILE(13, 7), COORD_TO_TILE(13, 8) },
+        .linkedCount = 3,
+        .name = COMPOUND_STRING("Part Minus 2"),
+        .description = COMPOUND_STRING("Player can only have 4 mons."),
+    },
+    [RISK_PARTY_MINUS_3] =
+    {
+        .linkedRisks = sLinkedTeamRisks,
+        .tiles = { COORD_TO_TILE(12, 10), COORD_TO_TILE(12, 11), COORD_TO_TILE(13, 10), COORD_TO_TILE(13, 11) },
+        .linkedCount = 3,
+        .name = COMPOUND_STRING("Part Minus 3"),
+        .description = COMPOUND_STRING("Player can only have 3 mons."),
+    },
+    [RISK_MUST_SWITCH_1] =
+    {
+        .linkedRisks = sLinkedSwitchRisks,
+        .tiles = { COORD_TO_TILE(16, 4), COORD_TO_TILE(16, 5), COORD_TO_TILE(17, 4), COORD_TO_TILE(17, 5) },
+        .linkedCount = 4,
+        .name = COMPOUND_STRING("Must Switch 1"),
+        .description = COMPOUND_STRING("Player must switch a mon every 4 turns."),
+    },
+    [RISK_MUST_SWITCH_2] =
+    {
+        .linkedRisks = sLinkedSwitchRisks,
+        .tiles = { COORD_TO_TILE(16, 7), COORD_TO_TILE(16, 8), COORD_TO_TILE(17, 7), COORD_TO_TILE(17, 8) },
+        .linkedCount = 4,
+        .name = COMPOUND_STRING("Must Switch 2"),
+        .description = COMPOUND_STRING("Player must switch a mon every 3 turns."),
+    },
+    [RISK_MUST_SWITCH_3] =
+    {
+        .linkedRisks = sLinkedSwitchRisks,
+        .tiles = { COORD_TO_TILE(16, 10), COORD_TO_TILE(16, 11), COORD_TO_TILE(17, 10), COORD_TO_TILE(17, 11) },
+        .linkedCount = 4,
+        .name = COMPOUND_STRING("Must Switch 3"),
+        .description = COMPOUND_STRING("Player must switch a mon every 2 turns."),
+    },
+    [RISK_CANT_SWITCH] =
+    {
+        .linkedRisks = sLinkedSwitchRisks,
+        .tiles = { COORD_TO_TILE(19, 7), COORD_TO_TILE(19, 8), COORD_TO_TILE(20, 7), COORD_TO_TILE(20, 8) },
+        .linkedCount = 4,
+        .name = COMPOUND_STRING("Can't Switch"),
+        .description = COMPOUND_STRING("Player can't switch."),
+    },
+    [RISK_PLAYER_STARTS_WITH_BURN] =
+    {
+        .linkedRisks = sLinkedStartStatusRisks,
+        .tiles = { COORD_TO_TILE(23, 7), COORD_TO_TILE(23, 8), COORD_TO_TILE(24, 7), COORD_TO_TILE(24, 8) },
+        .linkedCount = 3,
+        .name = COMPOUND_STRING("Start Burned"),
+        .description = COMPOUND_STRING("Player mons start battles burned."),
+    },
+    [RISK_PLAYER_STARTS_WITH_FROSTBITE] =
+    {
+        .linkedRisks = sLinkedStartStatusRisks,
+        .tiles = { COORD_TO_TILE(26, 7), COORD_TO_TILE(26, 8), COORD_TO_TILE(27, 7), COORD_TO_TILE(27, 8) },
+        .linkedCount = 3,
+        .name = COMPOUND_STRING("Start Frost"),
+        .description = COMPOUND_STRING("Player mons start battles frostbitten."),
+    },
+    [RISK_PLAYER_STARTS_WITH_PARALYSIS] =
+    {
+        .linkedRisks = sLinkedStartStatusRisks,
+        .tiles = { COORD_TO_TILE(29, 7), COORD_TO_TILE(29, 8), COORD_TO_TILE(30, 7), COORD_TO_TILE(30, 8) },
+        .linkedCount = 3,
+        .name = COMPOUND_STRING("Start Para"),
+        .description = COMPOUND_STRING("Player mons start battles paralyzed."),
+    },
+};
+
 const enum Risk sRiskMap[64][64] =
 {
-    [0][0] = RISK_RESET,
-    [0][1] = RISK_RESET,
-    [1][0] = RISK_RESET,
     [1][1] = RISK_RESET,
+    [1][2] = RISK_RESET,
+    [2][1] = RISK_RESET,
+    [2][2] = RISK_RESET,
+
+    [4][4] = RISK_OPPONENT_HP_1,
+    [4][5] = RISK_OPPONENT_HP_1,
+    [5][4] = RISK_OPPONENT_HP_1,
+    [5][5] = RISK_OPPONENT_HP_1,
+
+    [4][7] = RISK_OPPONENT_HP_2,
+    [4][8] = RISK_OPPONENT_HP_2,
+    [5][7] = RISK_OPPONENT_HP_2,
+    [5][8] = RISK_OPPONENT_HP_2,
+
+    [4][10] = RISK_OPPONENT_HP_3,
+    [4][11] = RISK_OPPONENT_HP_3,
+    [5][10] = RISK_OPPONENT_HP_3,
+    [5][11] = RISK_OPPONENT_HP_3,
+
+    [8][4] = RISK_TURN_LIMIT_1,
+    [8][5] = RISK_TURN_LIMIT_1,
+    [9][4] = RISK_TURN_LIMIT_1,
+    [9][5] = RISK_TURN_LIMIT_1,
+
+    [8][7] = RISK_TURN_LIMIT_2,
+    [8][8] = RISK_TURN_LIMIT_2,
+    [9][7] = RISK_TURN_LIMIT_2,
+    [9][8] = RISK_TURN_LIMIT_2,
+
+    [8][10] = RISK_TURN_LIMIT_3,
+    [8][11] = RISK_TURN_LIMIT_3,
+    [9][10] = RISK_TURN_LIMIT_3,
+    [9][11] = RISK_TURN_LIMIT_3,
+
+    [12][4] = RISK_PARTY_MINUS_1,
+    [12][5] = RISK_PARTY_MINUS_1,
+    [13][4] = RISK_PARTY_MINUS_1,
+    [13][5] = RISK_PARTY_MINUS_1,
+
+    [12][7] = RISK_PARTY_MINUS_2,
+    [12][8] = RISK_PARTY_MINUS_2,
+    [13][7] = RISK_PARTY_MINUS_2,
+    [13][8] = RISK_PARTY_MINUS_2,
+
+    [12][10] = RISK_PARTY_MINUS_3,
+    [12][11] = RISK_PARTY_MINUS_3,
+    [13][10] = RISK_PARTY_MINUS_3,
+    [13][11] = RISK_PARTY_MINUS_3,
+
+    [16][4] = RISK_MUST_SWITCH_1,
+    [16][5] = RISK_MUST_SWITCH_1,
+    [17][4] = RISK_MUST_SWITCH_1,
+    [17][5] = RISK_MUST_SWITCH_1,
+
+    [16][7] = RISK_MUST_SWITCH_2,
+    [16][8] = RISK_MUST_SWITCH_2,
+    [17][7] = RISK_MUST_SWITCH_2,
+    [17][8] = RISK_MUST_SWITCH_2,
+
+    [16][10] = RISK_MUST_SWITCH_3,
+    [16][11] = RISK_MUST_SWITCH_3,
+    [17][10] = RISK_MUST_SWITCH_3,
+    [17][11] = RISK_MUST_SWITCH_3,
+
+    [19][7] = RISK_CANT_SWITCH,
+    [19][8] = RISK_CANT_SWITCH,
+    [20][7] = RISK_CANT_SWITCH,
+    [20][8] = RISK_CANT_SWITCH,
+
+    [23][7] = RISK_PLAYER_STARTS_WITH_BURN,
+    [23][8] = RISK_PLAYER_STARTS_WITH_BURN,
+    [24][7] = RISK_PLAYER_STARTS_WITH_BURN,
+    [24][8] = RISK_PLAYER_STARTS_WITH_BURN,
+
+    [26][7] = RISK_PLAYER_STARTS_WITH_FROSTBITE,
+    [26][8] = RISK_PLAYER_STARTS_WITH_FROSTBITE,
+    [27][7] = RISK_PLAYER_STARTS_WITH_FROSTBITE,
+    [27][8] = RISK_PLAYER_STARTS_WITH_FROSTBITE,
+
+    [29][7] = RISK_PLAYER_STARTS_WITH_PARALYSIS,
+    [29][8] = RISK_PLAYER_STARTS_WITH_PARALYSIS,
+    [30][7] = RISK_PLAYER_STARTS_WITH_PARALYSIS,
+    [30][8] = RISK_PLAYER_STARTS_WITH_PARALYSIS,
 };
 
 static EWRAM_DATA struct RiskUiState *sRiskUiState = NULL;
@@ -104,66 +337,54 @@ static const struct BgTemplate sRiskUiBgTemplates[] =
     }
 };
 
-#define MONEY_WIDTH     8
-#define MONEY_HEIGHT    2
-#define PITY_WIDTH      8
-#define PITY_HEIGHT     4
-#define PULL_1_WIDTH    8
-#define PULL_1_HEIGHT   2
-#define PULL_10_WIDTH   8
-#define PULL_10_HEIGHT  2
+#define NAME_WIDTH 16
+#define NAME_HEIGHT 2
+#define DESCRIPTION_WIDTH 28
+#define DESCRIPTION_HEIGHT 11
+#define TOTAL_WIDTH 4
+#define TOTAL_HEIGHT 2
 
-#define MONEY_SIZE      MONEY_WIDTH * MONEY_HEIGHT
-#define PITY_SIZE       PITY_WIDTH * PITY_HEIGHT
-#define PULL_1_SIZE     PULL_1_WIDTH * PULL_1_HEIGHT
-#define PULL_10_SIZE     PULL_10_WIDTH * PULL_10_HEIGHT
+#define NAME_SIZE NAME_WIDTH * NAME_HEIGHT
+#define DESCRIPTION_SIZE DESCRIPTION_WIDTH * DESCRIPTION_HEIGHT
+#define TOTAL_SIZE TOTAL_WIDTH * TOTAL_HEIGHT
 
-#define MONEY_BASEBLOCK     1
-#define PITY_BASEBLOCK      MONEY_BASEBLOCK + MONEY_SIZE
-#define PULL_1_BASEBLOCK    PITY_BASEBLOCK + PITY_SIZE
-#define PULL_10_BASEBLOCK   PULL_1_BASEBLOCK + PULL_1_SIZE
+#define NAME_BASEBLOCK 1
+#define DESCRIPTION_BASEBLOCK NAME_BASEBLOCK + NAME_SIZE
+#define TOTAL_BASEBLOCK DESCRIPTION_BASEBLOCK + DESCRIPTION_SIZE
+
+#define WINDOW_BASEBLOCK_END TOTAL_BASEBLOCK + TOTAL_SIZE
 
 static const struct WindowTemplate sRiskUiWindowTemplates[] =
 {
-    [WIN_MONEY] =
+    [WIN_RISK_NAME] =
     {
         .bg = 0,
-        .tilemapLeft = 30 - MONEY_WIDTH,
-        .tilemapTop = 0,
-        .width = MONEY_WIDTH,
-        .height = MONEY_HEIGHT,
+        .tilemapLeft = 1,
+        .tilemapTop = 18,
+        .width = NAME_WIDTH,
+        .height = NAME_HEIGHT,
         .paletteNum = 15,
-        .baseBlock = MONEY_BASEBLOCK,
+        .baseBlock = NAME_BASEBLOCK,
     },
-    [WIN_PITY] =
+    [WIN_RISK_DESCRIPTION] =
     {
         .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 3,
-        .width = PITY_WIDTH,
-        .height = PITY_HEIGHT,
+        .tilemapLeft = 1,
+        .tilemapTop = 21,
+        .width = DESCRIPTION_WIDTH,
+        .height = DESCRIPTION_HEIGHT,
         .paletteNum = 15,
-        .baseBlock = PITY_BASEBLOCK
+        .baseBlock = DESCRIPTION_BASEBLOCK
     },
-    [WIN_PULL_1] =
+    [WIN_RISK_TOTAL] =
     {
         .bg = 0,
-        .tilemapLeft = 16,
-        .tilemapTop = 1,
-        .width = PULL_1_WIDTH,
-        .height = PULL_1_HEIGHT,
+        .tilemapLeft = 26,
+        .tilemapTop = 18,
+        .width = TOTAL_WIDTH,
+        .height = TOTAL_HEIGHT,
         .paletteNum = 15,
-        .baseBlock = PULL_1_BASEBLOCK
-    },
-    [WIN_PULL_10] =
-    {
-        .bg = 0,
-        .tilemapLeft = 16,
-        .tilemapTop = 1,
-        .width = PULL_10_WIDTH,
-        .height = PULL_10_HEIGHT,
-        .paletteNum = 15,
-        .baseBlock = PULL_10_BASEBLOCK
+        .baseBlock = TOTAL_BASEBLOCK
     },
     DUMMY_WIN_TEMPLATE
 };
@@ -178,10 +399,10 @@ enum FontColor
 
 static const u8 sRiskUiWindowFontColors[][3] =
 {
-    [FONT_BLACK]  = {TEXT_COLOR_TRANSPARENT, 3,  4},
-    [FONT_WHITE]  = {TEXT_COLOR_TRANSPARENT, 1,  2},
-    [FONT_FADED]  = {TEXT_COLOR_TRANSPARENT, 5,  6},
-    [FONT_BLUE]   = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_BLUE,       TEXT_COLOR_LIGHT_GRAY},
+    [FONT_BLACK]  = {2, 3,  4},
+    [FONT_WHITE]  = {2, 1,  2},
+    [FONT_FADED]  = {2, 5,  6},
+    [FONT_BLUE]   = {2, TEXT_COLOR_BLUE,       TEXT_COLOR_LIGHT_GRAY},
 };
 
 static void RiskUi_SetupCB(void);
@@ -201,6 +422,12 @@ static void MoveSelectorX(s32 distance);
 static void MoveSelectorY(s32 distance);
 static void GetSelectedTiles(u16 *tiles);
 static void FlipSelectedTiles(void);
+static void TrySelectRiskUnderCursor(void);
+static inline void SetRiskInactive(enum Risk risk);
+static inline void SetRiskActive(enum Risk risk);
+static void ChangeTilemapPalettesBeforeLoad(void);
+static enum Risk GetRiskUnderCursor(void);
+static void PrintRiskData(enum Risk risk);
 
 static void Task_RiskUiWaitFadeAndExitGracefully(u8 taskId);
 
@@ -317,7 +544,8 @@ static bool8 RiskUi_InitBgs(void)
 
     ResetAllBgsCoordinates();
 
-    sBg1TilemapBuffer = AllocZeroed(TILEMAP_BUFFER_SIZE);
+    u16 *tiles = AllocZeroed(TILEMAP_BUFFER_SIZE);
+    sBg1TilemapBuffer = (u8 *)tiles;
     if (sBg1TilemapBuffer == NULL)
         return FALSE;
 
@@ -397,6 +625,8 @@ static bool8 RiskUi_LoadGraphics(void)
         if (FreeTempTileDataBuffersIfPossible() != TRUE)
         {
             DecompressDataWithHeaderWram(sBackgroundTilemap, sBg1TilemapBuffer);
+            //  Set tile palettes for active thing here
+            ChangeTilemapPalettesBeforeLoad();
             sRiskUiState->loadState++;
         }
         break;
@@ -432,6 +662,38 @@ static void Task_RiskUiWaitFadeIn(u8 taskId)
         gTasks[taskId].func = Task_RiskUiMainInput;
 }
 
+static void Task_HideDescription(u8 taskId)
+{
+    if (sRiskUiState->descriptionOffset > 8)
+    {
+        sRiskUiState->descriptionOffset -= 8;
+        SetGpuReg(REG_OFFSET_BG0VOFS, sRiskUiState->descriptionOffset);
+    }
+    else
+    {
+        sRiskUiState->descriptionOffset = 0;
+        SetGpuReg(REG_OFFSET_BG0VOFS, sRiskUiState->descriptionOffset);
+
+        sRiskUiState->isShowingDescription = FALSE;
+        gSprites[sRiskUiState->selectorId].invisible = FALSE;
+        gTasks[taskId].func = Task_RiskUiMainInput;
+    }
+}
+
+static void Task_DisplayDescription(u8 taskId)
+{
+    if (sRiskUiState->descriptionOffset < 88)
+    {
+        sRiskUiState->descriptionOffset += 8;
+        SetGpuReg(REG_OFFSET_BG0VOFS, sRiskUiState->descriptionOffset);
+    }
+
+    if (JOY_NEW(START_BUTTON))
+    {
+        gTasks[taskId].func = Task_HideDescription;
+    }
+}
+
 static void Task_RiskUiMainInput(u8 taskId)
 {
     if (JOY_NEW(B_BUTTON))
@@ -442,26 +704,43 @@ static void Task_RiskUiMainInput(u8 taskId)
     }
     else if (JOY_NEW(A_BUTTON))
     {
-        FlipSelectedTiles();
+        TrySelectRiskUnderCursor();
+    }
+    else if (JOY_NEW(START_BUTTON))
+    {
+        sRiskUiState->isShowingDescription = TRUE;
+        gSprites[sRiskUiState->selectorId].invisible = TRUE;
+        gTasks[taskId].func = Task_DisplayDescription;
     }
     else if (JOY_NEW(DPAD_ANY) || JOY_HELD(DPAD_ANY))
     {
+        if (gSprites[sRiskUiState->selectorId].invisible)
+            return;
+
         if (JOY_NEW(DPAD_UP) || JOY_HELD(DPAD_UP))
         {
-            MoveSelectorY(-4);
+            MoveSelectorY(-CURSOR_SPEED);
         }
         else if (JOY_NEW(DPAD_DOWN) || JOY_HELD(DPAD_DOWN))
         {
-            MoveSelectorY(4);
+            MoveSelectorY(CURSOR_SPEED);
         }
 
         if (JOY_NEW(DPAD_LEFT) || JOY_HELD(DPAD_LEFT))
         {
-            MoveSelectorX(-4);
+            MoveSelectorX(-CURSOR_SPEED);
         }
         else if (JOY_NEW(DPAD_RIGHT) || JOY_HELD(DPAD_RIGHT))
         {
-            MoveSelectorX(4);
+            MoveSelectorX(CURSOR_SPEED);
+        }
+
+        //  Detect if new position is under a new risk
+        enum Risk risk = GetRiskUnderCursor();
+        if (risk != sRiskUiState->prevRisk)
+        {
+            sRiskUiState->prevRisk = risk;
+            PrintRiskData(risk);
         }
     }
 }
@@ -532,7 +811,7 @@ static void MoveSelectorY(s32 distance)
 {
     if (distance > 0)
     {
-        if (sRiskUiState->ySelector == 160 - 16)
+        if (sRiskUiState->ySelector == 160 - 40)
         {
             if (sRiskUiState->yOffset != 352)
             {
@@ -584,38 +863,7 @@ static void GetSelectedTiles(u16 *tiles)
         {
             u32 currX = xSel + x;
             u32 currY = ySel + y;
-            u32 tileArea = 0;
-
-            if (currX > 31)
-            {
-                currX -= 32;
-                tileArea += 1;
-            }
-
-            if (currY > 31)
-            {
-                currY -= 32;
-                tileArea += 2;
-            }
-
-            u32 tileBase = 0;
-
-            switch (tileArea)
-            {
-            case 0:
-                break;
-            case 1:
-                tileBase = 1024;
-                break;
-            case 2:
-                tileBase = 2 *1024;
-                break;
-            case 3:
-                tileBase = 3 *1024;
-                break;
-            }
-
-            tiles[y * 2 + x] = tileBase + currY * 32 + currX;
+            tiles[y * 2 + x] = COORD_TO_TILE(currX, currY);
         }
     }
 }
@@ -626,7 +874,127 @@ static void FlipSelectedTiles(void)
     GetSelectedTiles(tiles);
     for (u32 i = 0; i < 4; i++)
     {
-        DebugPrintf("%u", tiles[i]);
         SetTilePalette(tiles[i], 1);
     }
+}
+
+static enum Risk GetRiskUnderCursor(void)
+{
+    u32 xSel = (sRiskUiState->xSelector + sRiskUiState->xOffset) / 8 - 1;
+    u32 ySel = (sRiskUiState->ySelector + sRiskUiState->yOffset) / 8 - 1;
+
+    enum Risk risk = RISK_NONE;
+
+    if (sRiskMap[xSel][ySel] != RISK_NONE)
+    {
+        risk = sRiskMap[xSel][ySel];
+    }
+    else if (sRiskMap[xSel + 1][ySel] != RISK_NONE)
+    {
+        risk = sRiskMap[xSel + 1][ySel];
+    }
+    else if (sRiskMap[xSel][ySel + 1] != RISK_NONE)
+    {
+        risk = sRiskMap[xSel][ySel + 1];
+    }
+    else if (sRiskMap[xSel + 1][ySel + 1] != RISK_NONE)
+    {
+        risk = sRiskMap[xSel + 1][ySel + 1];
+    }
+
+    return risk;
+}
+
+static void TrySelectRiskUnderCursor(void)
+{
+    enum Risk risk = GetRiskUnderCursor();
+
+    if (risk == RISK_RESET)
+    {
+        for (enum Risk risk = RISK_RESET + 1; risk < RISK_COUNT; risk++)
+        {
+            if (IsRiskActive(risk))
+            {
+                SetRiskInactive(risk);
+            }
+        }
+    }
+    else if (risk != RISK_NONE)
+    {
+        if (IsRiskActive(risk))
+        {
+            SetRiskInactive(risk);
+        }
+        else
+        {
+            for (u32 i = 0; i < sRiskData[risk].linkedCount; i++)
+            {
+                SetRiskInactive(sRiskData[risk].linkedRisks[i]);
+            }
+            SetRiskActive(risk);
+        }
+    }
+}
+
+static inline void SetRiskInactive(enum Risk risk)
+{
+    SetTilePalette(sRiskData[risk].tiles[0], 0);
+    SetTilePalette(sRiskData[risk].tiles[1], 0);
+    SetTilePalette(sRiskData[risk].tiles[2], 0);
+    SetTilePalette(sRiskData[risk].tiles[3], 0);
+    ClearRisk(risk);
+}
+
+static inline void SetRiskActive(enum Risk risk)
+{
+    SetTilePalette(sRiskData[risk].tiles[0], 1);
+    SetTilePalette(sRiskData[risk].tiles[1], 1);
+    SetTilePalette(sRiskData[risk].tiles[2], 1);
+    SetTilePalette(sRiskData[risk].tiles[3], 1);
+    SetRisk(risk);
+}
+
+static void ChangeTilemapPalettesBeforeLoad(void)
+{
+    for (enum Risk risk = RISK_RESET + 1; risk < RISK_COUNT; risk++)
+    {
+        if (IsRiskActive(risk))
+        {
+            for (u32 i = 0; i < 4; i++)
+            {
+                u32 tileNum = sRiskData[risk].tiles[i];
+                u16 *tilemapPtr = (u16 *)sBg1TilemapBuffer;
+                u16 palMask = 1 << 12;
+                u16 currVal = tilemapPtr[tileNum] & 0xFFF;
+                tilemapPtr[tileNum] = palMask | currVal;
+            }
+        }
+    }
+}
+
+static void PrintRiskData(enum Risk risk)
+{
+    //  First clear out windows
+    FillWindowPixelBuffer(WIN_RISK_NAME, PIXEL_FILL(2));
+    FillWindowPixelBuffer(WIN_RISK_DESCRIPTION, PIXEL_FILL(2));
+
+    //  Then if risk is not RISK_NONE
+    //  print new risk text
+    if (risk != RISK_NONE)
+    {
+        AddTextPrinterParameterized4(WIN_RISK_NAME,
+                                     FONT_NORMAL,
+                                     0, 0, 0, 0,
+                                     sRiskUiWindowFontColors[FONT_BLACK],
+                                     TEXT_SKIP_DRAW,
+                                     sRiskData[risk].name);
+        AddTextPrinterParameterized4(WIN_RISK_DESCRIPTION,
+                                     FONT_NORMAL,
+                                     0, 0, 0, 0,
+                                     sRiskUiWindowFontColors[FONT_BLACK],
+                                     TEXT_SKIP_DRAW,
+                                     sRiskData[risk].description);
+    }
+    CopyWindowToVram(WIN_RISK_NAME, COPYWIN_GFX);
+    CopyWindowToVram(WIN_RISK_DESCRIPTION, COPYWIN_GFX);
 }

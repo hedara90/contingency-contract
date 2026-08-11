@@ -84,6 +84,7 @@ enum Risk
     RISK_RANDOM_LEAD,       //  Not implemented
     RISK_NO_ORDER_CHANGE,
     RISK_USES_POOLS,        //  Not implemented
+#define RISK_COUNT RISK_USES_POOLS + 1
 };
 
 struct Risks
