@@ -61,8 +61,6 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.playerStartsWithParalysis;
     case RISK_PLAYER_STARTS_WITH_FROSTBITE:
         return gSaveBlock1Ptr->risks.playerStartsWithFrostbite;
-    case RISK_PERMANENT_SUN:
-        return gSaveBlock1Ptr->risks.permanentSun;
     case RISK_HAS_OMNISCIENT_AI:
         return gSaveBlock1Ptr->risks.hasOmniscientAi;
     case RISK_HAS_PREDICTION_AI:
@@ -77,8 +75,8 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.playerLowerHalfDamageRolls;
     case RISK_OPPONENT_HIGHER_DAMAGE_ROLLS:
         return gSaveBlock1Ptr->risks.opponentUpperHalfDamageRolls;
-    case RISK_CAN_ONLY_USE_TOP_MOVES:
-        return gSaveBlock1Ptr->risks.canOnlyUseTopMoves1;
+    case RISK_PLAYER_HAS_PARENTAL_BOND:
+        return gSaveBlock1Ptr->risks.playerHasParentalBond;
     case RISK_PLAYER_SPIKES_1:
         return gSaveBlock1Ptr->risks.playerStartsSpikes1;
     case RISK_PLAYER_SPIKES_2:
@@ -115,6 +113,28 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.playerJustBerries;
     case RISK_OPPONENT_HAS_ITEMS:
         return gSaveBlock1Ptr->risks.opponentHasItems;
+    case RISK_PARTY_MINUS_1:
+        return gSaveBlock1Ptr->risks.partyMinus1;
+    case RISK_PARTY_MINUS_2:
+        return gSaveBlock1Ptr->risks.partyMinus2;
+    case RISK_PARTY_MINUS_3:
+        return gSaveBlock1Ptr->risks.partyMinus3;
+    case RISK_MINUS_1_MOVE:
+        return gSaveBlock1Ptr->risks.minus1Move;
+    case RISK_PLAYER_HAS_PERISH_BODY:
+        return gSaveBlock1Ptr->risks.playerPerishBody;
+    case RISK_PLAYER_HAS_BEAST_BOOST:
+        return gSaveBlock1Ptr->risks.playerBeastBoost;
+    case RISK_PLAYER_HAS_FILTER:
+        return gSaveBlock1Ptr->risks.playerHasFilter;
+    case RISK_NO_PP_RESTORE:
+        return gSaveBlock1Ptr->risks.noPPRestore;
+    case RISK_RANDOM_LEAD:
+        return gSaveBlock1Ptr->risks.randomLead;
+    case RISK_NO_ORDER_CHANGE:
+        return gSaveBlock1Ptr->risks.noOrderChange;
+    case RISK_USES_POOLS:
+        return gSaveBlock1Ptr->risks.usesPools;
     }
     return FALSE;
 }
@@ -198,9 +218,6 @@ void SetRisk(enum Risk risk)
     case RISK_PLAYER_STARTS_WITH_FROSTBITE:
         gSaveBlock1Ptr->risks.playerStartsWithFrostbite = TRUE;
         break;
-    case RISK_PERMANENT_SUN:
-        gSaveBlock1Ptr->risks.permanentSun = TRUE;
-        break;
     case RISK_HAS_OMNISCIENT_AI:
         gSaveBlock1Ptr->risks.hasOmniscientAi = TRUE;
         break;
@@ -222,8 +239,8 @@ void SetRisk(enum Risk risk)
     case RISK_OPPONENT_HIGHER_DAMAGE_ROLLS:
         gSaveBlock1Ptr->risks.opponentUpperHalfDamageRolls = TRUE;
         break;
-    case RISK_CAN_ONLY_USE_TOP_MOVES:
-        gSaveBlock1Ptr->risks.canOnlyUseTopMoves1 = TRUE;
+    case RISK_PLAYER_HAS_PARENTAL_BOND:
+        gSaveBlock1Ptr->risks.playerHasParentalBond = TRUE;
         break;
     case RISK_PLAYER_SPIKES_1:
         gSaveBlock1Ptr->risks.playerStartsSpikes1 = TRUE;
@@ -279,6 +296,35 @@ void SetRisk(enum Risk risk)
     case RISK_OPPONENT_HAS_ITEMS:
         gSaveBlock1Ptr->risks.opponentHasItems = TRUE;
         break;
+    case RISK_PARTY_MINUS_1:
+        gSaveBlock1Ptr->risks.partyMinus1 = TRUE;
+        break;
+    case RISK_PARTY_MINUS_2:
+        gSaveBlock1Ptr->risks.partyMinus2 = TRUE;
+        break;
+    case RISK_PARTY_MINUS_3:
+        gSaveBlock1Ptr->risks.partyMinus3 = TRUE;
+        break;
+    case RISK_MINUS_1_MOVE:
+        gSaveBlock1Ptr->risks.minus1Move = TRUE;
+        break;
+    case RISK_PLAYER_HAS_PERISH_BODY:
+        gSaveBlock1Ptr->risks.playerPerishBody = TRUE;
+        break;
+    case RISK_PLAYER_HAS_BEAST_BOOST:
+        gSaveBlock1Ptr->risks.playerBeastBoost = TRUE;
+        break;
+    case RISK_PLAYER_HAS_FILTER:
+        gSaveBlock1Ptr->risks.playerHasFilter = TRUE;
+        break;
+    case RISK_NO_PP_RESTORE:
+        gSaveBlock1Ptr->risks.noPPRestore = TRUE;
+    case RISK_RANDOM_LEAD:
+        gSaveBlock1Ptr->risks.randomLead = TRUE;
+    case RISK_NO_ORDER_CHANGE:
+        gSaveBlock1Ptr->risks.noOrderChange = TRUE;
+    case RISK_USES_POOLS:
+        gSaveBlock1Ptr->risks.usesPools = TRUE;
     }
 }
 
@@ -361,9 +407,6 @@ void ClearRisk(enum Risk risk)
     case RISK_PLAYER_STARTS_WITH_FROSTBITE:
         gSaveBlock1Ptr->risks.playerStartsWithFrostbite = FALSE;
         break;
-    case RISK_PERMANENT_SUN:
-        gSaveBlock1Ptr->risks.permanentSun = FALSE;
-        break;
     case RISK_HAS_OMNISCIENT_AI:
         gSaveBlock1Ptr->risks.hasOmniscientAi = FALSE;
         break;
@@ -385,8 +428,8 @@ void ClearRisk(enum Risk risk)
     case RISK_OPPONENT_HIGHER_DAMAGE_ROLLS:
         gSaveBlock1Ptr->risks.opponentUpperHalfDamageRolls = FALSE;
         break;
-    case RISK_CAN_ONLY_USE_TOP_MOVES:
-        gSaveBlock1Ptr->risks.canOnlyUseTopMoves1 = FALSE;
+    case RISK_PLAYER_HAS_PARENTAL_BOND:
+        gSaveBlock1Ptr->risks.playerHasParentalBond = FALSE;
         break;
     case RISK_PLAYER_SPIKES_1:
         gSaveBlock1Ptr->risks.playerStartsSpikes1 = FALSE;
@@ -442,5 +485,34 @@ void ClearRisk(enum Risk risk)
     case RISK_OPPONENT_HAS_ITEMS:
         gSaveBlock1Ptr->risks.opponentHasItems = FALSE;
         break;
+    case RISK_PARTY_MINUS_1:
+        gSaveBlock1Ptr->risks.partyMinus1 = FALSE;
+        break;
+    case RISK_PARTY_MINUS_2:
+        gSaveBlock1Ptr->risks.partyMinus2 = FALSE;
+        break;
+    case RISK_PARTY_MINUS_3:
+        gSaveBlock1Ptr->risks.partyMinus3 = FALSE;
+        break;
+    case RISK_MINUS_1_MOVE:
+        gSaveBlock1Ptr->risks.minus1Move = FALSE;
+        break;
+    case RISK_PLAYER_HAS_PERISH_BODY:
+        gSaveBlock1Ptr->risks.playerPerishBody = FALSE;
+        break;
+    case RISK_PLAYER_HAS_BEAST_BOOST:
+        gSaveBlock1Ptr->risks.playerBeastBoost = FALSE;
+        break;
+    case RISK_PLAYER_HAS_FILTER:
+        gSaveBlock1Ptr->risks.playerHasFilter = FALSE;
+        break;
+    case RISK_NO_PP_RESTORE:
+        gSaveBlock1Ptr->risks.noPPRestore = FALSE;
+    case RISK_RANDOM_LEAD:
+        gSaveBlock1Ptr->risks.randomLead = FALSE;
+    case RISK_NO_ORDER_CHANGE:
+        gSaveBlock1Ptr->risks.noOrderChange = FALSE;
+    case RISK_USES_POOLS:
+        gSaveBlock1Ptr->risks.usesPools = FALSE;
     }
 }
