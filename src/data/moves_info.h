@@ -1758,8 +1758,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
     {
         .name = COMPOUND_STRING("Drill Peck"),
         .description = COMPOUND_STRING(
-            "A corkscrewing attack with\n"
-            "the beak acting as a drill."),
+            "A corkscrewing attack. Has\n"
+            "a high critical-hit ratio."),
         .effect = EFFECT_HIT,
         .power = 80,
         .type = TYPE_FLYING,
@@ -5206,27 +5206,27 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
     {
         .name = COMPOUND_STRING("Octazooka"),
         .description = COMPOUND_STRING(
-            "Fires a lump of ink to\n"
-            "damage and cut accuracy."),
+            "Allows a full-power attack,\n"
+            "but sharply lowers Sp. Atk."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 130 : 140,
         .type = TYPE_WATER,
-        .accuracy = 85,
-        .pp = 10,
+        .accuracy = 90,
+        .pp = 5,
         .target = TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .ballisticMove = TRUE,
+        .makesContact = B_UPDATED_MOVE_DATA < GEN_4,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_STAT_MINUS,
-            .accuracy = 1,
-            .chance = 50,
+            .spAtk = 2,
+            .self = TRUE,
         }),
-        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_REPETITION_NOT_BORING : CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
+        .contestEffect = CONTEST_EFFECT_USER_MORE_EASILY_STARTLED,
+        .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
-        .contestComboMoves = {COMBO_STARTER_LOCK_ON, COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Octazooka,
+        .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
+        .battleAnimScript = gBattleAnimMove_Overheat,
         .validApprenticeMove = TRUE,
     },
 
@@ -7218,6 +7218,29 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .target = TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
+        .makesContact = TRUE,
+        .contestEffect = CONTEST_EFFECT_BETTER_IF_LAST,
+        .contestCategory = CONTEST_CATEGORY_CUTE,
+        .contestComboStarterId = 0,
+        .contestComboMoves = {0},
+        .battleAnimScript = gBattleAnimMove_Facade,
+        .validApprenticeMove = TRUE,
+    },
+
+    [MOVE_CHARADE] =
+    {
+        .name = COMPOUND_STRING("Charade"),
+        .description = COMPOUND_STRING(
+            "Boosts power when burned,\n"
+            "paralyzed, or poisoned."),
+        .effect = EFFECT_FACADE,
+        .power = 70,
+        .type = TYPE_PSYCHIC,
+        .accuracy = 100,
+        .pp = 20,
+        .target = TARGET_SELECTED,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_SPECIAL,
         .makesContact = TRUE,
         .contestEffect = CONTEST_EFFECT_BETTER_IF_LAST,
         .contestCategory = CONTEST_CATEGORY_CUTE,
@@ -13513,6 +13536,29 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .battleAnimScript = gBattleAnimMove_Hex,
     },
 
+    [MOVE_COMBUSTION] =
+    {
+        .name = COMPOUND_STRING("Combustion"),
+        .description = COMPOUND_STRING(
+            "Does double damage if the\n"
+            "foe has a status problem."),
+        .effect = EFFECT_DOUBLE_POWER_ON_ARG_STATUS,
+        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 65 : 50,
+        .type = TYPE_FIRE,
+        .accuracy = 100,
+        .pp = 10,
+        .target = TARGET_SELECTED,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_SPECIAL,
+        .zMove = { .powerOverride = 160 },
+        .argument = { .status = STATUS1_ANY },
+        .contestEffect = CONTEST_EFFECT_STARTLE_MONS_SAME_TYPE_APPEAL,
+        .contestCategory = CONTEST_CATEGORY_SMART,
+        .contestComboStarterId = 0,
+        .contestComboMoves = {COMBO_STARTER_TOXIC, COMBO_STARTER_FORCE_PALM, COMBO_STARTER_THUNDER_WAVE, COMBO_STARTER_INFERNO, COMBO_STARTER_WILL_O_WISP, COMBO_STARTER_LOVELY_KISS, COMBO_STARTER_SPORE, COMBO_STARTER_SING, COMBO_STARTER_YAWN, COMBO_STARTER_HYPNOSIS, COMBO_STARTER_DARK_VOID, COMBO_STARTER_GRASS_WHISTLE, COMBO_STARTER_SLEEP_POWDER, COMBO_STARTER_POISON_GAS, COMBO_STARTER_POISON_POWDER, COMBO_STARTER_TOXIC_SPIKES, COMBO_STARTER_GLARE},
+        .battleAnimScript = gBattleAnimMove_Hex,
+    },
+
     [MOVE_SKY_DROP] =
     {
         .name = COMPOUND_STRING("Sky Drop"),
@@ -14395,6 +14441,33 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
+        .battleAnimScript = gBattleAnimMove_TailSlap,
+    },
+
+    [MOVE_ACID_BARRAGE] =
+    {
+        .name = COMPOUND_STRING("Acid Barrage"),
+        .description = COMPOUND_STRING(
+            "Splashes the foe with\n"
+            "acid 2 to 5 times."),
+        .effect = EFFECT_HIT,
+        .power = 25,
+        .type = TYPE_POISON,
+        .accuracy = 100,
+        .pp = 10,
+        .target = TARGET_SELECTED,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_PHYSICAL,
+        .multiHit = TRUE,
+        .makesContact = TRUE,
+        .contestEffect = CONTEST_EFFECT_QUALITY_DEPENDS_ON_TIMING,
+        .contestCategory = CONTEST_CATEGORY_CUTE,
+        .contestComboStarterId = 0,
+        .contestComboMoves = {0},
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_POISON,
+            .chance = 10,
+        }),
         .battleAnimScript = gBattleAnimMove_TailSlap,
     },
 
@@ -15417,6 +15490,25 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .contestComboStarterId = COMBO_STARTER_GRASSY_TERRAIN,
         .contestComboMoves = {0},
         .battleAnimScript = gBattleAnimMove_GrassyTerrain,
+    },
+
+    [MOVE_ALGAE_BLOOM] =
+    {
+        .name = COMPOUND_STRING("Algae Bloom"),
+        .description = COMPOUND_STRING(
+            "Turns the terrain grassy."),
+        .effect = EFFECT_HIT,
+        .power = 85,
+        .type = TYPE_GRASS,
+        .accuracy = 95,
+        .pp = 10,
+        .target = TARGET_SELECTED,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_SPECIAL,
+        .battleAnimScript = gBattleAnimMove_MaxOvergrowth,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_GRASSY_TERRAIN,
+        }),
     },
 
     [MOVE_MISTY_TERRAIN] =
@@ -19960,6 +20052,28 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .battleAnimScript = gBattleAnimMove_StoneAxe,
     },
 
+    [MOVE_STEEL_SPIKE] =
+    {
+        .name = COMPOUND_STRING("Steel Spike"),
+        .description = COMPOUND_STRING(
+            "Hits and sets steel\n"
+            "spikes around foes."),
+        .effect = EFFECT_STEEL_SPIKE,
+        .power = 65,
+        .type = TYPE_STEEL,
+        .accuracy = 90,
+        .pp = 15,
+        .target = TARGET_SELECTED,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_PHYSICAL,
+        .makesContact = TRUE,
+        .slicingMove = TRUE,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .sheerForceOverride = TRUE,
+        }),
+        .battleAnimScript = gBattleAnimMove_StoneAxe,
+    },
+
     [MOVE_SPRINGTIDE_STORM] =
     {
         .name = COMPOUND_STRING("Springtide Storm"),
@@ -21580,6 +21694,24 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .effect = EFFECT_HYDRO_STEAM,
         .power = 80,
         .type = TYPE_WATER,
+        .accuracy = 100,
+        .pp = 15,
+        .target = TARGET_SELECTED,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_SPECIAL,
+        .thawsUser = TRUE,
+        .battleAnimScript = gBattleAnimMove_HydroSteam,
+    },
+
+    [MOVE_SAND_BLAST] =
+    {
+        .name = COMPOUND_STRING("Sand Blast"),
+        .description = COMPOUND_STRING(
+            "Sets sand. Power increases\n"
+            "in a sandstorm."),
+        .effect = EFFECT_SAND_BLAST,
+        .power = 55,
+        .type = TYPE_ROCK,
         .accuracy = 100,
         .pp = 15,
         .target = TARGET_SELECTED,

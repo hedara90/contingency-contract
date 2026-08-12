@@ -646,7 +646,7 @@ static const struct LevelUpMove sSandslashAlolaLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 51, MOVE_EARTHQUAKE),
     LEVEL_UP_MOVE( 52, MOVE_KNOCK_OFF),
     LEVEL_UP_MOVE( 53, MOVE_STEALTH_ROCK),
-    LEVEL_UP_MOVE( 54, MOVE_CELEBRATE), // Steel type Stone Axe (Surge)
+    LEVEL_UP_MOVE( 54, MOVE_STEEL_SPIKE),
     LEVEL_UP_END
 };
 #endif //P_ALOLAN_FORMS
@@ -3725,7 +3725,7 @@ static const struct LevelUpMove sMagmortarLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_THUNDERBOLT),
     LEVEL_UP_MOVE( 1, MOVE_AURA_SPHERE),
     LEVEL_UP_MOVE( 1, MOVE_HYPER_VOICE),
-    LEVEL_UP_MOVE( 51, MOVE_CELEBRATE), // Fire Hex
+    LEVEL_UP_MOVE( 51, MOVE_COMBUSTION),
     LEVEL_UP_MOVE( 51, MOVE_SCORCHING_SANDS),
     LEVEL_UP_MOVE( 52, MOVE_WEATHER_BALL),
     LEVEL_UP_MOVE( 52, MOVE_TERRAIN_PULSE),
@@ -3933,7 +3933,7 @@ static const struct LevelUpMove sJolteonLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 51, MOVE_DAZZLING_GLEAM),
     LEVEL_UP_MOVE( 52, MOVE_SPIKES),
     LEVEL_UP_MOVE( 53, MOVE_ELECTRO_BALL),
-    LEVEL_UP_MOVE( 54, MOVE_CELEBRATE), // Charade (special psychic type Facade)
+    LEVEL_UP_MOVE( 54, MOVE_CHARADE),
     LEVEL_UP_END
 };
 
@@ -7984,7 +7984,7 @@ static const struct LevelUpMove sRoseradeLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 51, MOVE_WATER_SHURIKEN),
     LEVEL_UP_MOVE( 52, MOVE_CALM_MIND),
     LEVEL_UP_MOVE( 53, MOVE_LEAF_STORM),
-    LEVEL_UP_MOVE( 54, MOVE_CELEBRATE), // Acid Barrage
+    LEVEL_UP_MOVE( 54, MOVE_ACID_BARRAGE),
     LEVEL_UP_END
 };
 #endif //P_GEN_4_CROSS_EVOS
@@ -10916,7 +10916,7 @@ static const struct LevelUpMove sHeatranLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_FLASH_CANNON),
     LEVEL_UP_MOVE( 51, MOVE_SCORCHING_SANDS),
     LEVEL_UP_MOVE( 52, MOVE_METAL_SOUND),
-    LEVEL_UP_MOVE( 52, MOVE_CELEBRATE), // Fire Hex
+    LEVEL_UP_MOVE( 52, MOVE_COMBUSTION),
     LEVEL_UP_MOVE( 53, MOVE_SOLAR_BEAM),
     LEVEL_UP_MOVE( 53, MOVE_EXPLOSION),
     LEVEL_UP_END
@@ -15303,7 +15303,7 @@ static const struct LevelUpMove sDragalgeLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_VENOSHOCK),
     LEVEL_UP_MOVE( 51, MOVE_TERRAIN_PULSE),
     LEVEL_UP_MOVE( 52, MOVE_TOXIC_SPIKES),
-    LEVEL_UP_MOVE( 53, MOVE_CELEBRATE), // Algae Blooom
+    LEVEL_UP_MOVE( 53, MOVE_ALGAE_BLOOM),
     LEVEL_UP_MOVE( 54, MOVE_DRACO_METEOR),
     LEVEL_UP_END
 };
