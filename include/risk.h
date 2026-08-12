@@ -28,7 +28,7 @@ enum Risk
     RISK_HAS_ADAPTABILITY,
     RISK_HAS_WONDER_GUARD,
     RISK_HAS_REGENERATOR,
-    RISK_CANT_CRIT,
+    RISK_HAS_BATTLE_ARMOR,
     RISK_OPPONENT_MOVES_FIRST,
     RISK_OPPONENT_MORE_MONS_1,
     RISK_OPPONENT_MORE_MONS_2,
@@ -96,7 +96,7 @@ struct Risks
     bool32 hasAdaptability:1;
     bool32 hasWonderGuard:1;
     bool32 hasRegenerator:1;
-    bool32 cantCrit:1;
+    bool32 hasBattleArmor:1;
     bool32 opponentMovesFirst:1;
     bool32 opponentPartyPlus1:1;
     bool32 opponentPartyPlus2:1;

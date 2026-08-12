@@ -159,7 +159,7 @@ SINGLE_BATTLE_TEST("Risk: Player can't crit")
     s16 damageFoe;
     s16 damagePlayer;
     GIVEN {
-        SetRisk(RISK_CANT_CRIT);
+        SetRisk(RISK_HAS_BATTLE_ARMOR);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -250,12 +250,23 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Regenerator")
 
 TEST("Risk: Opponent has 1 extra mon in party")
 {
-    SetRisk(RISK_OPPONENT_MORE_MONS);
+    SetRisk(RISK_OPPONENT_MORE_MONS_1);
     struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
     CreateNPCTrainerPartyFromTrainer(testParty, GetTrainerStructFromId(15), TRUE, BATTLE_TYPE_TRAINER);
     EXPECT_NE(GetMonData(&testParty[2], MON_DATA_SPECIES), SPECIES_NONE);
     Free(testParty);
-    ClearRisk(RISK_OPPONENT_MORE_MONS);
+    ClearRisk(RISK_OPPONENT_MORE_MONS_1);
+}
+
+TEST("Risk: Opponent has 2 extra mons in party")
+{
+    SetRisk(RISK_OPPONENT_MORE_MONS_2);
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    CreateNPCTrainerPartyFromTrainer(testParty, GetTrainerStructFromId(15), TRUE, BATTLE_TYPE_TRAINER);
+    EXPECT_NE(GetMonData(&testParty[2], MON_DATA_SPECIES), SPECIES_NONE);
+    EXPECT_NE(GetMonData(&testParty[3], MON_DATA_SPECIES), SPECIES_NONE);
+    Free(testParty);
+    ClearRisk(RISK_OPPONENT_MORE_MONS_2);
 }
 
 SINGLE_BATTLE_TEST("Risk: Turn Limit 1")

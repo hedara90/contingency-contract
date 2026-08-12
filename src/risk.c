@@ -12,7 +12,7 @@ static const u8 sRiskValues[] =
     [RISK_HAS_ADAPTABILITY] = 0,
     [RISK_HAS_WONDER_GUARD] = 0,
     [RISK_HAS_REGENERATOR] = 0,
-    [RISK_CANT_CRIT] = 0,
+    [RISK_HAS_BATTLE_ARMOR] = 0,
     [RISK_OPPONENT_MOVES_FIRST] = 0,
     [RISK_OPPONENT_MORE_MONS_1] = 0,
     [RISK_OPPONENT_MORE_MONS_2] = 0,
@@ -95,14 +95,14 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.hasWonderGuard;
     case RISK_HAS_REGENERATOR:
         return gSaveBlock1Ptr->risks.hasRegenerator;
-    case RISK_CANT_CRIT:
-        return gSaveBlock1Ptr->risks.cantCrit;
+    case RISK_HAS_BATTLE_ARMOR:
+        return gSaveBlock1Ptr->risks.hasBattleArmor;
     case RISK_OPPONENT_MOVES_FIRST:
         return gSaveBlock1Ptr->risks.opponentMovesFirst;
     case RISK_OPPONENT_MORE_MONS_1:
         return gSaveBlock1Ptr->risks.opponentPartyPlus1;
     case RISK_OPPONENT_MORE_MONS_2:
-        return gSaveBlock1Ptr->risks.opponentPartyPlus1;
+        return gSaveBlock1Ptr->risks.opponentPartyPlus2;
     case RISK_TURN_LIMIT_1:
         return gSaveBlock1Ptr->risks.turnLimit1;
     case RISK_TURN_LIMIT_2:
@@ -239,8 +239,8 @@ void SetRisk(enum Risk risk)
     case RISK_HAS_REGENERATOR:
         gSaveBlock1Ptr->risks.hasRegenerator = TRUE;
         break;
-    case RISK_CANT_CRIT:
-        gSaveBlock1Ptr->risks.cantCrit = TRUE;
+    case RISK_HAS_BATTLE_ARMOR:
+        gSaveBlock1Ptr->risks.hasBattleArmor = TRUE;
         break;
     case RISK_OPPONENT_MOVES_FIRST:
         gSaveBlock1Ptr->risks.opponentMovesFirst = TRUE;
@@ -435,8 +435,8 @@ void ClearRisk(enum Risk risk)
     case RISK_HAS_REGENERATOR:
         gSaveBlock1Ptr->risks.hasRegenerator = FALSE;
         break;
-    case RISK_CANT_CRIT:
-        gSaveBlock1Ptr->risks.cantCrit = FALSE;
+    case RISK_HAS_BATTLE_ARMOR:
+        gSaveBlock1Ptr->risks.hasBattleArmor = FALSE;
         break;
     case RISK_OPPONENT_MOVES_FIRST:
         gSaveBlock1Ptr->risks.opponentMovesFirst = FALSE;
