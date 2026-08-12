@@ -75,7 +75,6 @@
 #include "load_save.h"
 #include "battle_partner.h"
 #include "risk.h"
-#include "cc_mon_management.h"
 
 enum FollowerNPCCreateDebugMenu
 {
@@ -4974,5 +4973,4 @@ void CheckEWRAMCounters(struct ScriptContext *ctx)
 
 void SetRisks(void)
 {
-    GiveGachaMon(SPECIES_SLOWKING_GALAR, 4);
 }
