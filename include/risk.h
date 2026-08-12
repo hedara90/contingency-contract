@@ -159,5 +159,7 @@ void ClearRisks(void);
 bool32 IsRiskActive(enum Risk risk);
 void SetRisk(enum Risk risk);
 void ClearRisk(enum Risk risk);
+u32 GetRiskValue(enum Risk risk);
+u32 GetTotalTiskValue(void);
 
 #endif // GUARD_RISK

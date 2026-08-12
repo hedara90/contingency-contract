@@ -311,6 +311,7 @@ const enum Risk sRiskMap[64][64] =
 
 static EWRAM_DATA struct RiskUiState *sRiskUiState = NULL;
 static EWRAM_DATA u8 *sBg1TilemapBuffer = NULL;
+static EWRAM_DATA u8 *sBg2TilemapBuffer = NULL;
 
 static const u32 sBackgroundTiles[] = INCGFX_U32("graphics/risk_ui/tiles.png", ".4bpp.smol");
 static const u32 sBackgroundTilemap[] = INCBIN_U32("graphics/risk_ui/tiles.bin.smolTM");
@@ -318,6 +319,10 @@ static const u16 sBackgroundPalette[] = INCGFX_U16("graphics/risk_ui/tiles.png",
 
 static const u32 sSelectorGfx[] = INCGFX_U32("graphics/risk_ui/selector.png", ".4bpp");
 static const u16 sSelectorPal[] = INCGFX_U16("graphics/risk_ui/selector.png", ".gbapal");
+
+static const u32 sFrameGfx[] = INCGFX_U32("graphics/risk_ui/frame_tiles.png", ".4bpp.smol");
+static const u32 sFrameTilemap[] = INCBIN_U32("graphics/risk_ui/frame_tiles.bin.smolTM");
+static const u16 sFramePal[] = INCGFX_U16("graphics/risk_ui/frame_tiles.png", ".gbapal");
 
 static const struct BgTemplate sRiskUiBgTemplates[] =
 {
@@ -334,14 +339,21 @@ static const struct BgTemplate sRiskUiBgTemplates[] =
         .mapBaseIndex = 20,
         .priority = 2,
         .screenSize = 3,
-    }
+    },
+    {
+        .bg = 2,
+        .charBaseIndex = 2,
+        .mapBaseIndex = 28,
+        .priority = 0,
+        .screenSize = 0,
+    },
 };
 
 #define NAME_WIDTH 16
 #define NAME_HEIGHT 2
 #define DESCRIPTION_WIDTH 28
 #define DESCRIPTION_HEIGHT 11
-#define TOTAL_WIDTH 4
+#define TOTAL_WIDTH 2
 #define TOTAL_HEIGHT 2
 
 #define NAME_SIZE NAME_WIDTH * NAME_HEIGHT
@@ -351,8 +363,6 @@ static const struct BgTemplate sRiskUiBgTemplates[] =
 #define NAME_BASEBLOCK 1
 #define DESCRIPTION_BASEBLOCK NAME_BASEBLOCK + NAME_SIZE
 #define TOTAL_BASEBLOCK DESCRIPTION_BASEBLOCK + DESCRIPTION_SIZE
-
-#define WINDOW_BASEBLOCK_END TOTAL_BASEBLOCK + TOTAL_SIZE
 
 static const struct WindowTemplate sRiskUiWindowTemplates[] =
 {
@@ -370,7 +380,7 @@ static const struct WindowTemplate sRiskUiWindowTemplates[] =
     {
         .bg = 0,
         .tilemapLeft = 1,
-        .tilemapTop = 21,
+        .tilemapTop = 20,
         .width = DESCRIPTION_WIDTH,
         .height = DESCRIPTION_HEIGHT,
         .paletteNum = 15,
@@ -379,7 +389,7 @@ static const struct WindowTemplate sRiskUiWindowTemplates[] =
     [WIN_RISK_TOTAL] =
     {
         .bg = 0,
-        .tilemapLeft = 26,
+        .tilemapLeft = 25,
         .tilemapTop = 18,
         .width = TOTAL_WIDTH,
         .height = TOTAL_HEIGHT,
@@ -421,7 +431,6 @@ static void LoadSelector(void);
 static void MoveSelectorX(s32 distance);
 static void MoveSelectorY(s32 distance);
 static void GetSelectedTiles(u16 *tiles);
-static void FlipSelectedTiles(void);
 static void TrySelectRiskUnderCursor(void);
 static inline void SetRiskInactive(enum Risk risk);
 static inline void SetRiskActive(enum Risk risk);
@@ -549,15 +558,22 @@ static bool8 RiskUi_InitBgs(void)
     if (sBg1TilemapBuffer == NULL)
         return FALSE;
 
+    sBg2TilemapBuffer = AllocZeroed(1024 * 2);
+    if (sBg2TilemapBuffer == NULL)
+        return FALSE;
+
     ResetBgsAndClearDma3BusyFlags(0);
 
     InitBgsFromTemplates(0, sRiskUiBgTemplates, NELEMS(sRiskUiBgTemplates));
     SetBgTilemapBuffer(1, sBg1TilemapBuffer);
+    SetBgTilemapBuffer(2, sBg2TilemapBuffer);
 
     ScheduleBgCopyTilemapToVram(1);
+    ScheduleBgCopyTilemapToVram(2);
 
     ShowBg(0);
     ShowBg(1);
+    ShowBg(2);
 
     return TRUE;
 }
@@ -599,6 +615,10 @@ static void RiskUi_FreeResources(void)
     {
         Free(sBg1TilemapBuffer);
     }
+    if (sBg2TilemapBuffer != NULL)
+    {
+        Free(sBg2TilemapBuffer);
+    }
     FreeAllWindowBuffers();
     ResetSpriteData();
 }
@@ -619,12 +639,14 @@ static bool8 RiskUi_LoadGraphics(void)
     case 0:
         ResetTempTileDataBuffers();
         DecompressAndCopyTileDataToVram(1, sBackgroundTiles, 0, 0, 0);
+        DecompressAndCopyTileDataToVram(2, sFrameGfx, 0, 0, 0);
         sRiskUiState->loadState++;
         break;
     case 1:
         if (FreeTempTileDataBuffersIfPossible() != TRUE)
         {
             DecompressDataWithHeaderWram(sBackgroundTilemap, sBg1TilemapBuffer);
+            DecompressDataWithHeaderWram(sFrameTilemap, sBg2TilemapBuffer);
             //  Set tile palettes for active thing here
             ChangeTilemapPalettesBeforeLoad();
             sRiskUiState->loadState++;
@@ -632,8 +654,10 @@ static bool8 RiskUi_LoadGraphics(void)
         break;
     case 2:
         LoadPalette(sBackgroundPalette, BG_PLTT_ID(0), PLTT_SIZE_4BPP * 4);
+        LoadPalette(sFramePal, BG_PLTT_ID(14), PLTT_SIZE_4BPP);
         LoadPalette(gMessageBox_Pal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
         LoadSelector();
+
         sRiskUiState->loadState++;
     default:
         sRiskUiState->loadState = 0;
@@ -650,7 +674,7 @@ static void RiskUi_InitWindows(void)
 
     for (u32 i = 0; i < WIN_COUNT; i++)
     {
-        FillWindowPixelBuffer(i, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+        FillWindowPixelBuffer(i, PIXEL_FILL(2));
         PutWindowTilemap(i);
         CopyWindowToVram(i, COPYWIN_FULL);
     }
@@ -659,7 +683,10 @@ static void RiskUi_InitWindows(void)
 static void Task_RiskUiWaitFadeIn(u8 taskId)
 {
     if (!gPaletteFade.active)
+    {
+
         gTasks[taskId].func = Task_RiskUiMainInput;
+    }
 }
 
 static void Task_HideDescription(u8 taskId)
@@ -668,11 +695,13 @@ static void Task_HideDescription(u8 taskId)
     {
         sRiskUiState->descriptionOffset -= 8;
         SetGpuReg(REG_OFFSET_BG0VOFS, sRiskUiState->descriptionOffset);
+        SetGpuReg(REG_OFFSET_BG2VOFS, sRiskUiState->descriptionOffset);
     }
     else
     {
         sRiskUiState->descriptionOffset = 0;
         SetGpuReg(REG_OFFSET_BG0VOFS, sRiskUiState->descriptionOffset);
+        SetGpuReg(REG_OFFSET_BG2VOFS, sRiskUiState->descriptionOffset);
 
         sRiskUiState->isShowingDescription = FALSE;
         gSprites[sRiskUiState->selectorId].invisible = FALSE;
@@ -686,6 +715,7 @@ static void Task_DisplayDescription(u8 taskId)
     {
         sRiskUiState->descriptionOffset += 8;
         SetGpuReg(REG_OFFSET_BG0VOFS, sRiskUiState->descriptionOffset);
+        SetGpuReg(REG_OFFSET_BG2VOFS, sRiskUiState->descriptionOffset);
     }
 
     if (JOY_NEW(START_BUTTON))
@@ -868,16 +898,6 @@ static void GetSelectedTiles(u16 *tiles)
     }
 }
 
-static void FlipSelectedTiles(void)
-{
-    u16 tiles[4];
-    GetSelectedTiles(tiles);
-    for (u32 i = 0; i < 4; i++)
-    {
-        SetTilePalette(tiles[i], 1);
-    }
-}
-
 static enum Risk GetRiskUnderCursor(void)
 {
     u32 xSel = (sRiskUiState->xSelector + sRiskUiState->xOffset) / 8 - 1;
@@ -994,7 +1014,16 @@ static void PrintRiskData(enum Risk risk)
                                      sRiskUiWindowFontColors[FONT_BLACK],
                                      TEXT_SKIP_DRAW,
                                      sRiskData[risk].description);
+        u8 str[2];
+        ConvertIntToDecimalStringN(str, GetRiskValue(risk), STR_CONV_MODE_LEFT_ALIGN, 1);
+        AddTextPrinterParameterized4(WIN_RISK_TOTAL,
+                                     FONT_NORMAL,
+                                     4, 0, 0, 0,
+                                     sRiskUiWindowFontColors[FONT_BLACK],
+                                     TEXT_SKIP_DRAW,
+                                     str);
     }
     CopyWindowToVram(WIN_RISK_NAME, COPYWIN_GFX);
     CopyWindowToVram(WIN_RISK_DESCRIPTION, COPYWIN_GFX);
+    CopyWindowToVram(WIN_RISK_TOTAL, COPYWIN_GFX);
 }

@@ -2,6 +2,74 @@
 #include "global.h"
 #include "risk.h"
 
+static const u8 sRiskValues[] =
+{
+    [RISK_NONE] = 0,
+    [RISK_RESET] = 0,
+    [RISK_HAS_STURDY] = 0,
+    [RISK_HAS_MOLD_BREAKER] = 0,
+    [RISK_HAS_FILTER] = 0,
+    [RISK_HAS_ADAPTABILITY] = 0,
+    [RISK_HAS_WONDER_GUARD] = 0,
+    [RISK_HAS_REGENERATOR] = 0,
+    [RISK_CANT_CRIT] = 0,
+    [RISK_OPPONENT_MOVES_FIRST] = 0,
+    [RISK_OPPONENT_MORE_MONS] = 0,
+    [RISK_TURN_LIMIT_1] = 0,
+    [RISK_TURN_LIMIT_2] = 0,
+    [RISK_TURN_LIMIT_3] = 0,
+    [RISK_FLIP_TYPE_CHART] = 0,
+    [RISK_ATTACK_GETS_DROWSY] = 0,
+    [RISK_STATUS_GETS_PARA] = 0,
+    [RISK_FOE_HAS_METRONOME] = 0,
+    [RISK_PLAYER_HAS_NEGATIVE_METRONOME] = 0,
+    [RISK_PLAYER_HAS_RECOIL] = 0,
+    [RISK_OPPONENT_INFLICTS_GASTRO_ACID] = 0,
+    [RISK_OPPONENT_ATTACKS_SWITCHES] = 0,
+    [RISK_OPPONENT_ATTACKS_DISABLE] = 0,
+    [RISK_OPPONENT_ATTACKS_TORMENT] = 0,
+    [RISK_PLAYER_STARTS_WITH_BURN] = 0,
+    [RISK_PLAYER_STARTS_WITH_PARALYSIS] = 0,
+    [RISK_PLAYER_STARTS_WITH_FROSTBITE] = 0,
+    [RISK_HAS_OMNISCIENT_AI] = 0,
+    [RISK_HAS_PREDICTION_AI] = 0,
+    [RISK_HAS_GUARANTEED_EFFECTS] = 0,
+    [RISK_HAS_GUARANTEED_ACCURACY] = 0,
+    [RISK_HAS_GEN_1_CRIT_CHANCE] = 0,
+    [RISK_PLAYER_LOWER_DAMAGE_ROLLS] = 0,
+    [RISK_OPPONENT_HIGHER_DAMAGE_ROLLS] = 0,
+    [RISK_PLAYER_HAS_PARENTAL_BOND] = 0,
+    [RISK_PLAYER_SPIKES_1] = 0,
+    [RISK_PLAYER_SPIKES_2] = 0,
+    [RISK_PLAYER_SPIKES_3] = 0,
+    [RISK_PLAYER_TOXIC_SPIKES_1] = 0,
+    [RISK_PLAYER_TOXIC_SPIKES_2] = 0,
+    [RISK_PLAYER_STICKY_WEB] = 0,
+    [RISK_PLAYER_STEALTH_ROCK] = 0,
+    [RISK_PLAYER_SHARP_STEEL] = 0,
+    [RISK_PLAYER_HAZARDS_NOT_REMOVABLE] = 0,
+    [RISK_OPPONENT_HP_1] = 0,
+    [RISK_OPPONENT_HP_2] = 0,
+    [RISK_OPPONENT_HP_3] = 0,
+    [RISK_CANT_SWITCH] = 0,
+    [RISK_MUST_SWITCH_1] = 0,
+    [RISK_MUST_SWITCH_2] = 0,
+    [RISK_MUST_SWITCH_3] = 0,
+    [RISK_PLAYER_JUST_BERRIES] = 0,
+    [RISK_OPPONENT_HAS_ITEMS] = 0,
+    [RISK_PARTY_MINUS_1] = 0,
+    [RISK_PARTY_MINUS_2] = 0,
+    [RISK_PARTY_MINUS_3] = 0,
+    [RISK_MINUS_1_MOVE] = 0,
+    [RISK_PLAYER_HAS_PERISH_BODY] = 0,
+    [RISK_PLAYER_HAS_BEAST_BOOST] = 0,
+    [RISK_PLAYER_HAS_FILTER] = 0,
+    [RISK_NO_PP_RESTORE] = 0,
+    [RISK_RANDOM_LEAD] = 0,
+    [RISK_NO_ORDER_CHANGE] = 0,
+    [RISK_USES_POOLS] = 0,
+};
+
 void ClearRisks(void)
 {
     CpuFill32(0, &gSaveBlock1Ptr->risks, sizeof(struct Risks));
@@ -526,4 +594,19 @@ void ClearRisk(enum Risk risk)
     case RISK_USES_POOLS:
         gSaveBlock1Ptr->risks.usesPools = FALSE;
     }
+}
+
+u32 GetRiskValue(enum Risk risk)
+{
+    return sRiskValues[risk];
+}
+
+u32 GetTotalTiskValue(void)
+{
+    u32 total = 0;
+    for (enum Risk risk = RISK_NONE; risk < RISK_COUNT; risk++)
+    {
+        total += sRiskValues[risk];
+    }
+    return total;
 }
