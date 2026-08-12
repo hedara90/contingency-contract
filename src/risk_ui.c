@@ -78,6 +78,25 @@ const enum Risk sLinkedTurnRisks[] = { RISK_TURN_LIMIT_1, RISK_TURN_LIMIT_2, RIS
 const enum Risk sLinkedTeamRisks[] = { RISK_PARTY_MINUS_1, RISK_PARTY_MINUS_2, RISK_PARTY_MINUS_3 };
 const enum Risk sLinkedSwitchRisks[] = { RISK_MUST_SWITCH_1, RISK_MUST_SWITCH_2, RISK_MUST_SWITCH_3, RISK_CANT_SWITCH };
 const enum Risk sLinkedStartStatusRisks[] = { RISK_PLAYER_STARTS_WITH_BURN, RISK_PLAYER_STARTS_WITH_FROSTBITE, RISK_PLAYER_STARTS_WITH_PARALYSIS };
+const enum Risk sLinkedOppMoreMons[] = { RISK_OPPONENT_MORE_MONS_1, RISK_OPPONENT_MORE_MONS_2 };
+const enum Risk sLinkedAi[] = { RISK_HAS_OMNISCIENT_AI, RISK_HAS_PREDICTION_AI };
+const enum Risk sLinkedPool[] = { RISK_RANDOM_LEAD, RISK_USES_POOLS };
+const enum Risk sLinkedSpikes[] = { RISK_PLAYER_SPIKES_1, RISK_PLAYER_SPIKES_2, RISK_PLAYER_SPIKES_3 };
+const enum Risk sLinkedTSpikes[] = { RISK_PLAYER_TOXIC_SPIKES_1, RISK_PLAYER_TOXIC_SPIKES_2 };
+
+const enum Risk sLockedAbilitiyRisks[] =
+{
+    RISK_PLAYER_HAS_PARENTAL_BOND, RISK_PLAYER_HAS_FILTER, RISK_PLAYER_HAS_PERISH_BODY, RISK_PLAYER_HAS_BEAST_BOOST,
+    RISK_HAS_MOLD_BREAKER, RISK_HAS_STURDY, RISK_HAS_REGENERATOR, RISK_HAS_BATTLE_ARMOR,
+    RISK_HAS_WONDER_GUARD, RISK_HAS_FILTER, RISK_HAS_ADAPTABILITY,
+};
+
+const enum Risk sLockedHazardRisks[] =
+{
+    RISK_PLAYER_SPIKES_1, RISK_PLAYER_SPIKES_2, RISK_PLAYER_SPIKES_3,
+    RISK_PLAYER_TOXIC_SPIKES_1, RISK_PLAYER_TOXIC_SPIKES_2,
+    RISK_PLAYER_STEALTH_ROCK, RISK_PLAYER_SHARP_STEEL, RISK_PLAYER_STICKY_WEB,
+};
 
 const struct RiskIcon sRiskData[] =
 {
@@ -218,6 +237,174 @@ const struct RiskIcon sRiskData[] =
         .linkedCount = 3,
         .name = COMPOUND_STRING("Start Para"),
         .description = COMPOUND_STRING("Player mons start battles paralyzed."),
+    },
+    [RISK_OPPONENT_MORE_MONS_1] =
+    {
+        .linkedRisks = sLinkedOppMoreMons,
+        .tiles = { COORD_TO_TILE(4, 14), COORD_TO_TILE(4, 15), COORD_TO_TILE(5, 14), COORD_TO_TILE(5, 15) },
+        .linkedCount = 2,
+        .name = COMPOUND_STRING("Foe more mons 1"),
+        .description = COMPOUND_STRING("Opponent has 1 more mon in their party."),
+    },
+    [RISK_OPPONENT_MORE_MONS_2] =
+    {
+        .linkedRisks = sLinkedOppMoreMons,
+        .tiles = { COORD_TO_TILE(4, 14), COORD_TO_TILE(4, 15), COORD_TO_TILE(5, 14), COORD_TO_TILE(5, 15) },
+        .linkedCount = 2,
+        .name = COMPOUND_STRING("Foe more mons 2"),
+        .description = COMPOUND_STRING("Opponent has 2 more mon in their party."),
+    },
+    [RISK_HAS_OMNISCIENT_AI] =
+    {
+        .linkedRisks = sLinkedAi,
+        .tiles = { COORD_TO_TILE(8, 14), COORD_TO_TILE(8, 15), COORD_TO_TILE(9, 14), COORD_TO_TILE(9, 15) },
+        .linkedCount = 2,
+        .name = COMPOUND_STRING("AI Omniscient"),
+        .description = COMPOUND_STRING("AI knows the players party, moves and abilities."),
+    },
+    [RISK_HAS_PREDICTION_AI] =
+    {
+        .linkedRisks = sLinkedAi,
+        .tiles = { COORD_TO_TILE(8, 17), COORD_TO_TILE(8, 18), COORD_TO_TILE(9, 17), COORD_TO_TILE(9, 18) },
+        .linkedCount = 2,
+        .name = COMPOUND_STRING("AI Predicts"),
+        .description = COMPOUND_STRING("AI knows the players party, moves and abilities.\nAI predicts the player's action."),
+    },
+    [RISK_RANDOM_LEAD] =
+    {
+        .linkedRisks = sLinkedPool,
+        .tiles = { COORD_TO_TILE(12, 14), COORD_TO_TILE(12, 15), COORD_TO_TILE(13, 14), COORD_TO_TILE(13, 15) },
+        .linkedCount = 2,
+        .name = COMPOUND_STRING("Random Lead"),
+        .description = COMPOUND_STRING("Opponent has random lead."),
+    },
+    [RISK_USES_POOLS] =
+    {
+        .linkedRisks = sLinkedPool,
+        .tiles = { COORD_TO_TILE(12, 17), COORD_TO_TILE(12, 18), COORD_TO_TILE(13, 17), COORD_TO_TILE(13, 18) },
+        .linkedCount = 2,
+        .name = COMPOUND_STRING("Party Pools"),
+        .description = COMPOUND_STRING("Opponent's party is picked from a pool of mons."),
+    },
+    [RISK_PLAYER_JUST_BERRIES] =
+    {
+        .tiles = { COORD_TO_TILE(4, 21), COORD_TO_TILE(4, 22), COORD_TO_TILE(5, 21), COORD_TO_TILE(5, 22) },
+        .name = COMPOUND_STRING("Just Berries"),
+        .description = COMPOUND_STRING("Player can only use berries as held items."),
+    },
+    [RISK_NO_PP_RESTORE] =
+    {
+        .tiles = { COORD_TO_TILE(4, 24), COORD_TO_TILE(4, 25), COORD_TO_TILE(5, 24), COORD_TO_TILE(5, 25) },
+        .name = COMPOUND_STRING("PP conservation"),
+        .description = COMPOUND_STRING("Move PP doesn't restore between battles"),
+    },
+    [RISK_OPPONENT_HAS_ITEMS] =
+    {
+        .tiles = { COORD_TO_TILE(8, 21), COORD_TO_TILE(8, 22), COORD_TO_TILE(9, 21), COORD_TO_TILE(9, 22) },
+        .name = COMPOUND_STRING("Well Equipped"),
+        .description = COMPOUND_STRING("Opponent mons have items."),
+    },
+    [RISK_NO_ORDER_CHANGE] =
+    {
+        .tiles = { COORD_TO_TILE(8, 24), COORD_TO_TILE(8, 25), COORD_TO_TILE(9, 24), COORD_TO_TILE(9, 25) },
+        .name = COMPOUND_STRING("Locked in"),
+        .description = COMPOUND_STRING("Player can't change party or move order\nbetween battles."),
+    },
+    [RISK_FLIP_TYPE_CHART] =
+    {
+        .tiles = { COORD_TO_TILE(12, 21), COORD_TO_TILE(12, 22), COORD_TO_TILE(13, 21), COORD_TO_TILE(13, 22) },
+        .name = COMPOUND_STRING("Inverse Battle"),
+        .description = COMPOUND_STRING("The type chart is flipped."),
+    },
+    [RISK_ATTACK_GETS_DROWSY] =
+    {
+        .tiles = { COORD_TO_TILE(12, 24), COORD_TO_TILE(12, 25), COORD_TO_TILE(13, 24), COORD_TO_TILE(13, 25) },
+        .name = COMPOUND_STRING("Exhaustion"),
+        .description = COMPOUND_STRING("Using and attack makes player mons drowsy."),
+    },
+    [RISK_HAS_GEN_1_CRIT_CHANCE] =
+    {
+        .tiles = { COORD_TO_TILE(15, 21), COORD_TO_TILE(15, 22), COORD_TO_TILE(16, 21), COORD_TO_TILE(16, 22) },
+        .name = COMPOUND_STRING("Ancient Crits"),
+        .description = COMPOUND_STRING("Crit rate is calculated using Gen 1 formulas.\nFaster mons have a higher chance of critting."),
+    },
+    [RISK_STATUS_GETS_PARA] =
+    {
+        .tiles = { COORD_TO_TILE(15, 24), COORD_TO_TILE(15, 25), COORD_TO_TILE(16, 24), COORD_TO_TILE(16, 25) },
+        .name = COMPOUND_STRING("Lame"),
+        .description = COMPOUND_STRING("Using a status move paralyzes player mons."),
+    },
+    [RISK_PLAYER_LOWER_DAMAGE_ROLLS] =
+    {
+        .tiles = { COORD_TO_TILE(22, 28), COORD_TO_TILE(22, 29), COORD_TO_TILE(23, 28), COORD_TO_TILE(23, 29) },
+        .name = COMPOUND_STRING("Below Average"),
+        .description = COMPOUND_STRING("Player attack rolls use only the lower half of results."),
+    },
+    [RISK_OPPONENT_HIGHER_DAMAGE_ROLLS] =
+    {
+        .tiles = { COORD_TO_TILE(22, 31), COORD_TO_TILE(22, 32), COORD_TO_TILE(23, 31), COORD_TO_TILE(23, 32) },
+        .name = COMPOUND_STRING("Above Average"),
+        .description = COMPOUND_STRING("Opponent attack rolls use only the upper half of the results."),
+    },
+    [RISK_PLAYER_HAS_NEGATIVE_METRONOME] =
+    {
+        .tiles = { COORD_TO_TILE(26, 28), COORD_TO_TILE(26, 29), COORD_TO_TILE(27, 28), COORD_TO_TILE(27, 29) },
+        .name = COMPOUND_STRING("Metronome Minus"),
+        .description = COMPOUND_STRING("Player has a negative Metronome item effect of them.\nConsequtive attacking moves does less damage."),
+    },
+    [RISK_FOE_HAS_METRONOME] =
+    {
+        .tiles = { COORD_TO_TILE(26, 31), COORD_TO_TILE(26, 32), COORD_TO_TILE(27, 31), COORD_TO_TILE(27, 32) },
+        .name = COMPOUND_STRING("Metronome Plus"),
+        .description = COMPOUND_STRING("Opponent has a positive Metronome item effect on them.\nConsequtive attacking moves does more damage."),
+    },
+    [RISK_PLAYER_HAS_RECOIL] =
+    {
+        .tiles = { COORD_TO_TILE(30, 28), COORD_TO_TILE(30, 29), COORD_TO_TILE(31, 28), COORD_TO_TILE(31, 29) },
+        .name = COMPOUND_STRING("Recoil"),
+        .description = COMPOUND_STRING("All player moves have recoil equal to 25%\nof damage dealt."),
+    },
+    [RISK_HAS_GUARANTEED_ACCURACY] =
+    {
+        .tiles = { COORD_TO_TILE(30, 31), COORD_TO_TILE(30, 32), COORD_TO_TILE(31, 31), COORD_TO_TILE(31, 32) },
+        .name = COMPOUND_STRING("Accurate"),
+        .description = COMPOUND_STRING("Opponent can't miss moves"),
+    },
+    [RISK_OPPONENT_MOVES_FIRST] =
+    {
+        .tiles = { COORD_TO_TILE(22, 35), COORD_TO_TILE(22, 36), COORD_TO_TILE(23, 35), COORD_TO_TILE(23, 36) },
+        .name = COMPOUND_STRING("Foe Fast"),
+        .description = COMPOUND_STRING("Opponents moves first in their priority bracket."),
+    },
+    [RISK_OPPONENT_ATTACKS_SWITCHES] =
+    {
+        .tiles = { COORD_TO_TILE(22, 38), COORD_TO_TILE(22, 39), COORD_TO_TILE(23, 38), COORD_TO_TILE(23, 39) },
+        .name = COMPOUND_STRING("Force Switch"),
+        .description = COMPOUND_STRING("Opponent attacks foribly switches the player.\nOpponents also moves last."),
+    },
+    [RISK_HAS_GUARANTEED_EFFECTS] =
+    {
+        .tiles = { COORD_TO_TILE(26, 35), COORD_TO_TILE(26, 36), COORD_TO_TILE(27, 35), COORD_TO_TILE(27, 36) },
+        .name = COMPOUND_STRING("Graceful"),
+        .description = COMPOUND_STRING("Opponent's moves with secondary effects are\nguaranteed to proc those effects."),
+    },
+    [RISK_OPPONENT_ATTACKS_DISABLE] =
+    {
+        .tiles = { COORD_TO_TILE(26, 38), COORD_TO_TILE(26, 39), COORD_TO_TILE(27, 38), COORD_TO_TILE(27, 38) },
+        .name = COMPOUND_STRING("Disabling"),
+        .description = COMPOUND_STRING("Opponents attacks apply the Disable effect."),
+    },
+    [RISK_OPPONENT_INFLICTS_GASTRO_ACID] =
+    {
+        .tiles = { COORD_TO_TILE(30, 35), COORD_TO_TILE(30, 36), COORD_TO_TILE(31, 35), COORD_TO_TILE(31, 36) },
+        .name = COMPOUND_STRING("Suppressing"),
+        .description = COMPOUND_STRING("Opponents attacks apply Gastro Acid\nwhich suppresses abilities."),
+    },
+    [RISK_OPPONENT_ATTACKS_TORMENT] =
+    {
+        .tiles = { COORD_TO_TILE(30, 38), COORD_TO_TILE(30, 39), COORD_TO_TILE(31, 38), COORD_TO_TILE(31, 39) },
+        .name = COMPOUND_STRING("Tormenting"),
+        .description = COMPOUND_STRING("Opponents attacks apply the Torment effect,\npreventing mons from repeating attacks."),
     },
 };
 
