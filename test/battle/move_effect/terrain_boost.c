@@ -84,13 +84,13 @@ SINGLE_BATTLE_TEST("Terrain Boost: Rising Voltage doubles in power if target is 
     }
 }
 
-SINGLE_BATTLE_TEST("Terrain Boost: Misty Explosion increases in power by 50% when affected by Misty Terrain")
+SINGLE_BATTLE_TEST("Terrain Boost: Misty Explosion increases in power by 100% when affected by Misty Terrain")
 {
     s16 damage[3];
 
     GIVEN {
         ASSUME(GetMoveEffect(MOVE_MISTY_EXPLOSION) == EFFECT_TERRAIN_BOOST);
-        ASSUME(GetMoveTerrainBoost_Percent(MOVE_MISTY_EXPLOSION) == 50);
+        ASSUME(GetMoveTerrainBoost_Percent(MOVE_MISTY_EXPLOSION) == 100);
         ASSUME(GetMoveTerrainBoost_GroundCheck(MOVE_MISTY_EXPLOSION) == GROUND_CHECK_USER);
         PLAYER(SPECIES_WOBBUFFET);
         PLAYER(SPECIES_WOBBUFFET);
@@ -114,7 +114,7 @@ SINGLE_BATTLE_TEST("Terrain Boost: Misty Explosion increases in power by 50% whe
         ANIMATION(ANIM_TYPE_MOVE, MOVE_MISTY_EXPLOSION, player);
         HP_BAR(opponent, captureDamage: &damage[2]);
     } THEN {
-        EXPECT_MUL_EQ(damage[0], UQ_4_12(1.5), damage[1]);
+        EXPECT_MUL_EQ(damage[0], UQ_4_12(2), damage[1]);
         EXPECT_EQ(damage[0], damage[2]);
     }
 }

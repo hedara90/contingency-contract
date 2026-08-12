@@ -3795,6 +3795,18 @@ static enum MoveEndResult MoveEndMoveBlock(struct BattleCalcValues *cv)
                 return MOVEEND_RESULT_RUN_SCRIPT;
             }
             break;
+        case EFFECT_STEEL_SPIKE:
+            if (!IsHazardOnSide(side, HAZARDS_STEELSURGE)
+             && IsBattlerTurnDamaged(battlerDef, INCLUDING_SUBSTITUTES)
+             && IsBattlerAlive(cv->battlerAtk))
+            {
+                gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_SHARPSTEELFLOATS;
+                BattleScriptCall(BattleScript_MoveEffectSteelsurge);
+                gBattleStruct->eventState.moveEndBattler = 0;
+                gBattleScripting.moveendState++;
+                return MOVEEND_RESULT_RUN_SCRIPT;
+            }
+            break;
         case EFFECT_CEASELESS_EDGE:
             if (gSideTimers[side].spikesAmount < 3
              && IsBattlerTurnDamaged(battlerDef, INCLUDING_SUBSTITUTES)

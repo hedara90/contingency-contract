@@ -6874,6 +6874,10 @@ static inline u32 CalcAttackStat(struct DamageContext *ctx)
         if (IsBattleMovePhysical(move))
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(2.0));
         break;
+    case ABILITY_PURE_WILL:
+        if (IsBattleMoveSpecial(move))
+            modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(2.0));
+        break;
     case ABILITY_SLOW_START:
         if (gBattleMons[battlerAtk].volatiles.slowStartTimer > 0 && IsBattleMovePhysical(move))
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(0.5));
@@ -7336,6 +7340,8 @@ static uq4_12_t GetWeatherDamageModifier(struct DamageContext *ctx)
     if ((attackerWeather | ctx->weather) == B_WEATHER_NONE)
         return UQ_4_12(1.0);// This early exit helps limit AI thinking time
     if (GetMoveEffect(ctx->move) == EFFECT_HYDRO_STEAM && (attackerWeather & B_WEATHER_SUN))
+        return UQ_4_12(1.5);
+    if (GetMoveEffect(ctx->move) == EFFECT_SAND_BLAST && (attackerWeather & B_WEATHER_SANDSTORM))
         return UQ_4_12(1.5);
     if (ctx->holdEffects[ctx->battlerDef] == HOLD_EFFECT_UTILITY_UMBRELLA)
         return UQ_4_12(1.0);

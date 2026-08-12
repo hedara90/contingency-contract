@@ -565,6 +565,13 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 10,
     },
 
+    [ABILITY_PURE_WILL] =
+    {
+        .name = _("Pure Will"),
+        .description = COMPOUND_STRING("Raises Special Attack."),
+        .aiRating = 10,
+    },
+
     [ABILITY_SHELL_ARMOR] =
     {
         .name = _("Shell Armor"),
@@ -715,7 +722,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_QUICK_FEET] =
     {
         .name = _("Quick Feet"),
-        .description = COMPOUND_STRING("Ups Speed if suffering."),
+        .description = COMPOUND_STRING("Doubles Speed if suffering."),
         .aiRating = 5,
     },
 
@@ -1477,7 +1484,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_MERCILESS] =
     {
         .name = _("Merciless"),
-        .description = COMPOUND_STRING("Criticals poisoned foes."),
+        .description = COMPOUND_STRING("Criticals statused foes."),
         .aiRating = 4,
     },
 
@@ -1561,7 +1568,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SURGE_SURFER] =
     {
         .name = _("Surge Surfer"),
-        .description = COMPOUND_STRING("Faster on electricity."),
+        .description = COMPOUND_STRING("Faster on terrain."),
         .aiRating = 4,
     },
 

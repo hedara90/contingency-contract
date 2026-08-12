@@ -259,7 +259,8 @@ static enum FieldEffectOutcome BenefitsFromSandstorm(enum BattlerId battler)
 {
     if (DoesAbilityBenefitFromWeather(gAiLogicData->abilities[battler], B_WEATHER_SANDSTORM)
      || IS_BATTLER_OF_TYPE(battler, TYPE_ROCK)
-     || HasMoveWithEffect(battler, EFFECT_WEATHER_BALL))
+     || HasMoveWithEffect(battler, EFFECT_WEATHER_BALL)
+     || HasMoveWithEffect(battler, EFFECT_SAND_BLAST))
         return FIELD_EFFECT_POSITIVE;
 
     if (gAiLogicData->holdEffects[battler] == HOLD_EFFECT_SAFETY_GOGGLES || IS_BATTLER_ANY_TYPE(battler, TYPE_ROCK, TYPE_GROUND, TYPE_STEEL))

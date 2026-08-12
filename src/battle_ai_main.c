@@ -4704,6 +4704,7 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
     case EFFECT_STICKY_WEB:
     case EFFECT_STONE_AXE:
     case EFFECT_TOXIC_SPIKES:
+    case EFFECT_STEEL_SPIKE:
         if (AI_ShouldSetUpHazards(battlerAtk, battlerDef, move, aiData))
         {
             if (IsBattlersFirstTurn(battlerAtk))
@@ -5949,6 +5950,7 @@ static s32 AI_ForceSetupFirstTurn(enum BattlerId battlerAtk, enum BattlerId batt
     case EFFECT_WEATHER_AND_SWITCH:
     case EFFECT_CEASELESS_EDGE:
     case EFFECT_STONE_AXE:
+    case EFFECT_STEEL_SPIKE:
         ADJUST_SCORE(DECENT_EFFECT);
         break;
     default:
