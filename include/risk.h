@@ -30,7 +30,8 @@ enum Risk
     RISK_HAS_REGENERATOR,
     RISK_CANT_CRIT,
     RISK_OPPONENT_MOVES_FIRST,
-    RISK_OPPONENT_MORE_MONS,
+    RISK_OPPONENT_MORE_MONS_1,
+    RISK_OPPONENT_MORE_MONS_2,
     RISK_TURN_LIMIT_1,
     RISK_TURN_LIMIT_2,
     RISK_TURN_LIMIT_3,
@@ -98,6 +99,7 @@ struct Risks
     bool32 cantCrit:1;
     bool32 opponentMovesFirst:1;
     bool32 opponentPartyPlus1:1;
+    bool32 opponentPartyPlus2:1;
     bool32 turnLimit1:1;
     bool32 turnLimit2:1;
     bool32 turnLimit3:1;
@@ -151,7 +153,7 @@ struct Risks
     bool32 randomLead:1;    //  Not implemented
     bool32 noOrderChange:1;
     bool32 usesPools:1;     //  Not implemented
-    bool32 padding:2;
+    bool32 padding:1;
 };
 
 void ClearRisks(void);

@@ -14,7 +14,8 @@ static const u8 sRiskValues[] =
     [RISK_HAS_REGENERATOR] = 0,
     [RISK_CANT_CRIT] = 0,
     [RISK_OPPONENT_MOVES_FIRST] = 0,
-    [RISK_OPPONENT_MORE_MONS] = 0,
+    [RISK_OPPONENT_MORE_MONS_1] = 0,
+    [RISK_OPPONENT_MORE_MONS_2] = 0,
     [RISK_TURN_LIMIT_1] = 0,
     [RISK_TURN_LIMIT_2] = 0,
     [RISK_TURN_LIMIT_3] = 0,
@@ -98,7 +99,9 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.cantCrit;
     case RISK_OPPONENT_MOVES_FIRST:
         return gSaveBlock1Ptr->risks.opponentMovesFirst;
-    case RISK_OPPONENT_MORE_MONS:
+    case RISK_OPPONENT_MORE_MONS_1:
+        return gSaveBlock1Ptr->risks.opponentPartyPlus1;
+    case RISK_OPPONENT_MORE_MONS_2:
         return gSaveBlock1Ptr->risks.opponentPartyPlus1;
     case RISK_TURN_LIMIT_1:
         return gSaveBlock1Ptr->risks.turnLimit1;
@@ -242,8 +245,11 @@ void SetRisk(enum Risk risk)
     case RISK_OPPONENT_MOVES_FIRST:
         gSaveBlock1Ptr->risks.opponentMovesFirst = TRUE;
         break;
-    case RISK_OPPONENT_MORE_MONS:
+    case RISK_OPPONENT_MORE_MONS_1:
         gSaveBlock1Ptr->risks.opponentPartyPlus1 = TRUE;
+        break;
+    case RISK_OPPONENT_MORE_MONS_2:
+        gSaveBlock1Ptr->risks.opponentPartyPlus2 = TRUE;
         break;
     case RISK_TURN_LIMIT_1:
         gSaveBlock1Ptr->risks.turnLimit1 = TRUE;
@@ -435,8 +441,11 @@ void ClearRisk(enum Risk risk)
     case RISK_OPPONENT_MOVES_FIRST:
         gSaveBlock1Ptr->risks.opponentMovesFirst = FALSE;
         break;
-    case RISK_OPPONENT_MORE_MONS:
+    case RISK_OPPONENT_MORE_MONS_1:
         gSaveBlock1Ptr->risks.opponentPartyPlus1 = FALSE;
+        break;
+    case RISK_OPPONENT_MORE_MONS_2:
+        gSaveBlock1Ptr->risks.opponentPartyPlus2 = FALSE;
         break;
     case RISK_TURN_LIMIT_1:
         gSaveBlock1Ptr->risks.turnLimit1 = FALSE;
