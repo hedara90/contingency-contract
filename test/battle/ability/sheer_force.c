@@ -377,6 +377,7 @@ static inline bool32 IgnoreMoveForSheerForceBoost(enum Move move)
         case MOVE_GYRO_BALL:
         case MOVE_SYNCHRONOISE:
         case MOVE_ELECTRO_BALL:
+        case MOVE_ALGAE_BLOOM:
         case MOVE_ROUND:
         case MOVE_BELCH:
         case MOVE_HYPERSPACE_FURY:
@@ -450,6 +451,7 @@ static inline bool32 IsMoveSheerForceBoosted(enum Move move)
         case MOVE_IRON_HEAD:
         case MOVE_IRON_TAIL:
         case MOVE_LAVA_PLUME:
+        case MOVE_OCTAZOOKA_OG:
         case MOVE_LIQUIDATION:
         case MOVE_LOW_SWEEP:
         case MOVE_METAL_CLAW:
@@ -463,6 +465,7 @@ static inline bool32 IsMoveSheerForceBoosted(enum Move move)
         case MOVE_POISON_JAB:
         case MOVE_POISON_STING:
         case MOVE_POISON_TAIL:
+        case MOVE_ACID_BARRAGE:
         case MOVE_POUNCE:
         case MOVE_POWER_UP_PUNCH:
         case MOVE_PSYBEAM:
@@ -486,6 +489,7 @@ static inline bool32 IsMoveSheerForceBoosted(enum Move move)
         case MOVE_STEEL_WING:
         case MOVE_STOMP:
         case MOVE_STONE_AXE:
+        case MOVE_STEEL_SPIKE:
         case MOVE_STRUGGLE_BUG:
         case MOVE_THROAT_CHOP:
         case MOVE_THUNDER:
@@ -564,7 +568,6 @@ static inline bool32 IsMoveSheerForceBoosted(enum Move move)
         case MOVE_NIGHT_DAZE:
         case MOVE_NOXIOUS_TORQUE:
         case MOVE_NUZZLE:
-        case MOVE_OCTAZOOKA:
         case MOVE_OMINOUS_WIND:
         case MOVE_ORDER_UP:
         case MOVE_POWDER_SNOW:

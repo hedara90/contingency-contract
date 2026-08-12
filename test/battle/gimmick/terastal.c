@@ -113,7 +113,7 @@ SINGLE_BATTLE_TEST("(TERA) Terastallization's 60 BP floor occurs after Technicia
     PARAMETRIZE { tera = GIMMICK_NONE; }
     PARAMETRIZE { tera = GIMMICK_TERA; }
     GIVEN {
-        ASSUME(GetMovePower(MOVE_MEGA_DRAIN) == 40);
+        ASSUME(GetMovePower(MOVE_MEGA_DRAIN) == 60);
         PLAYER(SPECIES_MR_MIME) { Ability(ABILITY_TECHNICIAN); TeraType(TYPE_GRASS); }
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -558,27 +558,27 @@ SINGLE_BATTLE_TEST("(TERA) Terastallizing into the Stellar type boosts all moves
 {
     s16 damage[4];
     GIVEN {
-        ASSUME(GetMovePower(MOVE_MEGA_DRAIN) == 40);
+        ASSUME(GetMovePower(MOVE_TWISTER) == 40);
         ASSUME(GetMovePower(MOVE_WATER_GUN) == 40);
         PLAYER(SPECIES_WOBBUFFET) { TeraType(TYPE_STELLAR); }
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
-        TURN { MOVE(player, MOVE_MEGA_DRAIN); }
-        TURN { MOVE(player, MOVE_MEGA_DRAIN, gimmick: GIMMICK_TERA); }
-        TURN { MOVE(player, MOVE_MEGA_DRAIN); }
+        TURN { MOVE(player, MOVE_TWISTER); }
+        TURN { MOVE(player, MOVE_TWISTER, gimmick: GIMMICK_TERA); }
+        TURN { MOVE(player, MOVE_TWISTER); }
         TURN { MOVE(player, MOVE_WATER_GUN); }
     } SCENE {
         // turn 1
-        MESSAGE("Wobbuffet used Mega Drain!");
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_MEGA_DRAIN, player);
+        MESSAGE("Wobbuffet used Twister!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TWISTER, player);
         HP_BAR(opponent, captureDamage: &damage[0]);
         // turn 2
-        MESSAGE("Wobbuffet used Mega Drain!");
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_MEGA_DRAIN, player);
+        MESSAGE("Wobbuffet used Twister!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TWISTER, player);
         HP_BAR(opponent, captureDamage: &damage[1]);
         // turn 3
-        MESSAGE("Wobbuffet used Mega Drain!");
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_MEGA_DRAIN, player);
+        MESSAGE("Wobbuffet used Twister!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TWISTER, player);
         HP_BAR(opponent, captureDamage: &damage[2]);
         // turn 4
         MESSAGE("Wobbuffet used Water Gun!");

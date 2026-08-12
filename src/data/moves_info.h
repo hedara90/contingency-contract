@@ -5230,6 +5230,34 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .validApprenticeMove = TRUE,
     },
 
+    [MOVE_OCTAZOOKA_OG] =
+    {
+        .name = COMPOUND_STRING("Octazooka"),
+        .description = COMPOUND_STRING(
+            "Fires a lump of ink to\n"
+            "damage and cut accuracy."),
+        .effect = EFFECT_HIT,
+        .power = 65,
+        .type = TYPE_WATER,
+        .accuracy = 85,
+        .pp = 10,
+        .target = TARGET_SELECTED,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_SPECIAL,
+        .ballisticMove = TRUE,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_STAT_MINUS,
+            .accuracy = 1,
+            .chance = 50,
+        }),
+        .contestEffect = CONTEST_EFFECT_USER_MORE_EASILY_STARTLED,
+        .contestCategory = CONTEST_CATEGORY_BEAUTY,
+        .contestComboStarterId = 0,
+        .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
+        .battleAnimScript = gBattleAnimMove_Overheat,
+        .validApprenticeMove = TRUE,
+    },
+
     [MOVE_SPIKES] =
     {
         .name = COMPOUND_STRING("Spikes"),

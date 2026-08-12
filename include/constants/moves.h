@@ -910,6 +910,7 @@ enum __attribute__((packed)) Move
     MOVE_CHARADE = 851,
     MOVE_ACID_BARRAGE = 852,
     MOVE_SAND_BLAST = 853,
+    MOVE_OCTAZOOKA_OG = 854,
     MOVES_COUNT_GEN9,
 
     // Add any custom moves here, not further down!
