@@ -1764,6 +1764,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .power = 80,
         .type = TYPE_FLYING,
         .accuracy = 100,
+        .criticalHitStage = B_UPDATED_MOVE_DATA >= GEN_3 ? 1 : 2,
         .pp = 20,
         .target = TARGET_SELECTED,
         .priority = 0,
@@ -1947,7 +1948,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
             "An attack that absorbs\n"
             "half the damage inflicted."),
         .effect = EFFECT_ABSORB,
-        .power = 40,
+        .power = 60,
         .type = TYPE_GRASS,
         .accuracy = 100,
         .pp = B_UPDATED_MOVE_DATA >= GEN_4 ? 15 : 10,
@@ -7163,6 +7164,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .target = TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
+        .alwaysHitsOnSameType = B_TOXIC_NEVER_MISS >= GEN_6,
         .argument = { .nonVolatileStatus = MOVE_EFFECT_BURN },
         .zMove = { .effect = Z_EFFECT_ATK_UP_1 },
         .magicCoatAffected = TRUE,
@@ -19263,7 +19265,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .dampBanned = TRUE,
         .argument.terrainBoost = {
             .terrain = STATUS_FIELD_MISTY_TERRAIN,
-            .percent = 50,
+            .percent = 100,
             .groundCheck = GROUND_CHECK_USER,
         },
         .contestEffect = CONTEST_EFFECT_GREAT_APPEAL_BUT_NO_MORE_MOVES,
