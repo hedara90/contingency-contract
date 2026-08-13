@@ -400,12 +400,16 @@ void SetRisk(enum Risk risk)
         break;
     case RISK_NO_PP_RESTORE:
         gSaveBlock1Ptr->risks.noPPRestore = TRUE;
+        break;
     case RISK_RANDOM_LEAD:
         gSaveBlock1Ptr->risks.randomLead = TRUE;
+        break;
     case RISK_NO_ORDER_CHANGE:
         gSaveBlock1Ptr->risks.noOrderChange = TRUE;
+        break;
     case RISK_USES_POOLS:
         gSaveBlock1Ptr->risks.usesPools = TRUE;
+        break;
     }
 }
 
@@ -596,12 +600,16 @@ void ClearRisk(enum Risk risk)
         break;
     case RISK_NO_PP_RESTORE:
         gSaveBlock1Ptr->risks.noPPRestore = FALSE;
+        break;
     case RISK_RANDOM_LEAD:
         gSaveBlock1Ptr->risks.randomLead = FALSE;
+        break;
     case RISK_NO_ORDER_CHANGE:
         gSaveBlock1Ptr->risks.noOrderChange = FALSE;
+        break;
     case RISK_USES_POOLS:
         gSaveBlock1Ptr->risks.usesPools = FALSE;
+        break;
     }
 }
 
