@@ -20,15 +20,18 @@
 
 enum Risk
 {
+    RISK_NONE,
+    RISK_RESET,
     RISK_HAS_STURDY,
     RISK_HAS_MOLD_BREAKER,
     RISK_HAS_FILTER,
     RISK_HAS_ADAPTABILITY,
     RISK_HAS_WONDER_GUARD,
     RISK_HAS_REGENERATOR,
-    RISK_CANT_CRIT,
+    RISK_HAS_BATTLE_ARMOR,
     RISK_OPPONENT_MOVES_FIRST,
-    RISK_OPPONENT_MORE_MONS,
+    RISK_OPPONENT_MORE_MONS_1,
+    RISK_OPPONENT_MORE_MONS_2,
     RISK_TURN_LIMIT_1,
     RISK_TURN_LIMIT_2,
     RISK_TURN_LIMIT_3,
@@ -82,6 +85,7 @@ enum Risk
     RISK_RANDOM_LEAD,       //  Not implemented
     RISK_NO_ORDER_CHANGE,
     RISK_USES_POOLS,        //  Not implemented
+#define RISK_COUNT RISK_USES_POOLS + 1
 };
 
 struct Risks
@@ -92,9 +96,10 @@ struct Risks
     bool32 hasAdaptability:1;
     bool32 hasWonderGuard:1;
     bool32 hasRegenerator:1;
-    bool32 cantCrit:1;
+    bool32 hasBattleArmor:1;
     bool32 opponentMovesFirst:1;
     bool32 opponentPartyPlus1:1;
+    bool32 opponentPartyPlus2:1;
     bool32 turnLimit1:1;
     bool32 turnLimit2:1;
     bool32 turnLimit3:1;
@@ -148,7 +153,7 @@ struct Risks
     bool32 randomLead:1;    //  Not implemented
     bool32 noOrderChange:1;
     bool32 usesPools:1;     //  Not implemented
-    bool32 padding:2;
+    bool32 padding:1;
 };
 
 void ClearRisks(void);
@@ -156,5 +161,7 @@ void ClearRisks(void);
 bool32 IsRiskActive(enum Risk risk);
 void SetRisk(enum Risk risk);
 void ClearRisk(enum Risk risk);
+u32 GetRiskValue(enum Risk risk);
+u32 GetTotalTiskValue(void);
 
 #endif // GUARD_RISK

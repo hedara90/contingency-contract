@@ -2956,3 +2956,8 @@
 	callnative Gacha_InitFromScript
 	.4byte \banner
 	.endm
+
+	.macro riskui
+	fadescreen FADE_TO_BLACK
+	callnative RiskUi_InitFromScript
+	.endm

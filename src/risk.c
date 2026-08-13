@@ -2,6 +2,75 @@
 #include "global.h"
 #include "risk.h"
 
+static const u8 sRiskValues[] =
+{
+    [RISK_NONE] = 0,
+    [RISK_RESET] = 0,
+    [RISK_HAS_STURDY] = 2,
+    [RISK_HAS_MOLD_BREAKER] = 1,
+    [RISK_HAS_FILTER] = 1,
+    [RISK_HAS_ADAPTABILITY] = 2,
+    [RISK_HAS_WONDER_GUARD] = 4,
+    [RISK_HAS_REGENERATOR] = 1,
+    [RISK_HAS_BATTLE_ARMOR] = 1,
+    [RISK_OPPONENT_MOVES_FIRST] = 2,
+    [RISK_OPPONENT_MORE_MONS_1] = 1,
+    [RISK_OPPONENT_MORE_MONS_2] = 2,
+    [RISK_TURN_LIMIT_1] = 1,
+    [RISK_TURN_LIMIT_2] = 2,
+    [RISK_TURN_LIMIT_3] = 3,
+    [RISK_FLIP_TYPE_CHART] = 1,
+    [RISK_ATTACK_GETS_DROWSY] = 2,
+    [RISK_STATUS_GETS_PARA] = 2,
+    [RISK_FOE_HAS_METRONOME] = 1,
+    [RISK_PLAYER_HAS_NEGATIVE_METRONOME] = 1,
+    [RISK_PLAYER_HAS_RECOIL] = 1,
+    [RISK_OPPONENT_INFLICTS_GASTRO_ACID] = 1,
+    [RISK_OPPONENT_ATTACKS_SWITCHES] = 3,
+    [RISK_OPPONENT_ATTACKS_DISABLE] = 1,
+    [RISK_OPPONENT_ATTACKS_TORMENT] = 1,
+    [RISK_PLAYER_STARTS_WITH_BURN] = 3,
+    [RISK_PLAYER_STARTS_WITH_PARALYSIS] = 3,
+    [RISK_PLAYER_STARTS_WITH_FROSTBITE] = 3,
+    [RISK_HAS_OMNISCIENT_AI] = 2,
+    [RISK_HAS_PREDICTION_AI] = 3,
+    [RISK_HAS_GUARANTEED_EFFECTS] = 2,
+    [RISK_HAS_GUARANTEED_ACCURACY] = 1,
+    [RISK_HAS_GEN_1_CRIT_CHANCE] = 1,
+    [RISK_PLAYER_LOWER_DAMAGE_ROLLS] = 1,
+    [RISK_OPPONENT_HIGHER_DAMAGE_ROLLS] = 1,
+    [RISK_PLAYER_HAS_PARENTAL_BOND] = 2,
+    [RISK_PLAYER_SPIKES_1] = 1,
+    [RISK_PLAYER_SPIKES_2] = 2,
+    [RISK_PLAYER_SPIKES_3] = 3,
+    [RISK_PLAYER_TOXIC_SPIKES_1] = 2,
+    [RISK_PLAYER_TOXIC_SPIKES_2] = 3,
+    [RISK_PLAYER_STICKY_WEB] = 3,
+    [RISK_PLAYER_STEALTH_ROCK] = 3,
+    [RISK_PLAYER_SHARP_STEEL] = 3,
+    [RISK_PLAYER_HAZARDS_NOT_REMOVABLE] = 1,
+    [RISK_OPPONENT_HP_1] = 1,
+    [RISK_OPPONENT_HP_2] = 2,
+    [RISK_OPPONENT_HP_3] = 3,
+    [RISK_CANT_SWITCH] = 2,
+    [RISK_MUST_SWITCH_1] = 1,
+    [RISK_MUST_SWITCH_2] = 2,
+    [RISK_MUST_SWITCH_3] = 3,
+    [RISK_PLAYER_JUST_BERRIES] = 2,
+    [RISK_OPPONENT_HAS_ITEMS] = 2,
+    [RISK_PARTY_MINUS_1] = 1,
+    [RISK_PARTY_MINUS_2] = 2,
+    [RISK_PARTY_MINUS_3] = 3,
+    [RISK_MINUS_1_MOVE] = 1,
+    [RISK_PLAYER_HAS_PERISH_BODY] = 2,
+    [RISK_PLAYER_HAS_BEAST_BOOST] = 2,
+    [RISK_PLAYER_HAS_FILTER] = 2,
+    [RISK_NO_PP_RESTORE] = 2,
+    [RISK_RANDOM_LEAD] = 1,
+    [RISK_NO_ORDER_CHANGE] = 1,
+    [RISK_USES_POOLS] = 2,
+};
+
 void ClearRisks(void)
 {
     CpuFill32(0, &gSaveBlock1Ptr->risks, sizeof(struct Risks));
@@ -11,6 +80,9 @@ bool32 IsRiskActive(enum Risk risk)
 {
     switch (risk)
     {
+    case RISK_NONE:
+    case RISK_RESET:
+        return FALSE;
     case RISK_HAS_STURDY:
         return gSaveBlock1Ptr->risks.hasSturdy;
     case RISK_HAS_MOLD_BREAKER:
@@ -23,12 +95,14 @@ bool32 IsRiskActive(enum Risk risk)
         return gSaveBlock1Ptr->risks.hasWonderGuard;
     case RISK_HAS_REGENERATOR:
         return gSaveBlock1Ptr->risks.hasRegenerator;
-    case RISK_CANT_CRIT:
-        return gSaveBlock1Ptr->risks.cantCrit;
+    case RISK_HAS_BATTLE_ARMOR:
+        return gSaveBlock1Ptr->risks.hasBattleArmor;
     case RISK_OPPONENT_MOVES_FIRST:
         return gSaveBlock1Ptr->risks.opponentMovesFirst;
-    case RISK_OPPONENT_MORE_MONS:
+    case RISK_OPPONENT_MORE_MONS_1:
         return gSaveBlock1Ptr->risks.opponentPartyPlus1;
+    case RISK_OPPONENT_MORE_MONS_2:
+        return gSaveBlock1Ptr->risks.opponentPartyPlus2;
     case RISK_TURN_LIMIT_1:
         return gSaveBlock1Ptr->risks.turnLimit1;
     case RISK_TURN_LIMIT_2:
@@ -143,6 +217,10 @@ void SetRisk(enum Risk risk)
 {
     switch (risk)
     {
+    case RISK_NONE:
+        break;
+    case RISK_RESET:
+        break;
     case RISK_HAS_STURDY:
         gSaveBlock1Ptr->risks.hasSturdy = TRUE;
         break;
@@ -161,14 +239,17 @@ void SetRisk(enum Risk risk)
     case RISK_HAS_REGENERATOR:
         gSaveBlock1Ptr->risks.hasRegenerator = TRUE;
         break;
-    case RISK_CANT_CRIT:
-        gSaveBlock1Ptr->risks.cantCrit = TRUE;
+    case RISK_HAS_BATTLE_ARMOR:
+        gSaveBlock1Ptr->risks.hasBattleArmor = TRUE;
         break;
     case RISK_OPPONENT_MOVES_FIRST:
         gSaveBlock1Ptr->risks.opponentMovesFirst = TRUE;
         break;
-    case RISK_OPPONENT_MORE_MONS:
+    case RISK_OPPONENT_MORE_MONS_1:
         gSaveBlock1Ptr->risks.opponentPartyPlus1 = TRUE;
+        break;
+    case RISK_OPPONENT_MORE_MONS_2:
+        gSaveBlock1Ptr->risks.opponentPartyPlus2 = TRUE;
         break;
     case RISK_TURN_LIMIT_1:
         gSaveBlock1Ptr->risks.turnLimit1 = TRUE;
@@ -319,12 +400,16 @@ void SetRisk(enum Risk risk)
         break;
     case RISK_NO_PP_RESTORE:
         gSaveBlock1Ptr->risks.noPPRestore = TRUE;
+        break;
     case RISK_RANDOM_LEAD:
         gSaveBlock1Ptr->risks.randomLead = TRUE;
+        break;
     case RISK_NO_ORDER_CHANGE:
         gSaveBlock1Ptr->risks.noOrderChange = TRUE;
+        break;
     case RISK_USES_POOLS:
         gSaveBlock1Ptr->risks.usesPools = TRUE;
+        break;
     }
 }
 
@@ -332,6 +417,10 @@ void ClearRisk(enum Risk risk)
 {
     switch (risk)
     {
+    case RISK_NONE:
+        break;
+    case RISK_RESET:
+        break;
     case RISK_HAS_STURDY:
         gSaveBlock1Ptr->risks.hasSturdy = FALSE;
         break;
@@ -350,14 +439,17 @@ void ClearRisk(enum Risk risk)
     case RISK_HAS_REGENERATOR:
         gSaveBlock1Ptr->risks.hasRegenerator = FALSE;
         break;
-    case RISK_CANT_CRIT:
-        gSaveBlock1Ptr->risks.cantCrit = FALSE;
+    case RISK_HAS_BATTLE_ARMOR:
+        gSaveBlock1Ptr->risks.hasBattleArmor = FALSE;
         break;
     case RISK_OPPONENT_MOVES_FIRST:
         gSaveBlock1Ptr->risks.opponentMovesFirst = FALSE;
         break;
-    case RISK_OPPONENT_MORE_MONS:
+    case RISK_OPPONENT_MORE_MONS_1:
         gSaveBlock1Ptr->risks.opponentPartyPlus1 = FALSE;
+        break;
+    case RISK_OPPONENT_MORE_MONS_2:
+        gSaveBlock1Ptr->risks.opponentPartyPlus2 = FALSE;
         break;
     case RISK_TURN_LIMIT_1:
         gSaveBlock1Ptr->risks.turnLimit1 = FALSE;
@@ -508,11 +600,31 @@ void ClearRisk(enum Risk risk)
         break;
     case RISK_NO_PP_RESTORE:
         gSaveBlock1Ptr->risks.noPPRestore = FALSE;
+        break;
     case RISK_RANDOM_LEAD:
         gSaveBlock1Ptr->risks.randomLead = FALSE;
+        break;
     case RISK_NO_ORDER_CHANGE:
         gSaveBlock1Ptr->risks.noOrderChange = FALSE;
+        break;
     case RISK_USES_POOLS:
         gSaveBlock1Ptr->risks.usesPools = FALSE;
+        break;
     }
+}
+
+u32 GetRiskValue(enum Risk risk)
+{
+    return sRiskValues[risk];
+}
+
+u32 GetTotalTiskValue(void)
+{
+    u32 total = 0;
+    for (enum Risk risk = RISK_NONE; risk < RISK_COUNT; risk++)
+    {
+        if (IsRiskActive(risk))
+            total += sRiskValues[risk];
+    }
+    return total;
 }

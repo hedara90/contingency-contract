@@ -1997,10 +1997,15 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
             monsCount = trainer->partySize;
         }
 
-        if (IsRiskActive(RISK_OPPONENT_MORE_MONS))
+        if (IsRiskActive(RISK_OPPONENT_MORE_MONS_1))
         {
             if (monsCount + 1 <= PARTY_SIZE)
                 monsCount++;
+        }
+        else if (IsRiskActive(RISK_OPPONENT_MORE_MONS_2))
+        {
+            if (monsCount + 2 <= PARTY_SIZE)
+                monsCount += 2;
         }
 
         u32 monIndices[monsCount];
