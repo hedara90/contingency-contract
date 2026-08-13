@@ -40,6 +40,10 @@
 #define CURSOR_SPEED 2
 #define COORD_TO_TILE(_x, _y) ((_x / 32 * 1024) + (_y / 32 * 2048) + (_x % 32) + ((_y % 32) * 32))
 
+#define PAL_INDEX_INACTIVE 0
+#define PAL_INDEX_ACTIVE 1
+#define PAL_INDEX_LOCKED 2
+
 struct RiskUiState
 {
     MainCallback savedCallback;
@@ -49,6 +53,7 @@ struct RiskUiState
     s16 xOffset;
     s16 yOffset;
     u8 selectorId;
+    u8 totalIconId;
     u8 descriptionOffset;
     bool8 isShowingDescription;
     enum Risk prevRisk;
@@ -67,6 +72,7 @@ struct RiskIcon
     const enum Risk *linkedRisks;
     const enum Risk *unlockedRisks;
     u16 tiles[4];
+    enum Risk lockRisk:16;
     u8 linkedCount;
     u8 unlockCount;
     const u8 *name;
@@ -83,6 +89,7 @@ const enum Risk sLinkedAi[] = { RISK_HAS_OMNISCIENT_AI, RISK_HAS_PREDICTION_AI }
 const enum Risk sLinkedPool[] = { RISK_RANDOM_LEAD, RISK_USES_POOLS };
 const enum Risk sLinkedSpikes[] = { RISK_PLAYER_SPIKES_1, RISK_PLAYER_SPIKES_2, RISK_PLAYER_SPIKES_3 };
 const enum Risk sLinkedTSpikes[] = { RISK_PLAYER_TOXIC_SPIKES_1, RISK_PLAYER_TOXIC_SPIKES_2 };
+const enum Risk sLinkedAbilities[] = { RISK_PLAYER_HAS_PARENTAL_BOND, RISK_PLAYER_HAS_FILTER, RISK_PLAYER_HAS_PERISH_BODY, RISK_PLAYER_HAS_BEAST_BOOST };
 
 const enum Risk sLockedAbilitiyRisks[] =
 {
@@ -406,6 +413,173 @@ const struct RiskIcon sRiskData[] =
         .name = COMPOUND_STRING("Tormenting"),
         .description = COMPOUND_STRING("Opponents attacks apply the Torment effect,\npreventing mons from repeating attacks."),
     },
+    [RISK_PLAYER_HAZARDS_NOT_REMOVABLE] =
+    {
+        .unlockedRisks = sLockedHazardRisks,
+        .tiles = { COORD_TO_TILE(26, 17), COORD_TO_TILE(26, 18), COORD_TO_TILE(27, 17), COORD_TO_TILE(27, 18) },
+        .unlockCount = 8,
+        .name = COMPOUND_STRING("Sticky Hazards"),
+        .description = COMPOUND_STRING("Hazards can't be removed from the player's\nside of the field."),
+    },
+    [RISK_PLAYER_SPIKES_1] =
+    {
+        .linkedRisks = sLinkedSpikes,
+        .linkedCount = 3,
+        .tiles = { COORD_TO_TILE(23, 13), COORD_TO_TILE(23, 14), COORD_TO_TILE(24, 13), COORD_TO_TILE(24, 14) },
+        .lockRisk = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+        .name = COMPOUND_STRING("Spikes 1"),
+        .description = COMPOUND_STRING("Player starts with 1 layer of spikes\non their side of the field."),
+    },
+    [RISK_PLAYER_SPIKES_2] =
+    {
+        .linkedRisks = sLinkedSpikes,
+        .linkedCount = 3,
+        .tiles = { COORD_TO_TILE(23, 16), COORD_TO_TILE(23, 17), COORD_TO_TILE(24, 16), COORD_TO_TILE(24, 17) },
+        .lockRisk = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+        .name = COMPOUND_STRING("Spikes 2"),
+        .description = COMPOUND_STRING("Player starts with 2 layer of spikes\non their side of the field."),
+    },
+    [RISK_PLAYER_SPIKES_3] =
+    {
+        .linkedRisks = sLinkedSpikes,
+        .linkedCount = 3,
+        .tiles = { COORD_TO_TILE(23, 19), COORD_TO_TILE(23, 20), COORD_TO_TILE(24, 19), COORD_TO_TILE(24, 20) },
+        .lockRisk = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+        .name = COMPOUND_STRING("Spikes 3"),
+        .description = COMPOUND_STRING("Player starts with 3 layer of spikes\non their side of the field."),
+    },
+    [RISK_PLAYER_TOXIC_SPIKES_1] =
+    {
+        .linkedRisks = sLinkedTSpikes,
+        .linkedCount = 2,
+        .tiles = { COORD_TO_TILE(29, 16), COORD_TO_TILE(29, 17), COORD_TO_TILE(30, 16), COORD_TO_TILE(30, 17) },
+        .lockRisk = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+        .name = COMPOUND_STRING("Toxic Spikes 1"),
+        .description = COMPOUND_STRING("Player starts with 1 layer of toxic spikes\non their side of the field."),
+    },
+    [RISK_PLAYER_TOXIC_SPIKES_2] =
+    {
+        .linkedRisks = sLinkedTSpikes,
+        .linkedCount = 2,
+        .tiles = { COORD_TO_TILE(29, 19), COORD_TO_TILE(29, 20), COORD_TO_TILE(30, 19), COORD_TO_TILE(30, 20) },
+        .lockRisk = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+        .name = COMPOUND_STRING("Toxic Spikes 2"),
+        .description = COMPOUND_STRING("Player starts with 2 layer of toxic spikes\non their side of the field."),
+    },
+    [RISK_PLAYER_STEALTH_ROCK] =
+    {
+        .tiles = { COORD_TO_TILE(23, 22), COORD_TO_TILE(23, 23), COORD_TO_TILE(24, 22), COORD_TO_TILE(24, 23) },
+        .lockRisk = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+        .name = COMPOUND_STRING("Stealth Rock"),
+        .description = COMPOUND_STRING("Player starts with Stealth Rock\non their side of the field."),
+    },
+    [RISK_PLAYER_SHARP_STEEL] =
+    {
+        .tiles = { COORD_TO_TILE(26, 22), COORD_TO_TILE(26, 23), COORD_TO_TILE(27, 22), COORD_TO_TILE(27, 23) },
+        .lockRisk = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+        .name = COMPOUND_STRING("Sharp Steel"),
+        .description = COMPOUND_STRING("Player starts with Sharp Steel\non their side of the field."),
+    },
+    [RISK_PLAYER_STICKY_WEB] =
+    {
+        .tiles = { COORD_TO_TILE(29, 22), COORD_TO_TILE(29, 23), COORD_TO_TILE(30, 22), COORD_TO_TILE(30, 23) },
+        .lockRisk = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+        .name = COMPOUND_STRING("Sticky Web"),
+        .description = COMPOUND_STRING("Player starts with Sticky Web\non their side of the field."),
+    },
+    [RISK_MINUS_1_MOVE] =
+    {
+        .unlockedRisks = sLockedAbilitiyRisks,
+        .tiles = { COORD_TO_TILE(10, 33), COORD_TO_TILE(10, 34), COORD_TO_TILE(11, 33), COORD_TO_TILE(11, 34) },
+        .unlockCount = 11,
+        .name = COMPOUND_STRING("Limited Moves"),
+        .description = COMPOUND_STRING("Player mons can only use the first 3 moves."),
+    },
+    [RISK_PLAYER_HAS_PARENTAL_BOND] =
+    {
+        .linkedRisks = sLinkedAbilities,
+        .tiles = { COORD_TO_TILE(5, 29), COORD_TO_TILE(5, 30), COORD_TO_TILE(6, 29), COORD_TO_TILE(6, 30) },
+        .linkedCount = 4,
+        .lockRisk = RISK_MINUS_1_MOVE,
+        .name = COMPOUND_STRING("Parental Bond"),
+        .description = COMPOUND_STRING("Player mons have Parental Bond.\nPlayer can only use the first 2 moves."),
+    },
+    [RISK_PLAYER_HAS_FILTER] =
+    {
+        .linkedRisks = sLinkedAbilities,
+        .tiles = { COORD_TO_TILE(8, 29), COORD_TO_TILE(8, 30), COORD_TO_TILE(9, 29), COORD_TO_TILE(9, 30) },
+        .linkedCount = 4,
+        .lockRisk = RISK_MINUS_1_MOVE,
+        .name = COMPOUND_STRING("Filter"),
+        .description = COMPOUND_STRING("Player mons have Filter.\nPlayer can only use the first 2 moves."),
+    },
+    [RISK_PLAYER_HAS_PERISH_BODY] =
+    {
+        .linkedRisks = sLinkedAbilities,
+        .tiles = { COORD_TO_TILE(12, 29), COORD_TO_TILE(12, 30), COORD_TO_TILE(13, 29), COORD_TO_TILE(13, 30) },
+        .linkedCount = 4,
+        .lockRisk = RISK_MINUS_1_MOVE,
+        .name = COMPOUND_STRING("Perish Body"),
+        .description = COMPOUND_STRING("Player mons have Perish Body.\nPlayer can only use the first 2 moves."),
+    },
+    [RISK_PLAYER_HAS_BEAST_BOOST] =
+    {
+        .linkedRisks = sLinkedAbilities,
+        .tiles = { COORD_TO_TILE(15, 29), COORD_TO_TILE(15, 30), COORD_TO_TILE(16, 29), COORD_TO_TILE(16, 30) },
+        .linkedCount = 4,
+        .lockRisk = RISK_MINUS_1_MOVE,
+        .name = COMPOUND_STRING("Beast Boost"),
+        .description = COMPOUND_STRING("Player mons have Beast Boost.\nPlayer can only use the first 2 moves."),
+    },
+    [RISK_HAS_MOLD_BREAKER] =
+    {
+        .tiles = { COORD_TO_TILE(5, 36), COORD_TO_TILE(5, 37), COORD_TO_TILE(6, 36), COORD_TO_TILE(6, 37) },
+        .lockRisk = RISK_MINUS_1_MOVE,
+        .name = COMPOUND_STRING("Foe Mold Breaker"),
+        .description = COMPOUND_STRING("Opponent mons have Mold Breaker."),
+    },
+    [RISK_HAS_STURDY] =
+    {
+        .tiles = { COORD_TO_TILE(8, 36), COORD_TO_TILE(8, 37), COORD_TO_TILE(9, 36), COORD_TO_TILE(9, 37) },
+        .lockRisk = RISK_MINUS_1_MOVE,
+        .name = COMPOUND_STRING("Foe Sturdy"),
+        .description = COMPOUND_STRING("Opponent mons have Sturdy."),
+    },
+    [RISK_HAS_REGENERATOR] =
+    {
+        .tiles = { COORD_TO_TILE(12, 36), COORD_TO_TILE(12, 37), COORD_TO_TILE(13, 36), COORD_TO_TILE(13, 37) },
+        .lockRisk = RISK_MINUS_1_MOVE,
+        .name = COMPOUND_STRING("Foe Regenerator"),
+        .description = COMPOUND_STRING("Opponent mons have Regenerator."),
+    },
+    [RISK_HAS_BATTLE_ARMOR] =
+    {
+        .tiles = { COORD_TO_TILE(15, 36), COORD_TO_TILE(15, 37), COORD_TO_TILE(16, 36), COORD_TO_TILE(16, 37) },
+        .lockRisk = RISK_MINUS_1_MOVE,
+        .name = COMPOUND_STRING("Foe Battle Armor"),
+        .description = COMPOUND_STRING("Opponent mons have Battle Armor."),
+    },
+    [RISK_HAS_WONDER_GUARD] =
+    {
+        .tiles = { COORD_TO_TILE(6, 39), COORD_TO_TILE(6, 40), COORD_TO_TILE(7, 39), COORD_TO_TILE(7, 40) },
+        .lockRisk = RISK_MINUS_1_MOVE,
+        .name = COMPOUND_STRING("Foe Wonder Guard"),
+        .description = COMPOUND_STRING("Opponent mons have Wonder Guard.\nThere's a reason why only Shedinja\nhas this normally…"),
+    },
+    [RISK_HAS_FILTER] =
+    {
+        .tiles = { COORD_TO_TILE(10, 39), COORD_TO_TILE(10, 40), COORD_TO_TILE(11, 39), COORD_TO_TILE(11, 40) },
+        .lockRisk = RISK_MINUS_1_MOVE,
+        .name = COMPOUND_STRING("Foe Filter"),
+        .description = COMPOUND_STRING("Opponent mons have Filter."),
+    },
+    [RISK_HAS_ADAPTABILITY] =
+    {
+        .tiles = { COORD_TO_TILE(14, 39), COORD_TO_TILE(14, 40), COORD_TO_TILE(15, 39), COORD_TO_TILE(15, 40) },
+        .lockRisk = RISK_MINUS_1_MOVE,
+        .name = COMPOUND_STRING("Foe Adaptability"),
+        .description = COMPOUND_STRING("Opponent mons have Adaptability."),
+    },
 };
 
 const enum Risk sRiskMap[64][64] =
@@ -624,6 +798,111 @@ const enum Risk sRiskMap[64][64] =
     [30][39] = RISK_OPPONENT_ATTACKS_TORMENT,
     [31][38] = RISK_OPPONENT_ATTACKS_TORMENT,
     [31][39] = RISK_OPPONENT_ATTACKS_TORMENT,
+
+    [26][17] = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+    [26][18] = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+    [27][17] = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+    [27][18] = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
+
+    [23][13] = RISK_PLAYER_SPIKES_1,
+    [23][14] = RISK_PLAYER_SPIKES_1,
+    [24][13] = RISK_PLAYER_SPIKES_1,
+    [24][14] = RISK_PLAYER_SPIKES_1,
+
+    [23][16] = RISK_PLAYER_SPIKES_2,
+    [23][17] = RISK_PLAYER_SPIKES_2,
+    [24][16] = RISK_PLAYER_SPIKES_2,
+    [24][17] = RISK_PLAYER_SPIKES_2,
+
+    [23][19] = RISK_PLAYER_SPIKES_3,
+    [23][20] = RISK_PLAYER_SPIKES_3,
+    [24][19] = RISK_PLAYER_SPIKES_3,
+    [24][20] = RISK_PLAYER_SPIKES_3,
+
+    [29][16] = RISK_PLAYER_TOXIC_SPIKES_1,
+    [29][17] = RISK_PLAYER_TOXIC_SPIKES_1,
+    [30][16] = RISK_PLAYER_TOXIC_SPIKES_1,
+    [30][17] = RISK_PLAYER_TOXIC_SPIKES_1,
+
+    [29][19] = RISK_PLAYER_TOXIC_SPIKES_2,
+    [29][20] = RISK_PLAYER_TOXIC_SPIKES_2,
+    [30][19] = RISK_PLAYER_TOXIC_SPIKES_2,
+    [30][20] = RISK_PLAYER_TOXIC_SPIKES_2,
+
+    [23][22] = RISK_PLAYER_STEALTH_ROCK,
+    [23][23] = RISK_PLAYER_STEALTH_ROCK,
+    [24][22] = RISK_PLAYER_STEALTH_ROCK,
+    [24][23] = RISK_PLAYER_STEALTH_ROCK,
+
+    [26][22] = RISK_PLAYER_SHARP_STEEL,
+    [26][23] = RISK_PLAYER_SHARP_STEEL,
+    [27][22] = RISK_PLAYER_SHARP_STEEL,
+    [27][23] = RISK_PLAYER_SHARP_STEEL,
+
+    [29][22] = RISK_PLAYER_STICKY_WEB,
+    [20][23] = RISK_PLAYER_STICKY_WEB,
+    [30][22] = RISK_PLAYER_STICKY_WEB,
+    [30][23] = RISK_PLAYER_STICKY_WEB,
+
+    [10][33] = RISK_MINUS_1_MOVE,
+    [10][34] = RISK_MINUS_1_MOVE,
+    [11][33] = RISK_MINUS_1_MOVE,
+    [11][34] = RISK_MINUS_1_MOVE,
+
+    [5][29] = RISK_PLAYER_HAS_PARENTAL_BOND,
+    [5][30] = RISK_PLAYER_HAS_PARENTAL_BOND,
+    [6][29] = RISK_PLAYER_HAS_PARENTAL_BOND,
+    [6][30] = RISK_PLAYER_HAS_PARENTAL_BOND,
+
+    [8][29] = RISK_PLAYER_HAS_FILTER,
+    [8][30] = RISK_PLAYER_HAS_FILTER,
+    [9][29] = RISK_PLAYER_HAS_FILTER,
+    [9][30] = RISK_PLAYER_HAS_FILTER,
+
+    [12][29] = RISK_PLAYER_HAS_PERISH_BODY,
+    [12][30] = RISK_PLAYER_HAS_PERISH_BODY,
+    [13][29] = RISK_PLAYER_HAS_PERISH_BODY,
+    [13][30] = RISK_PLAYER_HAS_PERISH_BODY,
+
+    [15][29] = RISK_PLAYER_HAS_BEAST_BOOST,
+    [15][30] = RISK_PLAYER_HAS_BEAST_BOOST,
+    [16][29] = RISK_PLAYER_HAS_BEAST_BOOST,
+    [16][30] = RISK_PLAYER_HAS_BEAST_BOOST,
+
+    [5][36] = RISK_HAS_MOLD_BREAKER,
+    [5][37] = RISK_HAS_MOLD_BREAKER,
+    [6][36] = RISK_HAS_MOLD_BREAKER,
+    [6][37] = RISK_HAS_MOLD_BREAKER,
+
+    [8][36] = RISK_HAS_STURDY,
+    [8][37] = RISK_HAS_STURDY,
+    [9][36] = RISK_HAS_STURDY,
+    [9][37] = RISK_HAS_STURDY,
+
+    [12][36] = RISK_HAS_REGENERATOR,
+    [12][37] = RISK_HAS_REGENERATOR,
+    [13][36] = RISK_HAS_REGENERATOR,
+    [13][37] = RISK_HAS_REGENERATOR,
+
+    [16][36] = RISK_HAS_BATTLE_ARMOR,
+    [16][37] = RISK_HAS_BATTLE_ARMOR,
+    [17][36] = RISK_HAS_BATTLE_ARMOR,
+    [17][37] = RISK_HAS_BATTLE_ARMOR,
+
+    [6][39] = RISK_HAS_WONDER_GUARD,
+    [6][40] = RISK_HAS_WONDER_GUARD,
+    [7][39] = RISK_HAS_WONDER_GUARD,
+    [7][40] = RISK_HAS_WONDER_GUARD,
+
+    [10][39] = RISK_HAS_FILTER,
+    [10][40] = RISK_HAS_FILTER,
+    [11][39] = RISK_HAS_FILTER,
+    [11][40] = RISK_HAS_FILTER,
+
+    [14][39] = RISK_HAS_ADAPTABILITY,
+    [14][40] = RISK_HAS_ADAPTABILITY,
+    [15][39] = RISK_HAS_ADAPTABILITY,
+    [15][40] = RISK_HAS_ADAPTABILITY,
 };
 
 static EWRAM_DATA struct RiskUiState *sRiskUiState = NULL;
@@ -640,6 +919,9 @@ static const u16 sSelectorPal[] = INCGFX_U16("graphics/risk_ui/selector.png", ".
 static const u32 sFrameGfx[] = INCGFX_U32("graphics/risk_ui/frame_tiles.png", ".4bpp.smol");
 static const u32 sFrameTilemap[] = INCBIN_U32("graphics/risk_ui/frame_tiles.bin.smolTM");
 static const u16 sFramePal[] = INCGFX_U16("graphics/risk_ui/frame_tiles.png", ".gbapal");
+
+static const u32 sTotalIconGfx[] = INCGFX_U32("graphics/risk_ui/total_icon.png", ".4bpp");
+static const u16 sTotalIconPal[] = INCGFX_U16("graphics/risk_ui/total_icon.png", ".gbapal");
 
 static const struct BgTemplate sRiskUiBgTemplates[] =
 {
@@ -745,6 +1027,7 @@ static void RiskUi_InitWindows(void);
 static void Task_RiskUiWaitFadeIn(u8 taskId);
 static void Task_RiskUiMainInput(u8 taskId);
 static void LoadSelector(void);
+static void LoadTotalIcon(void);
 static void MoveSelectorX(s32 distance);
 static void MoveSelectorY(s32 distance);
 static void GetSelectedTiles(u16 *tiles);
@@ -754,6 +1037,8 @@ static inline void SetRiskActive(enum Risk risk);
 static void ChangeTilemapPalettesBeforeLoad(void);
 static enum Risk GetRiskUnderCursor(void);
 static void PrintRiskData(enum Risk risk);
+static void ToggleLock(enum Risk risk);
+static void PrintTotalOnIcon(void);
 
 static void Task_RiskUiWaitFadeAndExitGracefully(u8 taskId);
 
@@ -974,6 +1259,7 @@ static bool8 RiskUi_LoadGraphics(void)
         LoadPalette(sFramePal, BG_PLTT_ID(14), PLTT_SIZE_4BPP);
         LoadPalette(gMessageBox_Pal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
         LoadSelector();
+        LoadTotalIcon();
 
         sRiskUiState->loadState++;
     default:
@@ -1118,6 +1404,25 @@ static void LoadSelector(void)
     sRiskUiState->ySelector = 80;
 }
 
+static void LoadTotalIcon(void)
+{
+    struct Even_CreateSpriteStruct cs = {0};
+    cs.sprite = sTotalIconGfx;
+    cs.tileTag = 2;
+    cs.palette = sTotalIconPal;
+    cs.palTag = 2;
+    cs.spriteSize = SPRITE_SIZE(32x32);
+    cs.spriteShape = SPRITE_SHAPE(32x32);
+    cs.posX = 224;
+    cs.posY = 16;
+    sRiskUiState->totalIconId = Even_CreateSprite(&cs);
+
+    const u32 *srcs[1] = { sTotalIconGfx };
+    SetupSpritesForTextPrinting(&sRiskUiState->totalIconId, srcs, 1, 1);
+
+    PrintTotalOnIcon();
+}
+
 static void MoveSelectorX(s32 distance)
 {
     if (distance > 0)
@@ -1255,9 +1560,15 @@ static void TrySelectRiskUnderCursor(void)
                 SetRiskInactive(risk);
             }
         }
+        PrintTotalOnIcon();
     }
     else if (risk != RISK_NONE)
     {
+        if (sRiskData[risk].lockRisk != RISK_NONE && !IsRiskActive(sRiskData[risk].lockRisk))
+        {
+            PlaySE(SE_WALL_HIT);
+            return;
+        }
         if (IsRiskActive(risk))
         {
             SetRiskInactive(risk);
@@ -1270,25 +1581,30 @@ static void TrySelectRiskUnderCursor(void)
             }
             SetRiskActive(risk);
         }
+        PrintTotalOnIcon();
     }
 }
 
 static inline void SetRiskInactive(enum Risk risk)
 {
-    SetTilePalette(sRiskData[risk].tiles[0], 0);
-    SetTilePalette(sRiskData[risk].tiles[1], 0);
-    SetTilePalette(sRiskData[risk].tiles[2], 0);
-    SetTilePalette(sRiskData[risk].tiles[3], 0);
+    SetTilePalette(sRiskData[risk].tiles[0], PAL_INDEX_INACTIVE);
+    SetTilePalette(sRiskData[risk].tiles[1], PAL_INDEX_INACTIVE);
+    SetTilePalette(sRiskData[risk].tiles[2], PAL_INDEX_INACTIVE);
+    SetTilePalette(sRiskData[risk].tiles[3], PAL_INDEX_INACTIVE);
     ClearRisk(risk);
+    if (sRiskData[risk].unlockCount > 0)
+        ToggleLock(risk);
 }
 
 static inline void SetRiskActive(enum Risk risk)
 {
-    SetTilePalette(sRiskData[risk].tiles[0], 1);
-    SetTilePalette(sRiskData[risk].tiles[1], 1);
-    SetTilePalette(sRiskData[risk].tiles[2], 1);
-    SetTilePalette(sRiskData[risk].tiles[3], 1);
+    SetTilePalette(sRiskData[risk].tiles[0], PAL_INDEX_ACTIVE);
+    SetTilePalette(sRiskData[risk].tiles[1], PAL_INDEX_ACTIVE);
+    SetTilePalette(sRiskData[risk].tiles[2], PAL_INDEX_ACTIVE);
+    SetTilePalette(sRiskData[risk].tiles[3], PAL_INDEX_ACTIVE);
     SetRisk(risk);
+    if (sRiskData[risk].unlockCount > 0)
+        ToggleLock(risk);
 }
 
 static void ChangeTilemapPalettesBeforeLoad(void)
@@ -1301,9 +1617,23 @@ static void ChangeTilemapPalettesBeforeLoad(void)
             {
                 u32 tileNum = sRiskData[risk].tiles[i];
                 u16 *tilemapPtr = (u16 *)sBg1TilemapBuffer;
-                u16 palMask = 1 << 12;
+                u16 palMask = PAL_INDEX_ACTIVE << 12;
                 u16 currVal = tilemapPtr[tileNum] & 0xFFF;
                 tilemapPtr[tileNum] = palMask | currVal;
+            }
+        }
+        else if (sRiskData[risk].lockRisk != RISK_NONE)
+        {
+            if (!IsRiskActive(sRiskData[risk].lockRisk))
+            {
+                for (u32 i = 0; i < 4; i++)
+                {
+                    u32 tileNum = sRiskData[risk].tiles[i];
+                    u16 *tilemapPtr = (u16 *)sBg1TilemapBuffer;
+                    u16 palMask = PAL_INDEX_LOCKED << 12;
+                    u16 currVal = tilemapPtr[tileNum] & 0xFFF;
+                    tilemapPtr[tileNum] = palMask | currVal;
+                }
             }
         }
     }
@@ -1343,4 +1673,51 @@ static void PrintRiskData(enum Risk risk)
     CopyWindowToVram(WIN_RISK_NAME, COPYWIN_GFX);
     CopyWindowToVram(WIN_RISK_DESCRIPTION, COPYWIN_GFX);
     CopyWindowToVram(WIN_RISK_TOTAL, COPYWIN_GFX);
+}
+
+static void ToggleLock(enum Risk risk)
+{
+    assertf(sRiskData[risk].unlockCount > 0, "Attempting to unlock non-lock risk")
+    {
+        return;
+    }
+    u32 palette;
+    if (IsRiskActive(risk))
+    {
+        palette = PAL_INDEX_INACTIVE;
+    }
+    else
+    {
+        palette = PAL_INDEX_LOCKED;
+    }
+
+    for (u32 i = 0; i < sRiskData[risk].unlockCount; i++)
+    {
+        enum Risk lockRisk = sRiskData[risk].unlockedRisks[i];
+        if (IsRiskActive(lockRisk))
+            SetRiskInactive(lockRisk);
+
+        SetTilePalette(sRiskData[lockRisk].tiles[0], palette);
+        SetTilePalette(sRiskData[lockRisk].tiles[1], palette);
+        SetTilePalette(sRiskData[lockRisk].tiles[2], palette);
+        SetTilePalette(sRiskData[lockRisk].tiles[3], palette);
+    }
+}
+
+static const union TextColor sTotalIconTextColor =
+{
+    .background = 0,
+    .foreground = 11,
+    .shadow = 1,
+    .accent = 0
+};
+
+static void PrintTotalOnIcon(void)
+{
+    u32 total = GetTotalTiskValue();
+    FillSpriteRectSprite(sRiskUiState->totalIconId, 8, 8, 16, 16);
+    u8 str[3];
+    ConvertIntToDecimalStringN(str, total, STR_CONV_MODE_LEFT_ALIGN, 2);
+    u32 width = GetStringWidth(FONT_NORMAL, str, 0);
+    AddSpriteTextPrinterParameterized6(sRiskUiState->totalIconId, FONT_NORMAL, 16 - width / 2, 8, 0, 0, sTotalIconTextColor, 0, str);
 }
