@@ -911,6 +911,8 @@ enum __attribute__((packed)) Move
     MOVE_ACID_BARRAGE = 852,
     MOVE_SAND_BLAST = 853,
     MOVE_OCTAZOOKA_OG = 854,
+    MOVE_ICE_WISPS = 855,
+    MOVE_SACRED_ICE = 856,
     MOVES_COUNT_GEN9,
 
     // Add any custom moves here, not further down!

@@ -6089,6 +6089,33 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .validApprenticeMove = TRUE,
     },
 
+    [MOVE_SACRED_ICE] =
+    {
+        .name = COMPOUND_STRING("Sacred Ice"),
+        .description = COMPOUND_STRING(
+            "A mystical fire attack that\n"
+            "may freeze."),
+        .effect = EFFECT_HIT,
+        .power = 100,
+        .type = TYPE_ICE,
+        .accuracy = 95,
+        .pp = 5,
+        .target = TARGET_SELECTED,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_PHYSICAL,
+        .thawsUser = TRUE,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
+            .chance = 50,
+        }),
+        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_BETTER_IF_LAST : CONTEST_EFFECT_HIGHLY_APPEALING,
+        .contestCategory = CONTEST_CATEGORY_BEAUTY,
+        .contestComboStarterId = 0,
+        .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
+        .battleAnimScript = gBattleAnimMove_SacredFire,
+        .validApprenticeMove = TRUE,
+    },
+
     [MOVE_MAGNITUDE] =
     {
         .name = COMPOUND_STRING("Magnitude"),
@@ -7194,6 +7221,32 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .category = DAMAGE_CATEGORY_STATUS,
         .alwaysHitsOnSameType = B_TOXIC_NEVER_MISS >= GEN_6,
         .argument = { .nonVolatileStatus = MOVE_EFFECT_BURN },
+        .zMove = { .effect = Z_EFFECT_ATK_UP_1 },
+        .magicCoatAffected = TRUE,
+        .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_SHIFT_JUDGE_ATTENTION : CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON,
+        .contestCategory = CONTEST_CATEGORY_BEAUTY,
+        .contestComboStarterId = COMBO_STARTER_WILL_O_WISP,
+        .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
+        .battleAnimScript = gBattleAnimMove_WillOWisp,
+        .validApprenticeMove = TRUE,
+    },
+
+    [MOVE_ICE_WISPS] =
+    {
+        .name = COMPOUND_STRING("Ice Wisps"),
+        .description = COMPOUND_STRING(
+            "Inflicts freeze on the foe\n"
+            "with intense cold."),
+        .effect = EFFECT_NON_VOLATILE_STATUS,
+        .power = 0,
+        .type = TYPE_ICE,
+        .accuracy = B_UPDATED_MOVE_DATA >= GEN_6 ? 85 : 75,
+        .pp = 15,
+        .target = TARGET_SELECTED,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_STATUS,
+        .alwaysHitsOnSameType = B_TOXIC_NEVER_MISS >= GEN_6,
+        .argument = { .nonVolatileStatus = MOVE_EFFECT_FREEZE_OR_FROSTBITE },
         .zMove = { .effect = Z_EFFECT_ATK_UP_1 },
         .magicCoatAffected = TRUE,
         .contestEffect = C_UPDATED_MOVE_EFFECTS >= GEN_6 ? CONTEST_EFFECT_SHIFT_JUDGE_ATTENTION : CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON,

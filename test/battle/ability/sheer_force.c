@@ -609,6 +609,7 @@ static inline bool32 IsMoveSheerForceBoosted(enum Move move)
         case MOVE_ZING_ZAP:
         case MOVE_ELECTRO_SHOT:
         case MOVE_PSYCHIC_NOISE:
+        case MOVE_SACRED_ICE:
             return TRUE;
         case MOVE_RAPID_SPIN:
             return B_SPEED_BUFFING_RAPID_SPIN >= GEN_8;
