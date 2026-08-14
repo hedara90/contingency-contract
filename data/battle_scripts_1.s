@@ -3143,6 +3143,7 @@ BattleScript_WeatherAbilityActivates::
 	pause B_WAIT_TIME_SHORT
 	call BattleScript_AbilityPopUp
 	jumpifability BS_SCRIPTING, ABILITY_SAND_SPIT, BattleScript_SandSpitActivates
+	jumpifability BS_SCRIPTING, ABILITY_SUNBREAK, BattleScript_SunbreakActivates
 	printfromtable gAbilityWeatherChangeStringId
 BattleScript_WeatherAbilityActivatesContinue:
 	waitstate
@@ -3152,6 +3153,10 @@ BattleScript_WeatherAbilityActivatesContinue:
 
 BattleScript_SandSpitActivates::
 	printstring STRINGID_ASANDSTORMKICKEDUP
+	goto BattleScript_WeatherAbilityActivatesContinue
+
+BattleScript_SunbreakActivates::
+	printstring STRINGID_SUNBREAK
 	goto BattleScript_WeatherAbilityActivatesContinue
 
 BattleScript_WeatherContinues::

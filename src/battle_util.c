@@ -4364,6 +4364,23 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
                 }
             }
             break;
+        case ABILITY_SUNBREAK:
+            if (!gBattleMons[gBattlerAttacker].volatiles.sunbreakActivated && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES) && !(GetWeather() & B_WEATHER_SUN))
+            {
+                if (GetWeather() & B_WEATHER_PRIMAL_ANY)
+                {
+                    BattleScriptCall(BattleScript_BlockedByPrimalWeather);
+                    effect++;
+                }
+                else if (TryChangeBattleWeather(battler, BATTLE_WEATHER_SUN, ABILITY_NONE)) // use ability none since it's not a switch in ability weather setter
+                {
+                    gBattleMons[gBattlerAttacker].volatiles.sunbreakActivated = TRUE;
+                    gBattleScripting.battler = battler;
+                    BattleScriptCall(BattleScript_WeatherAbilityActivates);
+                    effect++;
+                }
+            }
+            break;
         default:
             break;
         }
