@@ -1166,6 +1166,10 @@ const u32 gBattleAnimSpriteGfx_WispFire[] = INCGFX_U32("graphics/battle_anims/sp
 const u16 gBattleAnimSpritePal_WispOrb[] = INCGFX_U16("graphics/battle_anims/sprites/wisp_orb.png", ".gbapal");
 const u32 gBattleAnimSpriteGfx_WispOrb[] = INCGFX_U32("graphics/battle_anims/sprites/wisp_orb.png", ".4bpp.smol");
 
+const u32 gBattleAnimSpriteGfx_IceWispOrb[] = INCGFX_U32("graphics/battle_anims/sprites/ice_wisps_orb.png", ".4bpp.smol");
+const u32 gBattleAnimSpriteGfx_IceWispFlakes[] = INCGFX_U32("graphics/battle_anims/sprites/ice_wisps_flakes.png", ".4bpp.smol");
+const u16 gBattleAnimSpritePal_IceWisp[] = INCGFX_U16("graphics/battle_anims/sprites/ice_wisps_orb.png", ".gbapal");
+
 const u32 gBattleAnimSpriteGfx_GoldStars[] = INCGFX_U32("graphics/battle_anims/sprites/gold_stars.png", ".4bpp.smol");
 const u16 gBattleAnimSpritePal_GoldStars[] = INCGFX_U16("graphics/battle_anims/sprites/gold_stars.png", ".gbapal");
 

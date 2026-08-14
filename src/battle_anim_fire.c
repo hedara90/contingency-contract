@@ -1436,3 +1436,25 @@ void AnimTask_ShakeTargetInPattern(u8 taskId)
         DestroyAnimVisualTask(taskId);
     }
 }
+
+const struct SpriteTemplate gIceWispOrbSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_ICE_WISP_ORB,
+    .paletteTag = ANIM_TAG_ICE_WISP_ORB,
+    .oam = &gOamData_AffineOff_ObjNormal_16x16,
+    .anims = gAnims_WillOWispOrb,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimWillOWispOrb,
+};
+
+const struct SpriteTemplate gIceWispFireSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_ICE_WISP_FLAKES,
+    .paletteTag = ANIM_TAG_ICE_WISP_FLAKES,
+    .oam = &gOamData_AffineOff_ObjNormal_32x32,
+    .anims = sAnims_WillOWispFire,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimWillOWispFire,
+};
