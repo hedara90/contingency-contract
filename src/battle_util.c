@@ -4365,7 +4365,9 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
             }
             break;
         case ABILITY_SUNBREAK:
-            if (!gBattleMons[gBattlerAttacker].volatiles.sunbreakActivated && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES) && !(GetWeather() & B_WEATHER_SUN))
+            if (!gBattleMons[gBattlerAttacker].volatiles.weatherAbilityActivated
+             && IsBattlerTurnDamaged(gBattlerTarget, INCLUDING_SUBSTITUTES)
+             && !(GetWeather() & B_WEATHER_SUN))
             {
                 if (GetWeather() & B_WEATHER_PRIMAL_ANY)
                 {
@@ -4374,7 +4376,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
                 }
                 else if (TryChangeBattleWeather(battler, BATTLE_WEATHER_SUN, ABILITY_NONE)) // use ability none since it's not a switch in ability weather setter
                 {
-                    gBattleMons[gBattlerAttacker].volatiles.sunbreakActivated = TRUE;
+                    gBattleMons[gBattlerAttacker].volatiles.weatherAbilityActivated = TRUE;
                     gBattleScripting.battler = battler;
                     BattleScriptCall(BattleScript_WeatherAbilityActivates);
                     effect++;
@@ -4418,6 +4420,26 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
                     gEffectBattler = gBattlerAbility = gBattlerTarget;
                     SetStatChange(battler, STAT_ATK, 1);
                     BattleScriptCall(BattleScript_AbilityStatChange);
+                    effect++;
+                }
+            }
+            break;
+        case ABILITY_STORMCALLER:
+            if (!gBattleMons[gBattlerAttacker].volatiles.weatherAbilityActivated
+             && IsBattlerTurnDamaged(gBattlerTarget, INCLUDING_SUBSTITUTES)
+             && IsWindMove(gCurrentMove)
+             && !(GetWeather() & B_WEATHER_RAIN))
+            {
+                if (GetWeather() & B_WEATHER_PRIMAL_ANY)
+                {
+                    BattleScriptCall(BattleScript_BlockedByPrimalWeather);
+                    effect++;
+                }
+                else if (TryChangeBattleWeather(battler, BATTLE_WEATHER_RAIN, ABILITY_NONE)) // use ability none since it's not a switch in ability weather setter
+                {
+                    gBattleMons[gBattlerAttacker].volatiles.weatherAbilityActivated = TRUE;
+                    gBattleScripting.battler = battler;
+                    BattleScriptCall(BattleScript_WeatherAbilityActivates);
                     effect++;
                 }
             }

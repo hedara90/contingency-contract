@@ -2505,4 +2505,9 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Willpower"),
         .description = COMPOUND_STRING("Boosts opposing categories."),
     },
+    [ABILITY_STORMCALLER] =
+    {
+        .name = _("Stormcaller"),
+        .description = COMPOUND_STRING("Wind summons Rain."),
+    },
 };
