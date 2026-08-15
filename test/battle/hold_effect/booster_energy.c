@@ -77,6 +77,9 @@ SINGLE_BATTLE_TEST("Booster Energy's Protosynthesis boost is preserved when weat
         TURN {}
         TURN {}
         TURN {}
+        TURN {}
+        TURN {}
+        TURN {}
     } SCENE {
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
         MESSAGE("Raging Bolt used its Booster Energy to activate Protosynthesis!");
@@ -161,6 +164,9 @@ SINGLE_BATTLE_TEST("Booster Energy's Quark Drive boost is preserved when terrain
         OPPONENT(SPECIES_WOBBUFFET) { Speed(50); Moves(MOVE_GRASSY_TERRAIN, MOVE_CELEBRATE); }
     } WHEN {
         TURN { MOVE(opponent, MOVE_GRASSY_TERRAIN); }
+        TURN {}
+        TURN {}
+        TURN {}
         TURN {}
         TURN {}
         TURN {}

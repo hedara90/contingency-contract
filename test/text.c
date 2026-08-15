@@ -527,7 +527,7 @@ TEST("Ability names fit on Ability Pop-Up")
 TEST("Ability descriptions fit on Pokemon Summary Screen")
 {
     u32 i;
-    const u32 fontId = FONT_NORMAL, widthPx = 146;
+    const u32 fontId = FONT_SHORT_NARROW, widthPx = 146;
     enum Ability ability = ABILITY_NONE;
     for (i = 1; i < ABILITIES_COUNT; i++)
     {

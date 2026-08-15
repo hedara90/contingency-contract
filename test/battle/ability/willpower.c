@@ -1,0 +1,74 @@
+#include "global.h"
+#include "test/battle.h"
+
+SINGLE_BATTLE_TEST("Willpower boosts Special Attack when using a physical move")
+{
+    GIVEN {
+        PLAYER(SPECIES_IRON_VALIANT) { Ability(ABILITY_WILLPOWER); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_SCRATCH); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+        HP_BAR(opponent);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+    } THEN {
+        EXPECT_EQ(player->statStages[STAT_SPATK], DEFAULT_STAT_STAGE + 1);
+    }
+}
+
+SINGLE_BATTLE_TEST("Willpower boosts Attack when using a special move")
+{
+    GIVEN {
+        PLAYER(SPECIES_IRON_VALIANT) { Ability(ABILITY_WILLPOWER); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_HYPER_VOICE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_HYPER_VOICE, player);
+        HP_BAR(opponent);
+        ABILITY_POPUP(player, ABILITY_WILLPOWER);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+    } THEN {
+        EXPECT_EQ(player->statStages[STAT_ATK], DEFAULT_STAT_STAGE + 1);
+    }
+}
+
+SINGLE_BATTLE_TEST("Willpower doesn't prevent other effects from happening")
+{
+    GIVEN {
+        PLAYER(SPECIES_IRON_VALIANT) { Ability(ABILITY_WILLPOWER); Item(ITEM_LIFE_ORB); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_HYPER_VOICE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_HYPER_VOICE, player);
+        HP_BAR(opponent);
+        ABILITY_POPUP(player, ABILITY_WILLPOWER);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        HP_BAR(player);
+    } THEN {
+        EXPECT_EQ(player->statStages[STAT_ATK], DEFAULT_STAT_STAGE + 1);
+    }
+}
+
+DOUBLE_BATTLE_TEST("Willpower only triggers once per attack")
+{
+    GIVEN {
+        PLAYER(SPECIES_IRON_VALIANT) { Ability(ABILITY_WILLPOWER); }
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WYNAUT);
+    } WHEN {
+        TURN { MOVE(playerLeft, MOVE_SURF); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SURF, playerLeft);
+        HP_BAR(opponentLeft);
+        HP_BAR(playerRight);
+        HP_BAR(opponentRight);
+        ABILITY_POPUP(playerLeft, ABILITY_WILLPOWER);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
+    } THEN {
+        EXPECT_EQ(playerLeft->statStages[STAT_ATK], DEFAULT_STAT_STAGE + 1);
+    }
+}

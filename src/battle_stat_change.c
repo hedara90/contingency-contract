@@ -114,8 +114,7 @@ static bool32 CheckSpecificMoveCondition(struct BattleCalcValues *cv, struct Sta
         }
         break;
     case EFFECT_ROTOTILLER:
-        if (!IsBattlerGrounded(cv->battlerDef, cv->abilities[cv->battlerDef], cv->holdEffects[cv->battlerDef])
-         || !IS_BATTLER_OF_TYPE(cv->battlerDef, TYPE_GRASS))
+        if (!(IS_BATTLER_OF_TYPE(cv->battlerDef, TYPE_GRASS) || IS_BATTLER_OF_TYPE(cv->battlerDef, TYPE_GROUND)))
         {
             if (!st->onlyChecking)
             {
@@ -198,6 +197,27 @@ bool32 CanAnyStatChange(struct BattleCalcValues *cv, struct StatChange *st)
         {
             st->stat = sAccurateStatOrder[j];
             st->stage = GetStatStage(st->stat, additionalEffect);
+
+            if (GetMoveEffect(cv->move) == EFFECT_ROTOTILLER && IS_BATTLER_OF_TYPE(cv->battlerDef, TYPE_GROUND))
+            {
+                switch (st->stat)
+                {
+                case STAT_ATK:
+                    st->stage = 0;
+                    break;
+                case STAT_SPATK:
+                    st->stage = 0;
+                    break;
+                case STAT_DEF:
+                    st->stage = 1;
+                    break;
+                case STAT_SPDEF:
+                    st->stage = 1;
+                    break;
+                default:
+                    break;
+                }
+            }
 
             if (st->stage == 0)
                 continue;

@@ -7253,7 +7253,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_WILL_O_WISP,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_WillOWisp,
+        .battleAnimScript = gBattleAnimMove_IceWisps,
         .validApprenticeMove = TRUE,
     },
 
@@ -21799,7 +21799,10 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .thawsUser = TRUE,
-        .battleAnimScript = gBattleAnimMove_HydroSteam,
+        .battleAnimScript = gBattleAnimMove_SandBlast,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_SANDSTORM,
+        }),
     },
 
     [MOVE_BLOOD_MOON] =

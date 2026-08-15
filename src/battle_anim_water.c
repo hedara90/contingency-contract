@@ -183,6 +183,15 @@ const struct SpriteTemplate gHydroPumpOrbSpriteTemplate =
     .callback = AnimToTargetInSinWave,
 };
 
+const struct SpriteTemplate gSandBlastOrbSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_BROWN_ORB,
+    .paletteTag = ANIM_TAG_BROWN_ORB,
+    .oam = &gOamData_AffineOff_ObjBlend_16x16,
+    .anims = gAnims_WaterMudOrb,
+    .callback = AnimToTargetInSinWave,
+};
+
 const struct SpriteTemplate gWaterPledgeOrbSpriteTemplate =
 {
     .tileTag = ANIM_TAG_WATER_ORB,

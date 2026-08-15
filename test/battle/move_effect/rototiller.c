@@ -4,7 +4,6 @@
 ASSUMPTIONS
 {
     ASSUME(GetMoveEffect(MOVE_ROTOTILLER) == EFFECT_ROTOTILLER);
-    ASSUME_STAT_CHANGE(MOVE_ROTOTILLER, attack: +1, spAtk: +1);
 }
 
 DOUBLE_BATTLE_TEST("Rototiller boosts Attack and Special Attack of all Grass types on the field")
@@ -36,6 +35,34 @@ DOUBLE_BATTLE_TEST("Rototiller boosts Attack and Special Attack of all Grass typ
     }
 }
 
+DOUBLE_BATTLE_TEST("Rototiller boosts Defense and Special Defense of all Ground types on the field")
+{
+    GIVEN {
+        ASSUME(GetSpeciesType(SPECIES_SANDSHREW, 0) == TYPE_GROUND);
+        PLAYER(SPECIES_SANDSHREW);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_SANDSHREW);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(playerRight, MOVE_ROTOTILLER); MOVE(playerLeft, MOVE_CELEBRATE); MOVE(opponentLeft, MOVE_CELEBRATE); MOVE(opponentRight, MOVE_CELEBRATE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_ROTOTILLER, playerRight);
+        NOT ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerRight);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
+        NOT ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
+    } THEN {
+        EXPECT_EQ(playerLeft->statStages[STAT_DEF], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(playerLeft->statStages[STAT_SPDEF], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(opponentLeft->statStages[STAT_DEF], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(opponentLeft->statStages[STAT_SPDEF], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(playerRight->statStages[STAT_DEF], DEFAULT_STAT_STAGE);
+        EXPECT_EQ(playerRight->statStages[STAT_SPDEF], DEFAULT_STAT_STAGE);
+        EXPECT_EQ(opponentRight->statStages[STAT_DEF], DEFAULT_STAT_STAGE);
+        EXPECT_EQ(opponentRight->statStages[STAT_SPDEF], DEFAULT_STAT_STAGE);
+    }
+}
+
 // Apperantly the failure is still processed even if there are no valid targets
 SINGLE_BATTLE_TEST("Rototiller fails if there are no valid targets")
 {
@@ -60,18 +87,18 @@ DOUBLE_BATTLE_TEST("Rototiller fails if there are no valid targets (Double Battl
         ASSUME(GetSpeciesType(SPECIES_WOBBUFFET, 0) != TYPE_GRASS);
         ASSUME(GetSpeciesType(SPECIES_WOBBUFFET, 1) != TYPE_GRASS);
         PLAYER(SPECIES_WOBBUFFET);
-        PLAYER(SPECIES_FLYGON) { Ability(ABILITY_LEVITATE); }
+        PLAYER(SPECIES_WYNAUT);
         OPPONENT(SPECIES_WOBBUFFET);
-        OPPONENT(SPECIES_FLYGON) { Ability(ABILITY_LEVITATE); }
+        OPPONENT(SPECIES_WYNAUT);
     } WHEN {
         TURN { MOVE(playerLeft, MOVE_ROTOTILLER); }
     } SCENE {
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_ROTOTILLER, playerLeft);
         MESSAGE("Wobbuffet used Rototiller!");
         MESSAGE("It doesn't affect Wobbuffet…");
-        MESSAGE("It doesn't affect Flygon…");
+        MESSAGE("It doesn't affect Wynaut…");
         MESSAGE("It doesn't affect the opposing Wobbuffet…");
-        MESSAGE("It doesn't affect the opposing Flygon…");
+        MESSAGE("It doesn't affect the opposing Wynaut…");
     }
 }
 

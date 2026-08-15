@@ -164,3 +164,17 @@ SINGLE_BATTLE_TEST("Sand Blast deals 1.5x damage in a Sandstorm", s16 damage)
         EXPECT_MUL_EQ(results[0].damage, Q_4_12(1.5), results[1].damage);
     }
 }
+
+SINGLE_BATTLE_TEST("Sand Blast sets Sandstorm")
+{
+    GIVEN {
+        PLAYER(SPECIES_SANDSHREW);
+        OPPONENT(SPECIES_SANDSHREW);
+    } WHEN {
+        TURN { MOVE(player, MOVE_SAND_BLAST); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SAND_BLAST, player);
+        MESSAGE("A sandstorm kicked up!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SANDSTORM_CONTINUES);
+    }
+}

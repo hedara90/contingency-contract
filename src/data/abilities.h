@@ -2485,4 +2485,29 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Spicy Spray"),
         .description = COMPOUND_STRING("Burns the foe when damaged."),
     },
+    [ABILITY_SUNBREAK] =
+    {
+        .name = _("Sunbreak"),
+        .description = COMPOUND_STRING("Fire attacks sets Sun."),
+    },
+    [ABILITY_RIPTIDE] =
+    {
+        .name = _("Riptide"),
+        .description = COMPOUND_STRING("Stronger traps."),
+    },
+    [ABILITY_CONTAGION] =
+    {
+        .name = _("Contagion"),
+        .description = COMPOUND_STRING("Draining poisons."),
+    },
+    [ABILITY_WILLPOWER] =
+    {
+        .name = _("Willpower"),
+        .description = COMPOUND_STRING("Boosts opposing categories."),
+    },
+    [ABILITY_STORMCALLER] =
+    {
+        .name = _("Stormcaller"),
+        .description = COMPOUND_STRING("Wind summons Rain."),
+    },
 };

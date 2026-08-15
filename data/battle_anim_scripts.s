@@ -16374,6 +16374,52 @@ gBattleAnimMove_HydroSteam::
 	waitforvisualfinish
 	end
 
+SandBlastBeams:
+	createsprite gSandBlastOrbSpriteTemplate, ANIM_ATTACKER, 3, 10, 10, 0, 16
+	createsprite gSandBlastOrbSpriteTemplate, ANIM_ATTACKER, 3, 10, 10, 0, -16
+	delay 1
+	createsprite gSandBlastOrbSpriteTemplate, ANIM_ATTACKER, 3, 10, 10, 0, 16
+	createsprite gSandBlastOrbSpriteTemplate, ANIM_ATTACKER, 3, 10, 10, 0, -16
+	delay 1
+	return
+
+SandBlastHitSplats:
+	createsprite gGroundHitSplatSpriteTemplate, ANIM_ATTACKER, 4, 0, 15, ANIM_TARGET, 1
+	createsprite gGroundHitSplatSpriteTemplate, ANIM_ATTACKER, 4, 0, -15, ANIM_TARGET, 1
+	return
+
+gBattleAnimMove_SandBlast::
+	createvisualtask AnimTask_ShakeMon, 5, ANIM_ATTACKER, 0, 2, 40, 1
+	delay 6
+	panse SE_M_HYDRO_PUMP, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, +2, 0
+	createvisualtask AnimTask_LoadSandstormBackground, 5, 0
+	createvisualtask AnimTask_StartSinAnimTimer, 5, 100
+	call SandBlastBeams
+	call SandBlastBeams
+	call SandBlastBeams
+	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 6, 0, 37, 1
+	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_TARGET, 3, 0, 9, RGB_RED
+	call SandBlastHitSplats
+	call SandBlastBeams
+	call SandBlastBeams
+	call SandBlastHitSplats
+	call SandBlastBeams
+	call SandBlastBeams
+	call SandBlastHitSplats
+	call SandBlastBeams
+	call SandBlastBeams
+	call SandBlastHitSplats
+	call SandBlastBeams
+	call SandBlastBeams
+	call SandBlastHitSplats
+	delay 1
+	delay 1
+	call SandBlastHitSplats
+	delay 30
+	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_TARGET, 3, 9, 0, RGB_RED
+	waitforvisualfinish
+	end
+
 gBattleAnimMove_Pounce::
 	monbg ANIM_TARGET
 	setalpha 12, 8
@@ -35603,4 +35649,34 @@ gBattleAnimGeneral_DynamaxGrowth:: @ PORTED FROM CFRU
 	delay 8
 	createvisualtask AnimTask_DynamaxGrowth, 5, 1, 0
 	waitforvisualfinish
+	end
+
+@@@ CC move animations
+gBattleAnimMove_IceWisps::
+	monbg ANIM_DEF_PARTNER
+	splitbgprio_foes ANIM_TARGET
+	playsewithpan SE_M_HAIL, SOUND_PAN_ATTACKER
+	waitplaysewithpan SE_M_HAIL, SOUND_PAN_TARGET, 17
+	createvisualtask SoundTask_AdjustPanningVar, 2, SOUND_PAN_ATTACKER, SOUND_PAN_ATTACKER, 1, 0
+	createsprite gIceWispOrbSpriteTemplate, ANIM_ATTACKER, 2, 0, 0, 0
+	delay 3
+	createsprite gIceWispOrbSpriteTemplate, ANIM_ATTACKER, 3, 0, 0, 1
+	delay 3
+	createsprite gIceWispOrbSpriteTemplate, ANIM_ATTACKER, 4, 0, 0, 2
+	delay 3
+	createsprite gIceWispOrbSpriteTemplate, ANIM_ATTACKER, 4, 0, 0, 3
+	delay 40
+	createvisualtask SoundTask_AdjustPanningVar, 2, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 2, 0
+	waitforvisualfinish
+	splitbgprio_all
+	playsewithpan SE_M_HAIL, SOUND_PAN_TARGET
+	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 4, 0, 13, 1
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 0
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 42
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 84
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 126
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 168
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 210
+	waitforvisualfinish
+	clearmonbg ANIM_DEF_PARTNER
 	end

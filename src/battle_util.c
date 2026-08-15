@@ -2016,6 +2016,8 @@ bool32 TryChangeBattleWeather(enum BattlerId battler, u32 battleWeatherId, enum 
             gBattleStruct->weatherDuration = 0;
         else if (rock != 0 && GetBattlerHoldEffect(battler) == rock)
             gBattleStruct->weatherDuration = 8;
+        else if (ability == ABILITY_NONE && GetMoveEffect(gCurrentMove) == EFFECT_WEATHER)
+            gBattleStruct->weatherDuration = 8;
         else
             gBattleStruct->weatherDuration = 5;
     }
@@ -2039,7 +2041,7 @@ bool32 TryChangeBattleWeather(enum BattlerId battler, u32 battleWeatherId, enum 
     return TRUE;
 }
 
-bool32 TryChangeBattleTerrain(enum BattlerId battler, u32 statusFlag)
+bool32 TryChangeBattleTerrain(enum BattlerId battler, u32 statusFlag, bool32 usedMove)
 {
     if (gBattleStruct->isSkyBattle)
         return FALSE;
@@ -2053,7 +2055,7 @@ bool32 TryChangeBattleTerrain(enum BattlerId battler, u32 statusFlag)
             gBattleMons[i].volatiles.terrainAbilityDone = FALSE;
             ResetParadoxTerrainStat(i);
         }
-        if (GetBattlerHoldEffect(battler) == HOLD_EFFECT_TERRAIN_EXTENDER)
+        if (GetBattlerHoldEffect(battler) == HOLD_EFFECT_TERRAIN_EXTENDER || usedMove)
             gFieldTimers.terrainTimer = 8;
         else
             gFieldTimers.terrainTimer = 5;
@@ -3298,7 +3300,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
         case ABILITY_HADRON_ENGINE:
             if (!shouldAbilityTrigger)
                 break;
-            if (TryChangeBattleTerrain(battler, STATUS_FIELD_ELECTRIC_TERRAIN))
+            if (TryChangeBattleTerrain(battler, STATUS_FIELD_ELECTRIC_TERRAIN, FALSE))
             {
                 BattleScriptCall(BattleScript_ElectricSurgeActivates);
                 effect++;
@@ -3307,7 +3309,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
         case ABILITY_GRASSY_SURGE:
             if (!shouldAbilityTrigger)
                 break;
-            if (TryChangeBattleTerrain(battler, STATUS_FIELD_GRASSY_TERRAIN))
+            if (TryChangeBattleTerrain(battler, STATUS_FIELD_GRASSY_TERRAIN, FALSE))
             {
                 BattleScriptCall(BattleScript_GrassySurgeActivates);
                 effect++;
@@ -3316,7 +3318,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
         case ABILITY_MISTY_SURGE:
             if (!shouldAbilityTrigger)
                 break;
-            if (TryChangeBattleTerrain(battler, STATUS_FIELD_MISTY_TERRAIN))
+            if (TryChangeBattleTerrain(battler, STATUS_FIELD_MISTY_TERRAIN, FALSE))
             {
                 BattleScriptCall(BattleScript_MistySurgeActivates);
                 effect++;
@@ -3325,7 +3327,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
         case ABILITY_PSYCHIC_SURGE:
             if (!shouldAbilityTrigger)
                 break;
-            if (TryChangeBattleTerrain(battler, STATUS_FIELD_PSYCHIC_TERRAIN))
+            if (TryChangeBattleTerrain(battler, STATUS_FIELD_PSYCHIC_TERRAIN, FALSE))
             {
                 BattleScriptCall(BattleScript_PsychicSurgeActivates);
                 effect++;
@@ -4238,7 +4240,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
             break;
         case ABILITY_SEED_SOWER:
             if (IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES)
-             && TryChangeBattleTerrain(gBattlerTarget, STATUS_FIELD_GRASSY_TERRAIN))
+             && TryChangeBattleTerrain(gBattlerTarget, STATUS_FIELD_GRASSY_TERRAIN, FALSE))
             {
                 BattleScriptCall(BattleScript_SeedSowerActivates);
                 effect++;
@@ -4360,6 +4362,86 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
                     gBattleScripting.moveEffect = MOVE_EFFECT_CONFUSION;
                     PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                     BattleScriptCall(BattleScript_AbilityStatusEffect);
+                    effect++;
+                }
+            }
+            break;
+        case ABILITY_SUNBREAK:
+            if (!gBattleMons[gBattlerAttacker].volatiles.weatherAbilityActivated
+             && IsBattlerTurnDamaged(gBattlerTarget, INCLUDING_SUBSTITUTES)
+             && !(GetWeather() & B_WEATHER_SUN))
+            {
+                if (GetWeather() & B_WEATHER_PRIMAL_ANY)
+                {
+                    BattleScriptCall(BattleScript_BlockedByPrimalWeather);
+                    effect++;
+                }
+                else if (TryChangeBattleWeather(battler, BATTLE_WEATHER_SUN, ABILITY_NONE)) // use ability none since it's not a switch in ability weather setter
+                {
+                    gBattleMons[gBattlerAttacker].volatiles.weatherAbilityActivated = TRUE;
+                    gBattleScripting.battler = battler;
+                    BattleScriptCall(BattleScript_WeatherAbilityActivates);
+                    effect++;
+                }
+            }
+            break;
+        case ABILITY_CONTAGION:
+            if ((GetMoveEffect(gCurrentMove) == EFFECT_ABSORB
+              || GetMoveEffect(gCurrentMove) == EFFECT_DREAM_EATER)
+             && IsBattlerAlive(gBattlerTarget)
+             && !IsMoveEffectBlockedByTarget(GetBattlerAbility(gBattlerTarget))
+             && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES) // Need to actually hit the target
+             && CanBePoisoned(gBattlerAttacker, gBattlerTarget, gLastUsedAbility, GetBattlerAbility(gBattlerTarget))
+             && gBattleMons[gBattlerAttacker].hp != gBattleMons[gBattlerAttacker].maxHP
+             && !gBattleMons[gBattlerAttacker].volatiles.healBlock)
+            {
+                gEffectBattler = gBattlerTarget;
+                gBattleScripting.battler = gBattlerAttacker;
+                gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
+                PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
+                BattleScriptCall(BattleScript_AbilityStatusEffect);
+                effect++;
+            }
+            break;
+        case ABILITY_WILLPOWER:
+            if (IsBattlerTurnDamaged(gBattlerTarget, INCLUDING_SUBSTITUTES)
+             && IsBattlerAlive(battler)
+             && !gSpecialStatuses[battler].willpowerTriggered)
+            {
+                if (GetMoveCategory(gCurrentMove) == DAMAGE_CATEGORY_PHYSICAL)
+                {
+                    gSpecialStatuses[battler].willpowerTriggered = TRUE;
+                    gEffectBattler = gBattlerAbility = gBattlerTarget;
+                    SetStatChange(battler, STAT_SPATK, 1);
+                    BattleScriptCall(BattleScript_AbilityStatChange);
+                    effect++;
+                }
+                else if (GetMoveCategory(gCurrentMove) == DAMAGE_CATEGORY_SPECIAL)
+                {
+                    gSpecialStatuses[battler].willpowerTriggered = TRUE;
+                    gEffectBattler = gBattlerAbility = gBattlerTarget;
+                    SetStatChange(battler, STAT_ATK, 1);
+                    BattleScriptCall(BattleScript_AbilityStatChange);
+                    effect++;
+                }
+            }
+            break;
+        case ABILITY_STORMCALLER:
+            if (!gBattleMons[gBattlerAttacker].volatiles.weatherAbilityActivated
+             && IsBattlerTurnDamaged(gBattlerTarget, INCLUDING_SUBSTITUTES)
+             && IsWindMove(gCurrentMove)
+             && !(GetWeather() & B_WEATHER_RAIN))
+            {
+                if (GetWeather() & B_WEATHER_PRIMAL_ANY)
+                {
+                    BattleScriptCall(BattleScript_BlockedByPrimalWeather);
+                    effect++;
+                }
+                else if (TryChangeBattleWeather(battler, BATTLE_WEATHER_RAIN, ABILITY_NONE)) // use ability none since it's not a switch in ability weather setter
+                {
+                    gBattleMons[gBattlerAttacker].volatiles.weatherAbilityActivated = TRUE;
+                    gBattleScripting.battler = battler;
+                    BattleScriptCall(BattleScript_WeatherAbilityActivates);
                     effect++;
                 }
             }
@@ -10900,7 +10982,7 @@ bool32 IsUsableWhileAsleepEffect(enum BattleMoveEffects effect)
     }
 }
 
-void SetWrapTurns(enum BattlerId battler, enum HoldEffect holdEffect)
+void SetWrapTurns(enum BattlerId battler, enum HoldEffect holdEffect, enum Ability ability)
 {
     u32 normalWrapTurns = B_WRAP_TURNS - 2; // 5 turns
     if (holdEffect == HOLD_EFFECT_GRIP_CLAW)
@@ -10913,7 +10995,13 @@ void SetWrapTurns(enum BattlerId battler, enum HoldEffect holdEffect)
         gBattleMons[battler].volatiles.wrapTurns = GetConfig(B_BINDING_TURNS) >= GEN_5 ? RandomUniform(RNG_WRAP, 4, normalWrapTurns) : RandomUniform(RNG_WRAP, 2, normalWrapTurns);
         gBattleMons[battler].volatiles.wrappedBindingBand = holdEffect == HOLD_EFFECT_BINDING_BAND;
     }
+
+    if (!gBattleMons[battler].volatiles.wrappedBindingBand && ability == ABILITY_RIPTIDE)
+    {
+        gBattleMons[battler].volatiles.wrappedBindingBand = TRUE;
+    }
 }
+
 
 // Return True if the order was changed, and false if the order was not changed(for example because the target would move after the attacker anyway).
 bool32 ChangeOrderTargetAfterAttacker(void)
