@@ -136,6 +136,9 @@ DOUBLE_BATTLE_TEST("Court Change used by the opponent swaps Mist, Safeguard, Aur
         TURN {}
         TURN {}
         TURN {}
+        TURN {}
+        TURN {}
+        TURN {}
     } SCENE {
         MESSAGE("Wobbuffet used Mist!");
         MESSAGE("Wobbuffet used Safeguard!");
@@ -146,13 +149,13 @@ DOUBLE_BATTLE_TEST("Court Change used by the opponent swaps Mist, Safeguard, Aur
         MESSAGE("The opposing Wynaut used Court Change!");
         MESSAGE("The opposing Wynaut swapped the battle effects affecting each side of the field!");
         // The effects now end for the player side.
-        MESSAGE("The snow stopped.");
         MESSAGE("The opposing team is no longer protected by Safeguard!");
         MESSAGE("The opposing team's Mist wore off!");
         MESSAGE("The opposing team's Reflect wore off!");
         MESSAGE("The opposing team's Tailwind petered out!");
         MESSAGE("The opposing team's Aurora Veil wore off!");
         MESSAGE("The opposing team's Light Screen wore off!");
+        MESSAGE("The snow stopped.");
     }
 }
 

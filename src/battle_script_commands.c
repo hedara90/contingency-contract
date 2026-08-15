@@ -3100,7 +3100,7 @@ void SetMoveEffect(enum BattlerId battlerAtk, enum BattlerId effectBattler, enum
         default:
             break;
         }
-        if (TryChangeBattleTerrain(battlerAtk, statusFlag))
+        if (TryChangeBattleTerrain(battlerAtk, statusFlag, TRUE))
         {
             BattleScriptPush(battleScript);
             gBattlescriptCurrInstr = BattleScript_MoveEffectSetTerrain;
@@ -11494,7 +11494,7 @@ void BS_SetTerrain(void)
     }
     else if (statusFlag)
     {
-        TryChangeBattleTerrain(gBattlerAttacker, statusFlag);
+        TryChangeBattleTerrain(gBattlerAttacker, statusFlag, TRUE);
         gBattlescriptCurrInstr = cmd->nextInstr;
     }
     else

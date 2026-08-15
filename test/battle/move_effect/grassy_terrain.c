@@ -52,30 +52,78 @@ SINGLE_BATTLE_TEST("Grassy Terrain increases power of Grass-type moves by 30/50 
     }
 }
 
-SINGLE_BATTLE_TEST("Grassy Terrain lasts for 5 turns")
+SINGLE_BATTLE_TEST("Grassy Terrain lasts for 8 turns when manually set")
 {
     GIVEN {
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
-        TURN { MOVE(opponent, MOVE_CELEBRATE); MOVE(player, MOVE_GRASSY_TERRAIN); }
+        TURN { MOVE(player, MOVE_GRASSY_TERRAIN); MOVE(opponent, MOVE_CELEBRATE); }
+        TURN {}
+        TURN {}
+        TURN {}
         TURN {}
         TURN {}
         TURN {}
         TURN {}
     } SCENE {
-        MESSAGE("The opposing Wobbuffet used Celebrate!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_GRASSY_TERRAIN, player);
         MESSAGE("Grass grew to cover the battlefield!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
 
-        MESSAGE("Wobbuffet used Celebrate!");
-        MESSAGE("The opposing Wobbuffet used Celebrate!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
 
-        MESSAGE("Wobbuffet used Celebrate!");
-        MESSAGE("The opposing Wobbuffet used Celebrate!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
 
-        MESSAGE("Wobbuffet used Celebrate!");
-        MESSAGE("The opposing Wobbuffet used Celebrate!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+
+        MESSAGE("The grass disappeared from the battlefield.");
+    }
+}
+
+SINGLE_BATTLE_TEST("Grassy Terrain lasts for 5 turns when set by an ability")
+{
+    GIVEN {
+        PLAYER(SPECIES_TAPU_BULU) { Ability(ABILITY_GRASSY_SURGE); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN {}
+        TURN {}
+        TURN {}
+        TURN {}
+        TURN {}
+    } SCENE {
+        ABILITY_POPUP(player, ABILITY_GRASSY_SURGE);
+
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
 
         MESSAGE("The grass disappeared from the battlefield.");
     }
@@ -92,10 +140,16 @@ SINGLE_BATTLE_TEST("Grassy Terrain heals the Pokémon on the field for the durat
         TURN {}
         TURN {}
         TURN {}
+        TURN {}
+        TURN {}
+        TURN {}
     } SCENE {
         MESSAGE("The opposing Wobbuffet used Celebrate!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_GRASSY_TERRAIN, player);
         MESSAGE("Grass grew to cover the battlefield!");
+        MESSAGE("The opposing Wobbuffet is healed by the grassy terrain!");
+        MESSAGE("The opposing Wobbuffet is healed by the grassy terrain!");
+        MESSAGE("The opposing Wobbuffet is healed by the grassy terrain!");
         MESSAGE("The opposing Wobbuffet is healed by the grassy terrain!");
         MESSAGE("The opposing Wobbuffet is healed by the grassy terrain!");
         MESSAGE("The opposing Wobbuffet is healed by the grassy terrain!");

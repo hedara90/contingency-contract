@@ -116,7 +116,7 @@ SINGLE_BATTLE_TEST("Quark Drive ability pop up activates only once during the du
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { MOVE(player, MOVE_ELECTRIC_TERRAIN); }
-        for (turns = 0; turns < 4; turns++)
+        for (turns = 0; turns < 7; turns++)
             TURN {}
         TURN { MOVE(player, MOVE_ELECTRIC_TERRAIN); }
     } SCENE {

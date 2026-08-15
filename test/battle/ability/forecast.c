@@ -242,6 +242,9 @@ SINGLE_BATTLE_TEST("Forecast transforms Castform back to normal when weather exp
         TURN {}
         TURN {}
         TURN {}
+        TURN {}
+        TURN {}
+        TURN {}
     } SCENE {
         // transforms
         ABILITY_POPUP(player, ABILITY_FORECAST);

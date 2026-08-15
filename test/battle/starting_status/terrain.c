@@ -60,7 +60,7 @@ SINGLE_BATTLE_TEST("SetStartingStatus starts a chosen terrain at the beginning o
     }
 }
 
-SINGLE_BATTLE_TEST("Terrain started after the one which started the battle lasts only 5 turns")
+SINGLE_BATTLE_TEST("Terrain started after the one which started the battle lasts only 5 or 8 turns depending on source")
 {
     bool32 viaMove;
 
@@ -81,6 +81,12 @@ SINGLE_BATTLE_TEST("Terrain started after the one which started the battle lasts
         TURN {}
         TURN {}
         TURN {}
+        if (viaMove)
+        {
+            TURN {}
+            TURN {}
+            TURN {}
+        }
     } SCENE {
         // Electric Terrain at battle's start
         MESSAGE("An electric current is running across the battlefield!");
@@ -105,6 +111,18 @@ SINGLE_BATTLE_TEST("Terrain started after the one which started the battle lasts
 
         MESSAGE("Tapu Bulu used Celebrate!");
         MESSAGE("The opposing Wobbuffet used Celebrate!");
+
+        if (viaMove)
+        {
+            MESSAGE("Tapu Bulu used Celebrate!");
+            MESSAGE("The opposing Wobbuffet used Celebrate!");
+
+            MESSAGE("Tapu Bulu used Celebrate!");
+            MESSAGE("The opposing Wobbuffet used Celebrate!");
+
+            MESSAGE("Tapu Bulu used Celebrate!");
+            MESSAGE("The opposing Wobbuffet used Celebrate!");
+        }
 
         MESSAGE("The grass disappeared from the battlefield.");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_RESTORE_BG);
