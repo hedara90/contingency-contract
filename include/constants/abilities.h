@@ -343,6 +343,7 @@ enum __attribute__((packed)) Ability
     // Custom abilities
     ABILITY_PURE_WILL = 319,
     ABILITY_SUNBREAK,
+    ABILITY_RIPTIDE,
 
     ABILITIES_COUNT_GEN9,
     ABILITIES_COUNT = ABILITIES_COUNT_GEN9,

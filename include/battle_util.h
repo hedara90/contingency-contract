@@ -411,7 +411,7 @@ bool32 IsBattlerInvalidForSpreadMove(enum BattlerId battlerAtk, enum BattlerId b
 void SetStartingStatus(enum StartingStatus status);
 void ResetStartingStatuses(void);
 bool32 IsUsableWhileAsleepEffect(enum BattleMoveEffects effect);
-void SetWrapTurns(enum BattlerId battler, enum HoldEffect holdEffect);
+void SetWrapTurns(enum BattlerId battler, enum HoldEffect holdEffect, enum Ability ability);
 bool32 ChangeOrderTargetAfterAttacker(void);
 void TryUpdateEvolutionTracker(enum EvolutionConditions evolutionCondition, u32 upAmount, enum Move usedMove);
 bool32 CanUseMoveConsecutively(enum BattlerId battler);
