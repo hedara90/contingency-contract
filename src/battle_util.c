@@ -4381,6 +4381,24 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
                 }
             }
             break;
+        case ABILITY_CONTAGION:
+            if ((GetMoveEffect(gCurrentMove) == EFFECT_ABSORB
+              || GetMoveEffect(gCurrentMove) == EFFECT_DREAM_EATER)
+             && IsBattlerAlive(gBattlerTarget)
+             && !IsMoveEffectBlockedByTarget(GetBattlerAbility(gBattlerTarget))
+             && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES) // Need to actually hit the target
+             && CanBePoisoned(gBattlerAttacker, gBattlerTarget, gLastUsedAbility, GetBattlerAbility(gBattlerTarget))
+             && gBattleMons[gBattlerAttacker].hp != gBattleMons[gBattlerAttacker].maxHP
+             && !gBattleMons[gBattlerAttacker].volatiles.healBlock)
+            {
+                gEffectBattler = gBattlerTarget;
+                gBattleScripting.battler = gBattlerAttacker;
+                gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
+                PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
+                BattleScriptCall(BattleScript_AbilityStatusEffect);
+                effect++;
+            }
+            break;
         default:
             break;
         }

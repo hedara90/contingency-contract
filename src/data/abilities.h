@@ -2495,4 +2495,9 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Riptide"),
         .description = COMPOUND_STRING("Stronger traps."),
     },
+    [ABILITY_CONTAGION] =
+    {
+        .name = _("Contagion"),
+        .description = COMPOUND_STRING("Draining poisons."),
+    },
 };
