@@ -4399,6 +4399,29 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
                 effect++;
             }
             break;
+        case ABILITY_WILLPOWER:
+            if (IsBattlerTurnDamaged(gBattlerTarget, INCLUDING_SUBSTITUTES)
+             && IsBattlerAlive(battler)
+             && !gSpecialStatuses[battler].willpowerTriggered)
+            {
+                if (GetMoveCategory(gCurrentMove) == DAMAGE_CATEGORY_PHYSICAL)
+                {
+                    gSpecialStatuses[battler].willpowerTriggered = TRUE;
+                    gEffectBattler = gBattlerAbility = gBattlerTarget;
+                    SetStatChange(battler, STAT_SPATK, 1);
+                    BattleScriptCall(BattleScript_AbilityStatChange);
+                    effect++;
+                }
+                else if (GetMoveCategory(gCurrentMove) == DAMAGE_CATEGORY_SPECIAL)
+                {
+                    gSpecialStatuses[battler].willpowerTriggered = TRUE;
+                    gEffectBattler = gBattlerAbility = gBattlerTarget;
+                    SetStatChange(battler, STAT_ATK, 1);
+                    BattleScriptCall(BattleScript_AbilityStatChange);
+                    effect++;
+                }
+            }
+            break;
         default:
             break;
         }

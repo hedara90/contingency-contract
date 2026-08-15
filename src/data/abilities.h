@@ -2500,4 +2500,9 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Contagion"),
         .description = COMPOUND_STRING("Draining poisons."),
     },
+    [ABILITY_WILLPOWER] =
+    {
+        .name = _("Willpower"),
+        .description = COMPOUND_STRING("Boosts opposing categories."),
+    },
 };
