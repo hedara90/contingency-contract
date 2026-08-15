@@ -21799,7 +21799,10 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .thawsUser = TRUE,
-        .battleAnimScript = gBattleAnimMove_HydroSteam,
+        .battleAnimScript = gBattleAnimMove_SandBlast,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_SANDSTORM,
+        }),
     },
 
     [MOVE_BLOOD_MOON] =

@@ -16374,6 +16374,52 @@ gBattleAnimMove_HydroSteam::
 	waitforvisualfinish
 	end
 
+SandBlastBeams:
+	createsprite gSandBlastOrbSpriteTemplate, ANIM_ATTACKER, 3, 10, 10, 0, 16
+	createsprite gSandBlastOrbSpriteTemplate, ANIM_ATTACKER, 3, 10, 10, 0, -16
+	delay 1
+	createsprite gSandBlastOrbSpriteTemplate, ANIM_ATTACKER, 3, 10, 10, 0, 16
+	createsprite gSandBlastOrbSpriteTemplate, ANIM_ATTACKER, 3, 10, 10, 0, -16
+	delay 1
+	return
+
+SandBlastHitSplats:
+	createsprite gGroundHitSplatSpriteTemplate, ANIM_ATTACKER, 4, 0, 15, ANIM_TARGET, 1
+	createsprite gGroundHitSplatSpriteTemplate, ANIM_ATTACKER, 4, 0, -15, ANIM_TARGET, 1
+	return
+
+gBattleAnimMove_SandBlast::
+	createvisualtask AnimTask_ShakeMon, 5, ANIM_ATTACKER, 0, 2, 40, 1
+	delay 6
+	panse SE_M_HYDRO_PUMP, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, +2, 0
+	createvisualtask AnimTask_LoadSandstormBackground, 5, 0
+	createvisualtask AnimTask_StartSinAnimTimer, 5, 100
+	call SandBlastBeams
+	call SandBlastBeams
+	call SandBlastBeams
+	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 6, 0, 37, 1
+	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_TARGET, 3, 0, 9, RGB_RED
+	call SandBlastHitSplats
+	call SandBlastBeams
+	call SandBlastBeams
+	call SandBlastHitSplats
+	call SandBlastBeams
+	call SandBlastBeams
+	call SandBlastHitSplats
+	call SandBlastBeams
+	call SandBlastBeams
+	call SandBlastHitSplats
+	call SandBlastBeams
+	call SandBlastBeams
+	call SandBlastHitSplats
+	delay 1
+	delay 1
+	call SandBlastHitSplats
+	delay 30
+	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_TARGET, 3, 9, 0, RGB_RED
+	waitforvisualfinish
+	end
+
 gBattleAnimMove_Pounce::
 	monbg ANIM_TARGET
 	setalpha 12, 8
