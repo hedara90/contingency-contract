@@ -401,6 +401,15 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_UnusedMauvi
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_UnusedMauvilleOldMan2;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ApricornTree;
 
+//  CC object events
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_AcolyteM;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_AcolyteF;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Chisa;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Empress;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Kaito;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Monk;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PrayerGirl;
+
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
     [OBJ_EVENT_GFX_BRENDAN_NORMAL] =           &gObjectEventGraphicsInfo_BrendanNormal,
     [OBJ_EVENT_GFX_BRENDAN_MACH_BIKE] =        &gObjectEventGraphicsInfo_BrendanMachBike,
@@ -791,6 +800,13 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_DEOXYS_N]                 = &gObjectEventGraphicsInfo_DeoxysN,
     [OBJ_EVENT_GFX_SS_ANNE]                  = &gObjectEventGraphicsInfo_SSAnne,
 #endif // IS_FRLG
+    [OBJ_EVENT_GFX_ACOLYTE_M] =                &gObjectEventGraphicsInfo_AcolyteM,
+    [OBJ_EVENT_GFX_ACOLYTE_F] =                &gObjectEventGraphicsInfo_AcolyteF,
+    [OBJ_EVENT_GFX_CHISA] =                    &gObjectEventGraphicsInfo_Chisa,
+    [OBJ_EVENT_GFX_EMPRESS] =                  &gObjectEventGraphicsInfo_Empress,
+    [OBJ_EVENT_GFX_KAITO] =                    &gObjectEventGraphicsInfo_Kaito,
+    [OBJ_EVENT_GFX_MONK] =                     &gObjectEventGraphicsInfo_Monk,
+    [OBJ_EVENT_GFX_PRAYERGIRL] =               &gObjectEventGraphicsInfo_PrayerGirl,
 };
 
 const struct ObjectEventGraphicsInfo *const gMauvilleOldManGraphicsInfoPointers[] = {
