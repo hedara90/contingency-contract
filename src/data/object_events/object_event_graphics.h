@@ -392,6 +392,17 @@ const u16 gObjectEventPal_Substitute[] = INCGFX_U16("graphics/object_events/pics
 const u16 gObjectEventPaletteEmotes[] = INCGFX_U16("graphics/misc/emotes.pal", ".gbapal");
 const u16 gObjectEventPaletteNeonLight[] = INCGFX_U16("graphics/object_events/palettes/neon_light.pal", ".gbapal");
 
+const u16 gObjectEventPal_NPCRecordkeepers_1[] = INCGFX_U16("graphics/object_events/palettes/npc_recordkeepers_1.pal", ".gbapal");
+const u16 gObjectEventPal_NPCRecordkeepers_2[] = INCGFX_U16("graphics/object_events/palettes/npc_recordkeepers_2.pal", ".gbapal");
+
+const u32 gObjectEventPic_AcolyteM[] = INCGFX_U32("graphics/object_events/pics/people/acolyte_m.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_AcolyteF[] = INCGFX_U32("graphics/object_events/pics/people/acolyte_f.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Chisa[] = INCGFX_U32("graphics/object_events/pics/people/chisa.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Empress[] = INCGFX_U32("graphics/object_events/pics/people/empress.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Kaito[] = INCGFX_U32("graphics/object_events/pics/people/kaito.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Monk[] = INCGFX_U32("graphics/object_events/pics/people/monk.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_PrayerGirl[] = INCGFX_U32("graphics/object_events/pics/people/prayergirl.png", ".4bpp", "-mwidth 2 -mheight 4");
+
 #if OW_FOLLOWERS_POKEBALLS
 const u32 gObjectEventPic_MasterBall[] = INCGFX_U32("graphics/object_events/pics/misc/ball_master.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_UltraBall[] = INCGFX_U32("graphics/object_events/pics/misc/ball_ultra.png", ".4bpp", "-mwidth 2 -mheight 4");
