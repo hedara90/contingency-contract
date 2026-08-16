@@ -3990,8 +3990,8 @@ static const struct LevelUpMove sLeafeonLevelUpLearnset[] = {
 static const struct LevelUpMove sGlaceonLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_CALM_MIND),
     LEVEL_UP_MOVE( 1, MOVE_THUNDERBOLT),
-    LEVEL_UP_MOVE( 1, MOVE_CELEBRATE), // Will O Frost
-    LEVEL_UP_MOVE( 1, MOVE_CELEBRATE), // Sacred Ice
+    LEVEL_UP_MOVE( 1, MOVE_ICE_WISPS),
+    LEVEL_UP_MOVE( 1, MOVE_SACRED_ICE),
     LEVEL_UP_MOVE( 51, MOVE_HEX),
     LEVEL_UP_MOVE( 51, MOVE_FREEZE_DRY),
     LEVEL_UP_MOVE( 52, MOVE_BLIZZARD),
