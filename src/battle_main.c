@@ -5775,6 +5775,65 @@ static void HandleEndTurn_FinishBattle(void)
             if (!changedForm && B_RECALCULATE_STATS >= GEN_5)
                 CalculateMonStats(&gParties[B_TRAINER_PLAYER][i]);
         }
+
+        //  Restore HP and maybe PP
+        for (u32 i = 0; i < PARTY_SIZE && !TESTING; i++)
+        {
+            struct Pokemon *mon = &gParties[0][i];
+            enum Species species = GetMonData(mon, MON_DATA_SPECIES);
+            if (species != SPECIES_NONE)
+            {
+                u32 maxHP = GetMonData(mon, MON_DATA_MAX_HP);
+                u32 currHP = GetMonData(mon, MON_DATA_HP);
+                if (maxHP != currHP)
+                    SetMonData(mon, MON_DATA_HP, &maxHP);
+
+                if (!IsRiskActive(RISK_NO_PP_RESTORE))
+                {
+                    for (u32 j = 0; j < 4; j++)
+                    {
+                        enum Move move = GetMonData(mon, MON_DATA_MOVE1 + j);
+                        u32 maxPP = GetMovePP(move);
+                        SetMonData(mon, MON_DATA_PP1 + j, &maxPP);
+                    }
+                }
+                else if (species == SPECIES_ROTOM
+                      || species == SPECIES_ROTOM_FAN
+                      || species == SPECIES_ROTOM_FROST
+                      || species == SPECIES_ROTOM_MOW
+                      || species == SPECIES_ROTOM_HEAT
+                      || species == SPECIES_ROTOM_WASH)
+                {
+                    for (u32 j = 0; j < 4; j++)
+                    {
+                        switch (GetMonData(mon, MON_DATA_MOVE1 + j))
+                        {
+                        case MOVE_SHADOW_BALL:
+                        case MOVE_NASTY_PLOT:
+                        case MOVE_AIR_SLASH:
+                        case MOVE_TAILWIND:
+                        case MOVE_BLIZZARD:
+                        case MOVE_FREEZE_DRY:
+                        case MOVE_LEAF_STORM:
+                        case MOVE_ROTOTILLER:
+                        case MOVE_OVERHEAT:
+                        case MOVE_WILL_O_WISP:
+                        case MOVE_HYDRO_PUMP:
+                        case MOVE_SOAK:
+                        {
+                            enum Move move = GetMonData(mon, MON_DATA_MOVE1 + j);
+                            u32 maxPP = GetMovePP(move);
+                            SetMonData(mon, MON_DATA_PP1 + j, &maxPP);
+                            break;
+                        }
+                        default:
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         RecordedBattle_SetPlaybackFinished();
         if (gTestRunnerEnabled)
             TestRunner_Battle_AfterLastTurn();

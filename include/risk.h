@@ -81,10 +81,10 @@ enum Risk
     RISK_PLAYER_HAS_PERISH_BODY,
     RISK_PLAYER_HAS_BEAST_BOOST,
     RISK_PLAYER_HAS_FILTER,
-    RISK_NO_PP_RESTORE,     //  Not implemented
-    RISK_RANDOM_LEAD,       //  Not implemented
+    RISK_NO_PP_RESTORE,
+    RISK_RANDOM_LEAD,
     RISK_NO_ORDER_CHANGE,
-    RISK_USES_POOLS,        //  Not implemented
+    RISK_USES_POOLS,
 #define RISK_COUNT RISK_USES_POOLS + 1
 };
 

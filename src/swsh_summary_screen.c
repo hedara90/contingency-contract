@@ -274,6 +274,7 @@ static EWRAM_DATA struct PokemonSummaryScreenData
     u16 monAnimTimer; // tracks time between re-playing mon anims
     u8 monAnimPlayed; // tracks if anim has been played at least once
     u8 changeFormId;
+    u8 maxSlotPP[4];
 #if SWSH_SUMMARY_SHOW_CONTEST_PAGES
     struct ConditionGraph conditionGraph;
     struct Sprite *conditionSparkles[MAX_CONDITION_SPARKLES];
@@ -2670,9 +2671,20 @@ const enum Species sRotomOrder[] =
     SPECIES_ROTOM_WASH,
 };
 
+const enum Move sRotomMoveMapping[][2] =
+{
+    {MOVE_SHADOW_BALL, MOVE_NASTY_PLOT},
+    {MOVE_AIR_SLASH, MOVE_TAILWIND},
+    {MOVE_BLIZZARD, MOVE_FREEZE_DRY},
+    {MOVE_LEAF_STORM, MOVE_ROTOTILLER},
+    {MOVE_OVERHEAT, MOVE_WILL_O_WISP},
+    {MOVE_HYDRO_PUMP, MOVE_SOAK},
+};
+
 static void TryRotateRotom(u8 taskId)
 {
     enum Species species = sMonSummaryScreen->summary.species;
+    u32 prevIndex;
     u32 markings;
     if (sMonSummaryScreen->isBoxMon)
         markings = GetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_MARKINGS);
@@ -2683,6 +2695,8 @@ static void TryRotateRotom(u8 taskId)
 
     while (sRotomOrder[rotomIndex] != species)
         rotomIndex++;
+
+    prevIndex = rotomIndex;
 
     u32 maxIndex = 1;
     switch (markings)
@@ -2709,10 +2723,32 @@ static void TryRotateRotom(u8 taskId)
     if (sMonSummaryScreen->isBoxMon)
     {
         SetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_SPECIES, &species);
+        //  Change moves
     }
     else
     {
         SetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_SPECIES, &species);
+        //  Change moves
+        for (u32 i = 0; i < 4; i++)
+        {
+            enum Move move = GetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_MOVE1 + i);
+            u32 currPP = GetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_PP1 + i);
+            enum Move newMove = move;
+
+            if (move == sRotomMoveMapping[prevIndex][0])
+                newMove = sRotomMoveMapping[rotomIndex][0];
+            else if (move == sRotomMoveMapping[prevIndex][1])
+                newMove = sRotomMoveMapping[rotomIndex][1];
+
+            if (newMove != move)
+            {
+                SetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_MOVE1 + i, &newMove);
+
+                //  Just let Rotom recover PP with its moves
+                u32 newPP = GetMovePP(newMove);
+                SetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_PP1 + i, &newPP);
+            }
+        }
     }
 
     sMonSummaryScreen->monAnimTimer = 0;

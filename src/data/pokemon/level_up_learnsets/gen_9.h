@@ -10760,20 +10760,58 @@ static const struct LevelUpMove sAbomasnowLevelUpLearnset[] = {
 #endif //P_FAMILY_SNOVER
 
 #if P_FAMILY_ROTOM
-static const struct LevelUpMove sRotomLevelUpLearnset[] = {
-    LEVEL_UP_MOVE( 1, MOVE_SHADOW_BALL),
-    LEVEL_UP_MOVE( 1, MOVE_VOLT_SWITCH),
+static const struct LevelUpMove sRotomBaseLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_THUNDER_WAVE),
     LEVEL_UP_MOVE( 1, MOVE_PAIN_SPLIT),
-    // MOVE_CELEBRATE Each dupe pair of moves is only accessible to that specific dupe's form of Rotom
-    LEVEL_UP_MOVE( 51, MOVE_BLIZZARD),
-    LEVEL_UP_MOVE( 51, MOVE_FREEZE_DRY),
-    LEVEL_UP_MOVE( 52, MOVE_LEAF_STORM),
-    LEVEL_UP_MOVE( 52, MOVE_ROTOTILLER),
-    LEVEL_UP_MOVE( 53, MOVE_OVERHEAT),
-    LEVEL_UP_MOVE( 53, MOVE_WILL_O_WISP),
-    LEVEL_UP_MOVE( 54, MOVE_HYDRO_PUMP),
-    LEVEL_UP_MOVE( 54, MOVE_SOAK),
+    LEVEL_UP_MOVE( 1, MOVE_THUNDERBOLT),
+    LEVEL_UP_MOVE( 1, MOVE_VOLT_SWITCH),
+    LEVEL_UP_MOVE( 1, MOVE_SHADOW_BALL),
+    LEVEL_UP_MOVE( 1, MOVE_NASTY_PLOT),
+    LEVEL_UP_END
+};
+static const struct LevelUpMove sRotomFanLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_THUNDER_WAVE),
+    LEVEL_UP_MOVE( 1, MOVE_PAIN_SPLIT),
+    LEVEL_UP_MOVE( 1, MOVE_THUNDERBOLT),
+    LEVEL_UP_MOVE( 1, MOVE_VOLT_SWITCH),
+    LEVEL_UP_MOVE( 1, MOVE_AIR_SLASH),
+    LEVEL_UP_MOVE( 1, MOVE_TAILWIND),
+    LEVEL_UP_END
+};
+static const struct LevelUpMove sRotomFrostLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_THUNDER_WAVE),
+    LEVEL_UP_MOVE( 1, MOVE_PAIN_SPLIT),
+    LEVEL_UP_MOVE( 1, MOVE_THUNDERBOLT),
+    LEVEL_UP_MOVE( 1, MOVE_VOLT_SWITCH),
+    LEVEL_UP_MOVE( 1, MOVE_BLIZZARD),
+    LEVEL_UP_MOVE( 1, MOVE_FREEZE_DRY),
+    LEVEL_UP_END
+};
+static const struct LevelUpMove sRotomMowLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_THUNDER_WAVE),
+    LEVEL_UP_MOVE( 1, MOVE_PAIN_SPLIT),
+    LEVEL_UP_MOVE( 1, MOVE_THUNDERBOLT),
+    LEVEL_UP_MOVE( 1, MOVE_VOLT_SWITCH),
+    LEVEL_UP_MOVE( 1, MOVE_LEAF_STORM),
+    LEVEL_UP_MOVE( 1, MOVE_ROTOTILLER),
+    LEVEL_UP_END
+};
+static const struct LevelUpMove sRotomHeatLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_THUNDER_WAVE),
+    LEVEL_UP_MOVE( 1, MOVE_PAIN_SPLIT),
+    LEVEL_UP_MOVE( 1, MOVE_THUNDERBOLT),
+    LEVEL_UP_MOVE( 1, MOVE_VOLT_SWITCH),
+    LEVEL_UP_MOVE( 1, MOVE_OVERHEAT),
+    LEVEL_UP_MOVE( 1, MOVE_WILL_O_WISP),
+    LEVEL_UP_END
+};
+static const struct LevelUpMove sRotomWashLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_THUNDER_WAVE),
+    LEVEL_UP_MOVE( 1, MOVE_PAIN_SPLIT),
+    LEVEL_UP_MOVE( 1, MOVE_THUNDERBOLT),
+    LEVEL_UP_MOVE( 1, MOVE_VOLT_SWITCH),
+    LEVEL_UP_MOVE( 1, MOVE_HYDRO_PUMP),
+    LEVEL_UP_MOVE( 1, MOVE_SOAK),
     LEVEL_UP_END
 };
 #endif //P_FAMILY_ROTOM
