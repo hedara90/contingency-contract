@@ -5775,6 +5775,31 @@ static void HandleEndTurn_FinishBattle(void)
             if (!changedForm && B_RECALCULATE_STATS >= GEN_5)
                 CalculateMonStats(&gParties[B_TRAINER_PLAYER][i]);
         }
+
+        //  Restore HP and maybe PP
+        for (u32 i = 0; i < PARTY_SIZE && !TESTING; i++)
+        {
+            struct Pokemon *mon = &gParties[0][i];
+            if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
+            {
+                u32 maxHP = GetMonData(mon, MON_DATA_MAX_HP);
+                u32 currHP = GetMonData(mon, MON_DATA_HP);
+                if (maxHP != currHP)
+                    SetMonData(mon, MON_DATA_HP, &maxHP);
+
+                if (!IsRiskActive(RISK_NO_PP_RESTORE))
+                {
+                    for (u32 j = 0; j < 4; j++)
+                    {
+                        enum Move move = GetMonData(mon, MON_DATA_MOVE1 + j);
+                        u32 currPP = GetMonData(mon, MON_DATA_PP1 + j);
+                        u32 maxPP = GetMovePP(move);
+                        SetMonData(mon, MON_DATA_PP1 + j, &maxPP);
+                    }
+                }
+            }
+        }
+
         RecordedBattle_SetPlaybackFinished();
         if (gTestRunnerEnabled)
             TestRunner_Battle_AfterLastTurn();
