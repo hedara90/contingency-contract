@@ -9373,6 +9373,7 @@ void SortBattlersBySpeed(enum BattlerId *battlers, bool32 slowToFast)
 
 void TryRestoreHeldItems(void)
 {
+    /*
     u32 i;
     bool32 returnNPCItems = B_RETURN_STOLEN_NPC_ITEMS >= GEN_5 && gBattleTypeFlags & BATTLE_TYPE_TRAINER;
 
@@ -9391,6 +9392,13 @@ void TryRestoreHeldItems(void)
             if ((lostItem != ITEM_NONE || returnNPCItems) && GetItemPocket(lostItem) != POCKET_BERRIES)
                 SetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_HELD_ITEM, &lostItem);
         }
+    }
+    */
+
+    for (u32 i = 0; i < PARTY_SIZE; i++)
+    {
+        if (gOriginalItems[i] != ITEM_NONE)
+            SetMonData(&gParties[0][i], MON_DATA_HELD_ITEM, &gOriginalItems[i]);
     }
 }
 

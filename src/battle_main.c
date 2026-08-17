@@ -255,6 +255,8 @@ COMMON_DATA u8 gNumberOfMovesToChoose = 0;
 EWRAM_DATA struct Even_BigSprite gBigSprite1;
 EWRAM_DATA struct Even_BigSprite gBigSprite2;
 
+EWRAM_DATA enum Item gOriginalItems[PARTY_SIZE];
+
 static const struct ScanlineEffectParams sIntroScanlineParams16Bit =
 {
     &REG_BG3HOFS, SCANLINE_EFFECT_DMACNT_16BIT, 1
@@ -671,6 +673,16 @@ static void CB2_InitBattleInternal(void)
                 ZeroMonData(&gParties[0][5 - i]);
             }
         }
+    }
+
+    for (u32 i = 0; i < PARTY_SIZE; i++)
+    {
+        enum Species species = GetMonData(&gParties[0][i], MON_DATA_SPECIES);
+
+        if (species != SPECIES_NONE)
+            gOriginalItems[i] = GetMonData(&gParties[0][i], MON_DATA_HELD_ITEM);
+        else
+            gOriginalItems[i] = ITEM_NONE;
     }
 
     if (IsRiskActive(RISK_PLAYER_STARTS_WITH_BURN))
