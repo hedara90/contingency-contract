@@ -1,0 +1,92 @@
+mapscripts Wuling_MapScripts {}
+
+const player = OBJ_EVENT_ID_PLAYER
+
+script WulingAttendant {
+    lock
+    faceplayer
+    msgbox("This is a message.")
+    callnative(PopulateRandomYesNoChoice)
+    dynmultistack(0, 0, TRUE, 2, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
+    //dynmultichoice(0, 0, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE,
+    //                "Yeppers",
+    //                "Not yet")
+    switch(var(VAR_RESULT)) {
+    case 0:
+        closemessage
+        goto(WulingStartBattle)
+    case 1:
+        closemessage
+        release
+    }
+}
+
+script WulingStartBattle {
+    getobjectfacingdirection(LOCALID_ATTENDANT, VAR_TEMP_1)
+    switch(var(VAR_TEMP_1)) {
+    case 1: // Down
+        applymovement(player, moves(walk_right * 4))
+    case 2: // Up
+        applymovement(player, moves(walk_right, walk_down * 2, walk_right * 3))
+    case 3: // Left
+        applymovement(player, moves(walk_down, walk_right * 5))
+    case 4: // Right
+        applymovement(player, moves(walk_down, walk_right * 3))
+    }
+    waitmovement
+    switch(var(VAR_GAUNTLET_POSITION)) {
+    case 0:
+        applymovement(LOCALID_ONE, moves(walk_down * 2, walk_left * 2))
+        waitmovement
+        trainerbattle_no_intro(TRAINER_TANGTANG, WulingAfter)
+        msgbox("Good battle!")
+        closemessage
+        applymovement(LOCALID_ONE, moves(walk_right * 2, walk_up * 2))
+        waitmovement
+    case 1:
+        applymovement(LOCALID_TWO, moves(walk_down * 1, walk_left * 2))
+        waitmovement
+        trainerbattle_no_intro(TRAINER_MIFU, WulingAfter)
+        msgbox("Good battle!")
+        applymovement(LOCALID_TWO, moves(walk_right * 2, walk_up * 1))
+        waitmovement
+    case 2:
+        applymovement(LOCALID_THREE, moves(walk_up * 1, walk_left * 2))
+        waitmovement
+        callnative(GetRandomArcane)
+        switch(var(VAR_RESULT)) {
+        case 0:
+            trainerbattle_no_intro(TRAINER_ARCANE_SINGLES, WulingAfter)
+        case 1:
+            trainerbattle_no_intro(TRAINER_ARCANE_DOUBLES, WulingAfter)
+        }
+        msgbox("Good battle!")
+        applymovement(LOCALID_THREE, moves(walk_right * 2, walk_down * 1))
+        waitmovement
+    case 3:
+        applymovement(LOCALID_FOUR, moves(walk_up * 2, walk_left * 2))
+        waitmovement
+        trainerbattle_no_intro(TRAINER_FANGYI, WulingAfter)
+        msgbox("Good battle!")
+        applymovement(LOCALID_FOUR, moves(walk_right * 2, walk_down * 2))
+        waitmovement
+    }
+    switch(var(VAR_RESULT)) {
+    case 0: // Lost battle
+        msgbox("wat")
+    case 1: // Won battle
+        addvar(VAR_GAUNTLET_POSITION, 1)
+    }
+    if (var(VAR_GAUNTLET_POSITION) == 4) {
+        // Gauntlet won, give reward and display victory screen
+        // Then return to the main area
+        warpsilent(MAP_CONVENTION_CENTER, 10, 10)
+        waitstate
+    }
+    release
+    end
+}
+
+text WulingAfter {
+    "After battle."
+}

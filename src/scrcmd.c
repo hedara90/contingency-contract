@@ -3468,3 +3468,8 @@ void PopulateRandomYesNoChoice(void)
     noItem.id = 1;
     MultichoiceDynamic_PushElement(noItem);
 }
+
+void GetRandomArcane(void)
+{
+    VarSet(VAR_RESULT, Random32() % 2);
+}

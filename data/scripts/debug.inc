@@ -233,6 +233,8 @@ Debug_EventScript_Script_6::
 
 Debug_EventScript_Script_7::
 	release
+	warpsilent MAP_WULING, 1, 9
+	waitstate
 	end
 
 Debug_EventScript_Script_8::
