@@ -414,3 +414,6 @@ const u16 gMetatileAttributes_hub[] = INCBIN_U16("data/tilesets/primary/hub/meta
 
 const u16 gMetatiles_hubsecondary[] = INCBIN_U16("data/tilesets/secondary/hubsecondary/metatiles.bin");
 const u16 gMetatileAttributes_hubsecondary[] = INCBIN_U16("data/tilesets/secondary/hubsecondary/metatile_attributes.bin");
+
+const u16 gMetatiles_PorytilesManaged_concenter[] = INCBIN_U16("data/tilesets/primary/concenter/porytiles_bin/metatiles.bin");
+const u16 gMetatileAttributes_PorytilesManaged_concenter[] = INCBIN_U16("data/tilesets/primary/concenter/porytiles_bin/metatile_attributes.bin");

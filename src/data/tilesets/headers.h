@@ -1563,3 +1563,14 @@ const struct Tileset gTileset_hubsecondary =
     .metatileAttributes = gMetatileAttributes_hubsecondary,
     .callback = NULL,
 };
+
+const struct Tileset gTileset_concenter =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_PorytilesManaged_concenter,
+    .palettes = gTilesetPalettes_PorytilesManaged_concenter,
+    .metatiles = gMetatiles_PorytilesManaged_concenter,
+    .metatileAttributes = gMetatileAttributes_PorytilesManaged_concenter,
+    .callback = InitTilesetAnim_PorytilesManaged_Concenter,
+};
