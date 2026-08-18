@@ -86,7 +86,7 @@ Double Battle: No
 === TRAINER_ENDMIN ===
 Name: Endmin
 Class: Hiker
-Pic: Hiker
+Pic: Endmin
 Gender: Male
 Music: Hiker
 Double Battle: No
@@ -194,7 +194,7 @@ Tags: Weather Setter
 === TRAINER_PERLICA ===
 Name: Perlica
 Class: Team Aqua
-Pic: Aqua Grunt M
+Pic: Perlica
 Gender: Male
 Music: Aqua
 Double Battle: No
@@ -283,7 +283,7 @@ Level: 50
 === TRAINER_CHEN ===
 Name: Chen
 Class: Team Aqua
-Pic: Aqua Grunt M
+Pic: Chen
 Gender: Male
 Music: Aqua
 Double Battle: No
@@ -370,7 +370,7 @@ Tags: Ace
 === TRAINER_XAIHI ===
 Name: Xaihi
 Class: Team Aqua
-Pic: Aqua Grunt M
+Pic: Xaihi
 Gender: Male
 Music: Aqua
 Double Battle: Yes
@@ -488,7 +488,7 @@ Tags: Weather Setter
 === TRAINER_FANGYI ===
 Name: Fangyi
 Class: Team Aqua
-Pic: Aqua Grunt M
+Pic: Zhuang
 Gender: Male
 Music: Aqua
 Double Battle: No
@@ -578,7 +578,7 @@ Tags: Weather Abuser
 === TRAINER_TANGTANG ===
 Name: Tangtang
 Class: Team Aqua
-Pic: Aqua Grunt M
+Pic: Tangtang
 Gender: Male
 Music: Aqua
 Double Battle: No
@@ -671,7 +671,7 @@ Tags: Weather Abuser
 === TRAINER_MIFU ===
 Name: Mifu
 Class: Team Aqua
-Pic: Aqua Grunt M
+Pic: Mi Fu
 Gender: Male
 Music: Aqua
 Double Battle: No
@@ -779,7 +779,7 @@ Tags: Weather Setter
 === TRAINER_ARCANE_SINGLES ===
 Name: Arcane
 Class: Team Aqua
-Pic: Aqua Grunt M
+Pic: Arcane
 Gender: Male
 Music: Aqua
 Double Battle: No
@@ -841,7 +841,7 @@ Level: 50
 === TRAINER_ARCANE_DOUBLES ===
 Name: Arcane
 Class: Pkmn Breeder
-Pic: Pokemon Breeder F
+Pic: Arcane
 Gender: Female
 Music: Female
 Double Battle: Yes
