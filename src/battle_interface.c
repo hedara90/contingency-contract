@@ -862,19 +862,22 @@ void InitBattlerHealthboxCoords(enum BattlerId battler)
     UpdateSpritePos(gHealthboxSpriteIds[battler], x, y);
 }
 
-static void UpdateLvlInHealthbox(u8 healthboxSpriteId, u8 lvl)
+static void UpdateLvlInHealthbox(u8 spriteId, u8 lvl)
 {
-    return;
     u8 text[16];
-    enum BattlerId battler = gSprites[healthboxSpriteId].hMain_Battler;
-    u32 spriteId = gSprites[healthboxSpriteId].oam.affineParam;
+    enum BattlerId battler = gSprites[spriteId].hMain_Battler;
+    if (IsOnPlayerSide(battler))
+    {
+        return;
+    }
+    u32 spriteId2 = gSprites[spriteId].oam.affineParam;
 
     // Don't print Lv char if mon has a gimmick with an indicator active.
     if (GetIndicatorPalTag(battler) != TAG_NONE)
     {
         ConvertIntToDecimalStringN(text, lvl, STR_CONV_MODE_LEFT_ALIGN, 3);
-        UpdateIndicatorLevelData(healthboxSpriteId, lvl);
-        UpdateIndicatorVisibilityAndType(healthboxSpriteId, FALSE);
+        UpdateIndicatorLevelData(spriteId, lvl);
+        UpdateIndicatorVisibilityAndType(spriteId, FALSE);
     }
     else
     {
@@ -882,20 +885,39 @@ static void UpdateLvlInHealthbox(u8 healthboxSpriteId, u8 lvl)
         text[1] = CHAR_LV_2;
 
         ConvertIntToDecimalStringN(text + 2, lvl, STR_CONV_MODE_LEFT_ALIGN, 3);
-        UpdateIndicatorVisibilityAndType(healthboxSpriteId, TRUE);
+        UpdateIndicatorVisibilityAndType(spriteId, TRUE);
     }
 
-    u32 width = GetStringWidth(FONT_SMALL, text, 0);
-
-    if (IsOnPlayerSide(battler))
+    s16 sprite1Data[5];
+    s16 sprite2Data[5];
+    for (u32 i = 0; i < 5; i++)
     {
-        FillSpriteRectColor(spriteId, 8, 5, 24, 11, HEALTHBOX_BG_INDEX);
-        AddSpriteTextPrinterParameterized6(spriteId, FONT_SMALL, 32 - width, 3, 0, 0, sHealthBoxTextColor, 0, text);
+        sprite1Data[i] = gSprites[spriteId].data[i];
+        sprite2Data[i] = gSprites[spriteId2].data[i];
     }
-    else
+
+    u8 spriteIds[2] =
     {
-        FillSpriteRectColor(spriteId, 0, 5, 24, 11, HEALTHBOX_BG_INDEX);
-        AddSpriteTextPrinterParameterized6(spriteId, FONT_SMALL, 24 - width, 3, 0, 0, sHealthBoxTextColor, 0, text);
+        spriteId,
+        spriteId2,
+    };
+
+    const u32 *spriteSrc[2] =
+    {
+        &sHealthboxOpponent[0],
+        &sHealthboxOpponent[0x100],
+    };
+
+    SetupSpritesForTextPrinting(spriteIds, spriteSrc, 2, 1);
+
+    FillSpriteRectSprite(spriteId, 36, 14, 20, 10);
+
+    AddSpriteTextPrinterParameterized6(spriteId, FONT_SMALL, 36, 12, 0, 0, sHealthBoxTextColor, 0, text);
+
+    for (u32 i = 0; i < 5; i++)
+    {
+        gSprites[spriteId].data[i] = sprite1Data[i];
+        gSprites[spriteId2].data[i] = sprite2Data[i];
     }
 }
 
