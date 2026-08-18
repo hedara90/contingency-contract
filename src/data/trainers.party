@@ -83,149 +83,825 @@ Gender: Male
 Music: Male
 Double Battle: No
 
-=== TRAINER_SAWYER_1 ===
-Name: SAWYER
+=== TRAINER_ENDMIN ===
+Name: Endmin
 Class: Hiker
 Pic: Hiker
 Gender: Male
 Music: Hiker
 Double Battle: No
-AI: Basic Trainer
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Singles
+Pool Pick Functions: Default
 
-Geodude
-Level: 21
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Samurott-Hisui @ Black Glasses  
+Ability: Sharpness  
+Level: 50  
+Tags: Lead / Weather Setter
+- Ceaseless Edge  
+- Razor Shell  
+- Aqua Jet  
+- Knock Off  
 
-=== TRAINER_GRUNT_AQUA_HIDEOUT_1 ===
-Name: GRUNT
+Diancie @ Babiri Berry  
+Ability: Clear Body  
+Level: 50  
+Tags: Weather Setter
+- Diamond Storm  
+- Moonblast  
+- Stealth Rock  
+- Earth Power  
+
+Druddigon @ Leftovers  
+Ability: Rough Skin  
+Level: 50  
+Tags: Weather Abuser
+- Stealth Rock  
+- Dragon Tail  
+- Glare  
+- Iron Head  
+
+Excadrill @ Life Orb  
+Ability: Mold Breaker  
+Level: 50  
+- Swords Dance  
+- Rapid Spin  
+- Earthquake  
+- Iron Head  
+
+Pangoro @ Leftovers  
+Ability: Scrappy  
+Level: 50  
+Tags: Weather Abuser
+- Circle Throw  
+- Bulk Up  
+- Rest  
+- Sleep Talk  
+
+Muk-Alola @ Assault Vest  
+Ability: Poison Touch  
+Level: 50  
+- Knock Off  
+- Poison Jab  
+- Fire Punch  
+- Pursuit  
+
+Kleavor @ Choice Scarf  
+Ability: Sharpness  
+Level: 50  
+Tags: Lead / Weather Setter
+- Stone Axe  
+- U-turn  
+- X-Scissor  
+- Close Combat  
+
+Kleavor @ Choice Scarf  
+Ability: Sharpness  
+Level: 50  
+Tags: Weather Setter
+- Stone Axe  
+- U-turn  
+- X-Scissor  
+- Close Combat  
+
+Weezing-Galar @ Black Sludge  
+Ability: Levitate  
+Level: 50  
+- Will-O-Wisp  
+- Flamethrower  
+- Strange Steam  
+- Pain Split  
+
+Skarmory @ Rocky Helmet  
+Ability: Sturdy  
+Level: 50  
+Tags: Weather Abuser
+- Whirlwind  
+- Roost  
+- Spikes  
+- Brave Bird  
+
+Samurott-Hisui @ Black Glasses  
+Ability: Sharpness  
+Level: 50  
+Tags: Weather Setter
+- Ceaseless Edge  
+- Razor Shell  
+- Aqua Jet  
+- Knock Off  
+
+=== TRAINER_PERLICA ===
+Name: Perlica
 Class: Team Aqua
 Pic: Aqua Grunt M
 Gender: Male
 Music: Aqua
 Double Battle: No
-AI: Check Bad Move
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Doubles
+Pool Pick Functions: Default
 
-Poochyena
-Level: 32
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Stakataka @ Custap Berry  
+Ability: Beast Boost  
+Level: 50  
+Tags: Lead
+- Stealth Rock  
+- Heavy Slam  
+- Body Press  
+- Stone Edge  
 
-=== TRAINER_GRUNT_AQUA_HIDEOUT_2 ===
-Name: GRUNT
+Rapidash-Galar @ Terrain Extender  
+Ability: Psychic Surge  
+Level: 50  
+- Psyshield Bash  
+- Play Rough  
+- High Horsepower  
+- Morning Sun 
+
+Oricorio-Pom-Pom @ Leftovers  
+Ability: Dancer  
+Level: 50  
+Tags: Weather Abuser
+- Quiver Dance  
+- Revelation Dance  
+- Air Slash  
+- Roost  
+
+Cyclizar @ Eject Button  
+Ability: Regenerator  
+Level: 50  
+Tags: Weather Abuser
+- U-turn  
+- Knock Off  
+- Draco Meteor  
+- Double-Edge  
+
+Nidoking (M) @ Life Orb  
+Ability: Sheer Force  
+Level: 50  
+- Earth Power  
+- Sludge Bomb  
+- Thunderbolt  
+- Flamethrower  
+
+Minior @ Power Herb  
+Ability: Shields Down  
+Level: 50  
+Tags: Weather Setter
+- Psychic  
+- Charge Beam  
+- Earth Power  
+- Meteor Beam  
+
+Golem-Alola @ Choice Band  
+Ability: Magnet Pull  
+Level: 50  
+Tags: Weather Abuser
+- Earthquake  
+- Fire Punch  
+- Stone Edge  
+- Volt Switch   
+
+Hydrapple @ Assault Vest  
+Ability: Regenerator  
+Level: 50  
+- Earth Power  
+- Dragon Pulse  
+- Giga Drain  
+- Hydro Pump  
+
+Iron Crown @ Wise Glasses  
+Ability: Quark Drive  
+Level: 50  
+- Tachyon Cutter  
+- Psyshock  
+- Volt Switch  
+- Psyshock  
+
+=== TRAINER_CHEN ===
+Name: Chen
 Class: Team Aqua
 Pic: Aqua Grunt M
 Gender: Male
 Music: Aqua
 Double Battle: No
-AI: Check Bad Move
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Basic
+Pool Pick Functions: Default
 
-Zubat
-Level: 31
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Scyther @ Eviolite  
+Ability: Technician  
+Level: 50  
+- Swords Dance  
+- Dual Wingbeat  
+- Close Combat  
+- U-turn  
 
-Carvanha
-Level: 31
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Espathra @ Petaya Berry  
+Ability: Speed Boost  
+Level: 50  
+- Lumina Crash  
+- Dazzling Gleam  
+- Substitute  
+- Baton Pass  
 
-=== TRAINER_GRUNT_AQUA_HIDEOUT_3 ===
-Name: GRUNT
+Zangoose @ Toxic Orb  
+Ability: Toxic Boost  
+Level: 50  
+- Crush Claw  
+- Close Combat  
+- Knock Off  
+- Quick Attack  
+
+Chien-Pao  
+Ability: Sword of Ruin  
+Level: 50  
+Tags: Ace
+- Ice Spinner  
+- Crunch  
+- Sacred Sword  
+- Sucker Punch  
+
+Jolteon @ Throat Spray  
+Ability: Volt Absorb  
+Level: 50  
+- Metal Sound  
+- Bug Buzz  
+- Thunderbolt  
+- Shadow Ball  
+
+Decidueye-Hisui @ Coba Berry  
+Ability: Scrappy  
+Level: 50  
+- Triple Arrows  
+- Leaf Blade  
+- Knock Off  
+- Victory Dance  
+
+Haxorus @ Expert Belt  
+Ability: Intimidate  
+Level: 50  
+- Outrage  
+- Poison Jab  
+- Scale Shot  
+- Iron Head  
+
+Kartana  
+Ability: Beast Boost  
+Level: 50  
+Tags: Ace
+- Leaf Blade  
+- Sacred Sword  
+- Smart Strike  
+- Psycho Cut  
+
+Keldeo  
+Ability: Justified  
+Level: 50
+Tags: Ace
+- Secret Sword  
+- Surf  
+- Flip Turn  
+- Vacuum Wave  
+
+=== TRAINER_XAIHI ===
+Name: Xaihi
+Class: Team Aqua
+Pic: Aqua Grunt M
+Gender: Male
+Music: Aqua
+Double Battle: Yes
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Doubles
+Pool Pick Functions: Default
+
+Porygon2 @ Eviolite  
+Ability: Download  
+Level: 50  
+Tags: Lead / Weather Setter
+- Trick Room  
+- Recover  
+- Ice Beam  
+- Thunderbolt  
+
+Avalugg-Hisui @ Custap Berry  
+Ability: Sturdy  
+Level: 50  
+Tags: Weather Abuser
+- Body Press  
+- Recover  
+- Mountain Gale  
+- Icicle Spear  
+
+Rotom-Wash @ Choice Scarf  
+Ability: Levitate  
+Level: 50  
+- Hydro Pump  
+- Volt Switch  
+- Will-O-Wisp  
+- Trick  
+
+Reuniclus @ Life Orb  
+Ability: Magic Guard  
+Level: 50  
+Tags: Lead / Weather Setter
+- Trick Room  
+- Psyshock  
+- Recover  
+- Focus Blast  
+
+Clefable @ Leftovers  
+Ability: Magic Guard  
+Level: 50  
+- Follow Me  
+- Moonblast  
+- Thunderbolt  
+- Life Dew  
+
+Metagross @ Iron Ball  
+Ability: Analytic  
+Level: 50  
+Tags: Weather Abuser
+- Hammer Arm  
+- Bullet Punch  
+- Fling  
+- Psychic Fangs  
+
+Mawile @ Shuca Berry  
+Ability: Huge Power  
+Level: 50  
+Tags: Weather Abuser
+- Sucker Punch  
+- Iron Head  
+- Play Rough  
+- Swords Dance  
+
+Farigiraf @ Sitrus Berry  
+Ability: Armor Tail  
+Level: 50  
+Tags: Lead / Weather Setter
+- Trick Room  
+- Hyper Voice  
+- Twin Beam  
+- Thunderbolt  
+
+Iron Hands @ Punching Glove  
+Ability: Quark Drive  
+Level: 50  
+Tags: Weather Abuser
+- Drain Punch  
+- Thunder Punch  
+- Ice Punch  
+- Electric Terrain 
+
+Porygon2 @ Eviolite  
+Ability: Download  
+Level: 50  
+Tags: Weather Setter
+- Trick Room  
+- Recover  
+- Ice Beam  
+- Thunderbolt  
+
+Farigiraf @ Sitrus Berry  
+Ability: Armor Tail  
+Level: 50  
+Tags: Weather Setter
+- Trick Room  
+- Hyper Voice  
+- Twin Beam  
+- Thunderbolt  
+
+Reuniclus @ Life Orb  
+Ability: Magic Guard  
+Level: 50  
+Tags: Weather Setter
+- Trick Room  
+- Psyshock  
+- Recover  
+- Focus Blast 
+
+=== TRAINER_FANGYI ===
+Name: Fangyi
 Class: Team Aqua
 Pic: Aqua Grunt M
 Gender: Male
 Music: Aqua
 Double Battle: No
-AI: Check Bad Move
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Doubles
+Pool Pick Functions: Default
 
-Zubat
-Level: 32
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Tapu Koko @ Terrain Extender  
+Ability: Electric Surge  
+Level: 50  
+Tags: Lead
+- Volt Switch  
+- U-turn  
+- Dazzling Gleam  
+- Thunderbolt   
 
-=== TRAINER_GRUNT_AQUA_HIDEOUT_4 ===
-Name: GRUNT
+Milotic @ Leftovers  
+Ability: Marvel Scale  
+Level: 50  
+Tags: Weather Setter
+- Terrain Pulse  
+- Recover  
+- Scald  
+- Ice Beam  
+
+Sceptile @ Electric Seed  
+Ability: Unburden  
+Level: 50  
+Tags: Weather Abuser
+- Swords Dance  
+- Acrobatics  
+- Leaf Blade  
+- Earthquake  
+
+Scizor @ Choice Band  
+Ability: Technician  
+Level: 50  
+- U-turn  
+- Bullet Punch  
+- Knock Off  
+- Superpower  
+
+Raichu-Alola @ Focus Sash  
+Ability: Surge Surfer  
+Level: 50  
+Tags: Weather Abuser
+- Rising Voltage  
+- Psyshock  
+- Volt Switch  
+- Endeavor  
+
+Bellibolt @ Rocky Helmet  
+Ability: Electromorphosis  
+Level: 50  
+Tags: Weather Setter
+- Soak  
+- Parabolic Charge  
+- Slack Off  
+- Toxic  
+
+Archaludon @ Power Herb  
+Ability: Stamina  
+Level: 50  
+- Electro Shot  
+- Body Press  
+- Dragon Pulse  
+- Flash Cannon  
+
+Gothitelle @ Choice Specs  
+Ability: Shadow Tag  
+Level: 50  
+- Energy Ball  
+- Draining Kiss  
+- Psychic  
+- Shadow Ball  
+
+Iron Jugulis @ Yache Berry  
+Ability: Quark Drive  
+Level: 50  
+Tags: Weather Abuser
+- Dark Pulse  
+- Earth Power  
+- Hurricane  
+- Substitute 
+
+=== TRAINER_TANGTANG ===
+Name: Tangtang
 Class: Team Aqua
 Pic: Aqua Grunt M
 Gender: Male
 Music: Aqua
 Double Battle: No
-AI: Check Bad Move
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Doubles
+Pool Pick Functions: Default
 
-Carvanha
-Level: 32
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Greninja @ Focus Sash  
+Ability: Protean  
+Level: 50  
+Tags: Lead
+- Toxic Spikes  
+- Water Shuriken  
+- U-turn  
+- Ice Beam  
 
-=== TRAINER_GRUNT_SEAFLOOR_CAVERN_1 ===
-Name: GRUNT
+Zoroark-Hisui @ Choice Specs  
+Ability: Illusion  
+Level: 50  
+Tags: Weather Abuser
+- Hex  
+- Hyper Voice  
+- Ice Beam  
+- Sludge Bomb  
+
+Glaceon @ Leftovers  
+Ability: Ice Body  
+Level: 50  
+Tags: Weather Setter 
+- Sacred Ice
+- Freeze-Dry  
+- Hex  
+- Ice Wisps
+
+Kingambit @ Shuca Berry  
+Ability: Supreme Overlord  
+Level: 50  
+Tags: Ace
+- Kowtow Cleave  
+- Sucker Punch  
+- Iron Head  
+- Low Kick  
+
+Gliscor @ Toxic Orb  
+Ability: Poison Heal  
+Level: 50  
+Tags: Weather Setter
+- Toxic  
+- Earthquake  
+- U-turn  
+- Dual Wingbeat  
+
+Weavile  
+Ability: Magician  
+Level: 50  
+Tags: Weather Abuser
+- Triple Axel  
+- Low Kick  
+- Acrobatics  
+- Night Slash  
+
+Froslass (F) @ Focus Sash  
+Ability: Serene Grace  
+Level: 50  
+Tags: Weather Setter
+- Ice Beam  
+- Hex  
+- Destiny Bond  
+- Will-O-Wisp  
+
+Sneasler @ White Herb  
+Ability: Poison Touch  
+Level: 50  
+Tags: Weather Abuser
+- Dire Claw  
+- Close Combat  
+- U-turn  
+- Fake Out  
+
+Toxapex @ Black Sludge  
+Ability: Merciless  
+Level: 50  
+Tags: Weather Abuser
+- Liquidation  
+- Knock Off  
+- Baneful Bunker  
+- Recover  
+
+=== TRAINER_MIFU ===
+Name: Mifu
 Class: Team Aqua
 Pic: Aqua Grunt M
 Gender: Male
 Music: Aqua
 Double Battle: No
-AI: Check Bad Move
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Doubles
+Pool Pick Functions: Default
 
-Poochyena
-Level: 36
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Araquanid @ Red Card  
+Ability: Water Bubble  
+Level: 50  
+Tags: Lead / Weather Setter
+- Sticky Web  
+- Liquidation  
+- Lunge  
+- Mirror Coat 
 
-=== TRAINER_GRUNT_SEAFLOOR_CAVERN_2 ===
-Name: GRUNT
+Lucario @ Black Belt  
+Ability: Inner Focus  
+Level: 50  
+- Aura Sphere  
+- Flash Cannon  
+- Vacuum Wave  
+- Nasty Plot  
+
+Rampardos @ Life Orb  
+Ability: Sheer Force  
+Level: 50  
+Tags: Weather Abuser
+- Head Smash  
+- Earthquake  
+- Breaking Swipe  
+- Fire Punch  
+
+Darmanitan @ Charcoal  
+Ability: Sheer Force  
+Level: 50  
+Tags: Weather Abuser
+- Flare Blitz  
+- Hammer Arm  
+- U-turn  
+- Rock Slide  
+
+Ursaluna-Bloodmoon (M) @ Quick Claw  
+Ability: Mind's Eye  
+Level: 50  
+- Blood Moon  
+- Body Press  
+- Earth Power  
+- Vacuum Wave  
+
+Conkeldurr @ Flame Orb  
+Ability: Guts  
+Level: 50  
+Tags: Weather Abuser
+- Drain Punch  
+- Bullet Punch  
+- Knock Off  
+- Facade  
+
+Masquerain @ Focus Sash  
+Ability: Intimidate  
+Level: 50  
+Tags: Lead / Weather Setter
+- Sticky Web  
+- Air Slash  
+- Bug Buzz  
+- Memento   
+
+Melmetal @ Punching Glove  
+Ability: Iron Fist  
+Level: 50  
+Tags: Weather Abuser
+- Double Iron Bash  
+- Thunder Punch  
+- Ice Punch  
+- High Horsepower   
+
+Kommo-o @ Throat Spray  
+Ability: Bulletproof  
+Level: 50  
+- Clangorous Soul  
+- Boomburst  
+- Clanging Scales  
+- Drain Punch  
+
+Araquanid @ Red Card  
+Ability: Water Bubble  
+Level: 50  
+Tags: Weather Setter
+- Sticky Web  
+- Liquidation  
+- Lunge  
+- Mirror Coat 
+
+Masquerain @ Focus Sash  
+Ability: Intimidate  
+Level: 50  
+Tags: Weather Setter
+- Sticky Web  
+- Air Slash  
+- Bug Buzz  
+- Memento 
+
+=== TRAINER_ARCANE_SINGLES ===
+Name: Arcane
 Class: Team Aqua
 Pic: Aqua Grunt M
 Gender: Male
 Music: Aqua
 Double Battle: No
-AI: Check Bad Move
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Doubles
+Pool Pick Functions: Default
 
-Carvanha
-Level: 36
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Vikavolt @ Heavy-Duty Boots  
+Ability: Levitate  
+Level: 50  
+Tags: Lead
+- Sticky Web  
+- Volt Switch  
+- Bug Buzz  
+- Thunderbolt  
 
-=== TRAINER_GRUNT_SEAFLOOR_CAVERN_3 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
+Braviary (M) @ Leftovers  
+Ability: Defiant  
+Level: 50  
+- Bulk Up  
+- Roost  
+- Brave Bird  
+- Thunderous Kick  
 
-Zubat
-Level: 36
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Clawitzer @ Wise Glasses  
+Ability: Mega Launcher  
+Level: 50  
+Tags: Ace
+- Aura Sphere  
+- Water Pulse  
+- Dragon Pulse  
+- Dark Pulse  
 
-=== TRAINER_GABRIELLE_1 ===
-Name: GABRIELLE
+Mimikyu @ Red Card  
+Ability: Disguise  
+Level: 50  
+- Swords Dance  
+- Shadow Claw  
+- Play Rough  
+- Shadow Sneak  
+
+Porygon-Z @ Choice Specs  
+Ability: Adaptability  
+Level: 50  
+- Thunderbolt  
+- Ice Beam  
+- Tri Attack  
+- Hyper Beam  
+
+Ogerpon-Hearthflame (F) @ Hearthflame Mask  
+Ability: Mold Breaker  
+Level: 50  
+- Ivy Cudgel  
+- Power Whip  
+- Swords Dance  
+- Knock Off  
+
+=== TRAINER_ARCANE_DOUBLES ===
+Name: Arcane
 Class: Pkmn Breeder
 Pic: Pokemon Breeder F
 Gender: Female
 Music: Female
-Double Battle: No
-AI: Check Bad Move
+Double Battle: Yes
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Doubles
+Pool Pick Functions: Default
 
-Skitty
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Corviknight @ Leftovers  
+Ability: Mirror Armor  
+Level: 50  
+Tags: Lead
+- Tailwind  
+- Body Press  
+- Brave Bird  
+- Roost  
 
-Poochyena
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Vikavolt @ Choice Specs  
+Ability: Levitate  
+Level: 50  
+Tags: Lead
+- Volt Switch  
+- Bug Buzz  
+- Thunderbolt  
+- Giga Drain  
 
-Zigzagoon
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Arcanine @ Sitrus Berry  
+Ability: Intimidate  
+Level: 50  
+- Snarl  
+- Morning Sun  
+- Flare Blitz  
+- Extreme Speed  
 
-Lotad
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Sylveon @ Wise Glasses  
+Ability: Pixilate  
+Level: 50  
+- Hyper Voice  
+- Shadow Ball  
+- Psyshock  
+- Draining Kiss  
 
-Seedot
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Porygon2 @ Eviolite  
+Ability: Download  
+Level: 50  
+- Icy Wind  
+- Tri Attack  
+- Foul Play  
+- Recover  
 
-Taillow
-Level: 26
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Ogerpon-Wellspring (F) @ Wellspring Mask  
+Ability: Water Absorb  
+Level: 50  
+- Helping Hand  
+- Follow Me  
+- Ivy Cudgel  
+- Horn Leech  
 
-=== TRAINER_GRUNT_PETALBURG_WOODS ===
-Name: GRUNT
+=== TRAINER_GILBERTA ===
+Name: Gilberta
 Class: Team Aqua
 Pic: Aqua Grunt M
 Gender: Male
