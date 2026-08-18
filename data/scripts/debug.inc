@@ -226,6 +226,8 @@ Debug_EventScript_Script_5::
 	end
 
 Debug_EventScript_Script_6::
+	warpsilent MAP_CRISIS_TEAM, 1, 9
+	waitstate
 	release
 	end
 

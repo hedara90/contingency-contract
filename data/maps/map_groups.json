@@ -75,7 +75,8 @@
     "gMapGroup_IndoorTwoIslandRoute_Frlg",
     "gMapGroup_IndoorSixIslandRoute_Frlg",
     "gMapGroup_IndoorSevenIslandRoute_Frlg",
-    "gMapGroup_CC"
+    "gMapGroup_CC",
+    "gMapGroup_Gauntlets"
   ],
   "gMapGroup_TownsAndRoutes": [
     "PetalburgCity",
@@ -1164,5 +1165,8 @@
   ],
   "gMapGroup_CC": [
     "ConventionCenter"
+  ],
+  "gMapGroup_Gauntlets": [
+    "CrisisTeam"
   ]
 }

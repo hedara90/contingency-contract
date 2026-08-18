@@ -3422,3 +3422,49 @@ bool8 ScrCmd_getbraillestringwidth(struct ScriptContext * ctx)
     gSpecialVar_0x8004 = GetStringWidth(FONT_BRAILLE, msg, -1);
     return FALSE;
 }
+
+//const u8 sYesString[] = _("Yuppers!");
+//const u8 sNoString[] = _("Nope.");
+
+const u8 *const sYesStrings[] =
+{
+    COMPOUND_STRING("Yuppers!"),
+    COMPOUND_STRING("Of course!"),
+};
+
+const u8 *const sNoStrings[] =
+{
+    COMPOUND_STRING("Nope."),
+    COMPOUND_STRING("Not quite…"),
+};
+
+void PopulateRandomYesNoChoice(void)
+{
+    u8 *yesBuffer = Alloc(100);
+    struct ListMenuItem yesItem;
+    u32 index = 0;
+    const u8 *yesString = sYesStrings[Random32() % (ARRAY_COUNT(sYesStrings))];
+    while (yesString[index] != EOS)
+    {
+        yesBuffer[index] = yesString[index];
+        index++;
+    }
+    yesBuffer[index] = EOS;
+    yesItem.name = yesBuffer;
+    yesItem.id = 0;
+    MultichoiceDynamic_PushElement(yesItem);
+
+    u8 *noBuffer = Alloc(100);
+    struct ListMenuItem noItem;
+    index = 0;
+    const u8 *noString = sNoStrings[Random32() % (ARRAY_COUNT(sNoStrings))];
+    while (noString[index] != EOS)
+    {
+        noBuffer[index] = noString[index];
+        index++;
+    }
+    noBuffer[index] = EOS;
+    noItem.name = noBuffer;
+    noItem.id = 1;
+    MultichoiceDynamic_PushElement(noItem);
+}
