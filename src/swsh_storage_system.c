@@ -1149,7 +1149,7 @@ static s16 UNUSED StorageSystemGetNextMonIndex(struct BoxPokemon *box, s8 startI
 //------------------------------------------------------------------------------
 
 // First tile index (local to char block 2) of the 4x4 box icon tile block
-#define CHOOSE_BOX_GRID_TILE_BASE  47
+#define CHOOSE_BOX_GRID_TILE_BASE  111
 // Top-left tilemap column/row of the choose-box grid (pixels 88,64 / 8)
 #define CHOOSE_BOX_GRID_TILE_COL   9
 #define CHOOSE_BOX_GRID_TILE_ROW   6
