@@ -38,7 +38,7 @@ script CrisisTeamStartBattle {
     case 0:
         applymovement(LOCALID_ONE, moves(walk_down * 2, walk_left * 2))
         waitmovement
-        trainerbattle_no_intro(TRAINER_TIANA, CrisisTeamAfter)
+        trainerbattle_no_intro(TRAINER_XAIHI, CrisisTeamAfter)
         msgbox("Good battle!")
         closemessage
         applymovement(LOCALID_ONE, moves(walk_right * 2, walk_up * 2))
@@ -46,15 +46,24 @@ script CrisisTeamStartBattle {
     case 1:
         applymovement(LOCALID_TWO, moves(walk_down * 1, walk_left * 2))
         waitmovement
-        trainerbattle_no_intro(TRAINER_TIANA, CrisisTeamAfter)
+        trainerbattle_no_intro(TRAINER_CHEN, CrisisTeamAfter)
+        msgbox("Good battle!")
+        applymovement(LOCALID_TWO, moves(walk_right * 2, walk_up * 1))
+        waitmovement
     case 2:
         applymovement(LOCALID_THREE, moves(walk_up * 1, walk_left * 2))
         waitmovement
-        trainerbattle_no_intro(TRAINER_TIANA, CrisisTeamAfter)
+        trainerbattle_no_intro(TRAINER_PERLICA, CrisisTeamAfter)
+        msgbox("Good battle!")
+        applymovement(LOCALID_THREE, moves(walk_right * 2, walk_down * 1))
+        waitmovement
     case 3:
         applymovement(LOCALID_FOUR, moves(walk_up * 2, walk_left * 2))
         waitmovement
-        trainerbattle_no_intro(TRAINER_TIANA, CrisisTeamAfter)
+        trainerbattle_no_intro(TRAINER_ENDMIN, CrisisTeamAfter)
+        msgbox("Good battle!")
+        applymovement(LOCALID_FOUR, moves(walk_right * 2, walk_down * 2))
+        waitmovement
     }
     switch(var(VAR_RESULT)) {
     case 0: // Lost battle
@@ -62,7 +71,14 @@ script CrisisTeamStartBattle {
     case 1: // Won battle
         addvar(VAR_GAUNTLET_POSITION, 1)
     }
+    if (var(VAR_GAUNTLET_POSITION) == 4) {
+        // Gauntlet won, give reward and display victory screen
+        // Then return to the main area
+        warpsilent(MAP_CONVENTION_CENTER, 10, 10)
+        waitstate
+    }
     release
+    end
 }
 
 text CrisisTeamAfter {

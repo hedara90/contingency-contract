@@ -3043,6 +3043,8 @@ static const u8 *BattleStringGetOpponentClassByTrainerId(u16 trainerId)
 // This ensures that custom Enigma Berry names will fit in the text buffer at the top of BattleStringExpandPlaceholders.
 STATIC_ASSERT(BERRY_NAME_LENGTH + ARRAY_COUNT(sText_BerrySuffix) <= ITEM_NAME_LENGTH, BerryNameTooLong);
 
+static const u8 sCosplayer[] = _("cosplayer");
+
 u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
 {
     u32 dstID = 0; // if they used dstID, why not use srcID as well?
@@ -3264,14 +3266,15 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 break;
             case B_TXT_TRAINER1_NAME_WITH_CLASS: // trainer1 name with trainer class
                 toCpy = textStart;
-                classString = BattleStringGetOpponentClassByTrainerId(TRAINER_BATTLE_PARAM.opponentA);
-                while (classString[classLength] != EOS)
-                {
-                    textStart[classLength] = classString[classLength];
-                    classLength++;
-                }
-                textStart[classLength] = CHAR_SPACE;
-                textStart += classLength + 1;
+                //classString = BattleStringGetOpponentClassByTrainerId(TRAINER_BATTLE_PARAM.opponentA);
+                classString = sCosplayer;
+                //while (classString[classLength] != EOS)
+                //{
+                //    textStart[classLength] = classString[classLength];
+                //    classLength++;
+                //}
+                //textStart[classLength] = CHAR_SPACE;
+                //textStart += classLength + 1;
                 nameString = BattleStringGetOpponentNameByTrainerId(TRAINER_BATTLE_PARAM.opponentA, textStart, multiplayerId, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT));
                 if (nameString != textStart)
                 {
@@ -3282,6 +3285,14 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                     }
                     textStart[nameLength] = EOS;
                 }
+                textStart[nameLength] = CHAR_SPACE;
+                textStart += nameLength + 1;
+                while (classString[classLength] != EOS)
+                {
+                    textStart[classLength] = classString[classLength];
+                    classLength++;
+                }
+                textStart[classLength] = EOS;
                 break;
             case B_TXT_LINK_PLAYER_NAME: // link player name
                 toCpy = gLinkPlayers[multiplayerId].name;
