@@ -69,3 +69,5 @@ __pycache__
 *.big
 
 data/maps/ConventionCenter/scripts.inc
+data/maps/CrisisTeam/scripts.inc
+data/maps/Wuling/scripts.inc

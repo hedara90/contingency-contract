@@ -1743,3 +1743,7 @@ EventScript_GiveGachaMon::
 	.include "data/scripts/wild_encounter.inc"
 
 	.include "data/maps/ConventionCenter/scripts.inc"
+
+	.include "data/maps/CrisisTeam/scripts.inc"
+
+	.include "data/maps/Wuling/scripts.inc"
