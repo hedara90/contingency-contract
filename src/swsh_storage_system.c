@@ -5599,6 +5599,11 @@ static bool8 ScrollToBox(void)
             return TRUE;
 
         UpdateBoxTitle(sStorage->scrollToBoxId);
+        for (u32 i = 0; i < IN_BOX_COUNT; i++)
+        {
+            if (sStorage->boxMonsSprites[i])
+                sStorage->boxMonsSprites[i]->oam.priority = 1;
+        }
         return FALSE;
     }
 
