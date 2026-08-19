@@ -925,6 +925,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .teachableLearnset = sStaraptorTeachableLearnset,
         .formSpeciesIdTable = sStaraptorFormSpeciesIdTable,
         .formChangeTable = sStaraptorFormChangeTable,
+        .rarity = 4,
     },
 
 #if P_GEN_9_MEGA_EVOLUTIONS
@@ -1735,6 +1736,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         )
         .levelUpLearnset = sRampardosLevelUpLearnset,
         .teachableLearnset = sRampardosTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_CRANIDOS
 
@@ -4451,6 +4453,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .teachableLearnset = sGarchompTeachableLearnset,
         .formSpeciesIdTable = sGarchompFormSpeciesIdTable,
         .formChangeTable = sGarchompFormChangeTable,
+        .rarity = 6,
     },
 
 #if P_MEGA_EVOLUTIONS
@@ -5359,6 +5362,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         )
         .levelUpLearnset = sToxicroakLevelUpLearnset,
         .teachableLearnset = sToxicroakTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_CROAGUNK
 
@@ -5932,6 +5936,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .teachableLearnset = sRotomTeachableLearnset,
         .formSpeciesIdTable = sRotomFormSpeciesIdTable,
         .formChangeTable = sRotomFormChangeTable,
+        .rarity = 5,
     },
 
 #if P_UPDATED_EXP_YIELDS >= GEN_7
@@ -6015,6 +6020,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .teachableLearnset = sRotomTeachableLearnset,
         .formSpeciesIdTable = sRotomFormSpeciesIdTable,
         .formChangeTable = sRotomFormChangeTable,
+        .rarity = 5,
     },
 
     [SPECIES_ROTOM_WASH] =
@@ -6091,6 +6097,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .teachableLearnset = sRotomTeachableLearnset,
         .formSpeciesIdTable = sRotomFormSpeciesIdTable,
         .formChangeTable = sRotomFormChangeTable,
+        .rarity = 5,
     },
 
     [SPECIES_ROTOM_FROST] =
@@ -6165,6 +6172,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .teachableLearnset = sRotomTeachableLearnset,
         .formSpeciesIdTable = sRotomFormSpeciesIdTable,
         .formChangeTable = sRotomFormChangeTable,
+        .rarity = 5,
     },
 
     [SPECIES_ROTOM_FAN] =
@@ -6264,6 +6272,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .teachableLearnset = sRotomTeachableLearnset,
         .formSpeciesIdTable = sRotomFormSpeciesIdTable,
         .formChangeTable = sRotomFormChangeTable,
+        .rarity = 5,
     },
 
     [SPECIES_ROTOM_MOW] =
@@ -6341,6 +6350,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .teachableLearnset = sRotomTeachableLearnset,
         .formSpeciesIdTable = sRotomFormSpeciesIdTable,
         .formChangeTable = sRotomFormChangeTable,
+        .rarity = 5,
     },
 #endif //P_FAMILY_ROTOM
 
@@ -6959,6 +6969,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .teachableLearnset = sHeatranTeachableLearnset,
         .formSpeciesIdTable = sHeatranFormSpeciesIdTable,
         .formChangeTable = sHeatranFormChangeTable,
+        .rarity = 6,
     },
 
 #if P_GEN_9_MEGA_EVOLUTIONS

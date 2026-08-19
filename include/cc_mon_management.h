@@ -47,6 +47,8 @@ enum Species RollGachaMon(enum Banner banner, u32 *star);
 void DoSinglePull(enum Banner banner);
 void Do10Pull(enum Banner banner);
 
+bool32 CheckRarities(void);
+
 extern struct GachaResult gGachaResults[10];
 
 #endif

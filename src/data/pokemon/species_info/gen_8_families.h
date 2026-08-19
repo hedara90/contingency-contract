@@ -1110,6 +1110,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
         .teachableLearnset = sCorviknightTeachableLearnset,
         .formSpeciesIdTable = sCorviknightFormSpeciesIdTable,
         .formChangeTable = sCorviknightFormChangeTable,
+        .rarity = 5,
     },
 
 #if P_GIGANTAMAX_FORMS
@@ -1690,6 +1691,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
         )
         .levelUpLearnset = sEldegossLevelUpLearnset,
         .teachableLearnset = sEldegossTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_GOSSIFLEUR
 
@@ -1821,6 +1823,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
         )
         .levelUpLearnset = sDubwoolLevelUpLearnset,
         .teachableLearnset = sDubwoolTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_WOOLOO
 
@@ -4695,6 +4698,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
         .teachableLearnset = sGrimmsnarlTeachableLearnset,
         .formSpeciesIdTable = sGrimmsnarlFormSpeciesIdTable,
         .formChangeTable = sGrimmsnarlFormChangeTable,
+        .rarity = 4,
     },
 
 #if P_GIGANTAMAX_FORMS
@@ -6799,6 +6803,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
         )
         .levelUpLearnset = sDragapultLevelUpLearnset,
         .teachableLearnset = sDragapultTeachableLearnset,
+        .rarity = 6,
     },
 #endif //P_FAMILY_DREEPY
 

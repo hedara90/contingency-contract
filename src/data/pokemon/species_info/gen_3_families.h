@@ -2897,6 +2897,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .teachableLearnset = sGardevoirTeachableLearnset,
         .formSpeciesIdTable = sGardevoirFormSpeciesIdTable,
         .formChangeTable = sGardevoirFormChangeTable,
+        .rarity = 5,
     },
 
 #if P_MEGA_EVOLUTIONS
@@ -3282,6 +3283,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         )
         .levelUpLearnset = sMasquerainLevelUpLearnset,
         .teachableLearnset = sMasquerainTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_SURSKIT
 
@@ -3444,6 +3446,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         )
         .levelUpLearnset = sBreloomLevelUpLearnset,
         .teachableLearnset = sBreloomTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_SHROOMISH
 
@@ -5356,6 +5359,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .teachableLearnset = sMedichamTeachableLearnset,
         .formSpeciesIdTable = sMedichamFormSpeciesIdTable,
         .formChangeTable = sMedichamFormChangeTable,
+        .rarity = 5,
     },
 
 #if P_MEGA_EVOLUTIONS
@@ -10915,6 +10919,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .teachableLearnset = sFroslassTeachableLearnset,
         .formSpeciesIdTable = sFroslassFormSpeciesIdTable,
         .formChangeTable = sFroslassFormChangeTable,
+        .rarity = 4,
     },
 
 #if P_GEN_9_MEGA_EVOLUTIONS
