@@ -4087,7 +4087,7 @@ static void PrintDisplayMonInfo(void)
     CopyWindowToVram(WIN_DISPLAY_INFO, COPYWIN_GFX);
     if (sStorage->displayMonSpecies != SPECIES_NONE)
     {
-        UpdateMonMarkingTiles(sStorage->displayMonMarkings, sStorage->markingComboTilesPtr);
+        UpdateMonMarkingTiles(sStorage->displayMonMarkings, sStorage->markingComboTilesPtr, FALSE);
         sStorage->markingComboSprite->invisible = FALSE;
     }
     else

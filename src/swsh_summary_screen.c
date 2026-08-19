@@ -6395,7 +6395,7 @@ static void CreateMonMarkingsSprite(struct Pokemon *mon)
     if (sprite != NULL)
     {
         sMonSummaryScreen->markingComboTilesPtr = (void *) OBJ_VRAM0 + 32 * GetSpriteTileStartByTag(TAG_MON_MARKINGS);
-        UpdateMonMarkingTiles(GetMonData(mon, MON_DATA_MARKINGS), sMonSummaryScreen->markingComboTilesPtr);
+        UpdateMonMarkingTiles(GetMonData(mon, MON_DATA_MARKINGS), sMonSummaryScreen->markingComboTilesPtr, GetMonData(mon, MON_DATA_IS_SHINY));
 
         sMonSummaryScreen->markingsSprite->x = 137;
         sMonSummaryScreen->markingsSprite->y = 85;
@@ -6460,7 +6460,7 @@ static void UpdateMonMarkingsSprite(struct Pokemon *mon)
 {
     if (sMonSummaryScreen->markingsSprite != NULL && sMonSummaryScreen->markingComboTilesPtr != NULL)
     {
-        UpdateMonMarkingTiles(GetMonData(mon, MON_DATA_MARKINGS), sMonSummaryScreen->markingComboTilesPtr);
+        UpdateMonMarkingTiles(GetMonData(mon, MON_DATA_MARKINGS), sMonSummaryScreen->markingComboTilesPtr, GetMonData(mon, MON_DATA_IS_SHINY));
     }
     else
     {

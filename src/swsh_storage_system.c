@@ -3862,7 +3862,7 @@ static void UpdateMarkingComboSprite(void)
     }
 
     if (sStorage->markingComboSprite != NULL)
-        UpdateMonMarkingTiles(sStorage->displayMon.markings, sStorage->markingComboTilesPtr);
+        UpdateMonMarkingTiles(sStorage->displayMon.markings, sStorage->markingComboTilesPtr, sStorage->displayMon.isShiny);
 }
 
 static void RefreshDisplayMonData(void)
