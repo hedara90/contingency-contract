@@ -10,6 +10,8 @@
 #include "constants/daycare.h"
 #include "constants/move_relearner.h"
 
+#include "cc_mon_management.h"
+
 TEST("Nature independent from Hidden Nature")
 {
     u32 i, j, nature = 0, hiddenNature = 0;
@@ -678,4 +680,10 @@ TEST("BoxPokemon encryption works")
     EXPECT_EQ(GetMonData(&mon, MON_DATA_HYPER_TRAINED_SPDEF), 1);
     EXPECT_EQ(GetMonData(&mon, MON_DATA_DYNAMAX_LEVEL), 3);
     EXPECT_EQ(GetMonData(&mon, MON_DATA_OT_GENDER), 0);
+}
+
+TEST("Rarities are set correctly")
+{
+    bool32 passed = CheckRarities();
+    EXPECT_EQ(passed, TRUE);
 }

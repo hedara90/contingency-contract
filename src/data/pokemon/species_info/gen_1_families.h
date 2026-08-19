@@ -4459,6 +4459,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sSandslashAlolaLevelUpLearnset,
         .teachableLearnset = sSandslashAlolaTeachableLearnset,
         .formSpeciesIdTable = sSandslashFormSpeciesIdTable,
+        .rarity = 4,
     },
 #endif //P_ALOLAN_FORMS
 #endif //P_FAMILY_SANDSHREW
@@ -4918,6 +4919,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sNidokingLevelUpLearnset,
         .teachableLearnset = sNidokingTeachableLearnset,
+        .rarity = 5,
     },
 #endif //P_FAMILY_NIDORAN
 
@@ -5505,6 +5507,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sNinetalesAlolaLevelUpLearnset,
         .teachableLearnset = sNinetalesAlolaTeachableLearnset,
         .formSpeciesIdTable = sNinetalesFormSpeciesIdTable,
+        .rarity = 5,
     },
 #endif //P_ALOLAN_FORMS
 #endif //P_FAMILY_VULPIX
@@ -6044,6 +6047,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sCrobatLevelUpLearnset,
         .teachableLearnset = sCrobatTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_GEN_2_CROSS_EVOS
 #endif //P_FAMILY_ZUBAT
@@ -9364,6 +9368,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .teachableLearnset = sVictreebelTeachableLearnset,
         .formSpeciesIdTable = sVictreebelFormSpeciesIdTable,
         .formChangeTable = sVictreebelFormChangeTable,
+        .rarity = 4,
     },
 
 #if P_GEN_9_MEGA_EVOLUTIONS
@@ -10774,6 +10779,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sSlowkingGalarLevelUpLearnset,
         .teachableLearnset = sSlowkingGalarTeachableLearnset,
         .formSpeciesIdTable = sSlowkingFormSpeciesIdTable,
+        .rarity = 6,
     },
 #endif //P_GEN_2_CROSS_EVOS
 #endif //P_GALARIAN_FORMS
@@ -12529,6 +12535,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .teachableLearnset = sSteelixTeachableLearnset,
         .formSpeciesIdTable = sSteelixFormSpeciesIdTable,
         .formChangeTable = sSteelixFormChangeTable,
+        .rarity = 4,
     },
 
 #if P_MEGA_EVOLUTIONS
@@ -16359,6 +16366,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .teachableLearnset = sScizorTeachableLearnset,
         .formSpeciesIdTable = sScizorFormSpeciesIdTable,
         .formChangeTable = sScizorFormChangeTable,
+        .rarity = 5,
     },
 
 #if P_MEGA_EVOLUTIONS
@@ -17098,6 +17106,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sMagmortarLevelUpLearnset,
         .teachableLearnset = sMagmortarTeachableLearnset,
+        .rarity = 5,
     },
 #endif //P_GEN_4_CROSS_EVOS
 #endif //P_FAMILY_MAGMAR
@@ -18293,6 +18302,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sVaporeonLevelUpLearnset,
         .teachableLearnset = sVaporeonTeachableLearnset,
+        .rarity = 4,
     },
 
     [SPECIES_JOLTEON] =
@@ -18360,6 +18370,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sJolteonLevelUpLearnset,
         .teachableLearnset = sJolteonTeachableLearnset,
+        .rarity = 4,
     },
 
     [SPECIES_FLAREON] =
@@ -18427,6 +18438,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sFlareonLevelUpLearnset,
         .teachableLearnset = sFlareonTeachableLearnset,
+        .rarity = 4,
     },
 
 #if P_GEN_2_CROSS_EVOS
@@ -18496,6 +18508,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sEspeonLevelUpLearnset,
         .teachableLearnset = sEspeonTeachableLearnset,
+        .rarity = 4,
     },
 
     [SPECIES_UMBREON] =
@@ -18563,6 +18576,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sUmbreonLevelUpLearnset,
         .teachableLearnset = sUmbreonTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_GEN_2_CROSS_EVOS
 
@@ -18634,6 +18648,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sLeafeonLevelUpLearnset,
         .teachableLearnset = sLeafeonTeachableLearnset,
+        .rarity = 4,
     },
 
     [SPECIES_GLACEON] =
@@ -18702,6 +18717,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sGlaceonLevelUpLearnset,
         .teachableLearnset = sGlaceonTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_GEN_4_CROSS_EVOS
 
@@ -18773,6 +18789,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sSylveonLevelUpLearnset,
         .teachableLearnset = sSylveonTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_GEN_6_CROSS_EVOS
 #endif //P_FAMILY_EEVEE
@@ -18932,6 +18949,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .evolutions = EVOLUTION({EVO_TRADE, 0, SPECIES_PORYGON_Z, CONDITIONS({IF_HOLD_ITEM, ITEM_DUBIOUS_DISC})},
                                 {EVO_ITEM, ITEM_DUBIOUS_DISC, SPECIES_PORYGON_Z}),
     #endif
+        .rarity = 4,
     },
 
 #if P_GEN_4_CROSS_EVOS
@@ -19009,6 +19027,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sPorygonZLevelUpLearnset,
         .teachableLearnset = sPorygonZTeachableLearnset,
+        .rarity = 5,
     },
 #endif //P_GEN_4_CROSS_EVOS
 #endif //P_GEN_2_CROSS_EVOS

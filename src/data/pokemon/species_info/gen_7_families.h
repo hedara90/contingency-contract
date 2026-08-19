@@ -481,6 +481,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         )
         .levelUpLearnset = sIncineroarLevelUpLearnset,
         .teachableLearnset = sIncineroarTeachableLearnset,
+        .rarity = 5,
     },
 #endif //P_FAMILY_LITTEN
 
@@ -1639,6 +1640,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .eggMoveLearnset = sOricorioEggMoveLearnset,
         .formSpeciesIdTable = sOricorioFormSpeciesIdTable,
         .formChangeTable = sOricorioFormChangeTable,
+        .rarity = 4,
     },
 
     [SPECIES_ORICORIO_POM_POM] =
@@ -1713,6 +1715,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .eggMoveLearnset = sOricorioEggMoveLearnset,
         .formSpeciesIdTable = sOricorioFormSpeciesIdTable,
         .formChangeTable = sOricorioFormChangeTable,
+        .rarity = 4,
     },
 
     [SPECIES_ORICORIO_PAU] =
@@ -1787,6 +1790,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .eggMoveLearnset = sOricorioEggMoveLearnset,
         .formSpeciesIdTable = sOricorioFormSpeciesIdTable,
         .formChangeTable = sOricorioFormChangeTable,
+        .rarity = 4,
     },
 
     [SPECIES_ORICORIO_SENSU] =
@@ -1857,6 +1861,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .eggMoveLearnset = sOricorioEggMoveLearnset,
         .formSpeciesIdTable = sOricorioFormSpeciesIdTable,
         .formChangeTable = sOricorioFormChangeTable,
+        .rarity = 4,
     },
 #endif //P_FAMILY_ORICORIO
 
@@ -2281,6 +2286,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .levelUpLearnset = sLycanrocMiddayLevelUpLearnset,
         .teachableLearnset = sLycanrocMiddayTeachableLearnset,
         .formSpeciesIdTable = sLycanrocFormSpeciesIdTable,
+        .rarity = 4,
     },
 
     [SPECIES_LYCANROC_MIDNIGHT] =
@@ -2348,6 +2354,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .levelUpLearnset = sLycanrocMidnightLevelUpLearnset,
         .teachableLearnset = sLycanrocMidnightTeachableLearnset,
         .formSpeciesIdTable = sLycanrocFormSpeciesIdTable,
+        .rarity = 4,
     },
 
     [SPECIES_LYCANROC_DUSK] =
@@ -2415,6 +2422,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .levelUpLearnset = sLycanrocDuskLevelUpLearnset,
         .teachableLearnset = sLycanrocDuskTeachableLearnset,
         .formSpeciesIdTable = sLycanrocFormSpeciesIdTable,
+        .rarity = 4,
     },
 #endif //P_FAMILY_ROCKRUFF
 
@@ -2966,6 +2974,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .levelUpLearnset = sAraquanidLevelUpLearnset,
         .teachableLearnset = sAraquanidTeachableLearnset,
         .formSpeciesIdTable = sAraquanidFormSpeciesIdTable,
+        .rarity = 5,
     },
 
     [SPECIES_ARAQUANID_TOTEM] =
@@ -3994,6 +4003,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .levelUpLearnset = sComfeyLevelUpLearnset,
         .teachableLearnset = sComfeyTeachableLearnset,
         .eggMoveLearnset = sComfeyEggMoveLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_COMFEY
 
@@ -4472,6 +4482,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .isTelekinesisBanned = TRUE,
         .levelUpLearnset = sPalossandLevelUpLearnset,
         .teachableLearnset = sPalossandTeachableLearnset,
+        .rarity = 5,
     },
 #endif //P_FAMILY_SANDYGAST
 
@@ -5024,6 +5035,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .teachableLearnset = sTogedemaruTeachableLearnset,
         .eggMoveLearnset = sTogedemaruEggMoveLearnset,
         .formSpeciesIdTable = sTogedemaruFormSpeciesIdTable,
+        .rarity = 4,
     },
 
     [SPECIES_TOGEDEMARU_TOTEM] =
@@ -5472,6 +5484,7 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .eggMoveLearnset = sDrampaEggMoveLearnset,
         .formSpeciesIdTable = sDrampaFormSpeciesIdTable,
         .formChangeTable = sDrampaFormChangeTable,
+        .rarity = 4,
     },
 
 #if P_GEN_9_MEGA_EVOLUTIONS

@@ -857,6 +857,7 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         .levelUpLearnset = sSamurottHisuiLevelUpLearnset,
         .teachableLearnset = sSamurottHisuiTeachableLearnset,
         .formSpeciesIdTable = sSamurottFormSpeciesIdTable,
+        .rarity = 5,
     },
 #endif //P_HISUIAN_FORMS
 #endif //P_FAMILY_OSHAWOTT
@@ -3474,6 +3475,7 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         )
         .levelUpLearnset = sSeismitoadLevelUpLearnset,
         .teachableLearnset = sSeismitoadTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_TYMPOLE
 
@@ -4276,6 +4278,7 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         )
         .levelUpLearnset = sWhimsicottLevelUpLearnset,
         .teachableLearnset = sWhimsicottTeachableLearnset,
+        .rarity = 5,
     },
 #endif //P_FAMILY_COTTONEE
 
@@ -5664,6 +5667,7 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         )
         .levelUpLearnset = sCrustleLevelUpLearnset,
         .teachableLearnset = sCrustleTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_DWEBBLE
 
@@ -7140,6 +7144,7 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         )
         .levelUpLearnset = sCinccinoLevelUpLearnset,
         .teachableLearnset = sCinccinoTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_MINCCINO
 
@@ -9071,6 +9076,7 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         .levelUpLearnset = sAlomomolaLevelUpLearnset,
         .teachableLearnset = sAlomomolaTeachableLearnset,
         .eggMoveLearnset = sAlomomolaEggMoveLearnset,
+        .rarity = 6,
     },
 #endif //P_FAMILY_ALOMOMOLA
 
@@ -9217,6 +9223,7 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         )
         .levelUpLearnset = sGalvantulaLevelUpLearnset,
         .teachableLearnset = sGalvantulaTeachableLearnset,
+        .rarity = 5,
     },
 #endif //P_FAMILY_JOLTIK
 
@@ -9366,6 +9373,7 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         )
         .levelUpLearnset = sFerrothornLevelUpLearnset,
         .teachableLearnset = sFerrothornTeachableLearnset,
+        .rarity = 5,
     },
 #endif //P_FAMILY_FERROSEED
 
@@ -11218,6 +11226,7 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         .levelUpLearnset = sDruddigonLevelUpLearnset,
         .teachableLearnset = sDruddigonTeachableLearnset,
         .eggMoveLearnset = sDruddigonEggMoveLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_DRUDDIGON
 
