@@ -1151,7 +1151,7 @@ static s16 UNUSED StorageSystemGetNextMonIndex(struct BoxPokemon *box, s8 startI
 // First tile index (local to char block 2) of the 4x4 box icon tile block
 #define CHOOSE_BOX_GRID_TILE_BASE  111
 // Top-left tilemap column/row of the choose-box grid (pixels 88,64 / 8)
-#define CHOOSE_BOX_GRID_TILE_COL   9
+#define CHOOSE_BOX_GRID_TILE_COL   12
 #define CHOOSE_BOX_GRID_TILE_ROW   6
 
 // Top-left tilemap column/row of choose box menu
@@ -1218,20 +1218,20 @@ static void SpriteCB_ChooseBoxGridHover(struct Sprite *sprite)
 
 static u8 ChooseBoxGrid_GetRowLength(u8 row)
 {
-    u8 rowStart = row * 5;
+    u8 rowStart = row * 4;
     u8 remaining = TOTAL_BOXES_COUNT - rowStart;
-    return remaining >= 5 ? 5 : remaining;
+    return remaining >= 4 ? 4 : remaining;
 }
 
 static void ChooseBoxGrid_UpdateHover(void)
 {
-    u8 col = sChooseBoxMenu->curBox % 5;
-    u8 row = sChooseBoxMenu->curBox / 5;
+    u8 col = sChooseBoxMenu->curBox % 4;
+    u8 row = sChooseBoxMenu->curBox / 4;
 
     if (sChooseBoxMenu->hoverSprite)
     {
         struct Sprite *sprite = sChooseBoxMenu->hoverSprite;
-        s16 x = 88 + col * 32;
+        s16 x = (CHOOSE_BOX_GRID_TILE_COL + 2) * 8 + col * 32;
         s16 y = 64 + row * 32;
 
         if (sprite->x == x && sprite->y == y)
@@ -1262,9 +1262,9 @@ static void ChooseBoxGrid_UpdateHover(void)
 
 static void ChooseBoxGrid_MoveCursor(s8 dcol, s8 drow)
 {
-    u8 row = sChooseBoxMenu->curBox / 5;
-    u8 col = sChooseBoxMenu->curBox % 5;
-    u8 numRows = (TOTAL_BOXES_COUNT + 4) / 5;
+    u8 row = sChooseBoxMenu->curBox / 4;
+    u8 col = sChooseBoxMenu->curBox % 4;
+    u8 numRows = (TOTAL_BOXES_COUNT + 3) / 4;
     u8 targetRow;
     u8 targetLength;
 
@@ -1278,11 +1278,11 @@ static void ChooseBoxGrid_MoveCursor(s8 dcol, s8 drow)
         targetLength = ChooseBoxGrid_GetRowLength(targetRow);
         if (col >= targetLength)
             col = targetLength - 1;
-        sChooseBoxMenu->curBox = targetRow * 5 + col;
+        sChooseBoxMenu->curBox = targetRow * 4 + col;
     }
     else
     {
-        u8 rowStart = row * 5;
+        u8 rowStart = row * 4;
         u8 rowLength = ChooseBoxGrid_GetRowLength(row);
 
         if (dcol > 0)
@@ -1308,17 +1308,17 @@ static void ChooseBox_CreateSprites(u8 curBox)
 
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
     {
-        col = boxId % 5;
-        row = boxId / 5;
+        col = boxId % 4;
+        row = boxId / 4;
         for (ty = 0; ty < 4; ty++)
             for (tx = 0; tx < 4; tx++)
                 tilemap[(CHOOSE_BOX_GRID_TILE_ROW + row * 4 + ty) * 32 + (CHOOSE_BOX_GRID_TILE_COL + col * 4 + tx)] = CHOOSE_BOX_GRID_TILE_BASE + ty * 4 + tx;
     }
     CopyBgTilemapBufferToVram(1);
 
-    col = curBox % 5;
-    row = curBox / 5;
-    spriteId = CreateSprite(&sSpriteTemplate_ChooseBoxGrid_Hover, 88 + col * 32, 64 + row * 32, 3);
+    col = curBox % 4;
+    row = curBox / 4;
+    spriteId = CreateSprite(&sSpriteTemplate_ChooseBoxGrid_Hover, (CHOOSE_BOX_GRID_TILE_COL + 2) * 8 + col * 32, 64 + row * 32, 3);
     if (spriteId != MAX_SPRITES)
     {
         const u32 *hoverSrc = sChooseBoxGrid_Hover_Gfx;
@@ -1371,8 +1371,8 @@ static void ChooseBox_DestroySprites(void)
 
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
     {
-        col = boxId % 5;
-        row = boxId / 5;
+        col = boxId % 4;
+        row = boxId / 4;
         for (ty = 0; ty < 4; ty++)
             for (tx = 0; tx < 4; tx++)
                 tilemap[(CHOOSE_BOX_GRID_TILE_ROW + row * 4 + ty) * 32 + (CHOOSE_BOX_GRID_TILE_COL + col * 4 + tx)] = 0;
@@ -5959,8 +5959,8 @@ static void GetCursorCoordsByPos(u8 cursorArea, u8 cursorPosition, u16 *x, u16 *
         *y = 8;
         break;
     case CURSOR_AREA_IN_CHOOSE_BOX:
-        *x = 88 + (cursorPosition % 5) * 32;
-        *y = 50 + (cursorPosition / 5) * 32;
+        *x = (CHOOSE_BOX_GRID_TILE_COL + 2) * 8 + (cursorPosition % 4) * 32;
+        *y = 50 + (cursorPosition / 4) * 32;
         if (sIsMonBeingMoved)
             *y -= 8;
         break;
