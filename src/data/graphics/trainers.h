@@ -497,8 +497,8 @@ const u16 gTrainerPalette_Arcane[] = INCGFX_U16("graphics/trainers/front_pics/ar
 const u32 gTrainerFrontPic_Ardelia[] = INCGFX_U32("graphics/trainers/front_pics/ardelia.png", ".4bpp.big.smol");
 const u16 gTrainerPalette_Ardelia[] = INCGFX_U16("graphics/trainers/front_pics/ardelia.png", ".gbapal");
 
-const u32 gTrainerFrontPic_Laevatein[] = INCGFX_U32("graphics/trainers/front_pics/laevatein.png", ".4bpp.big.smol");
-const u16 gTrainerPalette_Laevatein[] = INCGFX_U16("graphics/trainers/front_pics/laevatein.png", ".gbapal");
+const u32 gTrainerFrontPic_Laevatain[] = INCGFX_U32("graphics/trainers/front_pics/laevatain.png", ".4bpp.big.smol");
+const u16 gTrainerPalette_Laevatain[] = INCGFX_U16("graphics/trainers/front_pics/laevatain.png", ".gbapal");
 
 const u32 gTrainerFrontPic_Gilberta[] = INCGFX_U32("graphics/trainers/front_pics/gilberta.png", ".4bpp.big.smol");
 const u16 gTrainerPalette_Gilberta[] = INCGFX_U16("graphics/trainers/front_pics/gilberta.png", ".gbapal");
@@ -1299,9 +1299,9 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_Ardelia, gTrainerPalette_Ardelia),
     },
-    [TRAINER_PIC_LAEVATEIN] =
+    [TRAINER_PIC_LAEVATAIN] =
     {
-        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_Laevatein, gTrainerPalette_Laevatein),
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_Laevatain, gTrainerPalette_Laevatain),
     },
     [TRAINER_PIC_GILBERTA] =
     {
