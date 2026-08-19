@@ -7839,9 +7839,9 @@ static bool8 SetMenuTexts_Mon(void)
             SetMenuText(MENU_STORE);
     }
 
-    SetMenuText(MENU_MARK);
-    if (sStorage->boxOption != OPTION_SELECT_MON)
-        SetMenuText(MENU_RELEASE);
+    //SetMenuText(MENU_MARK);
+    //if (sStorage->boxOption != OPTION_SELECT_MON)
+    //    SetMenuText(MENU_RELEASE);
     return TRUE;
 }
 
