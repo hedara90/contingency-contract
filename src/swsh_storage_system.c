@@ -844,6 +844,9 @@ static void PrintMessage(u8 id);
 static void CreateMessageWindowSprite(void);
 static void DestroyMessageWindowSprite(void);
 
+//  CC specific functions
+static void UpdatePartyMonBg(u32 position, bool32 editBuffer);
+
 // Tilemap utility
 static void TilemapUtil_Move(u8, u8, s8);
 static void TilemapUtil_SetMap(u8, u8, const void *, u16, u16);
@@ -1907,6 +1910,8 @@ static void Task_InitPokeStorage(u8 taskId)
         break;
     case 8:
         CreatePartyMonsSprites(TRUE);
+        for (u32 i = 0; i < 6; i++)
+            UpdatePartyMonBg(i, TRUE);
         ScheduleBgCopyTilemapToVram(1);
         break;
     case 9:
@@ -5096,6 +5101,9 @@ static void CompactPartySprites(void)
             targetSlot++;
         }
     }
+
+    for (u32 i = 0; i < 6; i++)
+        UpdatePartyMonBg(i, FALSE);
 }
 
 static u8 GetNumPartySpritesCompacting(void)
@@ -9668,3 +9676,148 @@ void ChooseMonFromStorage_SwSh(void)
 {
     EnterPokeStorage(OPTION_SELECT_MON);
 }
+
+#define FLIP_H (1 << 10)
+#define FLIP_V (1 << 11)
+
+static void UpdatePartyMonBg(u32 position, bool32 editBuffer)
+{
+    u16 *tilemap;
+    if (editBuffer)
+        tilemap = (u16 *)sStorage->displayMenuTilemapBuffer;
+    else
+        tilemap = (u16 *)(BG_VRAM + 26 * 2048);
+
+    tilemap = &tilemap[32 + position * 32 * 3];
+
+    struct Pokemon *mon = &gParties[0][position];
+    enum Species species = GetMonData(mon, MON_DATA_SPECIES);
+
+    //  Set dupe icon
+    if (species != SPECIES_NONE)
+    {
+        u32 numDupes = 0;
+        if (GetMonData(mon, MON_DATA_IS_SHINY))
+        {
+            numDupes = 5;
+        }
+        else
+        {
+            u32 markings = GetMonData(mon, MON_DATA_MARKINGS);
+            switch (markings)
+            {
+            case 0:
+                numDupes = 0;
+                break;
+            case 1:
+                numDupes = 1;
+                break;
+            case 3:
+                numDupes = 2;
+                break;
+            case 7:
+                numDupes = 3;
+                break;
+            case 15:
+                numDupes = 4;
+                break;
+            }
+        }
+
+        u32 tileToUse;
+        switch (numDupes)
+        {
+        case 1:
+            tileToUse = 35;
+            break;
+        case 2:
+            tileToUse = 55;
+            break;
+        case 3:
+            tileToUse = 72;
+            break;
+        case 4:
+            tileToUse = 83;
+            break;
+        case 5:
+            tileToUse = 92;
+            break;
+        default:
+            tileToUse = 15;
+        }
+        tilemap[33] = tileToUse;
+    }
+    else
+    {
+        tilemap[33] = 5;
+    }
+
+    //  Set rarity outline
+    u32 rarity;
+    if (species != SPECIES_NONE)
+    {
+        rarity = gSpeciesInfo[species].rarity;
+    }
+    else
+    {
+        rarity = 0;
+    }
+
+    switch (rarity)
+    {
+    case 4:
+        tilemap[1] = 28;
+        tilemap[2] = 29;
+        tilemap[3] = 30;
+        tilemap[4] = 31;
+        tilemap[5] = 31 | FLIP_H;
+        tilemap[6] = 32;
+        tilemap[7] = 31;
+        tilemap[8] = 33;
+
+        tilemap[32 + 8] = 38;
+        tilemap[64 + 8] = 43;
+        break;
+    case 5:
+        tilemap[1] = 46;
+        tilemap[2] = 47;
+        tilemap[3] = 48;
+        tilemap[4] = 49;
+        tilemap[5] = 50;
+        tilemap[6] = 51;
+        tilemap[7] = 50 | FLIP_H;
+        tilemap[8] = 52;
+
+        tilemap[32 + 8] = 57;
+        tilemap[64 + 8] = 64;
+        break;
+    case 6:
+        tilemap[1] = 66;
+        tilemap[2] = 67;
+        tilemap[3] = 100;
+        tilemap[4] = 68;
+        tilemap[5] = 69;
+        tilemap[6] = 70;
+        tilemap[7] = 69 | FLIP_H;
+        tilemap[8] = 71;
+
+        tilemap[32 + 8] = 75;
+        tilemap[64 + 8] = 80;
+        break;
+    default:
+        tilemap[1] = 7;
+        tilemap[2] = 8;
+        tilemap[3] = 9;
+        tilemap[4] = 10;
+        tilemap[5] = 8;
+        tilemap[6] = 9;
+        tilemap[7] = 10;
+        tilemap[8] = 11;
+
+        tilemap[32 + 8] = 19;
+        tilemap[64 + 8] = 11 | FLIP_V;
+    }
+}
+
+#undef FLIP_H
+#undef FLIP_V
