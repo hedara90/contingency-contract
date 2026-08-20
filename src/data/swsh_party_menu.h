@@ -11,7 +11,7 @@ static const u16 sPartyMenuBg_Pal[]             = INCGFX_U16("graphics/party_men
 static const u32 sPartyMenuBg_Main_Tilemap[]    = INCGFX_U32("graphics/party_menu/swsh/bg_main.bin", ".smolTM");
 static const u32 sPartyMenuBg_Scroll_Tilemap[]  = INCGFX_U32("graphics/party_menu/swsh/bg_scroll.bin", ".smolTM");
 
-static const u32 sCursor_Gfx[]                  = INCGFX_U32("graphics/party_menu/swsh/cursor.png", ".4bpp.smol");
+static const u32 sCursor_Gfx[]                  = INCGFX_U32("graphics/party_menu/swsh/cursor_new.png", ".4bpp.smol");
 static const u32 sHeldItem_Gfx[]                = INCGFX_U32("graphics/party_menu/swsh/hold_icons.png", ".4bpp");
 static const u32 sMoveTypes_Gfx[]               = INCGFX_U32("graphics/party_menu/swsh/move_types.png", ".4bpp.smol");
 static const u32 sMessageWindow_Gfx[]           = INCGFX_U32("graphics/party_menu/swsh/message_window.png", ".4bpp.smol");
@@ -1010,24 +1010,24 @@ static const struct OamData sOamData_Cursor =
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(16x16),
-    .size = SPRITE_SIZE(16x16),
+    .shape = SPRITE_SHAPE(16x32),
+    .size = SPRITE_SIZE(16x32),
     .priority = 1,
 };
 
 static const struct CompressedSpriteSheet sSpriteSheet_Cursor =
 {
     .data = sCursor_Gfx,
-    .size = (16 * 16 * 3) / 2,
+    .size = (16 * 32 * 3) / 2,
     .tag = TAG_CURSOR
 };
 
 static const union AnimCmd sAnim_Cursor[] =
 {
     ANIMCMD_FRAME(0, 8),
-    ANIMCMD_FRAME(4, 8),
     ANIMCMD_FRAME(8, 8),
-    ANIMCMD_FRAME(4, 8),
+    ANIMCMD_FRAME(16, 8),
+    ANIMCMD_FRAME(8, 8),
     ANIMCMD_JUMP(0)
 };
 
