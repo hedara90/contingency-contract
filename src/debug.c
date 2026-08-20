@@ -674,7 +674,7 @@ static const struct DebugMenuOption sDebugMenu_Actions_Scripts[] =
     { COMPOUND_STRING("Set Risks"), DebugAction_ExecuteScript, Debug_EventScript_Script_5 },
     { COMPOUND_STRING("Crisis Team"), DebugAction_ExecuteScript, Debug_EventScript_Script_6 },
     { COMPOUND_STRING("Wuling"), DebugAction_ExecuteScript, Debug_EventScript_Script_7 },
-    { COMPOUND_STRING("Script 8"), DebugAction_ExecuteScript, Debug_EventScript_Script_8 },
+    { COMPOUND_STRING("Reconveners"), DebugAction_ExecuteScript, Debug_EventScript_Script_8 },
     { NULL }
 };
 

@@ -906,120 +906,783 @@ Class: Team Aqua
 Pic: Aqua Grunt M
 Gender: Male
 Music: Aqua
-Double Battle: No
-AI: Check Bad Move
+Double Battle: Yes
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Double Lead Support
+Pool Pick Functions: Default
 
-Poochyena
-Level: 9
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Delphox @ Blunder Policy  
+Ability: Telepathy  
+Level: 50
+Tags: Lead / Support  
+- Inferno  
+- Gravity  
+- Dazzling Gleam  
+- Psyshock  
 
-=== TRAINER_MARCEL ===
-Name: MARCEL
+Delphox @ Blunder Policy  
+Ability: Telepathy  
+Level: 50
+Tags: Weather Setter  
+- Inferno  
+- Gravity  
+- Dazzling Gleam  
+- Psyshock  
+
+Flapple @ Assault Vest  
+Ability: Hustle  
+Level: 50  
+Tags: Lead
+- Grav Apple  
+- Dragon Rush  
+- Sucker Punch  
+- Acid Spray  
+
+Flapple @ Assault Vest  
+Ability: Hustle  
+Level: 50  
+Tags: Lead
+- Grav Apple  
+- Dragon Rush  
+- Sucker Punch  
+- Acid Spray  
+
+Gardevoir @ Focus Sash  
+Ability: Telepathy  
+Level: 50  
+Tags: Lead / Support
+- Gravity  
+- Focus Blast  
+- Moonblast  
+- Psychic  
+
+Gardevoir @ Focus Sash  
+Ability: Telepathy  
+Level: 50  
+Tags: Weather Setter
+- Gravity  
+- Focus Blast  
+- Moonblast  
+- Psychic  
+
+Lapras @ Leftovers  
+Ability: Water Absorb  
+Level: 50  
+Tags: Weather Abuser
+- Blizzard  
+- Thunder  
+- Hydro Pump  
+- Life Dew  
+
+Vivillon @ Heavy-Duty Boots  
+Ability: Friend Guard  
+Level: 50  
+Tags: Weather Abuser
+- Sleep Powder  
+- Hurricane  
+- Tailwind  
+- Confuse Ray  
+
+Golurk @ Muscle Band  
+Ability: Iron Fist  
+Level: 50  
+Tags: Lead
+- Earthquake  
+- Ice Punch  
+- Poltergeist  
+- Hammer Arm  
+
+Sandy Shocks  
+Ability: Protosynthesis  
+Level: 50  
+Tags: Lead
+- Zap Cannon  
+- Earth Power  
+- Gravity  
+- Thunderbolt  
+
+Glimmora @ Red Card  
+Ability: Toxic Debris  
+Level: 50  
+- Sludge Bomb  
+- Power Gem  
+- Earth Power  
+- Spikes  
+
+Meowstic (M) @ Light Clay  
+Ability: Prankster  
+Level: 50  
+Tags: Lead / Support
+- Gravity  
+- Spikes  
+- Psychic  
+- Reflect  
+
+Meowstic (M) @ Light Clay  
+Ability: Prankster  
+Level: 50  
+Tags: Weather Setter
+- Gravity  
+- Spikes  
+- Psychic  
+- Reflect  
+
+=== TRAINER_POG ===
+Name: Pog
 Class: Cooltrainer
-Pic: Cooltrainer M
+Pic: Pog
 Gender: Male
-Music: Cool
-Items: Hyper Potion
-Double Battle: No
-AI: Basic Trainer
+Double Battle: Yes
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Doubles
+Pool Pick Functions: Default
 
-Manectric
-Level: 29
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+Perrserker @ Steel Gem  
+Ability: Steely Spirit  
+Level: 50  
+Tags: Lead / Ace
+- Fake Out  
+- Coaching  
+- Iron Head  
+- Brick Break  
 
-Shiftry
-Level: 29
-IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+Dhelmise @ Assault Vest  
+Ability: Steelworker  
+Level: 50  
+Tags: Lead
+- Liquidation  
+- Anchor Shot  
+- Power Whip  
+- Poltergeist  
 
-=== TRAINER_ALBERTO ===
-Name: ALBERTO
-Class: Bird Keeper
-Pic: Bird Keeper
-Gender: Male
-Music: Cool
-Double Battle: No
-AI: Check Bad Move
+Falinks @ Weakness Policy  
+Ability: Defiant  
+Level: 50  
+- No Retreat  
+- Close Combat  
+- Knock Off  
+- Poison Jab  
 
-Pelipper
-Level: 30
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Alcremie-Ruby-Cream @ Sitrus Berry  
+Ability: Aroma Veil  
+Level: 50  
+Tags: Weather Setter
+- Decorate  
+- Helping Hand  
+- Mystical Fire  
+- Dazzling Gleam  
 
-Xatu
-Level: 30
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Aegislash @ Life Orb  
+Ability: Stance Change  
+Level: 50  
+Tags: Lead
+- King's Shield  
+- Iron Head  
+- Sacred Sword  
+- Shadow Ball  
 
-=== TRAINER_ED ===
-Name: ED
+Kangaskhan (F) @ Silk Scarf  
+Ability: Scrappy  
+Level: 50  
+- Fake Out  
+- Last Resort  
+
+Empoleon @ Leftovers  
+Ability: Competitive  
+Level: 50  
+Tags: Lead
+- Surf  
+- Ice Beam  
+- Flash Cannon  
+- Roost  
+
+Chesnaught @ Rocky Helmet  
+Ability: Bulletproof  
+Level: 50  
+- Body Press  
+- Seed Bomb  
+- Bulk Up  
+- Leech Seed  
+
+Claydol @ Power Herb  
+Ability: Beads of Ruin  
+Level: 50  
+- Earth Power  
+- Meteor Beam  
+- Psychic  
+- Light Screen  
+
+=== TRAINER_LAEVATAIN ===
+Name: Laevatain
 Class: Collector
-Pic: Collector
+Pic: Laevatain
 Gender: Male
 Music: Suspicious
 Double Battle: No
-AI: Check Bad Move
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Doubles
+Pool Pick Functions: Default
 
-Zangoose
-Level: 30
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Heatran @ Air Balloon  
+Ability: Flame Body  
+Level: 50  
+Tags: Lead / Weather Setter
+- Stealth Rock  
+- Will-O-Wisp  
+- Combustion
+- Scorching Sands  
 
-Seviper
-Level: 30
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Salamence @ Heavy-Duty Boots  
+Ability: Intimidate  
+Level: 50  
+Tags: Weather Abuser
+- Breaking Swipe  
+- Iron Head  
+- Wish  
+- Lava Plume  
 
-=== TRAINER_GRUNT_SEAFLOOR_CAVERN_4 ===
-Name: GRUNT
+Vanilluxe @ Light Clay  
+Ability: Snow Warning  
+Level: 50  
+Tags: Ace
+- Aurora Veil  
+- Explosion  
+- Blizzard  
+- Freeze-Dry  
+
+Gorebyss @ White Herb  
+Ability: Torrent  
+Level: 50  
+- Shell Smash  
+- Scald  
+- Ice Beam  
+- Hex  
+
+Ceruledge @ Focus Sash  
+Ability: Weak Armor  
+Level: 50  
+- Bitter Blade  
+- Shadow Sneak  
+- Swords Dance  
+- Close Combat  
+
+Sinistcha @ Sitrus Berry  
+Ability: Heatproof  
+Level: 50  
+Tags: Weather Abuser
+- Hex  
+- Matcha Gotcha  
+- Strength Sap  
+- Stun Spore  
+
+Crobat @ Black Sludge  
+Ability: Contagion  
+Level: 50  
+- Heat Wave  
+- Giga Drain  
+- Sludge Bomb  
+- Nasty Plot  
+
+Magcargo @ Passho Berry  
+Ability: Earth Eater  
+Level: 50  
+- Burning Bulwark  
+- Combustion
+- Scorching Sands  
+- Recover  
+
+Slither Wing @ Leftovers  
+Ability: Protosynthesis  
+Level: 50  
+Tags: Weather Setter
+- Will-O-Wisp  
+- U-turn  
+- First Impression  
+- Close Combat  
+
+Heatran @ Air Balloon  
+Ability: Flame Body  
+Level: 50  
+Tags: Weather Setter
+- Stealth Rock  
+- Will-O-Wisp  
+- Combustion
+- Scorching Sands  
+
+=== TRAINER_ARDELIA ===
+Name: Ardelia
+Class: Bird Keeper
+Pic: Ardelia
+Gender: Male
+Music: Cool
+Double Battle: No
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Basic
+Pool Pick Functions: Default
+
+Eldegoss @ Eject Pack  
+Ability: Cotton Down  
+Level: 50  
+Tags: Lead
+- Sleep Powder  
+- U-turn  
+- Leaf Storm  
+- Pollen Puff 
+
+Gogoat @ Leftovers  
+Ability: Sap Sipper  
+Level: 50  
+- Bulk Up  
+- Bulldoze  
+- Horn Leech  
+- Milk Drink   
+
+Dubwool @ Leftovers  
+Ability: Fluffy  
+Level: 50  
+Tags: Ace
+- Cotton Guard  
+- Body Press  
+- Baton Pass  
+- Agility  
+
+Ampharos @ Power Herb  
+Ability: Mold Breaker  
+Level: 50  
+- Meteor Beam  
+- Discharge  
+- Dragon Pulse  
+- Dazzling Gleam  
+
+Arcanine-Hisui @ Shuca Berry  
+Ability: Rock Head  
+Level: 50  
+- Head Smash  
+- Flare Blitz  
+- Wild Charge  
+- Morning Sun  
+
+Typhlosion-Hisui @ Choice Specs  
+Ability: Blaze  
+Level: 50  
+- Eruption  
+- Shadow Ball  
+- Flamethrower  
+- Fire Blast 
+
+Gigalith @ Custap Berry  
+Ability: Sturdy  
+Level: 50  
+- Earthquake  
+- Stone Edge  
+- Explosion  
+- Counter   
+
+Whimsicott @ Choice Specs  
+Ability: Prankster  
+Level: 50  
+- Tailwind  
+- U-turn  
+- Moonblast  
+- Switcheroo  
+
+Dracovish  
+Ability: Strong Jaw  
+Level: 50  
+- Fishious Rend  
+- Super Fang  
+- Ice Fang  
+- Psychic Fangs  
+
+=== TRAINER_SHU ===
+Name: Shu
 Class: Team Aqua
 Pic: Aqua Grunt F
 Gender: Female
 Music: Aqua
-Double Battle: No
-AI: Check Bad Move
+Double Battle: Yes
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Double Lead Support
+Pool Pick Functions: Default
 
-Carvanha
-Level: 36
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Arboliva @ Grassy Seed  
+Ability: Seed Sower  
+Level: 50  
+Tags: Lead / Support
+- Hyper Voice  
+- Leech Seed  
+- Calm Mind  
+- Energy Ball  
 
-=== TRAINER_DECLAN ===
-Name: DECLAN
+Magmortar @ Expert Belt  
+Ability: Mega Launcher  
+Level: 50  
+Tags: Lead
+- Terrain Pulse  
+- Flamethrower  
+- Dragon Pulse  
+- Thunderbolt  
+
+Mudsdale @ Leftovers  
+Ability: Stamina  
+Level: 50  
+- Rototiller  
+- High Horsepower  
+- Body Press  
+- Stealth Rock  
+
+Tatsugiri @ Eject Pack  
+Ability: Storm Drain  
+Level: 50  
+Tags: Weather Abuser
+- Hydro Pump  
+- Draco Meteor  
+- Icy Wind  
+- Helping Hand  
+
+Steelix @ Sitrus Berry  
+Ability: Earth Eater  
+Level: 50  
+- Rototiller  
+- Body Press  
+- Gyro Ball  
+- Stone Edge  
+
+Torterra @ Loaded Dice  
+Ability: Shell Armor  
+Level: 50  
+- Shell Smash  
+- Bullet Seed  
+- Rock Blast  
+- Headlong Rush  
+
+Arboliva @ Grassy Seed  
+Ability: Seed Sower  
+Level: 50  
+Tags: Weather Setter
+- Hyper Voice  
+- Leech Seed  
+- Calm Mind  
+- Energy Ball  
+
+Rillaboom @ Terrain Extender  
+Ability: Grassy Surge  
+Level: 50  
+Tags: Lead / Support
+- Grassy Glide  
+- Fake Out  
+- High Horsepower  
+- Drum Beating  
+
+Rillaboom @ Terrain Extender  
+Ability: Grassy Surge  
+Level: 50  
+Tags: Weather Setter
+- Grassy Glide  
+- Fake Out  
+- High Horsepower  
+- Drum Beating  
+
+Garchomp @ Rocky Helmet  
+Ability: Rough Skin  
+Level: 50  
+Tags: Weather Abuser
+- Rototiller  
+- Dragon Tail  
+- Spikes  
+- Stomping Tantrum  
+
+Rotom-Mow @ White Herb  
+Ability: Levitate  
+Level: 50  
+Tags: Weather Abuser
+- Rototiller  
+- Leaf Storm  
+- Discharge  
+- Thunder Wave  
+
+=== TRAINER_NIAN ===
+Name: Nian
 Class: Swimmer M
 Pic: Swimmer M
 Gender: Male
 Music: Swimmer
 Double Battle: No
-AI: Check Bad Move
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Doubles
+Pool Pick Functions: Default
 
-Gyarados
-Level: 34
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Tinkaton (F) @ Air Balloon  
+Ability: Pickpocket  
+Level: 50  
+Tags: Lead
+- Gigaton Hammer  
+- Knock Off  
+- Stealth Rock  
+- Thunder Wave  
 
-=== TRAINER_GRUNT_RUSTURF_TUNNEL ===
+Yanmega @ Heavy-Duty Boots  
+Ability: Tinted Lens  
+Level: 50  
+- Bug Buzz  
+- Air Slash  
+- U-turn  
+- Giga Drain  
+
+Aegislash @ Spell Tag  
+Ability: Stance Change  
+Level: 50  
+- Swords Dance  
+- Iron Head  
+- Sacred Sword  
+- Shadow Sneak  
+
+Claydol @ Leftovers  
+Ability: Levitate  
+Level: 50  
+Tags: Weather Setter
+- Scorching Sands  
+- Teleport  
+- Psychic  
+- Sunny Day  
+
+Torkoal @ Heat Rock  
+Ability: Drought  
+Level: 50  
+Tags: Weather Setter
+- Lava Plume  
+- Will-O-Wisp  
+- Rapid Spin  
+- Clear Smog  
+
+Scovillain @ Choice Specs  
+Ability: Chlorophyll  
+Level: 50  
+Tags: Weather Abuser
+- Flamethrower  
+- Overheat  
+- Giga Drain  
+- Solar Beam  
+
+Coalossal @ Weakness Policy  
+Ability: Steam Engine  
+Level: 50  
+Tags: Lead
+- Stealth Rock  
+- Heat Crash  
+- Rock Blast  
+- Will-O-Wisp  
+
+Ting-Lu  
+Ability: Vessel of Ruin  
+Level: 50  
+- Whirlwind  
+- Spikes  
+- Bulldoze  
+- Taunt  
+
+Flygon @ Yache Berry  
+Ability: Levitate  
+Level: 50  
+Tags: Weather Abuser
+- Earthquake  
+- Dragon Dance  
+- Fire Punch  
+- Stone Edge  
+
+=== TRAINER_CARNELIAN ===
+Name: Carnelian
+Class: Team Aqua
+Pic: Aqua Grunt M
+Gender: Male
+Music: Aqua
+Double Battle: No
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Doubles
+Pool Pick Functions: Default
+
+Hippowdon @ Leftovers  
+Ability: Sand Stream  
+Level: 50  
+Tags: Lead
+- Stealth Rock  
+- Earthquake  
+- Slack Off  
+- Whirlwind  
+
+Gastrodon @ Sitrus Berry  
+Ability: Storm Drain  
+Level: 50  
+- Surf  
+- Ice Beam  
+- Earth Power  
+- Recover  
+
+Clefable @ Sticky Barb  
+Ability: Magic Guard  
+Level: 50  
+Tags: Weather Abuser
+- Moonblast  
+- Soft-Boiled  
+- Trick  
+- Flamethrower 
+
+Aggron @ Custap Berry  
+Ability: Sturdy  
+Level: 50  
+- Heavy Slam  
+- Earthquake  
+- Curse  
+- Body Press   
+
+Tyranitar @ Chople Berry  
+Ability: Sand Stream  
+Level: 50  
+Tags: Lead
+- Knock Off  
+- Stone Edge  
+- Dragon Tail  
+- Stealth Rock  
+
+Tyranitar @ Chople Berry  
+Ability: Sand Stream  
+Level: 50  
+Tags: Weather Setter
+- Knock Off  
+- Stone Edge  
+- Dragon Tail  
+- Stealth Rock 
+
+Leavanny @ Focus Band  
+Ability: Overcoat  
+Level: 50  
+Tags: Weather Abuser
+- Sticky Web  
+- Leaf Blade  
+- Leech Life  
+- Knock Off  
+
+Dracovish @ Mystic Water  
+Ability: Sand Rush  
+Level: 50  
+- Fishious Rend  
+
+Houndstone @ Spell Tag  
+Ability: Sand Rush  
+Level: 50  
+- Last Respects  
+- Will-O-Wisp  
+- Body Press  
+- Destiny Bond  
+
+Braviary-Hisui (M) @ Safety Goggles  
+Ability: Tinted Lens  
+Level: 50  
+- Future Sight  
+- Air Slash  
+- Sandsear Storm  
+- U-turn  
+
+Hippowdon @ Leftovers  
+Ability: Sand Stream  
+Level: 50  
+Tags: Weather Setter
+- Stealth Rock  
+- Earthquake  
+- Slack Off  
+- Whirlwind 
+
+=== TRAINER_PENANCE ===
 Name: GRUNT
 Class: Team Aqua
 Pic: Aqua Grunt M
 Gender: Male
 Music: Aqua
 Double Battle: No
-AI: Check Bad Move
+AI: Smart Trainer
+Party Size: 4
+Pool Rules: Weather Doubles
+Pool Pick Functions: Default
 
-Poochyena
-Level: 11
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Ferrothorn @ Metal Coat  
+Ability: Seed Sower  
+Level: 50  
+Tags: Lead
+- Spikes  
+- Steel Roller  
+- Power Whip  
+- Poison Jab  
 
-=== TRAINER_GRUNT_WEATHER_INST_1 ===
-Name: GRUNT
-Class: Team Aqua
-Pic: Aqua Grunt M
-Gender: Male
-Music: Aqua
-Double Battle: No
-AI: Check Bad Move
+Gliscor @ Toxic Orb  
+Ability: Poison Heal  
+Level: 50  
+- Toxic  
+- Earthquake  
+- Knock Off  
+- U-turn  
 
-Zubat
-Level: 27
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Toxapex @ Black Sludge  
+Ability: Regenerator  
+Level: 50  
+- Toxic Spikes  
+- Scald  
+- Recover  
+- Infestation  
 
-Poochyena
-Level: 27
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Brambleghast @ Colbur Berry  
+Ability: Wind Rider  
+Level: 50  
+- Rapid Spin  
+- Strength Sap  
+- Poltergeist  
+- Power Whip  
+
+Lanturn @ Sitrus Berry  
+Ability: Volt Absorb  
+Level: 50  
+- Wish  
+- Thunder Wave  
+- Volt Switch  
+- Surf  
+
+Gholdengo @ Leftovers  
+Ability: Good as Gold  
+Level: 50  
+- Hex  
+- Thunder Wave  
+- Flash Cannon  
+- Nasty Plot  
+
+Roaring Moon @ Rocky Helmet  
+Ability: Intimidate  
+Level: 50  
+- Knock Off  
+- U-turn  
+- Dragon Claw  
+- Roost  
+
+Excadrill @ Air Balloon  
+Ability: Mold Breaker  
+Level: 50  
+- Rapid Spin  
+- Stealth Rock  
+- Earthquake  
+- Iron Head  
+
+Absol @ Life Orb  
+Ability: Magic Bounce  
+Level: 50  
+- Ceaseless Edge  
+- Play Rough  
+- Sucker Punch  
+- Superpower  
 
 === TRAINER_GRUNT_WEATHER_INST_2 ===
 Name: GRUNT

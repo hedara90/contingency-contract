@@ -619,3 +619,89 @@ void Do10Pull(enum Banner banner)
         gGachaResults[i].stars = star;
     }
 }
+
+bool32 CheckRarities(void)
+{
+    bool32 passed = TRUE;
+    for (u32 i = 0; i < NELEMS(sIndomitability4Stars); i++)
+    {
+        if (gSpeciesInfo[sIndomitability4Stars[i]].rarity != 4)
+        {
+            passed = FALSE;
+            DebugPrintf("Missing %S (4-star)", GetSpeciesName(sIndomitability4Stars[i]));
+        }
+    }
+
+    for (u32 i = 0; i < NELEMS(sFury4Stars); i++)
+    {
+        if (gSpeciesInfo[sFury4Stars[i]].rarity != 4)
+        {
+            passed = FALSE;
+            DebugPrintf("Missing %S (4-star)", GetSpeciesName(sFury4Stars[i]));
+        }
+    }
+
+    for (u32 i = 0; i < NELEMS(sMemories4Stars); i++)
+    {
+        if (gSpeciesInfo[sMemories4Stars[i]].rarity != 4)
+        {
+            passed = FALSE;
+            DebugPrintf("Missing %S (4-star)", GetSpeciesName(sMemories4Stars[i]));
+        }
+    }
+
+    for (u32 i = 0; i < NELEMS(sIndomitability5Stars); i++)
+    {
+        if (gSpeciesInfo[sIndomitability5Stars[i]].rarity != 5)
+        {
+            passed = FALSE;
+            DebugPrintf("Missing %S (5-star)", GetSpeciesName(sIndomitability5Stars[i]));
+        }
+    }
+
+    for (u32 i = 0; i < NELEMS(sFury5Stars); i++)
+    {
+        if (gSpeciesInfo[sFury5Stars[i]].rarity != 5)
+        {
+            passed = FALSE;
+            DebugPrintf("Missing %S (5-star)", GetSpeciesName(sFury5Stars[i]));
+        }
+    }
+
+    for (u32 i = 0; i < NELEMS(sMemories5Stars); i++)
+    {
+        if (gSpeciesInfo[sMemories5Stars[i]].rarity != 5)
+        {
+            passed = FALSE;
+            DebugPrintf("Missing %S (5-star)", GetSpeciesName(sMemories5Stars[i]));
+        }
+    }
+
+    for (u32 i = 0; i < NELEMS(sIndomitability6Stars); i++)
+    {
+        if (gSpeciesInfo[sIndomitability6Stars[i]].rarity != 6)
+        {
+            passed = FALSE;
+            DebugPrintf("Missing %S (6-star)", GetSpeciesName(sIndomitability6Stars[i]));
+        }
+    }
+
+    for (u32 i = 0; i < NELEMS(sFury6Stars); i++)
+    {
+        if (gSpeciesInfo[sFury6Stars[i]].rarity != 6)
+        {
+            passed = FALSE;
+            DebugPrintf("Missing %S (6-star)", GetSpeciesName(sFury6Stars[i]));
+        }
+    }
+
+    for (u32 i = 0; i < NELEMS(sMemories6Stars); i++)
+    {
+        if (gSpeciesInfo[sMemories6Stars[i]].rarity != 6)
+        {
+            passed = FALSE;
+            DebugPrintf("Missing %S (6-star)", GetSpeciesName(sMemories6Stars[i]));
+        }
+    }
+    return passed;
+}

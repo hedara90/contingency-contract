@@ -239,6 +239,9 @@ Debug_EventScript_Script_7::
 
 Debug_EventScript_Script_8::
 	release
+	warpsilent MAP_RECONVENERS, 1, 9
+	waitstate
+	release
 	end
 
 Debug_CheckSaveBlock::

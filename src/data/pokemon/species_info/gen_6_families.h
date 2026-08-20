@@ -2856,6 +2856,7 @@ const struct SpeciesInfo gSpeciesInfoGen6[] =
         .teachableLearnset = sMeowsticMTeachableLearnset,
         .formSpeciesIdTable = sMeowsticFormSpeciesIdTable,
         .formChangeTable = sMeowsticMFormChangeTable,
+        .rarity = 4,
     },
 
     [SPECIES_MEOWSTIC_F] =
@@ -2921,6 +2922,7 @@ const struct SpeciesInfo gSpeciesInfoGen6[] =
         .teachableLearnset = sMeowsticFTeachableLearnset,
         .formSpeciesIdTable = sMeowsticFormSpeciesIdTable,
         .formChangeTable = sMeowsticFFormChangeTable,
+        .rarity = 4,
     },
 
 #if P_GEN_9_MEGA_EVOLUTIONS
@@ -4163,6 +4165,7 @@ const struct SpeciesInfo gSpeciesInfoGen6[] =
         .teachableLearnset = sDragalgeTeachableLearnset,
         .formSpeciesIdTable = sDragalgeFormSpeciesIdTable,
         .formChangeTable = sDragalgeFormChangeTable,
+        .rarity = 4,
     },
 
 #if P_GEN_9_MEGA_EVOLUTIONS
@@ -4648,6 +4651,7 @@ const struct SpeciesInfo gSpeciesInfoGen6[] =
         )
         .levelUpLearnset = sTyrantrumLevelUpLearnset,
         .teachableLearnset = sTyrantrumTeachableLearnset,
+        .rarity = 5,
     },
 #endif //P_FAMILY_TYRUNT
 

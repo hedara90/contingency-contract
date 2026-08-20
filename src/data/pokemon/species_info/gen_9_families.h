@@ -1038,6 +1038,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         )
         .levelUpLearnset = sLokixLevelUpLearnset,
         .teachableLearnset = sLokixTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_NYMBLE
 
@@ -1233,6 +1234,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         )
         .levelUpLearnset = sPawmotLevelUpLearnset,
         .teachableLearnset = sPawmotTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_PAWMI
 
@@ -2209,6 +2211,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         )
         .levelUpLearnset = sGarganaclLevelUpLearnset,
         .teachableLearnset = sGarganaclTeachableLearnset,
+        .rarity = 5,
     },
 #endif //P_FAMILY_NACLI
 
@@ -2342,6 +2345,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         )
         .levelUpLearnset = sArmarougeLevelUpLearnset,
         .teachableLearnset = sArmarougeTeachableLearnset,
+        .rarity = 4,
     },
 
     [SPECIES_CERULEDGE] =
@@ -2407,6 +2411,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         )
         .levelUpLearnset = sCeruledgeLevelUpLearnset,
         .teachableLearnset = sCeruledgeTeachableLearnset,
+        .rarity = 4,
     },
 #endif //P_FAMILY_CHARCADET
 
@@ -4689,6 +4694,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .teachableLearnset = sGlimmoraTeachableLearnset,
         .formSpeciesIdTable = sGlimmoraFormSpeciesIdTable,
         .formChangeTable = sGlimmoraFormChangeTable,
+        .rarity = 5,
     },
 
 #if P_GEN_9_MEGA_EVOLUTIONS
@@ -7236,6 +7242,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sIronValiantLevelUpLearnset,
         .teachableLearnset = sIronValiantTeachableLearnset,
+        .rarity = 6,
     },
 #endif //P_FAMILY_IRON_VALIANT
 
@@ -7705,6 +7712,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .levelUpLearnset = sSinistchaLevelUpLearnset,
         .teachableLearnset = sSinistchaTeachableLearnset,
         .formSpeciesIdTable = sSinistchaFormSpeciesIdTable,
+        .rarity = 5,
     },
 
     [SPECIES_SINISTCHA_MASTERPIECE] =
@@ -7771,6 +7779,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .levelUpLearnset = sSinistchaLevelUpLearnset,
         .teachableLearnset = sSinistchaTeachableLearnset,
         .formSpeciesIdTable = sSinistchaFormSpeciesIdTable,
+        .rarity = 5,
     },
 #endif //P_FAMILY_POLTCHAGEIST
 
