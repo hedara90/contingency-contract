@@ -916,9 +916,9 @@ static const u16 sBackgroundPalette[] = INCGFX_U16("graphics/risk_ui/tiles.png",
 static const u32 sSelectorGfx[] = INCGFX_U32("graphics/risk_ui/selector.png", ".4bpp");
 static const u16 sSelectorPal[] = INCGFX_U16("graphics/risk_ui/selector.png", ".gbapal");
 
-static const u32 sFrameGfx[] = INCGFX_U32("graphics/risk_ui/frame_tiles.png", ".4bpp.smol");
-static const u32 sFrameTilemap[] = INCBIN_U32("graphics/risk_ui/frame_tiles.bin.smolTM");
-static const u16 sFramePal[] = INCGFX_U16("graphics/risk_ui/frame_tiles.png", ".gbapal");
+static const u32 sFrameGfx[] = INCGFX_U32("graphics/risk_ui/frame_new.png", ".4bpp.smol");
+static const u32 sFrameTilemap[] = INCBIN_U32("graphics/risk_ui/frame_new.bin.smolTM");
+static const u16 sFramePal[] = INCGFX_U16("graphics/risk_ui/frame_new.png", ".gbapal");
 
 static const u32 sTotalIconGfx[] = INCGFX_U32("graphics/risk_ui/total_icon.png", ".4bpp");
 static const u16 sTotalIconPal[] = INCGFX_U16("graphics/risk_ui/total_icon.png", ".gbapal");
@@ -948,9 +948,9 @@ static const struct BgTemplate sRiskUiBgTemplates[] =
     },
 };
 
-#define NAME_WIDTH 16
+#define NAME_WIDTH 20
 #define NAME_HEIGHT 2
-#define DESCRIPTION_WIDTH 28
+#define DESCRIPTION_WIDTH 29
 #define DESCRIPTION_HEIGHT 11
 #define TOTAL_WIDTH 2
 #define TOTAL_HEIGHT 2
@@ -972,7 +972,7 @@ static const struct WindowTemplate sRiskUiWindowTemplates[] =
         .tilemapTop = 18,
         .width = NAME_WIDTH,
         .height = NAME_HEIGHT,
-        .paletteNum = 15,
+        .paletteNum = 14,
         .baseBlock = NAME_BASEBLOCK,
     },
     [WIN_RISK_DESCRIPTION] =
@@ -982,17 +982,17 @@ static const struct WindowTemplate sRiskUiWindowTemplates[] =
         .tilemapTop = 20,
         .width = DESCRIPTION_WIDTH,
         .height = DESCRIPTION_HEIGHT,
-        .paletteNum = 15,
+        .paletteNum = 14,
         .baseBlock = DESCRIPTION_BASEBLOCK
     },
     [WIN_RISK_TOTAL] =
     {
         .bg = 0,
-        .tilemapLeft = 25,
+        .tilemapLeft = 26,
         .tilemapTop = 18,
         .width = TOTAL_WIDTH,
         .height = TOTAL_HEIGHT,
-        .paletteNum = 15,
+        .paletteNum = 14,
         .baseBlock = TOTAL_BASEBLOCK
     },
     DUMMY_WIN_TEMPLATE
@@ -1008,8 +1008,8 @@ enum FontColor
 
 static const u8 sRiskUiWindowFontColors[][3] =
 {
-    [FONT_BLACK]  = {2, 3,  4},
-    [FONT_WHITE]  = {2, 1,  2},
+    [FONT_BLACK]  = {2, 5,  3},
+    [FONT_WHITE]  = {5, 1,  6},
     [FONT_FADED]  = {2, 5,  6},
     [FONT_BLUE]   = {2, TEXT_COLOR_BLUE,       TEXT_COLOR_LIGHT_GRAY},
 };
@@ -1278,6 +1278,10 @@ static void RiskUi_InitWindows(void)
     for (u32 i = 0; i < WIN_COUNT; i++)
     {
         FillWindowPixelBuffer(i, PIXEL_FILL(2));
+        if (i == WIN_RISK_TOTAL) 
+        {
+            FillWindowPixelBuffer(i, PIXEL_FILL(5));
+        }
         PutWindowTilemap(i);
         CopyWindowToVram(i, COPYWIN_FULL);
     }
@@ -1666,7 +1670,7 @@ static void PrintRiskData(enum Risk risk)
         AddTextPrinterParameterized4(WIN_RISK_TOTAL,
                                      FONT_NORMAL,
                                      4, 0, 0, 0,
-                                     sRiskUiWindowFontColors[FONT_BLACK],
+                                     sRiskUiWindowFontColors[FONT_WHITE],
                                      TEXT_SKIP_DRAW,
                                      str);
     }
@@ -1707,8 +1711,8 @@ static void ToggleLock(enum Risk risk)
 static const union TextColor sTotalIconTextColor =
 {
     .background = 0,
-    .foreground = 11,
-    .shadow = 1,
+    .foreground = 6,
+    .shadow = 3,
     .accent = 0
 };
 
