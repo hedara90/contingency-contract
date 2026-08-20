@@ -3147,6 +3147,50 @@ static void BlitBitmapToPartyWindow_SwSh(u8 windowId, u8 x, u8 y, u8 width, u8 h
     }
     //BlitBitmapToPartyWindow(windowId, sSlotTilemap_Main_SwSh, 14, x, y, width, height);
 
+    u32 rarityOffset;
+
+    struct Pokemon *mon = &gParties[0][windowId];
+    enum Species species = GetMonData(mon, MON_DATA_SPECIES);
+    switch (gSpeciesInfo[species].rarity)
+    {
+    case 5:
+        rarityOffset = 8 * 42;
+        break;
+    case 6:
+        rarityOffset = 8 * 84;
+        break;
+    default:
+        rarityOffset = 0;
+        break;
+    }
+
+    u32 numDupes;
+    if (GetMonData(mon, MON_DATA_IS_SHINY))
+    {
+        numDupes = 5;
+    }
+    else
+    {
+        u32 markings = GetMonData(mon, MON_DATA_MARKINGS);
+        switch (markings)
+        {
+        case 1:
+            numDupes = 1;
+            break;
+        case 3:
+            numDupes = 2;
+            break;
+        case 7:
+            numDupes = 3;
+            break;
+        case 15:
+            numDupes = 4;
+            break;
+        default:
+            numDupes = 0;
+        }
+    }
+
     u32 *pixels = Alloc(width * height * 32);
 
     for (u32 baseY = 0; baseY < height; baseY++)
@@ -3155,8 +3199,19 @@ static void BlitBitmapToPartyWindow_SwSh(u8 windowId, u8 x, u8 y, u8 width, u8 h
         {
             for (u32 i = 0; i < 8; i++)
             {
-                pixels[baseY * width * 8 + baseX * 8 + i] = sCCMonBoxesGfx[(y + baseY) * 14 * 8 + (x + baseX) * 8 + i];
+                pixels[baseY * width * 8 + baseX * 8 + i] = sCCMonBoxesGfx[rarityOffset + (y + baseY) * 14 * 8 + (x + baseX) * 8 + i];
             }
+        }
+    }
+
+    if (x <= 1 && x + width  >= 1
+     && y <= 1 && y + height >= 1)
+    {
+        const u32 *src = &sCCMonBoxesGfx[(126 + numDupes) * 8];
+        u32 *dst = &pixels[(1 - x) * 8 + (1 - y) * width * 8];
+        for (u32 i = 0; i < 8; i++)
+        {
+            dst[i] = src[i];
         }
     }
 
