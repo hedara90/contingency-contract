@@ -2382,12 +2382,13 @@ Music: Aqua
 Double Battle: Yes
 AI: Smart Trainer
 Party Size: 4
-Pool Rules: Double Lead Support
+Pool Rules: Elysium
 Pool Pick Functions: Default
 
 Lapras @ Leftovers  
 Ability: Shell Armor  
 Level: 50  
+Tags: Lead / Weather Setter / Tag6
 - Dragon Cheer  
 - Life Dew  
 - Icy Wind  
@@ -2396,6 +2397,7 @@ Level: 50
 Noivern @ Dragon Fang  
 Ability: Soundproof  
 Level: 50  
+Tags: Lead / Weather Abuser / Tag7
 - Draco Meteor  
 - Overheat  
 - Tailwind  
@@ -2428,6 +2430,7 @@ Level: 50
 Kingdra @ Scope Lens  
 Ability: Sniper  
 Level: 50  
+Tags: Weather Abuser
 - Draco Meteor  
 - Surf  
 - Ice Beam  
@@ -2436,6 +2439,7 @@ Level: 50
 Froslass (F) @ Focus Sash  
 Ability: Cursed Body  
 Level: 50  
+Tags: Lead / Weather Setter / Tag7
 - Frost Breath  
 - Icy Wind  
 - Shadow Ball  
@@ -2444,6 +2448,7 @@ Level: 50
 Tauros-Paldea-Blaze (M) @ Assault Vest  
 Ability: Anger Point  
 Level: 50  
+Tags: Lead / Weather Abuser / Tag6
 - Close Combat  
 - Raging Bull  
 - Earthquake  
@@ -2456,6 +2461,42 @@ Level: 50
 - U-turn  
 - Roost  
 - Knock Off  
+
+Lapras @ Leftovers  
+Ability: Shell Armor  
+Level: 50  
+Tags: Weather Setter
+- Dragon Cheer  
+- Life Dew  
+- Icy Wind  
+- Scald  
+
+Noivern @ Dragon Fang  
+Ability: Soundproof  
+Level: 50  
+Tags: Weather Abuser
+- Draco Meteor  
+- Overheat  
+- Tailwind  
+- Hurricane  
+
+Froslass (F) @ Focus Sash  
+Ability: Cursed Body  
+Level: 50  
+Tags: Weather Setter
+- Frost Breath  
+- Icy Wind  
+- Shadow Ball  
+- Taunt  
+
+Tauros-Paldea-Blaze (M) @ Assault Vest  
+Ability: Anger Point  
+Level: 50  
+Tags: Weather Abuser
+- Close Combat  
+- Raging Bull  
+- Earthquake  
+- Wild Charge  
 
 === TRAINER_IRENE ===
 Name: GRUNT
