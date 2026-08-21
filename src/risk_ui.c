@@ -909,14 +909,14 @@ static EWRAM_DATA struct RiskUiState *sRiskUiState = NULL;
 static EWRAM_DATA u8 *sBg1TilemapBuffer = NULL;
 static EWRAM_DATA u8 *sBg2TilemapBuffer = NULL;
 
-static const u32 sBackgroundTiles[] = INCGFX_U32("graphics/risk_ui/tiles.png", ".4bpp.smol");
-static const u32 sBackgroundTilemap[] = INCBIN_U32("graphics/risk_ui/tiles.bin.smolTM");
-static const u16 sBackgroundPalette[] = INCGFX_U16("graphics/risk_ui/tiles.png", ".gbapal");
+static const u32 sBackgroundTiles[] = INCGFX_U32("graphics/risk_ui/background.png", ".4bpp.smol");
+static const u32 sBackgroundTilemap[] = INCBIN_U32("graphics/risk_ui/background.bin.smolTM");
+static const u16 sBackgroundPalette[] = INCGFX_U16("graphics/risk_ui/background.png", ".gbapal");
 
 static const u32 sSelectorGfx[] = INCGFX_U32("graphics/risk_ui/selector.png", ".4bpp");
 static const u16 sSelectorPal[] = INCGFX_U16("graphics/risk_ui/selector.png", ".gbapal");
 
-static const u32 sFrameGfx[] = INCGFX_U32("graphics/risk_ui/frame_new.png", ".4bpp.smol");
+//static const u32 sFrameGfx[] = INCGFX_U32("graphics/risk_ui/frame_new.png", ".4bpp.smol");
 static const u32 sFrameTilemap[] = INCBIN_U32("graphics/risk_ui/frame_new.bin.smolTM");
 static const u16 sFramePal[] = INCGFX_U16("graphics/risk_ui/frame_new.png", ".gbapal");
 
@@ -928,21 +928,21 @@ static const struct BgTemplate sRiskUiBgTemplates[] =
     {
         .bg = 0,
         .charBaseIndex = 0,
-        .mapBaseIndex = 30,
+        .mapBaseIndex = 31,
         .priority = 1,
         .screenSize = 0,
     },
     {
         .bg = 1,
         .charBaseIndex = 1,
-        .mapBaseIndex = 20,
+        .mapBaseIndex = 26,
         .priority = 2,
         .screenSize = 3,
     },
     {
         .bg = 2,
-        .charBaseIndex = 2,
-        .mapBaseIndex = 28,
+        .charBaseIndex = 1,
+        .mapBaseIndex = 30,
         .priority = 0,
         .screenSize = 0,
     },
@@ -1241,7 +1241,7 @@ static bool8 RiskUi_LoadGraphics(void)
     case 0:
         ResetTempTileDataBuffers();
         DecompressAndCopyTileDataToVram(1, sBackgroundTiles, 0, 0, 0);
-        DecompressAndCopyTileDataToVram(2, sFrameGfx, 0, 0, 0);
+        //DecompressAndCopyTileDataToVram(2, sFrameGfx, 0, 0, 0);
         sRiskUiState->loadState++;
         break;
     case 1:
