@@ -86,7 +86,6 @@
 #include "constants/songs.h"
 
 
-
 #if SWSH_PARTY_MENU
 
 enum {
@@ -3244,9 +3243,23 @@ static void LoadPartyBoxPalette(struct PartyMenuBox *menuBox, u8 palFlags)
     LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[state].frame), sPartyBoxPalOffset1 + palOffset, PLTT_SIZEOF(1));
     if (state != PARTY_BOX_PAL_NO_MON)
     {
-        LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[state].text[0]), sPartyBoxPalOffsets3[0] + palOffset, PLTT_SIZEOF(1));
-        LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[state].text[1]), sPartyBoxPalOffsets3[1] + palOffset, PLTT_SIZEOF(1));
-        RefreshPartySlotGenderPalette(menuBox, palFlags & PARTY_PAL_SELECTED);
+        if (state == PARTY_BOX_PAL_CURR_SELECTION)
+        {
+            LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[PARTY_BOX_PAL_NORMAL].text[0]), sPartyBoxPalOffsets3[0] + palOffset, PLTT_SIZEOF(1));
+            LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[PARTY_BOX_PAL_NORMAL].text[1]), sPartyBoxPalOffsets3[1] + palOffset, PLTT_SIZEOF(1));
+
+            u16 thing = RGB2GBA(0xFF, 0xFF, 0xFF);
+            LoadPalette(&thing, 15 + palOffset, PLTT_SIZEOF(1));
+        }
+        else
+        {
+            LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[PARTY_BOX_PAL_CURR_SELECTION].text[0]), sPartyBoxPalOffsets3[0] + palOffset, PLTT_SIZEOF(1));
+            LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[PARTY_BOX_PAL_CURR_SELECTION].text[1]), sPartyBoxPalOffsets3[1] + palOffset, PLTT_SIZEOF(1));
+
+            u16 thing = RGB2GBA(0x62, 0x62, 0x62);
+            LoadPalette(&thing, 15 + palOffset, PLTT_SIZEOF(1));
+        }
+        //RefreshPartySlotGenderPalette(menuBox, palFlags & PARTY_PAL_SELECTED);
         RefreshPartySlotHPBarPalette(menuBox);
     }
 }
