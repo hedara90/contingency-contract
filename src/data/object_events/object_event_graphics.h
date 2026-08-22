@@ -403,6 +403,9 @@ const u32 gObjectEventPic_Kaito[] = INCGFX_U32("graphics/object_events/pics/peop
 const u32 gObjectEventPic_Monk[] = INCGFX_U32("graphics/object_events/pics/people/monk.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_PrayerGirl[] = INCGFX_U32("graphics/object_events/pics/people/prayergirl.png", ".4bpp", "-mwidth 2 -mheight 4");
 
+const u32 gObjectEventPic_Satsuki[] = INCGFX_U32("graphics/object_events/pics/people/satsuki.png", ".4bpp", "-mwidth 4 -mheight 4");
+const u16 gObjectEventPal_Satsuki[] = INCGFX_U16("graphics/object_events/palettes/satsuki.pal", ".gbapal");
+
 #if OW_FOLLOWERS_POKEBALLS
 const u32 gObjectEventPic_MasterBall[] = INCGFX_U32("graphics/object_events/pics/misc/ball_master.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_UltraBall[] = INCGFX_U32("graphics/object_events/pics/misc/ball_ultra.png", ".4bpp", "-mwidth 2 -mheight 4");
