@@ -86,7 +86,6 @@
 #include "constants/songs.h"
 
 
-
 #if SWSH_PARTY_MENU
 
 enum {
@@ -1252,6 +1251,7 @@ static bool8 DecompressGraphics(void)
         break;
     case 3:
         LoadPalette(sPartyMenuBg_Pal, BG_PLTT_ID(0), 7 * PLTT_SIZE_4BPP);
+        LoadPalette(sCCMonBoxesPal, BG_PLTT_ID(3), PLTT_SIZE_4BPP);
         CpuCopy16(gPlttBufferUnfaded, sPartyMenuInternal->palBuffer, 7 * PLTT_SIZE_4BPP);
         sPartyMenuInternal->switchCounter++;
         break;
@@ -1327,8 +1327,10 @@ static bool8 DecompressGraphics(void)
 static void PartyPaletteBufferCopy(u8 palNum)
 {
     u8 offset = PLTT_ID(palNum);
-    CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(3)], &gPlttBufferUnfaded[offset], PLTT_SIZE_4BPP);
-    CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(3)], &gPlttBufferFaded[offset], PLTT_SIZE_4BPP);
+    //CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(3)], &gPlttBufferUnfaded[offset], PLTT_SIZE_4BPP);
+    //CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(3)], &gPlttBufferFaded[offset], PLTT_SIZE_4BPP);
+    CpuCopy16(sCCMonBoxesPal, &gPlttBufferUnfaded[offset], PLTT_SIZE_4BPP);
+    CpuCopy16(sCCMonBoxesPal, &gPlttBufferFaded[offset], PLTT_SIZE_4BPP);
 }
 
 static void FreePartyPointers(void)
@@ -3142,7 +3144,79 @@ static void BlitBitmapToPartyWindow_SwSh(u8 windowId, u8 x, u8 y, u8 width, u8 h
         width = 14;
         height = 3;
     }
-    BlitBitmapToPartyWindow(windowId, sSlotTilemap_Main_SwSh, 14, x, y, width, height);
+    //BlitBitmapToPartyWindow(windowId, sSlotTilemap_Main_SwSh, 14, x, y, width, height);
+
+    u32 rarityOffset;
+
+    struct Pokemon *mon = &gParties[0][windowId];
+    enum Species species = GetMonData(mon, MON_DATA_SPECIES);
+    switch (gSpeciesInfo[species].rarity)
+    {
+    case 5:
+        rarityOffset = 8 * 42;
+        break;
+    case 6:
+        rarityOffset = 8 * 84;
+        break;
+    default:
+        rarityOffset = 0;
+        break;
+    }
+
+    u32 numDupes;
+    if (GetMonData(mon, MON_DATA_IS_SHINY))
+    {
+        numDupes = 5;
+    }
+    else
+    {
+        u32 markings = GetMonData(mon, MON_DATA_MARKINGS);
+        switch (markings)
+        {
+        case 1:
+            numDupes = 1;
+            break;
+        case 3:
+            numDupes = 2;
+            break;
+        case 7:
+            numDupes = 3;
+            break;
+        case 15:
+            numDupes = 4;
+            break;
+        default:
+            numDupes = 0;
+        }
+    }
+
+    u32 *pixels = Alloc(width * height * 32);
+
+    for (u32 baseY = 0; baseY < height; baseY++)
+    {
+        for (u32 baseX = 0; baseX < width; baseX++)
+        {
+            for (u32 i = 0; i < 8; i++)
+            {
+                pixels[baseY * width * 8 + baseX * 8 + i] = sCCMonBoxesGfx[rarityOffset + (y + baseY) * 14 * 8 + (x + baseX) * 8 + i];
+            }
+        }
+    }
+
+    if (x <= 1 && x + width  >= 1
+     && y <= 1 && y + height >= 1)
+    {
+        const u32 *src = &sCCMonBoxesGfx[(126 + numDupes) * 8];
+        u32 *dst = &pixels[(1 - x) * 8 + (1 - y) * width * 8];
+        for (u32 i = 0; i < 8; i++)
+        {
+            dst[i] = src[i];
+        }
+    }
+
+    BlitBitmapToWindow(windowId, (u8 *)pixels, x * 8, y * 8, width * 8, height * 8);
+
+    Free(pixels);
 }
 
 static void DrawEmptySlot(u8 windowId)
@@ -3169,9 +3243,23 @@ static void LoadPartyBoxPalette(struct PartyMenuBox *menuBox, u8 palFlags)
     LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[state].frame), sPartyBoxPalOffset1 + palOffset, PLTT_SIZEOF(1));
     if (state != PARTY_BOX_PAL_NO_MON)
     {
-        LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[state].text[0]), sPartyBoxPalOffsets3[0] + palOffset, PLTT_SIZEOF(1));
-        LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[state].text[1]), sPartyBoxPalOffsets3[1] + palOffset, PLTT_SIZEOF(1));
-        RefreshPartySlotGenderPalette(menuBox, palFlags & PARTY_PAL_SELECTED);
+        if (state == PARTY_BOX_PAL_CURR_SELECTION)
+        {
+            LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[PARTY_BOX_PAL_NORMAL].text[0]), sPartyBoxPalOffsets3[0] + palOffset, PLTT_SIZEOF(1));
+            LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[PARTY_BOX_PAL_NORMAL].text[1]), sPartyBoxPalOffsets3[1] + palOffset, PLTT_SIZEOF(1));
+
+            u16 thing = RGB2GBA(0xFF, 0xFF, 0xFF);
+            LoadPalette(&thing, 15 + palOffset, PLTT_SIZEOF(1));
+        }
+        else
+        {
+            LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[PARTY_BOX_PAL_CURR_SELECTION].text[0]), sPartyBoxPalOffsets3[0] + palOffset, PLTT_SIZEOF(1));
+            LoadPalette(GetPartyMenuPalBufferPtr(sPartyBoxPalIds[PARTY_BOX_PAL_CURR_SELECTION].text[1]), sPartyBoxPalOffsets3[1] + palOffset, PLTT_SIZEOF(1));
+
+            u16 thing = RGB2GBA(0x62, 0x62, 0x62);
+            LoadPalette(&thing, 15 + palOffset, PLTT_SIZEOF(1));
+        }
+        //RefreshPartySlotGenderPalette(menuBox, palFlags & PARTY_PAL_SELECTED);
         RefreshPartySlotHPBarPalette(menuBox);
     }
 }
@@ -3208,7 +3296,7 @@ static void DisplayPartyPokemonMoves(u8 windowId, int m, enum Move move, u8 pp, 
     struct SpriteTemplate template = sSpriteTemplate_MoveTypes;
     template.paletteTag = POKE_ICON_BASE_PAL_TAG + sMoveTypeToPalOffset[type];
 
-    sMoveSlots[m].typeSpriteId = CreateSprite(&template, 204, 24 + 16 * m, 1);
+    sMoveSlots[m].typeSpriteId = CreateSprite(&template, 212, 24 + 16 * m, 1);
     if (sMoveSlots[m].typeSpriteId != MAX_SPRITES)
         StartSpriteAnim(&gSprites[sMoveSlots[m].typeSpriteId], type);
     AddTextPrinterParameterized3(windowId, GetFontIdToFit(name, FONT_SMALL, 0, sPartyMoveBoxLayout.moveName.width),
@@ -3231,6 +3319,7 @@ static void DisplayPartyPokemonNickname(struct Pokemon *mon, struct PartyMenuBox
 
 static void DisplayPartyPokemonLevelCheck(struct Pokemon *mon, struct PartyMenuBox *menuBox, u8 c)
 {
+    return;
     if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
     {
         u8 ailment = GetMonAilment(mon);
@@ -3264,6 +3353,7 @@ static void DisplayPartyPokemonGenderNidoranCheck(struct Pokemon *mon, struct Pa
 
 static void LoadGenderTextPalette(u8 gender, struct PartyMenuBox *menuBox, bool8 focused)
 {
+    return;
     u8 palOffset = BG_PLTT_ID(GetWindowAttribute(menuBox->windowId, WINDOW_PALETTE_NUM));
     u8 fgIdx = focused ? 1 : 0;
     u8 shadowIdx = focused ? 0 : 1;
@@ -3275,6 +3365,7 @@ static void LoadGenderTextPalette(u8 gender, struct PartyMenuBox *menuBox, bool8
 
 static void DisplayPartyPokemonGender(u8 gender, enum Species species, u8 *nickname, struct PartyMenuBox *menuBox, bool8 focused)
 {
+    return;
     if (species == SPECIES_NONE)
         return;
     if ((species == SPECIES_NIDORAN_M || species == SPECIES_NIDORAN_F) && StringCompare(nickname, GetSpeciesName(species)) == 0)
@@ -3927,7 +4018,10 @@ static void SetPartySlotSpriteLifted(struct PartyMenuBox *menuBox, bool8 lifted)
         else
         {
             gSprites[spriteIds[i]].oam.priority = 1;
-            gSprites[spriteIds[i]].x = menuBox->spriteCoords[i * 2];
+            if (i == 0)
+                gSprites[spriteIds[i]].x = menuBox->spriteCoords[i * 2] + CC_MON_ICON_OFFSET;
+            else
+                gSprites[spriteIds[i]].x = menuBox->spriteCoords[i * 2];
             gSprites[spriteIds[i]].y = menuBox->spriteCoords[i * 2 + 1];
             gSprites[spriteIds[i]].x2 = 0;
             gSprites[spriteIds[i]].y2 = 0;
@@ -5437,7 +5531,7 @@ static void CreatePartyMonIconSpriteParameterized(enum Species species, u32 pid,
 {
     if (species != SPECIES_NONE)
     {
-        menuBox->monSpriteId = CreateMonIconIsEgg(species, SpriteCB_MonIcon, menuBox->spriteCoords[0], menuBox->spriteCoords[1], 4, pid, isEgg);
+        menuBox->monSpriteId = CreateMonIconIsEgg(species, SpriteCB_MonIcon, menuBox->spriteCoords[0] + CC_MON_ICON_OFFSET, menuBox->spriteCoords[1], 4, pid, isEgg);
         gSprites[menuBox->monSpriteId].oam.priority = priority;
     }
 }

@@ -49,10 +49,10 @@ struct StorageMessage
 // Graphics - Storage System UI
 // ============================================================================
 
-static const u32 sSwShStorage_Gfx[]           = INCGFX_U32("graphics/pokemon_storage/swsh/tiles.png", ".4bpp.smol");
-static const u16 sSwShStorage_Pal[]           = INCGFX_U16("graphics/pokemon_storage/swsh/tiles.png", ".gbapal");
-static const u32 sSwShStorage_BG1_Tilemap[]   = INCGFX_U32("graphics/pokemon_storage/swsh/bg1.bin", ".smolTM");
-static const u32 sSwShStorage_BG2_Tilemap[]   = INCGFX_U32("graphics/pokemon_storage/swsh/bg2.bin", ".smolTM");
+static const u32 sSwShStorage_Gfx[]           = INCGFX_U32("graphics/pokemon_storage/swsh/tiles_new.png", ".4bpp.smol");
+static const u16 sSwShStorage_Pal[]           = INCGFX_U16("graphics/pokemon_storage/swsh/tiles_new.png", ".gbapal");
+static const u32 sSwShStorage_BG1_Tilemap[]   = INCGFX_U32("graphics/pokemon_storage/swsh/bg1_new.bin", ".smolTM");
+static const u32 sSwShStorage_BG2_Tilemap[]   = INCGFX_U32("graphics/pokemon_storage/swsh/bg2_new.bin", ".smolTM");
 static const u32 sMonInfo_Gfx[]               = INCGFX_U32("graphics/pokemon_storage/swsh/mon_info.png", ".4bpp.smol");
 static const u32 sMonInfo_Tilemap[]           = INCGFX_U32("graphics/pokemon_storage/swsh/mon_info.bin", ".smolTM");
 static const u16 sTextWindows_Pal[]           = INCGFX_U16("graphics/pokemon_storage/swsh/text_windows.pal", ".gbapal");
@@ -67,7 +67,7 @@ static const u8  sChooseBoxMenu_Tilemap[]     = INCBIN_U8("graphics/pokemon_stor
 static const u32 sCursor_Gfx[]                = INCGFX_U32("graphics/pokemon_storage/swsh/cursor.png", ".4bpp.smol");
 static const u16 sCursor_Pal[]                = INCGFX_U16("graphics/pokemon_storage/swsh/cursor.png", ".gbapal");
 static const u32 sGenderIcons_Gfx[]           = INCGFX_U32("graphics/pokemon_storage/swsh/gender_icons.png", ".4bpp.smol");
-static const u16 sMarkings_Pal[]              = INCGFX_U16("graphics/pokemon_storage/swsh/markings.pal", ".gbapal");
+static const u16 sMarkings_Pal[]              = INCGFX_U16("graphics/interface/mon_markings.png", ".gbapal");
 static const u32 sMarkingsMenu_Gfx[]          = INCGFX_U32("graphics/pokemon_storage/swsh/markings_menu.png", ".4bpp.smol");
 static const u32 sMessageWindow_Gfx[]         = INCGFX_U32("graphics/pokemon_storage/swsh/message_window.png", ".4bpp.smol");
 static const u32 sShinyIcon_Gfx[]             = INCGFX_U32("graphics/pokemon_storage/swsh/shiny_icon.png", ".4bpp.smol");

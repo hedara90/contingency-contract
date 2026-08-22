@@ -844,6 +844,9 @@ static void PrintMessage(u8 id);
 static void CreateMessageWindowSprite(void);
 static void DestroyMessageWindowSprite(void);
 
+//  CC specific functions
+static void UpdatePartyMonBg(u32 position, bool32 editBuffer);
+
 // Tilemap utility
 static void TilemapUtil_Move(u8, u8, s8);
 static void TilemapUtil_SetMap(u8, u8, const void *, u16, u16);
@@ -1149,9 +1152,9 @@ static s16 UNUSED StorageSystemGetNextMonIndex(struct BoxPokemon *box, s8 startI
 //------------------------------------------------------------------------------
 
 // First tile index (local to char block 2) of the 4x4 box icon tile block
-#define CHOOSE_BOX_GRID_TILE_BASE  47
+#define CHOOSE_BOX_GRID_TILE_BASE  111
 // Top-left tilemap column/row of the choose-box grid (pixels 88,64 / 8)
-#define CHOOSE_BOX_GRID_TILE_COL   9
+#define CHOOSE_BOX_GRID_TILE_COL   12
 #define CHOOSE_BOX_GRID_TILE_ROW   6
 
 // Top-left tilemap column/row of choose box menu
@@ -1218,20 +1221,20 @@ static void SpriteCB_ChooseBoxGridHover(struct Sprite *sprite)
 
 static u8 ChooseBoxGrid_GetRowLength(u8 row)
 {
-    u8 rowStart = row * 5;
+    u8 rowStart = row * 4;
     u8 remaining = TOTAL_BOXES_COUNT - rowStart;
-    return remaining >= 5 ? 5 : remaining;
+    return remaining >= 4 ? 4 : remaining;
 }
 
 static void ChooseBoxGrid_UpdateHover(void)
 {
-    u8 col = sChooseBoxMenu->curBox % 5;
-    u8 row = sChooseBoxMenu->curBox / 5;
+    u8 col = sChooseBoxMenu->curBox % 4;
+    u8 row = sChooseBoxMenu->curBox / 4;
 
     if (sChooseBoxMenu->hoverSprite)
     {
         struct Sprite *sprite = sChooseBoxMenu->hoverSprite;
-        s16 x = 88 + col * 32;
+        s16 x = (CHOOSE_BOX_GRID_TILE_COL + 2) * 8 + col * 32;
         s16 y = 64 + row * 32;
 
         if (sprite->x == x && sprite->y == y)
@@ -1262,9 +1265,9 @@ static void ChooseBoxGrid_UpdateHover(void)
 
 static void ChooseBoxGrid_MoveCursor(s8 dcol, s8 drow)
 {
-    u8 row = sChooseBoxMenu->curBox / 5;
-    u8 col = sChooseBoxMenu->curBox % 5;
-    u8 numRows = (TOTAL_BOXES_COUNT + 4) / 5;
+    u8 row = sChooseBoxMenu->curBox / 4;
+    u8 col = sChooseBoxMenu->curBox % 4;
+    u8 numRows = (TOTAL_BOXES_COUNT + 3) / 4;
     u8 targetRow;
     u8 targetLength;
 
@@ -1278,11 +1281,11 @@ static void ChooseBoxGrid_MoveCursor(s8 dcol, s8 drow)
         targetLength = ChooseBoxGrid_GetRowLength(targetRow);
         if (col >= targetLength)
             col = targetLength - 1;
-        sChooseBoxMenu->curBox = targetRow * 5 + col;
+        sChooseBoxMenu->curBox = targetRow * 4 + col;
     }
     else
     {
-        u8 rowStart = row * 5;
+        u8 rowStart = row * 4;
         u8 rowLength = ChooseBoxGrid_GetRowLength(row);
 
         if (dcol > 0)
@@ -1308,17 +1311,17 @@ static void ChooseBox_CreateSprites(u8 curBox)
 
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
     {
-        col = boxId % 5;
-        row = boxId / 5;
+        col = boxId % 4;
+        row = boxId / 4;
         for (ty = 0; ty < 4; ty++)
             for (tx = 0; tx < 4; tx++)
                 tilemap[(CHOOSE_BOX_GRID_TILE_ROW + row * 4 + ty) * 32 + (CHOOSE_BOX_GRID_TILE_COL + col * 4 + tx)] = CHOOSE_BOX_GRID_TILE_BASE + ty * 4 + tx;
     }
     CopyBgTilemapBufferToVram(1);
 
-    col = curBox % 5;
-    row = curBox / 5;
-    spriteId = CreateSprite(&sSpriteTemplate_ChooseBoxGrid_Hover, 88 + col * 32, 64 + row * 32, 3);
+    col = curBox % 4;
+    row = curBox / 4;
+    spriteId = CreateSprite(&sSpriteTemplate_ChooseBoxGrid_Hover, (CHOOSE_BOX_GRID_TILE_COL + 2) * 8 + col * 32, 64 + row * 32, 3);
     if (spriteId != MAX_SPRITES)
     {
         const u32 *hoverSrc = sChooseBoxGrid_Hover_Gfx;
@@ -1371,8 +1374,8 @@ static void ChooseBox_DestroySprites(void)
 
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
     {
-        col = boxId % 5;
-        row = boxId / 5;
+        col = boxId % 4;
+        row = boxId / 4;
         for (ty = 0; ty < 4; ty++)
             for (tx = 0; tx < 4; tx++)
                 tilemap[(CHOOSE_BOX_GRID_TILE_ROW + row * 4 + ty) * 32 + (CHOOSE_BOX_GRID_TILE_COL + col * 4 + tx)] = 0;
@@ -1907,6 +1910,8 @@ static void Task_InitPokeStorage(u8 taskId)
         break;
     case 8:
         CreatePartyMonsSprites(TRUE);
+        for (u32 i = 0; i < 6; i++)
+            UpdatePartyMonBg(i, TRUE);
         ScheduleBgCopyTilemapToVram(1);
         break;
     case 9:
@@ -3857,7 +3862,7 @@ static void UpdateMarkingComboSprite(void)
     }
 
     if (sStorage->markingComboSprite != NULL)
-        UpdateMonMarkingTiles(sStorage->displayMon.markings, sStorage->markingComboTilesPtr);
+        UpdateMonMarkingTiles(sStorage->displayMon.markings, sStorage->markingComboTilesPtr, sStorage->displayMon.isShiny);
 }
 
 static void RefreshDisplayMonData(void)
@@ -5096,6 +5101,9 @@ static void CompactPartySprites(void)
             targetSlot++;
         }
     }
+
+    for (u32 i = 0; i < 6; i++)
+        UpdatePartyMonBg(i, FALSE);
 }
 
 static u8 GetNumPartySpritesCompacting(void)
@@ -5599,6 +5607,11 @@ static bool8 ScrollToBox(void)
             return TRUE;
 
         UpdateBoxTitle(sStorage->scrollToBoxId);
+        for (u32 i = 0; i < IN_BOX_COUNT; i++)
+        {
+            if (sStorage->boxMonsSprites[i])
+                sStorage->boxMonsSprites[i]->oam.priority = 1;
+        }
         return FALSE;
     }
 
@@ -5959,8 +5972,8 @@ static void GetCursorCoordsByPos(u8 cursorArea, u8 cursorPosition, u16 *x, u16 *
         *y = 8;
         break;
     case CURSOR_AREA_IN_CHOOSE_BOX:
-        *x = 88 + (cursorPosition % 5) * 32;
-        *y = 50 + (cursorPosition / 5) * 32;
+        *x = (CHOOSE_BOX_GRID_TILE_COL + 2) * 8 + (cursorPosition % 4) * 32;
+        *y = 50 + (cursorPosition / 4) * 32;
         if (sIsMonBeingMoved)
             *y -= 8;
         break;
@@ -7826,9 +7839,9 @@ static bool8 SetMenuTexts_Mon(void)
             SetMenuText(MENU_STORE);
     }
 
-    SetMenuText(MENU_MARK);
-    if (sStorage->boxOption != OPTION_SELECT_MON)
-        SetMenuText(MENU_RELEASE);
+    //SetMenuText(MENU_MARK);
+    //if (sStorage->boxOption != OPTION_SELECT_MON)
+    //    SetMenuText(MENU_RELEASE);
     return TRUE;
 }
 
@@ -9663,3 +9676,148 @@ void ChooseMonFromStorage_SwSh(void)
 {
     EnterPokeStorage(OPTION_SELECT_MON);
 }
+
+#define FLIP_H (1 << 10)
+#define FLIP_V (1 << 11)
+
+static void UpdatePartyMonBg(u32 position, bool32 editBuffer)
+{
+    u16 *tilemap;
+    if (editBuffer)
+        tilemap = (u16 *)sStorage->displayMenuTilemapBuffer;
+    else
+        tilemap = (u16 *)(BG_VRAM + 26 * 2048);
+
+    tilemap = &tilemap[32 + position * 32 * 3];
+
+    struct Pokemon *mon = &gParties[0][position];
+    enum Species species = GetMonData(mon, MON_DATA_SPECIES);
+
+    //  Set dupe icon
+    if (species != SPECIES_NONE)
+    {
+        u32 numDupes = 0;
+        if (GetMonData(mon, MON_DATA_IS_SHINY))
+        {
+            numDupes = 5;
+        }
+        else
+        {
+            u32 markings = GetMonData(mon, MON_DATA_MARKINGS);
+            switch (markings)
+            {
+            case 0:
+                numDupes = 0;
+                break;
+            case 1:
+                numDupes = 1;
+                break;
+            case 3:
+                numDupes = 2;
+                break;
+            case 7:
+                numDupes = 3;
+                break;
+            case 15:
+                numDupes = 4;
+                break;
+            }
+        }
+
+        u32 tileToUse;
+        switch (numDupes)
+        {
+        case 1:
+            tileToUse = 35;
+            break;
+        case 2:
+            tileToUse = 55;
+            break;
+        case 3:
+            tileToUse = 72;
+            break;
+        case 4:
+            tileToUse = 83;
+            break;
+        case 5:
+            tileToUse = 92;
+            break;
+        default:
+            tileToUse = 15;
+        }
+        tilemap[33] = tileToUse;
+    }
+    else
+    {
+        tilemap[33] = 5;
+    }
+
+    //  Set rarity outline
+    u32 rarity;
+    if (species != SPECIES_NONE)
+    {
+        rarity = gSpeciesInfo[species].rarity;
+    }
+    else
+    {
+        rarity = 0;
+    }
+
+    switch (rarity)
+    {
+    case 4:
+        tilemap[1] = 28;
+        tilemap[2] = 29;
+        tilemap[3] = 30;
+        tilemap[4] = 31;
+        tilemap[5] = 31 | FLIP_H;
+        tilemap[6] = 32;
+        tilemap[7] = 31;
+        tilemap[8] = 33;
+
+        tilemap[32 + 8] = 38;
+        tilemap[64 + 8] = 43;
+        break;
+    case 5:
+        tilemap[1] = 46;
+        tilemap[2] = 47;
+        tilemap[3] = 48;
+        tilemap[4] = 49;
+        tilemap[5] = 50;
+        tilemap[6] = 51;
+        tilemap[7] = 50 | FLIP_H;
+        tilemap[8] = 52;
+
+        tilemap[32 + 8] = 57;
+        tilemap[64 + 8] = 64;
+        break;
+    case 6:
+        tilemap[1] = 66;
+        tilemap[2] = 67;
+        tilemap[3] = 100;
+        tilemap[4] = 68;
+        tilemap[5] = 69;
+        tilemap[6] = 70;
+        tilemap[7] = 69 | FLIP_H;
+        tilemap[8] = 71;
+
+        tilemap[32 + 8] = 75;
+        tilemap[64 + 8] = 80;
+        break;
+    default:
+        tilemap[1] = 7;
+        tilemap[2] = 8;
+        tilemap[3] = 9;
+        tilemap[4] = 10;
+        tilemap[5] = 8;
+        tilemap[6] = 9;
+        tilemap[7] = 10;
+        tilemap[8] = 11;
+
+        tilemap[32 + 8] = 19;
+        tilemap[64 + 8] = 11 | FLIP_V;
+    }
+}
+
+#undef FLIP_H
+#undef FLIP_V

@@ -30,6 +30,6 @@ void FreeMonMarkingsMenu(void);
 bool8 HandleMonMarkingsMenuInput(void);
 struct Sprite *CreateMonMarkingAllCombosSprite(u16 tileTag, u16 paletteTag, const u16 *palette);
 struct Sprite *CreateMonMarkingComboSprite(u16 tileTag, u16 paletteTag, const u16 *palette);
-void UpdateMonMarkingTiles(u8 markings, void *dest);
+void UpdateMonMarkingTiles(u8 markings, void *dest, bool32 isShiny);
 
 #endif //MON_MARKINGS_H

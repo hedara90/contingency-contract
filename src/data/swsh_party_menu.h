@@ -6,21 +6,26 @@ enum {
     BUTTON_NONE = 0xFF,
 };
 
-static const u32 sPartyMenuBg_Gfx[]             = INCGFX_U32("graphics/party_menu/swsh/tiles.png", ".4bpp.smol");
-static const u16 sPartyMenuBg_Pal[]             = INCGFX_U16("graphics/party_menu/swsh/tiles.png", ".gbapal");
-static const u32 sPartyMenuBg_Main_Tilemap[]    = INCGFX_U32("graphics/party_menu/swsh/bg_main.bin", ".smolTM");
-static const u32 sPartyMenuBg_Scroll_Tilemap[]  = INCGFX_U32("graphics/party_menu/swsh/bg_scroll.bin", ".smolTM");
+static const u32 sCCMonBoxesGfx[]                  = INCGFX_U32("graphics/party_menu/swsh/Boxes.png", ".4bpp");
+static const u16 sCCMonBoxesPal[]                  = INCGFX_U16("graphics/party_menu/swsh/Boxes.png", ".gbapal");
 
-static const u32 sCursor_Gfx[]                  = INCGFX_U32("graphics/party_menu/swsh/cursor.png", ".4bpp.smol");
+static const u32 sPartyMenuBg_Gfx[]             = INCGFX_U32("graphics/party_menu/swsh/cc_left_side.png", ".4bpp.smol");
+static const u16 sPartyMenuBg_Pal[]             = INCGFX_U16("graphics/party_menu/swsh/cc_left_side.png", ".gbapal");
+static const u32 sPartyMenuBg_Main_Tilemap[]    = INCGFX_U32("graphics/party_menu/swsh/cc_left_side.bin", ".smolTM");
+static const u32 sPartyMenuBg_Scroll_Tilemap[]  = INCGFX_U32("graphics/party_menu/swsh/cc_background.bin", ".smolTM");
+//static const u32 sPartyMenuBg_Main_Tilemap[]    = INCGFX_U32("graphics/party_menu/swsh/bg_main.bin", ".smolTM");
+//static const u32 sPartyMenuBg_Scroll_Tilemap[]  = INCGFX_U32("graphics/party_menu/swsh/bg_scroll.bin", ".smolTM");
+
+static const u32 sCursor_Gfx[]                  = INCGFX_U32("graphics/party_menu/swsh/cursor_new.png", ".4bpp.smol");
 static const u32 sHeldItem_Gfx[]                = INCGFX_U32("graphics/party_menu/swsh/hold_icons.png", ".4bpp");
 static const u32 sMoveTypes_Gfx[]               = INCGFX_U32("graphics/party_menu/swsh/move_types.png", ".4bpp.smol");
 static const u32 sMessageWindow_Gfx[]           = INCGFX_U32("graphics/party_menu/swsh/message_window.png", ".4bpp.smol");
 static const u32 sQuantityWindow_Gfx[]          = INCGFX_U32("graphics/party_menu/swsh/quantity_window.png", ".4bpp.smol");
 static const u32 sSelectFrame_Gfx[]             = INCGFX_U32("graphics/party_menu/swsh/select_frame.png", ".4bpp.smol");
-static const u32 sStatusIcons_Gfx[]             = INCGFX_U32("graphics/party_menu/swsh/status_icons.png", ".4bpp.smol");
+static const u32 sStatusIcons_Gfx[]             = INCGFX_U32("graphics/party_menu/swsh/status_icons_new.png", ".4bpp.smol");
 
-static const u16 sHeldItem_Pal[]                = INCGFX_U16("graphics/party_menu/swsh/hold_icons.png", ".gbapal");
-static const u16 sStatusIcons_Pal[]             = INCGFX_U16("graphics/party_menu/swsh/status_icons.png", ".gbapal");
+static const u16 sHeldItem_Pal[]                = INCGFX_U16("graphics/party_menu/swsh/status_icons_new.png", ".gbapal");
+static const u16 sStatusIcons_Pal[]             = INCGFX_U16("graphics/party_menu/swsh/status_icons_new.png", ".gbapal");
 static const u16 sMonShadow_Pal[]               = INCGFX_U16("graphics/party_menu/swsh/shadow.pal", ".gbapal");
 
 static const u8 sButtons_Gfx[][4 * TILE_SIZE_4BPP] = {
@@ -113,10 +118,12 @@ static const struct
 #define PARTY_SLOT_STRIDE       24
 #define PARTY_ITEM_OFFSET_X      6
 #define PARTY_ITEM_OFFSET_Y     10
-#define PARTY_STATUS_OFFSET_X   74
-#define PARTY_STATUS_OFFSET_Y    9
+#define PARTY_STATUS_OFFSET_X   22
+#define PARTY_STATUS_OFFSET_Y    2
 #define PARTY_ICON_X            34
 #define PARTY_ICON_X_SHIFTED    26  // one tile left, to clear the enemy/partner mons
+
+#define CC_MON_ICON_OFFSET      76  // Apparently we need this since the cursor is bound to PARTY_ICON_X
 
 #define PARTY_SLOT_Y(s)  (PARTY_SLOT_TOP + PARTY_SLOT_STRIDE * (s))
 
@@ -652,7 +659,7 @@ static const struct WindowTemplate sMoveInfoWindowTemplate_SwSh[] =
 {
     { // Move slot 1
         .bg = 1,
-        .tilemapLeft = 16,
+        .tilemapLeft = 17,
         .tilemapTop = 2,
         .width = 14,
         .height = 2,
@@ -661,7 +668,7 @@ static const struct WindowTemplate sMoveInfoWindowTemplate_SwSh[] =
     },
     { // Move slot 2
         .bg = 1,
-        .tilemapLeft = 16,
+        .tilemapLeft = 17,
         .tilemapTop = 4,
         .width = 14,
         .height = 2,
@@ -670,7 +677,7 @@ static const struct WindowTemplate sMoveInfoWindowTemplate_SwSh[] =
     },
     { // Move slot 3
         .bg = 1,
-        .tilemapLeft = 16,
+        .tilemapLeft = 17,
         .tilemapTop = 6,
         .width = 14,
         .height = 2,
@@ -679,7 +686,7 @@ static const struct WindowTemplate sMoveInfoWindowTemplate_SwSh[] =
     },
     { // Move slot 4
         .bg = 1,
-        .tilemapLeft = 16,
+        .tilemapLeft = 17,
         .tilemapTop = 8,
         .width = 14,
         .height = 2,
@@ -1010,24 +1017,24 @@ static const struct OamData sOamData_Cursor =
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(16x16),
-    .size = SPRITE_SIZE(16x16),
+    .shape = SPRITE_SHAPE(16x32),
+    .size = SPRITE_SIZE(16x32),
     .priority = 1,
 };
 
 static const struct CompressedSpriteSheet sSpriteSheet_Cursor =
 {
     .data = sCursor_Gfx,
-    .size = (16 * 16 * 3) / 2,
+    .size = (16 * 32 * 3) / 2,
     .tag = TAG_CURSOR
 };
 
 static const union AnimCmd sAnim_Cursor[] =
 {
     ANIMCMD_FRAME(0, 8),
-    ANIMCMD_FRAME(4, 8),
     ANIMCMD_FRAME(8, 8),
-    ANIMCMD_FRAME(4, 8),
+    ANIMCMD_FRAME(16, 8),
+    ANIMCMD_FRAME(8, 8),
     ANIMCMD_JUMP(0)
 };
 

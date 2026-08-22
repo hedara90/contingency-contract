@@ -3,7 +3,7 @@
 
 #include "main.h"
 
-#define TOTAL_BOXES_COUNT       14
+#define TOTAL_BOXES_COUNT       12
 #define IN_BOX_ROWS             5 // Number of rows, 6 Pokémon per row
 #define IN_BOX_COLUMNS          6 // Number of columns, 5 Pokémon per column
 #define IN_BOX_COUNT            (IN_BOX_ROWS * IN_BOX_COLUMNS)

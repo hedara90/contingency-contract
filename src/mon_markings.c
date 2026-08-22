@@ -608,7 +608,33 @@ static struct Sprite *CreateMarkingComboSprite(u16 tileTag, u16 paletteTag, cons
 }
 
 // Update what combination is shown, used for sprites created with CreateMonMarkingComboSprite
-void UpdateMonMarkingTiles(u8 markings, void *dest)
+void UpdateMonMarkingTiles(u8 markings, void *dest, bool32 isShiny)
 {
-    RequestDma3Copy(&sMonMarkings_Gfx[markings * 0x80], dest, 0x80, 0x10);
+    if (isShiny)
+    {
+        RequestDma3Copy(&sMonMarkings_Gfx[5 * 0x80], dest, 0x80, 0x10);
+    }
+    else
+    {
+        u32 offset;
+        switch (markings)
+        {
+        case 1:
+            offset = 1;
+            break;
+        case 3:
+            offset = 2;
+            break;
+        case 7:
+            offset = 3;
+            break;
+        case 15:
+            offset = 4;
+            break;
+        default:
+            offset = 0;
+            break;
+        }
+        RequestDma3Copy(&sMonMarkings_Gfx[offset * 0x80], dest, 0x80, 0x10);
+    }
 }
