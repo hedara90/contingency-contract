@@ -521,7 +521,7 @@ const struct RiskIcon sRiskData[] =
         .lockTilemap =
         {
             256 + 0xD5, 0xD5, 0xD5 | FLIP_H,
-            256 + 0xE1, 0xE2, 0xE3,
+            256 + 0xE1, 0xE2, 798,
         },
         .unlockTilemap = {
             769, 770, 0x0D,
@@ -1063,7 +1063,6 @@ static void LoadSelector(void);
 static void LoadTotalIcon(void);
 static void MoveSelectorX(s32 distance);
 static void MoveSelectorY(s32 distance);
-static void GetSelectedTiles(u16 *tiles);
 static void TrySelectRiskUnderCursor(void);
 static inline void SetRiskInactive(enum Risk risk);
 static inline void SetRiskActive(enum Risk risk);
@@ -1538,23 +1537,6 @@ static void SetTilePalette(u32 tile, u32 palette)
     u16 palMask = palette << 12;
     u16 currVal = tilemapPtr[tile] & 0xFFF;
     tilemapPtr[tile] = palMask | currVal;
-}
-
-static void GetSelectedTiles(u16 *tiles)
-{
-    u32 xSel = (sRiskUiState->xSelector + sRiskUiState->xOffset) / 8 - 1;
-    u32 ySel = (sRiskUiState->ySelector + sRiskUiState->yOffset) / 8 - 1;
-
-
-    for (u32 x = 0; x < 2; x++)
-    {
-        for (u32 y = 0; y < 2; y++)
-        {
-            u32 currX = xSel + x;
-            u32 currY = ySel + y;
-            tiles[y * 2 + x] = COORD_TO_TILE(currX, currY);
-        }
-    }
 }
 
 static enum Risk GetRiskUnderCursor(void)
