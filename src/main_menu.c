@@ -478,49 +478,11 @@ static const struct MenuAction sMenuActions_Gender[] = {
 };
 
 static const u8 *const sMalePresetNames[] = {
-    COMPOUND_STRING("STU"),
-    COMPOUND_STRING("MILTON"),
-    COMPOUND_STRING("TOM"),
-    COMPOUND_STRING("KENNY"),
-    COMPOUND_STRING("REID"),
-    COMPOUND_STRING("JUDE"),
-    COMPOUND_STRING("JAXSON"),
-    COMPOUND_STRING("EASTON"),
-    COMPOUND_STRING("WALKER"),
-    COMPOUND_STRING("TERU"),
-    COMPOUND_STRING("JOHNNY"),
-    COMPOUND_STRING("BRETT"),
-    COMPOUND_STRING("SETH"),
-    COMPOUND_STRING("TERRY"),
-    COMPOUND_STRING("CASEY"),
-    COMPOUND_STRING("DARREN"),
-    COMPOUND_STRING("LANDON"),
-    COMPOUND_STRING("COLLIN"),
-    COMPOUND_STRING("STANLEY"),
-    COMPOUND_STRING("QUINCY")
+    COMPOUND_STRING("Tiana")
 };
 
 static const u8 *const sFemalePresetNames[] = {
-    COMPOUND_STRING("KIMMY"),
-    COMPOUND_STRING("TIARA"),
-    COMPOUND_STRING("BELLA"),
-    COMPOUND_STRING("JAYLA"),
-    COMPOUND_STRING("ALLIE"),
-    COMPOUND_STRING("LIANNA"),
-    COMPOUND_STRING("SARA"),
-    COMPOUND_STRING("MONICA"),
-    COMPOUND_STRING("CAMILA"),
-    COMPOUND_STRING("AUBREE"),
-    COMPOUND_STRING("RUTHIE"),
-    COMPOUND_STRING("HAZEL"),
-    COMPOUND_STRING("NADINE"),
-    COMPOUND_STRING("TANJA"),
-    COMPOUND_STRING("YASMIN"),
-    COMPOUND_STRING("NICOLA"),
-    COMPOUND_STRING("LILLIE"),
-    COMPOUND_STRING("TERRA"),
-    COMPOUND_STRING("LUCY"),
-    COMPOUND_STRING("HALIE")
+    COMPOUND_STRING("Tiana")
 };
 
 // The number of male vs. female names is assumed to be the same.
@@ -1296,6 +1258,12 @@ static void HighlightSelectedMainMenuItem(enum PartyMenuType menuType, u8 select
 
 static void Task_NewGameBirchSpeech_Init(u8 taskId)
 {
+    NewGameBirchSpeech_SetDefaultPlayerName(Random() % NUM_PRESET_NAMES);
+    DestroyTask(taskId);
+    gSaveBlock2Ptr->playerGender = FEMALE;
+    //DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_NewGame);
+    SetMainCallback2(CB2_NewGame);
+    /*
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     InitBgFromTemplate(&sBirchBgTemplate);
@@ -1326,6 +1294,7 @@ static void Task_NewGameBirchSpeech_Init(u8 taskId)
     PlayBGM(MUS_ROUTE122);
     ShowBg(0);
     ShowBg(1);
+    */
 }
 
 static void Task_NewGameBirchSpeech_WaitToShowBirch(u8 taskId)
@@ -1508,7 +1477,8 @@ static void Task_NewGameBirchSpeech_StartPlayerFadeIn(u8 taskId)
 static void Task_NewGameBirchSpeech_WaitForPlayerFadeIn(u8 taskId)
 {
     gSprites[gTasks[taskId].tPlayerSpriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
-    gTasks[taskId].func = Task_NewGameBirchSpeech_BoyOrGirl;
+    //gTasks[taskId].func = Task_NewGameBirchSpeech_BoyOrGirl;
+    gTasks[taskId].func = Task_NewGameBirchSpeech_StartNamingScreen;
 }
 
 static void Task_NewGameBirchSpeech_BoyOrGirl(u8 taskId)
@@ -1634,7 +1604,10 @@ static void Task_NewGameBirchSpeech_StartNamingScreen(u8 taskId)
         FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);
         NewGameBirchSpeech_SetDefaultPlayerName(Random() % NUM_PRESET_NAMES);
         DestroyTask(taskId);
-        DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_NewGameBirchSpeech_ReturnFromNamingScreen);
+
+        gSaveBlock2Ptr->playerGender = FEMALE;
+        //DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_NewGame);
+        SetMainCallback2(CB2_NewGame);
     }
 }
 
@@ -2137,16 +2110,14 @@ static s8 NewGameBirchSpeech_ProcessGenderMenuInput(void)
 
 void NewGameBirchSpeech_SetDefaultPlayerName(u8 nameId)
 {
-    const u8 *name;
-    u8 i;
-
-    if (gSaveBlock2Ptr->playerGender == MALE)
-        name = sMalePresetNames[nameId];
-    else
-        name = sFemalePresetNames[nameId];
-    for (i = 0; i < PLAYER_NAME_LENGTH; i++)
+    const u8 *name = sFemalePresetNames[nameId];
+    u32 i = 0;
+    while (name[i] != EOS)
+    {
         gSaveBlock2Ptr->playerName[i] = name[i];
-    gSaveBlock2Ptr->playerName[PLAYER_NAME_LENGTH] = EOS;
+        i++;
+    }
+    gSaveBlock2Ptr->playerName[i] = EOS;
 }
 
 static void CreateMainMenuErrorWindow(const u8 *str)

@@ -1,0 +1,5 @@
+mapscripts Library_MapScripts {
+    MAP_SCRIPT_ON_RESUME {
+        callnative(Init_PulseNeonLights)
+    }
+}

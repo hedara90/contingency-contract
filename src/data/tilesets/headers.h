@@ -1550,7 +1550,7 @@ const struct Tileset gTileset_hub =
     .palettes = gTilesetPalettes_hub,
     .metatiles = gMetatiles_hub,
     .metatileAttributes = gMetatileAttributes_hub,
-    .callback = NULL,
+    .callback = InitTilesetAnim_Entrance,
 };
 
 const struct Tileset gTileset_hubsecondary =

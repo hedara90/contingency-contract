@@ -9343,6 +9343,16 @@
       "secondary_tileset": "gTileset_hubsecondary",
       "border_filepath": "data/layouts/CrisisTeam/border.bin",
       "blockdata_filepath": "data/layouts/CrisisTeam/map.bin"
+    },
+    {
+      "id": "LAYOUT_LIBRARY",
+      "name": "Library_Layout",
+      "width": 50,
+      "height": 52,
+      "primary_tileset": "gTileset_hub",
+      "secondary_tileset": "gTileset_hubsecondary",
+      "border_filepath": "data/layouts/Library/border.bin",
+      "blockdata_filepath": "data/layouts/Library/map.bin"
     }
   ]
 }
