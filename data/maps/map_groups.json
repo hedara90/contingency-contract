@@ -76,7 +76,8 @@
     "gMapGroup_IndoorSixIslandRoute_Frlg",
     "gMapGroup_IndoorSevenIslandRoute_Frlg",
     "gMapGroup_CC",
-    "gMapGroup_Gauntlets"
+    "gMapGroup_Gauntlets",
+    "gMapGroup_Library"
   ],
   "gMapGroup_TownsAndRoutes": [
     "PetalburgCity",
@@ -1170,5 +1171,8 @@
     "CrisisTeam",
     "Wuling",
     "Reconveners"
+  ],
+  "gMapGroup_Library": [
+    "Library"
   ]
 }

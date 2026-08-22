@@ -1749,3 +1749,5 @@ EventScript_GiveGachaMon::
 	.include "data/maps/Wuling/scripts.inc"
 
 	.include "data/maps/Reconveners/scripts.inc"
+
+	.include "data/maps/Library/scripts.inc"
