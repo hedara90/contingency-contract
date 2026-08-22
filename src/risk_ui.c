@@ -44,6 +44,9 @@
 #define PAL_INDEX_ACTIVE 1
 #define PAL_INDEX_LOCKED 2
 
+#define FLIP_H (1 << 10)
+#define FLIP_V (1 << 11)
+
 struct RiskUiState
 {
     MainCallback savedCallback;
@@ -77,6 +80,9 @@ struct RiskIcon
     u8 unlockCount;
     const u8 *name;
     const u8 *description;
+    u16 lockTiles[6];
+    u16 lockTilemap[6];
+    u16 unlockTilemap[6];
 };
 
 const enum Risk sLinkedHpRisks[] = { RISK_OPPONENT_HP_1, RISK_OPPONENT_HP_2, RISK_OPPONENT_HP_3 };
@@ -420,6 +426,20 @@ const struct RiskIcon sRiskData[] =
         .unlockCount = 8,
         .name = COMPOUND_STRING("Environment: Area Lockdown"),
         .description = COMPOUND_STRING("Hazards can't be removed from the player's\nside of the field."),
+        .lockTiles = {
+            COORD_TO_TILE(23, 10), COORD_TO_TILE(24, 10), COORD_TO_TILE(25, 10),
+            COORD_TO_TILE(23, 11), COORD_TO_TILE(24, 11), COORD_TO_TILE(25, 11)
+        },
+        .lockTilemap =
+        {
+            0xD4, 0xD5, 0xD5 | FLIP_H,
+            0x0D, 0xE2, 0xE3,
+        },
+        .unlockTilemap =
+        {
+            771, 770, 0x0D,
+            775, 773, 776,
+        },
     },
     [RISK_PLAYER_SPIKES_1] =
     {
@@ -494,6 +514,19 @@ const struct RiskIcon sRiskData[] =
         .unlockCount = 11,
         .name = COMPOUND_STRING("Ambient: Weakness"),
         .description = COMPOUND_STRING("Player mons can only use the first 3 moves."),
+        .lockTiles = {
+            COORD_TO_TILE(11, 24), COORD_TO_TILE(12, 24), COORD_TO_TILE(13, 24),
+            COORD_TO_TILE(11, 25), COORD_TO_TILE(12, 25), COORD_TO_TILE(13, 25),
+        },
+        .lockTilemap =
+        {
+            256 + 0xD5, 0xD5, 0xD5 | FLIP_H,
+            256 + 0xE1, 0xE2, 0xE3,
+        },
+        .unlockTilemap = {
+            769, 770, 0x0D,
+            772, 773, 774,
+        },
     },
     [RISK_PLAYER_HAS_PARENTAL_BOND] =
     {
@@ -561,14 +594,14 @@ const struct RiskIcon sRiskData[] =
     },
     [RISK_HAS_WONDER_GUARD] =
     {
-        .tiles = { COORD_TO_TILE(6, 39), COORD_TO_TILE(6, 40), COORD_TO_TILE(7, 39), COORD_TO_TILE(7, 40) },
+        .tiles = { COORD_TO_TILE(19, 30), COORD_TO_TILE(19, 31), COORD_TO_TILE(20, 30), COORD_TO_TILE(20, 31) },
         .lockRisk = RISK_MINUS_1_MOVE,
         .name = COMPOUND_STRING("Target: Camouflage"),
         .description = COMPOUND_STRING("Opponent mons have Wonder Guard.\nThere's a reason why only Shedinja\nhas this normally…"),
     },
     [RISK_HAS_FILTER] =
     {
-        .tiles = { COORD_TO_TILE(19, 30), COORD_TO_TILE(19, 31), COORD_TO_TILE(20, 30), COORD_TO_TILE(20, 31) },
+        .tiles = { COORD_TO_TILE(18, 26), COORD_TO_TILE(18, 27), COORD_TO_TILE(19, 26), COORD_TO_TILE(19, 27) },
         .lockRisk = RISK_MINUS_1_MOVE,
         .name = COMPOUND_STRING("Target: Enhanced Armor"),
         .description = COMPOUND_STRING("Opponent mons have Filter."),
@@ -1037,7 +1070,7 @@ static inline void SetRiskActive(enum Risk risk);
 static void ChangeTilemapPalettesBeforeLoad(void);
 static enum Risk GetRiskUnderCursor(void);
 static void PrintRiskData(enum Risk risk);
-static void ToggleLock(enum Risk risk);
+static void ToggleLock(enum Risk risk, bool32 beforeLoad);
 static void PrintTotalOnIcon(void);
 
 static void Task_RiskUiWaitFadeAndExitGracefully(u8 taskId);
@@ -1526,8 +1559,8 @@ static void GetSelectedTiles(u16 *tiles)
 
 static enum Risk GetRiskUnderCursor(void)
 {
-    u32 xSel = (sRiskUiState->xSelector + sRiskUiState->xOffset) / 8 - 1;
-    u32 ySel = (sRiskUiState->ySelector + sRiskUiState->yOffset) / 8 - 1;
+    u32 xSel = (sRiskUiState->xSelector + sRiskUiState->xOffset + 4) / 8 - 1;
+    u32 ySel = (sRiskUiState->ySelector + sRiskUiState->yOffset + 4) / 8 - 1;
 
     enum Risk risk = RISK_NONE;
 
@@ -1606,7 +1639,7 @@ static inline void SetRiskInactive(enum Risk risk)
     SetTilePalette(sRiskData[risk].tiles[3], PAL_INDEX_INACTIVE);
     ClearRisk(risk);
     if (sRiskData[risk].unlockCount > 0)
-        ToggleLock(risk);
+        ToggleLock(risk, FALSE);
 }
 
 static inline void SetRiskActive(enum Risk risk)
@@ -1617,7 +1650,7 @@ static inline void SetRiskActive(enum Risk risk)
     SetTilePalette(sRiskData[risk].tiles[3], PAL_INDEX_ACTIVE);
     SetRisk(risk);
     if (sRiskData[risk].unlockCount > 0)
-        ToggleLock(risk);
+        ToggleLock(risk, FALSE);
 }
 
 static void ChangeTilemapPalettesBeforeLoad(void)
@@ -1649,6 +1682,8 @@ static void ChangeTilemapPalettesBeforeLoad(void)
                 }
             }
         }
+        if (sRiskData[risk].unlockCount > 0)
+            ToggleLock(risk, TRUE);
     }
 }
 
@@ -1688,20 +1723,126 @@ static void PrintRiskData(enum Risk risk)
     CopyWindowToVram(WIN_RISK_TOTAL, COPYWIN_GFX);
 }
 
-static void ToggleLock(enum Risk risk)
+static void ToggleLock(enum Risk risk, bool32 beforeLoad)
 {
     assertf(sRiskData[risk].unlockCount > 0, "Attempting to unlock non-lock risk")
     {
         return;
     }
     u32 palette;
+    u16 *tilemapPtr = (u16 *)(BG_VRAM + sRiskUiBgTemplates[1].mapBaseIndex * BG_SCREEN_SIZE);
+    if (beforeLoad)
+        tilemapPtr = (u16 *)sBg1TilemapBuffer;
+
     if (IsRiskActive(risk))
     {
         palette = PAL_INDEX_INACTIVE;
+        //  Unlock the lock
+        for (u32 i = 0; i < 6; i++)
+        {
+            u32 offset = sRiskData[risk].lockTiles[i];
+            u16 newTileId = sRiskData[risk].unlockTilemap[i];
+            tilemapPtr[offset] = newTileId | (PAL_INDEX_ACTIVE << 12);
+        }
+
+        //  Borders
+        if (risk == RISK_MINUS_1_MOVE)
+        {
+            for (u32 x = 14; x <= 25; x++)
+            {
+                tilemapPtr[COORD_TO_TILE(x, 25)] |= (PAL_INDEX_ACTIVE << 12);
+            }
+            for (u32 y = 26; y <= 37; y++)
+            {
+                tilemapPtr[COORD_TO_TILE(24, y)] |= (PAL_INDEX_ACTIVE << 12);
+                tilemapPtr[COORD_TO_TILE(25, y)] |= (PAL_INDEX_ACTIVE << 12);
+            }
+            for (u32 x = 12; x <= 23; x++)
+            {
+                tilemapPtr[COORD_TO_TILE(x, 36)] |= (PAL_INDEX_ACTIVE << 12);
+                tilemapPtr[COORD_TO_TILE(x, 37)] |= (PAL_INDEX_ACTIVE << 12);
+            }
+            for (u32 y = 28; y <= 35; y++)
+            {
+                tilemapPtr[COORD_TO_TILE(12, y)] |= (PAL_INDEX_ACTIVE << 12);
+                tilemapPtr[COORD_TO_TILE(13, y)] |= (PAL_INDEX_ACTIVE << 12);
+            }
+        }
+        else
+        {
+            for (u32 x = 26; x <= 36; x++)
+            {
+                tilemapPtr[COORD_TO_TILE(x, 11)] |= (PAL_INDEX_ACTIVE << 12);
+            }
+            for (u32 y = 12; y <= 18; y++)
+            {
+                tilemapPtr[COORD_TO_TILE(36, y)] |= (PAL_INDEX_ACTIVE << 12);
+            }
+            for (u32 x = 24; x <= 35; x++)
+            {
+                tilemapPtr[COORD_TO_TILE(x, 18)] |= (PAL_INDEX_ACTIVE << 12);
+            }
+            for (u32 y = 14; y <= 17; y++)
+            {
+                tilemapPtr[COORD_TO_TILE(24, y)] |= (PAL_INDEX_ACTIVE << 12);
+                tilemapPtr[COORD_TO_TILE(25, y)] |= (PAL_INDEX_ACTIVE << 12);
+            }
+        }
     }
     else
     {
         palette = PAL_INDEX_LOCKED;
+        //  Lock the lock
+        for (u32 i = 0; i < 6; i++)
+        {
+            u32 offset = sRiskData[risk].lockTiles[i];
+            u16 newTileId = sRiskData[risk].lockTilemap[i];
+            tilemapPtr[offset] = newTileId;
+        }
+
+        //  Borders
+        if (risk == RISK_MINUS_1_MOVE)
+        {
+            for (u32 x = 14; x <= 25; x++)
+            {
+                tilemapPtr[COORD_TO_TILE(x, 25)] &= 0x0FFF;
+            }
+            for (u32 y = 26; y <= 37; y++)
+            {
+                tilemapPtr[COORD_TO_TILE(24, y)] &= 0x0FFF;
+                tilemapPtr[COORD_TO_TILE(25, y)] &= 0x0FFF;
+            }
+            for (u32 x = 12; x <= 23; x++)
+            {
+                tilemapPtr[COORD_TO_TILE(x, 36)] &= 0x0FFF;
+                tilemapPtr[COORD_TO_TILE(x, 37)] &= 0x0FFF;
+            }
+            for (u32 y = 28; y <= 35; y++)
+            {
+                tilemapPtr[COORD_TO_TILE(12, y)] &= 0x0FFF;
+                tilemapPtr[COORD_TO_TILE(13, y)] &= 0x0FFF;
+            }
+        }
+        else
+        {
+            for (u32 x = 26; x <= 36; x++)
+            {
+                tilemapPtr[COORD_TO_TILE(x, 11)] &= 0x0FFF;
+            }
+            for (u32 y = 12; y <= 18; y++)
+            {
+                tilemapPtr[COORD_TO_TILE(36, y)] &= 0x0FFF;
+            }
+            for (u32 x = 24; x <= 35; x++)
+            {
+                tilemapPtr[COORD_TO_TILE(x, 18)] &= 0x0FFF;
+            }
+            for (u32 y = 14; y <= 17; y++)
+            {
+                tilemapPtr[COORD_TO_TILE(24, y)] &= 0x0FFF;
+                tilemapPtr[COORD_TO_TILE(25, y)] &= 0x0FFF;
+            }
+        }
     }
 
     for (u32 i = 0; i < sRiskData[risk].unlockCount; i++)
