@@ -587,8 +587,8 @@ static const u8 *const sMonCharacteristicTable[MON_CHARACTERISTIC_COUNT] = {
 };
 
 // bg gfx
-const u32 sSummaryScreen_Gfx[]                      = INCGFX_U32("graphics/summary_screen/swsh/tiles.png", ".4bpp.smol");
-const u16 sSummaryScreen_Pal[]                      = INCGFX_U16("graphics/summary_screen/swsh/tiles.png", ".gbapal");
+const u32 sSummaryScreen_Gfx[]                      = INCGFX_U32("graphics/summary_screen/swsh/tiles_new.png", ".4bpp.smol");
+const u16 sSummaryScreen_Pal[]                      = INCGFX_U16("graphics/summary_screen/swsh/tiles_new.png", ".gbapal");
 const u32 sSummaryPage_ScrollBG_Tilemap[]           = INCGFX_U32("graphics/summary_screen/swsh/scroll_bg.bin", ".smolTM");
 const u32 sSummaryPage_Info_Tilemap[]               = INCGFX_U32("graphics/summary_screen/swsh/page_info.bin", ".smolTM");
 const u32 sSummaryPage_Info_Item_Tilemap[]          = INCGFX_U32("graphics/summary_screen/swsh/page_info_item.bin", ".smolTM");
@@ -718,7 +718,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .tilemapTop = 1,
         .width = 13,
         .height = 2,
-        .paletteNum = 2,
+        .paletteNum = 0,
         .baseBlock = 65,
     },
     [PSS_LABEL_WINDOW_PROMPT_IV_EV_STATS] = {
@@ -746,19 +746,19 @@ static const struct WindowTemplate sPageInfoTemplate[] =
     [PSS_DATA_WINDOW_INFO_ITEM] = {
         .bg = 0,
         .tilemapLeft = 1,
-        .tilemapTop = 12,
+        .tilemapTop = 11,
         .width = 18,
         .height = 7,
-        .paletteNum = 2,
+        .paletteNum = 0,
         .baseBlock = 151,
     },
     [PSS_DATA_WINDOW_INFO_SPECIES] = {
         .bg = 0,
-        .tilemapLeft = 7,
-        .tilemapTop = 3,
-        .width = 12,
-        .height = 9,
-        .paletteNum = 2,
+        .tilemapLeft = 1,
+        .tilemapTop = 4,
+        .width = 18,
+        .height = 8,
+        .paletteNum = 0,
         .baseBlock = 277,
     },
 };
@@ -819,9 +819,10 @@ static const struct WindowTemplate sPageMemoTemplate[] =
 // {bg, fg, shadow} entries indexing into BG palette 2
 static const u8 sTextColors[][3] =
 {
-    {0, 1, 2},   // [0] main: most page texts (species, OT, nature, ability, stats, etc.)
+    {0, 1, 9},   // [0] main: most page texts (species, OT, nature, ability, stats, etc.)
     {0, 3, 4},   // [1] portrait text (nickname/level) + prompt texts
     {0, 5, 6},   // [2] shiny dex number + "HM can't be forgotten" warning
+    {0, 1, 10},  // ability text
 };
 
 static void (*const sTextPrinterFunctions[])(void) =
@@ -2134,7 +2135,7 @@ static bool8 LoadGraphics(void)
         gMain.state++;
         break;
     case 18:
-        CreateCaughtBallSprite(&sMonSummaryScreen->currentMon);
+        //CreateCaughtBallSprite(&sMonSummaryScreen->currentMon);
         gMain.state++;
         break;
     case 19:
@@ -3128,7 +3129,7 @@ static void Task_ChangeSummaryMon(u8 taskId)
         data[1] = 0;
         break;
     case 7:
-        CreateCaughtBallSprite(&sMonSummaryScreen->currentMon);
+        //CreateCaughtBallSprite(&sMonSummaryScreen->currentMon);
         break;
     case 8:
         CreateGenderSprite(&sMonSummaryScreen->currentMon, sMonSummaryScreen->summary.species);
@@ -4043,7 +4044,7 @@ static void PrintNotEggInfo(void)
 
     // print nickname
     GetMonNickname(mon, gStringVar1);
-    PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_INFO, gStringVar1, 6, 1, 0, 1);
+    PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_INFO, gStringVar1, 6, 1, 0, 0);
 
     // See CreateGenderSprite function, not using gender symbols (text)
     // PrintGenderSymbol(mon, summary->species2);
@@ -4055,9 +4056,9 @@ static void PrintNotEggInfo(void)
         ConvertIntToDecimalStringN(gStringVar2, summary->level, STR_CONV_MODE_LEFT_ALIGN, 3);
 
         // Print "Lv." with FONT_NORMAL
-        PrintTextOnWindowWithFont(PSS_LABEL_WINDOW_PORTRAIT_INFO, sText_Lv, 74, 1, 0, 1, FONT_SMALL_NARROWER);
+        PrintTextOnWindowWithFont(PSS_LABEL_WINDOW_PORTRAIT_INFO, sText_Lv, 74, 1, 0, 0, FONT_SMALL_NARROWER);
         // Print the level number with FONT_SHORT_NARROW, positioned after "Lv." (10) + space (1)
-        PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_INFO, gStringVar2, 74 + 10 + 1, 1, 0, 1);
+        PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_INFO, gStringVar2, 74 + 10 + 1, 1, 0, 0);
     }
 
     PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_INFO);
@@ -4351,7 +4352,7 @@ static void PrintInfoPageText(void)
         PrintMonOTID();
         PrintMonDexNumberSpecies();
         PrintHeldItemInfo();
-        PrintMonNature();
+        //PrintMonNature();
     }
 }
 
@@ -4373,7 +4374,7 @@ static void Task_PrintInfoPage(u8 taskId)
         PrintHeldItemInfo();
         break;
     case 5:
-        PrintMonNature();
+        //PrintMonNature();
         break;
     case 6:
         if (ShouldDisplayFormChangeText())
@@ -4396,11 +4397,11 @@ static void PrintMonDexNumberSpecies(void)
 
     if (sMonSummaryScreen->summary.isEgg)
     {
-        PrintTextOnWindow(windowId, gText_FiveMarks, 0, 5, 0, 0);
+        PrintTextOnWindow(windowId, gText_FiveMarks, 0, 6, 0, 0);
     }
     else
     {
-        PrintTextOnWindow(windowId, GetSpeciesName(summary->species2), 0, 5, 0, 0);
+        PrintTextOnWindow(windowId, GetSpeciesName(summary->species2), 0, 6, 0, 0);
 
         if (dexNum != 0xFFFF)
         {
@@ -4411,14 +4412,14 @@ static void PrintMonDexNumberSpecies(void)
             StringAppend(gStringVar1, gStringVar2);
             ConvertIntToDecimalStringN(gStringVar1, dexNum, STR_CONV_MODE_LEADING_ZEROS, digitCount);
 
-            if (!IsMonShiny(mon))
-            {
-                PrintTextOnWindow(windowId, gStringVar1, 76, 5, 0, 0);
-            }
-            else
-            {
-                PrintTextOnWindow(windowId, gStringVar1, 76, 5, 0, 2);
-            }
+            // if (!IsMonShiny(mon))
+            // {
+            //     PrintTextOnWindow(windowId, gStringVar1, 76, 5, 0, 0);
+            // }
+            // else
+            // {
+            //     PrintTextOnWindow(windowId, gStringVar1, 76, 5, 0, 2);
+            // }
         }
     }
 
@@ -4429,12 +4430,12 @@ static void PrintMonOTName(void)
     int windowId = AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_SPECIES);
     if (InBattleFactory() != TRUE && InSlateportBattleTent() != TRUE)
     {
-        PrintTextOnWindow(windowId, sMonSummaryScreen->summary.OTName, 0, 37, 0, 0);
+        PrintTextOnWindow(windowId, sMonSummaryScreen->summary.OTName, 83, 43, 0, 0);
     }
     else
     {
         StringCopy(gStringVar1, sText_RentalPkmn);
-        PrintTextOnWindow(windowId, gStringVar1, 0, 37, 0, 0);
+        PrintTextOnWindow(windowId, gStringVar1, 80, 49, 0, 0);
     }
 }
 
@@ -4443,7 +4444,7 @@ static void PrintMonOTID(void)
     if (InBattleFactory() != TRUE && InSlateportBattleTent() != TRUE)
     {
         ConvertIntToDecimalStringN(gStringVar1, (u16)sMonSummaryScreen->summary.OTID, STR_CONV_MODE_LEADING_ZEROS, 5);
-        PrintTextOnWindow(AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_SPECIES), gStringVar1, 71, 37, 0, 0);
+        //PrintTextOnWindow(AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_SPECIES), gStringVar1, 71, 37, 0, 0);
     }
 }
 
@@ -4787,10 +4788,10 @@ static void PrintHeldItemInfo(void)
     }
 
     fontId = GetFontIdToFit(text, PSS_DEFAULT_FONT, 0, 72);
-    PrintTextOnWindowWithFont(windowId, text, 74, 5, 0, 0, fontId);
+    PrintTextOnWindowWithFont(windowId, text, 0, 7, 0, 0, fontId);
 
     fontId = FormatTextByWidth(desc, 144, PSS_DEFAULT_FONT, description, GetFontAttribute(PSS_DEFAULT_FONT, FONTATTR_LETTER_SPACING));
-    PrintTextOnWindowWithFont(windowId, desc, 0, 23, 1, 0, fontId);
+    PrintTextOnWindowWithFont(windowId, desc, 0, 20, 0, 0, fontId);
 }
 
 static void BufferStat(u8 *dst, u32 stat, u32 strId, u32 align)
@@ -6125,10 +6126,10 @@ static void SetMonTypeIcons(void)
     }
     else
     {
-        SetTypeSpritePosAndPal(gSpeciesInfo[summary->species].types[0], 56, 46, SPRITE_ARR_ID_TYPE);
+        SetTypeSpritePosAndPal(gSpeciesInfo[summary->species].types[0], 80, 41, SPRITE_ARR_ID_TYPE);
         if (gSpeciesInfo[summary->species].types[0] != gSpeciesInfo[summary->species].types[1])
         {
-            SetTypeSpritePosAndPal(gSpeciesInfo[summary->species].types[1], 92, 46, SPRITE_ARR_ID_TYPE + 1);
+            SetTypeSpritePosAndPal(gSpeciesInfo[summary->species].types[1], 115, 41, SPRITE_ARR_ID_TYPE + 1);
             SetSpriteInvisibility(SPRITE_ARR_ID_TYPE + 1, FALSE);
         }
         else
@@ -6552,8 +6553,8 @@ static void CreateHeldItemSprite(void)
     if (spriteId != MAX_SPRITES)
     {
         sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_ITEM] = spriteId;
-        gSprites[spriteId].x = 70;  // Set your desired x position
-        gSprites[spriteId].y = 112;   // Set your desired y position
+        gSprites[spriteId].x = 148;  // Set your desired x position
+        gSprites[spriteId].y = 105;   // Set your desired y position
     }
 }
 
