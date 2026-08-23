@@ -67,6 +67,7 @@ script ReconvenersStartBattle {
     }
     switch(var(VAR_RESULT)) {
     case 0: // Lost battle
+        special(HealPlayerParty)
         msgbox("wat")
         waitmessage
         warpsilent(MAP_CONVENTION_CENTER, 21, 24)
@@ -77,6 +78,7 @@ script ReconvenersStartBattle {
     if (var(VAR_GAUNTLET_POSITION) == 4) {
         // Gauntlet won, give reward and display victory screen
         // Then return to the main area
+        special(HealPlayerParty)
         warpsilent(MAP_CONVENTION_CENTER, 10, 10)
         waitstate
     }

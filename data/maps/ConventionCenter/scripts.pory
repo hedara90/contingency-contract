@@ -117,6 +117,7 @@ script ChooseGauntlet {
                     "AK 3",
                     "Not right now")
     getobjectfacingdirection(LOCALID_ATTENDANT_MAIN, VAR_TEMP_1)
+    special(HealPlayerParty)
     setvar(VAR_GAUNTLET_POSITION, 0)
     switch(var(VAR_RESULT)) {
     case 0:
