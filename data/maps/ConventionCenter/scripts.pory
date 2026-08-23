@@ -1,2 +1,55 @@
 mapscripts ConventionCenter_MapScripts {
+    MAP_SCRIPT_ON_RESUME {
+        callnative(CreateQueue)
+    }
+}
+
+script LastQueuer {
+    lock
+    turnvobject(0, DIR_NORTH)
+    msgbox("I hope this queue goes fast…")
+    waitmessage
+    turnvobject(0, DIR_SOUTH)
+    release
+    end
+}
+
+script EightToLastQueuer {
+    lock
+    turnvobject(7, DIR_NORTH)
+    msgbox("I hope this queue goes fast…")
+    waitmessage
+    turnvobject(7, DIR_SOUTH)
+    release
+    end
+}
+
+script SixteenToLastQueuer {
+    lock
+    turnvobject(15, DIR_NORTH)
+    msgbox("I hope this queue goes fast…")
+    waitmessage
+    turnvobject(15, DIR_SOUTH)
+    release
+    end
+}
+
+script EighteenToLastQueuer {
+    lock
+    turnvobject(17, DIR_NORTH)
+    msgbox("I hope this queue goes fast…")
+    waitmessage
+    turnvobject(17, DIR_SOUTH)
+    release
+    end
+}
+
+script PayingQueuer {
+    lock
+    turnvobject(33, DIR_NORTH)
+    msgbox("I hope this queue goes fast…")
+    waitmessage
+    turnvobject(33, DIR_WEST)
+    release
+    end
 }

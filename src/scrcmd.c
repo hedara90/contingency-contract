@@ -3473,3 +3473,118 @@ void GetRandomArcane(void)
 {
     VarSet(VAR_RESULT, Random32() % 2);
 }
+
+static const u16 sQueueObjects[] =
+{
+    OBJ_EVENT_GFX_SATSUKI,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+};
+
+static const u8 sQueueCoord[][3] =
+{
+    {24, 34, DIR_SOUTH},
+    {24, 35, DIR_SOUTH},
+    {24, 36, DIR_SOUTH},
+    {24, 37, DIR_EAST},
+    {25, 37, DIR_EAST},
+    {26, 37, DIR_NORTH},
+    {26, 36, DIR_NORTH},
+    {26, 35, DIR_EAST},
+    {27, 35, DIR_EAST},
+    {28, 35, DIR_SOUTH},
+    {28, 36, DIR_SOUTH},
+    {28, 37, DIR_EAST},
+    {29, 37, DIR_EAST},
+    {30, 37, DIR_NORTH},
+    {30, 36, DIR_NORTH},
+    {30, 35, DIR_EAST},
+    {31, 35, DIR_EAST},
+    {32, 35, DIR_SOUTH},
+    {32, 36, DIR_SOUTH},
+    {32, 37, DIR_SOUTH},
+    {32, 38, DIR_SOUTH},
+    {32, 39, DIR_WEST},
+    {31, 39, DIR_WEST},
+    {30, 39, DIR_WEST},
+    {29, 39, DIR_WEST},
+    {28, 39, DIR_WEST},
+    {27, 39, DIR_WEST},
+    {26, 39, DIR_WEST},
+    {25, 39, DIR_WEST},
+    {24, 39, DIR_WEST},
+    {23, 39, DIR_WEST},
+    {22, 39, DIR_WEST},
+    {22, 38, DIR_WEST},
+    {22, 37, DIR_WEST},
+};
+
+STATIC_ASSERT(NELEMS(sQueueObjects) >= (sizeof(sQueueCoord) / 3), ListMustBeAsLarge);
+
+void CreateQueue(void)
+{
+    u16 gfxList[NELEMS(sQueueObjects)];
+    for (u32 i = 0; i < NELEMS(sQueueObjects); i++)
+    {
+        gfxList[i] = sQueueObjects[i];
+    }
+
+    Shuffle16(gfxList, NELEMS(sQueueObjects));
+
+    for (u32 i = 0; i < sizeof(sQueueCoord) / 3; i++)
+    {
+        CreateVirtualObject(gfxList[i], i, sQueueCoord[i][0], sQueueCoord[i][1], 3, sQueueCoord[i][2]);
+    }
+}
