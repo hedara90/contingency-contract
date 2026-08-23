@@ -379,65 +379,7 @@ void DoTrainerPartyPool(const struct Trainer *trainer, u32 *monIndices, u8 monsC
         trainer = &tempTrainer;
     }
 
-    //  3 distinct way to pick party
-    //  No pool risk: Just pick the monsCount first mons from the trainer
-    //  Random lead: Pick a random lead for all valid options
-    //               Options depend on if any mons are marked as "Lead" in the trainer
-    //               If a lead exists, pick between all leads
-    //               If no lead exists, pick randomly between all mons
-    //  Use Pools: Use standard pool picking rules, basically means pick random Lead if one exists, then pick the rest
-
-    if (!TESTING && IsRiskActive(RISK_RANDOM_LEAD) && trainer->poolSize != 0)
-    {
-        //  Identify leads
-        u32 numLeads = 0;
-        for (u32 i = 0; i < trainer->poolSize; i++)
-        {
-            if (trainer->party[i].tags & (1u << POOL_TAG_LEAD))
-                numLeads++;
-        }
-
-        u32 leadIndex = 0;
-        if (numLeads == 0)
-        {
-            //  No explicit leads pick a random mon
-            leadIndex = Random32() % trainer->poolSize;
-            monIndices[0] = leadIndex;
-        }
-        else
-        {
-            //  At least 1 explicit lead, pick randomly from them
-            u32 leadToPick = 1 + (Random32() % numLeads);
-            leadIndex = 0;
-            u32 leadsSeen = 0;
-            for (u32 i = 0; i < trainer->poolSize; i++)
-            {
-                if (trainer->party[i].tags & (1u << POOL_TAG_LEAD))
-                    leadsSeen++;
-
-                if (leadsSeen == leadToPick)
-                {
-                    leadIndex = i;
-                    break;
-                }
-            }
-
-            monIndices[0] = leadIndex;
-        }
-
-        u32 pickIndex = 0;
-        for (u32 i = 1; i < monsCount; i++)
-        {
-            if (pickIndex == leadIndex)
-                pickIndex++;
-
-            monIndices[i] = pickIndex;
-            pickIndex++;
-        }
-
-        return;
-    }
-    else if ((TESTING && trainer->poolSize != 0) || IsRiskActive(RISK_USES_POOLS))
+    if (trainer->poolSize != 0)
     {
         usingPool = TRUE;
         rules = gPoolRulesetsList[trainer->poolRuleIndex];
@@ -445,6 +387,17 @@ void DoTrainerPartyPool(const struct Trainer *trainer, u32 *monIndices, u8 monsC
         RandomizePoolIndices(trainer, poolIndexArray);
 
         struct PickFunctions pickFunctions = GetPickFunctions(trainer);
+        if (IsRiskActive(RISK_RANDOM_LEAD))
+        {
+            pickFunctions.OtherFunction = PickLowest;
+            pickFunctions.AceFunction = PickLowest;
+        }
+        else if (!IsRiskActive(RISK_USES_POOLS))
+        {
+            pickFunctions.LeadFunction = PickLowest;
+            pickFunctions.OtherFunction = PickLowest;
+            pickFunctions.AceFunction = PickLowest;
+        }
 
         PrunePool(trainer, poolIndexArray, &rules);
 
@@ -459,10 +412,6 @@ void DoTrainerPartyPool(const struct Trainer *trainer, u32 *monIndices, u8 monsC
             }
         }
         Free(poolIndexArray);
-    }
-    else if (!TESTING)
-    {
-        usingPool = FALSE;
     }
 
     if (!usingPool)
