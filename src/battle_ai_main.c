@@ -3192,7 +3192,6 @@ static s32 AI_DoubleBattle(enum BattlerId battlerAtk, enum BattlerId battlerDef,
           || IS_BATTLER_OF_TYPE(battlerAtkPartner, TYPE_DRAGON)
           || GetMoveCriticalHitStage(aiData->partnerMove) > 0
           || HasMoveWithCriticalHitChance(battlerAtkPartner)
-          || HasMoveWithCriticalHitChance(battlerAtkPartner)
           || ShouldBoostCritRate(battlerAtkPartner, battlerDef)))
         {
             ADJUST_SCORE(GOOD_EFFECT);
@@ -4506,9 +4505,10 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
          || HasMoveWithFlag(battlerAtk, GetMoveCriticalHitStage))
             ADJUST_SCORE(GOOD_EFFECT); // fall through
     case EFFECT_LASER_FOCUS:
-        if (aiData->abilities[battlerAtk] == ABILITY_SNIPER);
+        if (aiData->abilities[battlerAtk] == ABILITY_SNIPER)
             ADJUST_SCORE(GOOD_EFFECT); // fall through
-        if (ShouldBoostCritRate(battlerAtk, battlerDef));
+        if (ShouldBoostCritRate(battlerAtk, battlerDef))
+            ADJUST_SCORE(GOOD_EFFECT);
         break;
     case EFFECT_CONFUSE:
         IncreaseConfusionScore(battlerAtk, battlerDef, move, &score);
@@ -5632,7 +5632,6 @@ static s32 AI_CalcAdditionalEffectScore(enum BattlerId battlerAtk, enum BattlerI
             {
                 if (ShouldBoostCritRate(battlerAtk, battlerDef) && gBattleMons[battlerAtk].volatiles.bonusCritStages < 3)
                     score +=10;
-                
                 break;
             }
             case MOVE_EFFECT_ORDER_UP:
