@@ -606,7 +606,7 @@ static void DrawPull(void)
                                  0, 0, 0, 0,
                                  sGachaUiWindowFontColors[color],
                                  TEXT_SKIP_DRAW,
-                                 COMPOUND_STRING("{L_BUTTON} 1 Pull\n{CLEAR_TO 20}500"));
+                                 COMPOUND_STRING("{L_BUTTON} 1 Pull\n{CLEAR_TO 20}50"));
 
     if (money < PULL_10_COST)
         color = FONT_RED;
@@ -616,7 +616,7 @@ static void DrawPull(void)
                                  0, 0, 0, 0,
                                  sGachaUiWindowFontColors[color],
                                  TEXT_SKIP_DRAW,
-                                 COMPOUND_STRING("{R_BUTTON} 10 Pull\n{CLEAR_TO 20}5000"));
+                                 COMPOUND_STRING("{R_BUTTON} 10 Pull\n{CLEAR_TO 20}500"));
 
     CopyWindowToVram(WIN_PULL_1, COPYWIN_GFX);
     CopyWindowToVram(WIN_PULL_10, COPYWIN_GFX);
@@ -803,8 +803,18 @@ static void Task_PullAnim(u8 taskId)
             {
                 if (gGachaResults[i].result == GIVE_RESULT_CAP)
                 {
+                    u32 multiplier = 1;
+                    switch (gGachaResults[i].stars)
+                    {
+                    case 5:
+                        multiplier = 2;
+                        break;
+                    case 6:
+                        multiplier = 3;
+                        break;
+                    }
                     //  Refund some money
-                    u32 newMoney = GetMoney(&gSaveBlock1Ptr->money) + PULL_1_COST / 4;
+                    u32 newMoney = GetMoney(&gSaveBlock1Ptr->money) + (PULL_1_COST / 4) * multiplier;
                     if (newMoney > 999999)
                         newMoney = 999999;
                     SetMoney(&gSaveBlock1Ptr->money, newMoney);
