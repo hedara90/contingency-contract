@@ -1563,3 +1563,25 @@ const struct Tileset gTileset_hubsecondary =
     .metatileAttributes = gMetatileAttributes_hubsecondary,
     .callback = NULL,
 };
+
+const struct Tileset gTileset_conventioncenter =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_PorytilesManaged_conventioncenter,
+    .palettes = gTilesetPalettes_PorytilesManaged_conventioncenter,
+    .metatiles = gMetatiles_PorytilesManaged_conventioncenter,
+    .metatileAttributes = gMetatileAttributes_PorytilesManaged_conventioncenter,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_convention_secondary =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_PorytilesManaged_convention_secondary,
+    .palettes = gTilesetPalettes_PorytilesManaged_convention_secondary,
+    .metatiles = gMetatiles_PorytilesManaged_convention_secondary,
+    .metatileAttributes = gMetatileAttributes_PorytilesManaged_convention_secondary,
+    .callback = NULL,
+};
