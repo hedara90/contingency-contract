@@ -392,7 +392,7 @@ void DoTrainerPartyPool(const struct Trainer *trainer, u32 *monIndices, u8 monsC
             pickFunctions.OtherFunction = PickLowest;
             pickFunctions.AceFunction = PickLowest;
         }
-        else if (!IsRiskActive(RISK_USES_POOLS))
+        else if (!TESTING && !IsRiskActive(RISK_USES_POOLS))
         {
             pickFunctions.LeadFunction = PickLowest;
             pickFunctions.OtherFunction = PickLowest;
