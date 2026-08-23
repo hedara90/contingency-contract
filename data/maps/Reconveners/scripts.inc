@@ -67,14 +67,14 @@ ReconvenersStartBattle_7:
 	switch VAR_RESULT
 # 69 "data/maps/Reconveners/scripts.pory"
 	case 0, ReconvenersStartBattle_15
-# 71 "data/maps/Reconveners/scripts.pory"
+# 74 "data/maps/Reconveners/scripts.pory"
 	case 1, ReconvenersStartBattle_16
 ReconvenersStartBattle_13:
-# 74 "data/maps/Reconveners/scripts.pory"
+# 77 "data/maps/Reconveners/scripts.pory"
 	compare VAR_GAUNTLET_POSITION, 4
 	goto_if_eq ReconvenersStartBattle_18
 ReconvenersStartBattle_17:
-# 80 "data/maps/Reconveners/scripts.pory"
+# 83 "data/maps/Reconveners/scripts.pory"
 	release
 	end
 
@@ -95,12 +95,10 @@ ReconvenersStartBattle_5:
 
 ReconvenersStartBattle_6:
 # 34 "data/maps/Reconveners/scripts.pory"
-	applymovement OBJ_EVENT_ID_PLAYER, ReconvenersStartBattle_Movement_3
+	applymovement OBJ_EVENT_ID_PLAYER, ReconvenersStartBattle_Movement_2
 	goto ReconvenersStartBattle_1
 
 ReconvenersStartBattle_9:
-# 39 "data/maps/Reconveners/scripts.pory"
-	applymovement LOCALID_ONE, ReconvenersStartBattle_Movement_4
 # 40 "data/maps/Reconveners/scripts.pory"
 	waitmovement
 # 41 "data/maps/Reconveners/scripts.pory"
@@ -109,53 +107,39 @@ ReconvenersStartBattle_9:
 	msgbox ReconvenersStartBattle_Text_0
 # 43 "data/maps/Reconveners/scripts.pory"
 	closemessage
-# 44 "data/maps/Reconveners/scripts.pory"
-	applymovement LOCALID_ONE, ReconvenersStartBattle_Movement_5
 # 45 "data/maps/Reconveners/scripts.pory"
 	waitmovement
 	goto ReconvenersStartBattle_7
 
 ReconvenersStartBattle_10:
-# 47 "data/maps/Reconveners/scripts.pory"
-	applymovement LOCALID_TWO, ReconvenersStartBattle_Movement_6
 # 48 "data/maps/Reconveners/scripts.pory"
 	waitmovement
 # 49 "data/maps/Reconveners/scripts.pory"
 	trainerbattle_no_intro TRAINER_POG, ReconvenersAfter
 # 50 "data/maps/Reconveners/scripts.pory"
 	msgbox ReconvenersStartBattle_Text_0
-# 51 "data/maps/Reconveners/scripts.pory"
-	applymovement LOCALID_TWO, ReconvenersStartBattle_Movement_7
 # 52 "data/maps/Reconveners/scripts.pory"
 	waitmovement
 	goto ReconvenersStartBattle_7
 
 ReconvenersStartBattle_11:
-# 54 "data/maps/Reconveners/scripts.pory"
-	applymovement LOCALID_THREE, ReconvenersStartBattle_Movement_8
 # 55 "data/maps/Reconveners/scripts.pory"
 	waitmovement
 # 56 "data/maps/Reconveners/scripts.pory"
 	trainerbattle_no_intro TRAINER_GILBERTA, ReconvenersAfter
 # 57 "data/maps/Reconveners/scripts.pory"
 	msgbox ReconvenersStartBattle_Text_0
-# 58 "data/maps/Reconveners/scripts.pory"
-	applymovement LOCALID_THREE, ReconvenersStartBattle_Movement_9
 # 59 "data/maps/Reconveners/scripts.pory"
 	waitmovement
 	goto ReconvenersStartBattle_7
 
 ReconvenersStartBattle_12:
-# 61 "data/maps/Reconveners/scripts.pory"
-	applymovement LOCALID_FOUR, ReconvenersStartBattle_Movement_10
 # 62 "data/maps/Reconveners/scripts.pory"
 	waitmovement
 # 63 "data/maps/Reconveners/scripts.pory"
 	trainerbattle_no_intro TRAINER_LAEVATAIN, ReconvenersAfter
 # 64 "data/maps/Reconveners/scripts.pory"
 	msgbox ReconvenersStartBattle_Text_0
-# 65 "data/maps/Reconveners/scripts.pory"
-	applymovement LOCALID_FOUR, ReconvenersStartBattle_Movement_11
 # 66 "data/maps/Reconveners/scripts.pory"
 	waitmovement
 	goto ReconvenersStartBattle_7
@@ -163,27 +147,29 @@ ReconvenersStartBattle_12:
 ReconvenersStartBattle_15:
 # 70 "data/maps/Reconveners/scripts.pory"
 	msgbox ReconvenersStartBattle_Text_1
+# 71 "data/maps/Reconveners/scripts.pory"
+	waitmessage
+# 72 "data/maps/Reconveners/scripts.pory"
+	warpsilent MAP_CONVENTION_CENTER, 21, 24
+# 73 "data/maps/Reconveners/scripts.pory"
+	waitstate
 	goto ReconvenersStartBattle_13
 
 ReconvenersStartBattle_16:
-# 72 "data/maps/Reconveners/scripts.pory"
+# 75 "data/maps/Reconveners/scripts.pory"
 	addvar VAR_GAUNTLET_POSITION, 1
 	goto ReconvenersStartBattle_13
 
 ReconvenersStartBattle_18:
-# 77 "data/maps/Reconveners/scripts.pory"
+# 80 "data/maps/Reconveners/scripts.pory"
 	warpsilent MAP_CONVENTION_CENTER, 10, 10
-# 78 "data/maps/Reconveners/scripts.pory"
+# 81 "data/maps/Reconveners/scripts.pory"
 	waitstate
 	goto ReconvenersStartBattle_17
 
 
 # 28 "data/maps/Reconveners/scripts.pory"
 ReconvenersStartBattle_Movement_0:
-# 28 "data/maps/Reconveners/scripts.pory"
-	walk_right
-# 28 "data/maps/Reconveners/scripts.pory"
-	walk_right
 # 28 "data/maps/Reconveners/scripts.pory"
 	walk_right
 # 28 "data/maps/Reconveners/scripts.pory"
@@ -216,110 +202,6 @@ ReconvenersStartBattle_Movement_2:
 	walk_right
 # 32 "data/maps/Reconveners/scripts.pory"
 	walk_right
-# 32 "data/maps/Reconveners/scripts.pory"
-	walk_right
-# 32 "data/maps/Reconveners/scripts.pory"
-	walk_right
-	step_end
-
-# 34 "data/maps/Reconveners/scripts.pory"
-ReconvenersStartBattle_Movement_3:
-# 34 "data/maps/Reconveners/scripts.pory"
-	walk_down
-# 34 "data/maps/Reconveners/scripts.pory"
-	walk_right
-# 34 "data/maps/Reconveners/scripts.pory"
-	walk_right
-# 34 "data/maps/Reconveners/scripts.pory"
-	walk_right
-	step_end
-
-# 39 "data/maps/Reconveners/scripts.pory"
-ReconvenersStartBattle_Movement_4:
-# 39 "data/maps/Reconveners/scripts.pory"
-	walk_down
-# 39 "data/maps/Reconveners/scripts.pory"
-	walk_down
-# 39 "data/maps/Reconveners/scripts.pory"
-	walk_left
-# 39 "data/maps/Reconveners/scripts.pory"
-	walk_left
-	step_end
-
-# 44 "data/maps/Reconveners/scripts.pory"
-ReconvenersStartBattle_Movement_5:
-# 44 "data/maps/Reconveners/scripts.pory"
-	walk_right
-# 44 "data/maps/Reconveners/scripts.pory"
-	walk_right
-# 44 "data/maps/Reconveners/scripts.pory"
-	walk_up
-# 44 "data/maps/Reconveners/scripts.pory"
-	walk_up
-	step_end
-
-# 47 "data/maps/Reconveners/scripts.pory"
-ReconvenersStartBattle_Movement_6:
-# 47 "data/maps/Reconveners/scripts.pory"
-	walk_down
-# 47 "data/maps/Reconveners/scripts.pory"
-	walk_left
-# 47 "data/maps/Reconveners/scripts.pory"
-	walk_left
-	step_end
-
-# 51 "data/maps/Reconveners/scripts.pory"
-ReconvenersStartBattle_Movement_7:
-# 51 "data/maps/Reconveners/scripts.pory"
-	walk_right
-# 51 "data/maps/Reconveners/scripts.pory"
-	walk_right
-# 51 "data/maps/Reconveners/scripts.pory"
-	walk_up
-	step_end
-
-# 54 "data/maps/Reconveners/scripts.pory"
-ReconvenersStartBattle_Movement_8:
-# 54 "data/maps/Reconveners/scripts.pory"
-	walk_up
-# 54 "data/maps/Reconveners/scripts.pory"
-	walk_left
-# 54 "data/maps/Reconveners/scripts.pory"
-	walk_left
-	step_end
-
-# 58 "data/maps/Reconveners/scripts.pory"
-ReconvenersStartBattle_Movement_9:
-# 58 "data/maps/Reconveners/scripts.pory"
-	walk_right
-# 58 "data/maps/Reconveners/scripts.pory"
-	walk_right
-# 58 "data/maps/Reconveners/scripts.pory"
-	walk_down
-	step_end
-
-# 61 "data/maps/Reconveners/scripts.pory"
-ReconvenersStartBattle_Movement_10:
-# 61 "data/maps/Reconveners/scripts.pory"
-	walk_up
-# 61 "data/maps/Reconveners/scripts.pory"
-	walk_up
-# 61 "data/maps/Reconveners/scripts.pory"
-	walk_left
-# 61 "data/maps/Reconveners/scripts.pory"
-	walk_left
-	step_end
-
-# 65 "data/maps/Reconveners/scripts.pory"
-ReconvenersStartBattle_Movement_11:
-# 65 "data/maps/Reconveners/scripts.pory"
-	walk_right
-# 65 "data/maps/Reconveners/scripts.pory"
-	walk_right
-# 65 "data/maps/Reconveners/scripts.pory"
-	walk_down
-# 65 "data/maps/Reconveners/scripts.pory"
-	walk_down
 	step_end
 
 ReconvenersAttendant_Text_0:
@@ -335,5 +217,5 @@ ReconvenersStartBattle_Text_1:
 	.string "wat$"
 
 ReconvenersAfter::
-# 84 "data/maps/Reconveners/scripts.pory"
+# 87 "data/maps/Reconveners/scripts.pory"
 	.string "After battle.$"

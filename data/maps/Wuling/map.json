@@ -17,8 +17,8 @@
     {
       "local_id": "LOCALID_ATTENDANT",
       "graphics_id": "OBJ_EVENT_GFX_ACOLYTE_F",
-      "x": 3,
-      "y": 8,
+      "x": 10,
+      "y": 10,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_NONE",
       "movement_range_x": 0,
@@ -31,8 +31,8 @@
     {
       "local_id": "LOCALID_ONE",
       "graphics_id": "OBJ_EVENT_GFX_KAITO",
-      "x": 15,
-      "y": 7,
+      "x": 25,
+      "y": 11,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_NONE",
       "movement_range_x": 0,
@@ -45,8 +45,8 @@
     {
       "local_id": "LOCALID_TWO",
       "graphics_id": "OBJ_EVENT_GFX_EMPRESS",
-      "x": 15,
-      "y": 8,
+      "x": 25,
+      "y": 11,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_NONE",
       "movement_range_x": 0,
@@ -59,8 +59,8 @@
     {
       "local_id": "LOCALID_THREE",
       "graphics_id": "OBJ_EVENT_GFX_MONK",
-      "x": 15,
-      "y": 10,
+      "x": 25,
+      "y": 11,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_NONE",
       "movement_range_x": 0,
@@ -73,7 +73,7 @@
     {
       "local_id": "LOCALID_FOUR",
       "graphics_id": "OBJ_EVENT_GFX_PRAYERGIRL",
-      "x": 15,
+      "x": 25,
       "y": 11,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_NONE",

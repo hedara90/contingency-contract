@@ -1751,3 +1751,9 @@ EventScript_GiveGachaMon::
 	.include "data/maps/Reconveners/scripts.inc"
 
 	.include "data/maps/Library/scripts.inc"
+
+	.include "data/maps/Abyssal_Hunters/scripts.inc"
+
+	.include "data/maps/AK_Yellow/scripts.inc"
+
+	.include "data/maps/AK_Green/scripts.inc"

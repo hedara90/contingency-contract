@@ -1,8 +1,8 @@
-mapscripts CrisisTeam_MapScripts {}
+mapscripts Abyssal_Hunters_MapScripts {}
 
 const player = OBJ_EVENT_ID_PLAYER
 
-script CrisisTeamAttendant {
+script AbyssalHuntersAttendant {
     lock
     faceplayer
     msgbox("This is a message.")
@@ -14,14 +14,14 @@ script CrisisTeamAttendant {
     switch(var(VAR_RESULT)) {
     case 0:
         closemessage
-        goto(CrisisTeamStartBattle)
+        goto(AbyssalHuntersStartBattle)
     case 1:
         closemessage
         release
     }
 }
 
-script CrisisTeamStartBattle {
+script AbyssalHuntersStartBattle {
     getobjectfacingdirection(LOCALID_ATTENDANT, VAR_TEMP_1)
     switch(var(VAR_TEMP_1)) {
     case 1: // Down
@@ -38,7 +38,7 @@ script CrisisTeamStartBattle {
     case 0:
         //applymovement(LOCALID_ONE, moves( walk_left * 2))
         waitmovement
-        trainerbattle_no_intro(TRAINER_XAIHI, CrisisTeamAfter)
+        trainerbattle_no_intro(TRAINER_SPECTER, AbyssalHuntersAfter)
         msgbox("Good battle!")
         closemessage
         //applymovement(LOCALID_ONE, moves(walk_up * 2))
@@ -46,21 +46,21 @@ script CrisisTeamStartBattle {
     case 1:
         //applymovement(LOCALID_TWO, moves(walk_left * 2))
         waitmovement
-        trainerbattle_no_intro(TRAINER_CHEN, CrisisTeamAfter)
+        trainerbattle_no_intro(TRAINER_GLADIIA, AbyssalHuntersAfter)
         msgbox("Good battle!")
         //applymovement(LOCALID_TWO, moves(walk_up * 1))
         waitmovement
     case 2:
         //applymovement(LOCALID_THREE, moves(walk_left * 2))
         waitmovement
-        trainerbattle_no_intro(TRAINER_PERLICA, CrisisTeamAfter)
+        trainerbattle_no_intro(TRAINER_SKADI, AbyssalHuntersAfter)
         msgbox("Good battle!")
         //applymovement(LOCALID_THREE, moves(walk_down * 1))
         waitmovement
     case 3:
         //applymovement(LOCALID_FOUR, moves(walk_left * 2))
         waitmovement
-        trainerbattle_no_intro(TRAINER_ENDMIN, CrisisTeamAfter)
+        trainerbattle_no_intro(TRAINER_ULPIANUS, AbyssalHuntersAfter)
         msgbox("Good battle!")
         //applymovement(LOCALID_FOUR, moves(walk_down * 2))
         waitmovement
@@ -84,6 +84,6 @@ script CrisisTeamStartBattle {
     end
 }
 
-text CrisisTeamAfter {
+text AbyssalHuntersAfter {
     "After battle."
 }

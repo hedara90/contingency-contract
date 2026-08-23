@@ -1,7 +1,7 @@
 {
-  "id": "MAP_CRISIS_TEAM",
-  "name": "CrisisTeam",
-  "layout": "LAYOUT_CRISIS_TEAM",
+  "id": "MAP_AK_YELLOW",
+  "name": "AK_Yellow",
+  "layout": "LAYOUT_AK_YELLOW",
   "music": "MUS_DUMMY",
   "region_map_section": "MAPSEC_ABANDONED_SHIP",
   "requires_flash": false,
@@ -25,7 +25,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "CrisisTeamAttendant",
+      "script": "AKYellowAttendant",
       "flag": "0"
     },
     {

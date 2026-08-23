@@ -9337,10 +9337,10 @@
     {
       "id": "LAYOUT_CRISIS_TEAM",
       "name": "CrisisTeam_Layout",
-      "width": 20,
-      "height": 20,
-      "primary_tileset": "gTileset_hub",
-      "secondary_tileset": "gTileset_hubsecondary",
+      "width": 34,
+      "height": 21,
+      "primary_tileset": "gTileset_conventioncenter",
+      "secondary_tileset": "gTileset_convention_secondary",
       "border_filepath": "data/layouts/CrisisTeam/border.bin",
       "blockdata_filepath": "data/layouts/CrisisTeam/map.bin"
     },
@@ -9353,6 +9353,36 @@
       "secondary_tileset": "gTileset_hubsecondary",
       "border_filepath": "data/layouts/Library/border.bin",
       "blockdata_filepath": "data/layouts/Library/map.bin"
+    },
+    {
+      "id": "LAYOUT_ABYSSAL_HUNTERS",
+      "name": "Abyssal_Hunters_Layout",
+      "width": 34,
+      "height": 21,
+      "primary_tileset": "gTileset_conventioncenter",
+      "secondary_tileset": "gTileset_convention_secondary",
+      "border_filepath": "data/layouts/Abyssal_Hunters/border.bin",
+      "blockdata_filepath": "data/layouts/Abyssal_Hunters/map.bin"
+    },
+    {
+      "id": "LAYOUT_AK_YELLOW",
+      "name": "AK_Yellow_Layout",
+      "width": 34,
+      "height": 21,
+      "primary_tileset": "gTileset_conventioncenter",
+      "secondary_tileset": "gTileset_convention_secondary",
+      "border_filepath": "data/layouts/AK_Yellow/border.bin",
+      "blockdata_filepath": "data/layouts/AK_Yellow/map.bin"
+    },
+    {
+      "id": "LAYOUT_AK_GREEN",
+      "name": "AK_Green_Layout",
+      "width": 34,
+      "height": 21,
+      "primary_tileset": "gTileset_conventioncenter",
+      "secondary_tileset": "gTileset_convention_secondary",
+      "border_filepath": "data/layouts/AK_Green/border.bin",
+      "blockdata_filepath": "data/layouts/AK_Green/map.bin"
     }
   ]
 }

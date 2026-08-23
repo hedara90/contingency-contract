@@ -789,4 +789,11 @@ extern const u8 EventScript_Indigo_HighestAuthority[];
 
 extern const u8 EventScript_GiveGachaMon[];
 
+//  CC signpost scripts that shouldn't play a sound
+extern const u8 LastQueuer[];
+extern const u8 EightToLastQueuer[];
+extern const u8 SixteenToLastQueuer[];
+extern const u8 EighteenToLastQueuer[];
+extern const u8 PayingQueuer[];
+
 #endif // GUARD_EVENT_SCRIPTS_H

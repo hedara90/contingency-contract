@@ -1,2 +1,198 @@
 mapscripts ConventionCenter_MapScripts {
+    MAP_SCRIPT_ON_RESUME {
+        callnative(CreateQueue)
+    }
+}
+
+script LastQueuer {
+    lock
+    turnvobject(0, DIR_NORTH)
+    msgbox("I hope this queue goes fast…")
+    waitmessage
+    turnvobject(0, DIR_SOUTH)
+    release
+    end
+}
+
+script EightToLastQueuer {
+    lock
+    turnvobject(7, DIR_NORTH)
+    msgbox("I hope this queue goes fast…")
+    waitmessage
+    turnvobject(7, DIR_SOUTH)
+    release
+    end
+}
+
+script SixteenToLastQueuer {
+    lock
+    turnvobject(15, DIR_NORTH)
+    msgbox("I hope this queue goes fast…")
+    waitmessage
+    turnvobject(15, DIR_SOUTH)
+    release
+    end
+}
+
+script EighteenToLastQueuer {
+    lock
+    turnvobject(17, DIR_NORTH)
+    msgbox("I hope this queue goes fast…")
+    waitmessage
+    turnvobject(17, DIR_SOUTH)
+    release
+    end
+}
+
+script PayingQueuer {
+    lock
+    turnvobject(33, DIR_NORTH)
+    msgbox("I hope this queue goes fast…")
+    waitmessage
+    turnvobject(33, DIR_WEST)
+    release
+    end
+}
+
+script MonBanners {
+    lock
+    msgbox("Hello!\pDo you want to try your luck on a banner?")
+    dynmultichoice(0, 0, TRUE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
+                    "Indomitability of the Unbreakable Spirit",
+                    "Fury of the Earthern Code",
+                    "Memories of Months Past",
+                    "No, I'm good for now!")
+    switch(var(VAR_RESULT)) {
+    case 0:
+        gachaui(BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT)
+    case 1:
+        gachaui(BANNER_FURY_OF_THE_EARTHEN_CORE)
+    case 2:
+        gachaui(BANNER_MEMORIES_OF_MONTHS_PAST)
+    case 3:
+        msgbox("Next time then.")
+        waitmessage
+        release
+        end
+    }
+    waitstate
+    msgbox("Hope it went well.")
+    waitmessage
+    release
+    end
+}
+
+script ItemBanner {
+    lock
+    msgbox("Hello!\pDo you want to try your luck on items?\p")
+    dynmultichoice(0, 0, TRUE, 2, FALSE, DYN_MULTICHOICE_CB_NONE,
+                    "Yes please!",
+                    "Not right now.")
+    switch(var(VAR_RESULT)) {
+    case 0:
+        gachaui(BANNER_ITEMS)
+    case 1:
+        msgbox("Next time then.")
+        waitmessage
+        release
+        end
+    }
+    waitstate
+    msgbox("Hope it went well.")
+    waitmessage
+    release
+    end
+}
+
+script ChooseGauntlet {
+    lock
+    faceplayer
+    msgbox("Which gauntlet do you want to fight?")
+    dynmultichoice(0, 0, TRUE, 7, FALSE, DYN_MULTICHOICE_CB_NONE,
+                    "Crisis Team",
+                    "Wuling",
+                    "Reconveners",
+                    "AK 1",
+                    "AK 2",
+                    "AK 3",
+                    "Not right now")
+    getobjectfacingdirection(LOCALID_ATTENDANT_MAIN, VAR_TEMP_1)
+    setvar(VAR_GAUNTLET_POSITION, 0)
+    switch(var(VAR_RESULT)) {
+    case 0:
+        switch(var(VAR_TEMP_1)) {
+        case 1:
+            warpsilent(MAP_CRISIS_TEAM, 10, 11)
+        case 2:
+            warpsilent(MAP_CRISIS_TEAM, 10, 11)
+        case 3:
+            warpsilent(MAP_CRISIS_TEAM, 9, 10)
+        case 4:
+            warpsilent(MAP_CRISIS_TEAM, 10, 11)
+        }
+        waitstate
+    case 1:
+        switch(var(VAR_TEMP_1)) {
+        case 1:
+            warpsilent(MAP_WULING, 10, 11)
+        case 2:
+            warpsilent(MAP_WULING, 10, 11)
+        case 3:
+            warpsilent(MAP_WULING, 9, 10)
+        case 4:
+            warpsilent(MAP_WULING, 10, 11)
+        }
+        waitstate
+    case 2:
+        switch(var(VAR_TEMP_1)) {
+        case 1:
+            warpsilent(MAP_RECONVENERS, 10, 11)
+        case 2:
+            warpsilent(MAP_RECONVENERS, 10, 11)
+        case 3:
+            warpsilent(MAP_RECONVENERS, 9, 10)
+        case 4:
+            warpsilent(MAP_RECONVENERS, 10, 11)
+        }
+        waitstate
+    case 3:
+        switch(var(VAR_TEMP_1)) {
+        case 1:
+            warpsilent(MAP_ABYSSAL_HUNTERS, 10, 11)
+        case 2:
+            warpsilent(MAP_ABYSSAL_HUNTERS, 10, 11)
+        case 3:
+            warpsilent(MAP_ABYSSAL_HUNTERS, 9, 10)
+        case 4:
+            warpsilent(MAP_ABYSSAL_HUNTERS, 10, 11)
+        }
+        waitstate
+    case 4:
+        switch(var(VAR_TEMP_1)) {
+        case 1:
+            warpsilent(MAP_AK_YELLOW, 10, 11)
+        case 2:
+            warpsilent(MAP_AK_YELLOW, 10, 11)
+        case 3:
+            warpsilent(MAP_AK_YELLOW, 9, 10)
+        case 4:
+            warpsilent(MAP_AK_YELLOW, 10, 11)
+        }
+        waitstate
+    case 5:
+        switch(var(VAR_TEMP_1)) {
+        case 1:
+            warpsilent(MAP_AK_GREEN, 10, 11)
+        case 2:
+            warpsilent(MAP_AK_GREEN, 10, 11)
+        case 3:
+            warpsilent(MAP_AK_GREEN, 9, 10)
+        case 4:
+            warpsilent(MAP_AK_GREEN, 10, 11)
+        }
+        waitstate
+    }
+    waitmessage
+    release
+    end
 }
