@@ -365,7 +365,8 @@ enum {
 
 void ShowMapNamePopup(void)
 {
-    if (FlagGet(FLAG_HIDE_MAP_NAME_POPUP) != TRUE)
+    //if (FlagGet(FLAG_HIDE_MAP_NAME_POPUP) != TRUE)
+    if (FALSE)
     {
         if (!FuncIsActiveTask(Task_MapNamePopUpWindow))
         {
