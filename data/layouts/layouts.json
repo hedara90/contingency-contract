@@ -9337,10 +9337,10 @@
     {
       "id": "LAYOUT_CRISIS_TEAM",
       "name": "CrisisTeam_Layout",
-      "width": 20,
-      "height": 20,
-      "primary_tileset": "gTileset_hub",
-      "secondary_tileset": "gTileset_hubsecondary",
+      "width": 34,
+      "height": 21,
+      "primary_tileset": "gTileset_conventioncenter",
+      "secondary_tileset": "gTileset_convention_secondary",
       "border_filepath": "data/layouts/CrisisTeam/border.bin",
       "blockdata_filepath": "data/layouts/CrisisTeam/map.bin"
     },
