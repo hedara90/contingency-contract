@@ -1170,7 +1170,10 @@
   "gMapGroup_Gauntlets": [
     "CrisisTeam",
     "Wuling",
-    "Reconveners"
+    "Reconveners",
+    "Abyssal_Hunters",
+    "AK_Yellow",
+    "AK_Green"
   ],
   "gMapGroup_Library": [
     "Library"

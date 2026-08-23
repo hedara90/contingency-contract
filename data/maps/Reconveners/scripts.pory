@@ -25,49 +25,52 @@ script ReconvenersStartBattle {
     getobjectfacingdirection(LOCALID_ATTENDANT, VAR_TEMP_1)
     switch(var(VAR_TEMP_1)) {
     case 1: // Down
-        applymovement(player, moves(walk_right * 4))
+        applymovement(player, moves(walk_right * 2))
     case 2: // Up
         applymovement(player, moves(walk_right, walk_down * 2, walk_right * 3))
     case 3: // Left
-        applymovement(player, moves(walk_down, walk_right * 5))
+        applymovement(player, moves(walk_down, walk_right * 3))
     case 4: // Right
         applymovement(player, moves(walk_down, walk_right * 3))
     }
     waitmovement
     switch(var(VAR_GAUNTLET_POSITION)) {
     case 0:
-        applymovement(LOCALID_ONE, moves(walk_down * 2, walk_left * 2))
+        //applymovement(LOCALID_ONE, moves(walk_down * 2, walk_left * 2))
         waitmovement
         trainerbattle_no_intro(TRAINER_ARDELIA, ReconvenersAfter)
         msgbox("Good battle!")
         closemessage
-        applymovement(LOCALID_ONE, moves(walk_right * 2, walk_up * 2))
+        //applymovement(LOCALID_ONE, moves(walk_right * 2, walk_up * 2))
         waitmovement
     case 1:
-        applymovement(LOCALID_TWO, moves(walk_down * 1, walk_left * 2))
+        //applymovement(LOCALID_TWO, moves(walk_down * 1, walk_left * 2))
         waitmovement
         trainerbattle_no_intro(TRAINER_POG, ReconvenersAfter)
         msgbox("Good battle!")
-        applymovement(LOCALID_TWO, moves(walk_right * 2, walk_up * 1))
+        //applymovement(LOCALID_TWO, moves(walk_right * 2, walk_up * 1))
         waitmovement
     case 2:
-        applymovement(LOCALID_THREE, moves(walk_up * 1, walk_left * 2))
+        //applymovement(LOCALID_THREE, moves(walk_up * 1, walk_left * 2))
         waitmovement
         trainerbattle_no_intro(TRAINER_GILBERTA, ReconvenersAfter)
         msgbox("Good battle!")
-        applymovement(LOCALID_THREE, moves(walk_right * 2, walk_down * 1))
+        //applymovement(LOCALID_THREE, moves(walk_right * 2, walk_down * 1))
         waitmovement
     case 3:
-        applymovement(LOCALID_FOUR, moves(walk_up * 2, walk_left * 2))
+        //applymovement(LOCALID_FOUR, moves(walk_up * 2, walk_left * 2))
         waitmovement
         trainerbattle_no_intro(TRAINER_LAEVATAIN, ReconvenersAfter)
         msgbox("Good battle!")
-        applymovement(LOCALID_FOUR, moves(walk_right * 2, walk_down * 2))
+        //applymovement(LOCALID_FOUR, moves(walk_right * 2, walk_down * 2))
         waitmovement
     }
     switch(var(VAR_RESULT)) {
     case 0: // Lost battle
         msgbox("wat")
+        waitmessage
+        warpsilent(MAP_CONVENTION_CENTER, 21, 24)
+        waitstate
     case 1: // Won battle
         addvar(VAR_GAUNTLET_POSITION, 1)
     }
