@@ -890,7 +890,7 @@ static inline void CalcDynamicMoveDamage(struct DamageContext *ctx, u16 *medianD
             random *= RandomUniform(RNG_AI_DMG_ROLL_RANDOM, 2, 5);
         }
     }
-    else if (ctx->abilities[ctx->battlerAtk] == ABILITY_PARENTAL_BOND
+    else if ((ctx->abilities[ctx->battlerAtk] == ABILITY_PARENTAL_BOND || IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND))
           && strikeCount == 0
           && !AI_IsDoubleSpreadMove(ctx->battlerAtk, ctx->move))
     {
@@ -2749,6 +2749,19 @@ bool32 HasPhysicalBestMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
         }
     }
     return bestMoveIsPhysical;
+}
+
+bool32 ShouldBoostCritRate(enum BattlerId battlerAtk, enum BattlerId battlerDef)
+{
+    if (gBattleMons[battlerDef].statStages[STAT_DEF] > DEFAULT_STAT_STAGE && HasMoveWithCategory(battlerAtk, DAMAGE_CATEGORY_PHYSICAL))
+         return TRUE;
+    if (gBattleMons[battlerDef].statStages[STAT_SPDEF] > DEFAULT_STAT_STAGE && HasMoveWithCategory(battlerAtk, DAMAGE_CATEGORY_SPECIAL))
+         return TRUE;
+    if (gBattleMons[battlerAtk].statStages[STAT_ATK] < DEFAULT_STAT_STAGE && HasMoveWithCategory(battlerAtk, DAMAGE_CATEGORY_PHYSICAL))
+         return TRUE;
+    if (gBattleMons[battlerAtk].statStages[STAT_SPATK] < DEFAULT_STAT_STAGE && HasMoveWithCategory(battlerAtk, DAMAGE_CATEGORY_SPECIAL))
+         return TRUE;
+    return FALSE;
 }
 
 bool32 HasOnlyMovesWithCategory(enum BattlerId battlerId, enum DamageCategory category, bool32 onlyOffensive)
