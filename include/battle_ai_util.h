@@ -341,6 +341,9 @@ bool32 AI_CanAnyStatChange(enum BattlerId battlerAtk, enum BattlerId battlerDef,
 // Switching and item helpers
 bool32 AiExpectsToFaintPlayer(enum BattlerId battler);
 
+// Contingency Contract
+bool32 HasNonDamagingMoveThatRaisesOwnStats(enum BattlerId battlerId);
+
 // These are for the purpose of not doubling up on moves during double battles.
 // Used in GetAIEffectGroup for move effects and GetAIEffectGroupFromMove for additional effects
 #define AI_EFFECT_NONE                        0

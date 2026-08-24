@@ -251,6 +251,7 @@ enum RandomTag
     RNG_AI_DMG_ROLL_RANDOM,
     RNG_RANDOM_BERRY,
     RNG_RANDOM_BALL,
+    RNG_AI_DONT_BOOST_ATTACK_INTO_FOUL_PLAY,
 };
 
 #define RandomWeighted(tag, ...) \

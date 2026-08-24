@@ -1273,6 +1273,29 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
         }
     }
 
+    if (IsRiskActive(RISK_OPPONENT_ATTACKS_SWITCHES))
+    {
+        if (HasNonDamagingMoveThatRaisesOwnStats(battlerDef) && GetMoveCategory(move) != DAMAGE_CATEGORY_STATUS)
+            ADJUST_SCORE(1);
+        switch (moveEffect)
+        {
+        case EFFECT_SOAK:
+        case EFFECT_LEECH_SEED:
+        case EFFECT_CURSE:
+        case EFFECT_CONFUSE:
+        case EFFECT_SWAGGER:
+        case EFFECT_MEMENTO:
+        case EFFECT_TAUNT:
+        case EFFECT_ENCORE:
+        case EFFECT_DESTINY_BOND:
+        case EFFECT_PERISH_SONG:
+            ADJUST_SCORE(-5);
+            break;
+        default:
+            break;
+        }
+    }
+
     // Don't setup into expected Focus Punch.
     if (GetMoveCategory(move) == DAMAGE_CATEGORY_STATUS
      && nonVolatileStatus != MOVE_EFFECT_SLEEP
@@ -2611,7 +2634,8 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
             ADJUST_SCORE(-10);
         break;
     case EFFECT_STEEL_ROLLER:
-        if (!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY)
+        if ((!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY) 
+         && !(aiData->abilities[battlerAtk] == ABILITY_SEED_SOWER && GetMoveCategory(predictedMove) == DAMAGE_CATEGORY_PHYSICAL && predictedMove != MOVE_NONE))
          || (HasPartner(battlerAtk) && AreMovesEquivalent(battlerAtk, BATTLE_PARTNER(battlerAtk), move, aiData->partnerMove)))
             ADJUST_SCORE(-10);
         break;
@@ -4200,6 +4224,10 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
     if (gBattleMons[battlerAtk].status1 & STATUS1_ICY_ANY && MoveThawsUser(move))
         ADJUST_SCORE(10);
 
+    // check Stormcaller
+    if (gBattleMons[battlerAtk].ability == ABILITY_STORMCALLER && IsWindMove(move) && !(AI_GetWeather() & B_WEATHER_RAIN))
+        ADJUST_SCORE(DECENT_EFFECT);
+
     // check burn / frostbite
     if (gAiThinkingStruct->aiFlags[battlerAtk] & AI_FLAG_SMART_SWITCHING && aiData->abilities[battlerAtk] == ABILITY_NATURAL_CURE)
     {
@@ -5228,6 +5256,8 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
                 ADJUST_SCORE(GOOD_EFFECT);
             if (ShouldSetFieldStatus(battlerDef, terrain))
                 ADJUST_SCORE(DECENT_EFFECT);
+            if (aiData->abilities[battlerAtk] == ABILITY_SEED_SOWER && GetMoveCategory(predictedMove) == DAMAGE_CATEGORY_PHYSICAL && predictedMove != MOVE_NONE)
+                ADJUST_SCORE(GOOD_EFFECT);
         }
         break;
     case EFFECT_ICE_SPINNER:
@@ -6458,7 +6488,6 @@ static s32 AI_PredictSwitch(enum BattlerId battlerAtk, enum BattlerId battlerDef
                 ADJUST_SCORE(10);
         }
         break;
-
     case EFFECT_TELEPORT:
     case EFFECT_HIT_ESCAPE:
     case EFFECT_PARTING_SHOT:
