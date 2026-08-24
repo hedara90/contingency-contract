@@ -497,7 +497,7 @@ Party Size: 4
 Pool Rules: Weather Doubles
 Pool Pick Functions: Default
 
-Tapu Koko @ Terrain Extender  
+Dedenne @ Terrain Extender  
 Ability: Electric Surge  
 Level: 50  
 Tags: Lead
@@ -1859,7 +1859,7 @@ Talonflame @ Weakness Policy
 Ability: Gale Wings  
 Level: 50  
 Tags: Lead / Support
-- Tailwind  
+- Sunny Day  
 - Acrobatics  
 - Endure  
 - Blaze Kick  
@@ -1911,7 +1911,7 @@ Talonflame @ Weakness Policy
 Ability: Gale Wings  
 Level: 50  
 Tags: Weather Setter
-- Tailwind  
+- Sunny Day  
 - Acrobatics  
 - Endure  
 - Blaze Kick 
@@ -1932,7 +1932,7 @@ Drampa @ Damp Rock
 Ability: Stormcaller
 Level: 50  
 Tags: Lead / Weather Setter
-- Dragon Pulse  
+- Twister  
 - Surf  
 - Hyper Voice  
 - Roost  
@@ -2009,7 +2009,7 @@ Drampa @ Damp Rock
 Ability: Stormcaller
 Level: 50  
 Tags: Weather Setter
-- Dragon Pulse  
+- Twister  
 - Surf  
 - Hyper Voice  
 - Roost  

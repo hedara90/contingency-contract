@@ -8373,7 +8373,7 @@ static const struct LevelUpMove sSwabluLevelUpLearnset[] = {
 static const struct LevelUpMove sAltariaLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_ROOST),
     LEVEL_UP_MOVE( 1, MOVE_WILL_O_WISP),
-    LEVEL_UP_MOVE( 1, MOVE_DRAGON_PULSE),
+    LEVEL_UP_MOVE( 1, MOVE_TWISTER),
     LEVEL_UP_MOVE( 1, MOVE_EARTH_POWER),
     LEVEL_UP_MOVE( 51, MOVE_U_TURN),
     LEVEL_UP_MOVE( 52, MOVE_WEATHER_BALL),
