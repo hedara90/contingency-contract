@@ -59,7 +59,7 @@ script MonBanners {
     msgbox("Hello!\pDo you want to try your luck on a banner?")
     dynmultichoice(0, 0, TRUE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
                     "Indomitability of the Unbreakable Spirit",
-                    "Fury of the Earthern Code",
+                    "Fury of the Earthern Core",
                     "Memories of Months Past",
                     "No, I'm good for now!")
     switch(var(VAR_RESULT)) {
@@ -84,14 +84,98 @@ script MonBanners {
 
 script ItemBanner {
     lock
-    msgbox("Hello!\pDo you want to try your luck on items?\p")
-    dynmultichoice(0, 0, TRUE, 2, FALSE, DYN_MULTICHOICE_CB_NONE,
-                    "Yes please!",
-                    "Not right now.")
+    msgbox("Hello!\pDo you want to try your luck on items?\nOr redeem what you want directly?")
+    dynmultichoice(0, 0, TRUE, 3, FALSE, DYN_MULTICHOICE_CB_NONE,
+                    "I'll try my luck!",
+                    "I'll redeem an item.",
+                    "Nothing for now.")
     switch(var(VAR_RESULT)) {
     case 0:
         gachaui(BANNER_ITEMS)
     case 1:
+        msgbox("Of course, which rarity?\p4-star items cost 16 points,\n5-star 64, and 6-star costs 256")
+        callnative(DisplayItemPoints)
+        dynmultichoice(0, 0, TRUE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
+                        "4-Star!",
+                        "5-Star!",
+                        "6-Star!",
+                        "Nevermind.")
+        switch(var(VAR_RESULT)) {
+        case 0:
+            callnative(BuildListOf4StarItems)
+            setvar(VAR_RESULT, 0)
+            dynmultistack(0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
+            switch(var(VAR_RESULT)) {
+            case 0:
+                msgbox("See you another time then.")
+            case MULTI_B_PRESSED:
+                msgbox("See you another time then.")
+            default:
+                callnative(GiveItemFromPointShop)
+                switch(var(VAR_RESULT)) {
+                case 0:
+                    msgbox("You don't have enough points for that.")
+                case 1:
+                    msgbox("Here you go!")
+                }
+            }
+            callnative(HideItemPoints)
+            waitmessage
+            release
+            end
+        case 1:
+            callnative(BuildListOf5StarItems)
+            setvar(VAR_RESULT, 0)
+            dynmultistack(0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
+            switch(var(VAR_RESULT)) {
+            case 0:
+                msgbox("See you another time then.")
+            case MULTI_B_PRESSED:
+                msgbox("See you another time then.")
+            default:
+                callnative(GiveItemFromPointShop)
+                switch(var(VAR_RESULT)) {
+                case 0:
+                    msgbox("You don't have enough points for that.")
+                case 1:
+                    msgbox("Here you go!")
+                }
+            }
+            callnative(HideItemPoints)
+            waitmessage
+            release
+            end
+        case 2:
+            callnative(BuildListOf5StarItems)
+            setvar(VAR_RESULT, 0)
+            dynmultistack(0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
+            switch(var(VAR_RESULT)) {
+            case 0:
+                msgbox("See you another time then.")
+            case MULTI_B_PRESSED:
+                msgbox("See you another time then.")
+            default:
+                callnative(GiveItemFromPointShop)
+                switch(var(VAR_RESULT)) {
+                case 0:
+                    msgbox("You don't have enough points for that.")
+                case 1:
+                    msgbox("Here you go!")
+                }
+            }
+            callnative(HideItemPoints)
+            waitmessage
+            release
+            end
+        default:
+            callnative(HideItemPoints)
+            msgbox("See you another time!")
+            waitmessage
+            release
+            end
+        }
+        callnative(HideItemPoints)
+    case 2:
         msgbox("Next time then.")
         waitmessage
         release
