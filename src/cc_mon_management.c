@@ -848,8 +848,6 @@ void DisplayItemPoints(void)
 {
     u32 currBP = gSaveBlock2Ptr->frontier.battlePoints;
 
-    DebugPrintf("showing sprite");
-
     struct Even_CreateSpriteStruct cs = {0};
     cs.sprite = sPointsDisplayGfx;
     cs.tileTag = 0xDEDE;
