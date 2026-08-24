@@ -57,7 +57,7 @@ script PayingQueuer {
 script MonBanners {
     lock
     msgbox("Hello!\pDo you want to try your luck on a banner?")
-    dynmultichoice(0, 0, TRUE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
+    dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
                     "Indomitability of the Unbreakable Spirit",
                     "Fury of the Earthern Core",
                     "Memories of Months Past",
@@ -69,7 +69,7 @@ script MonBanners {
         gachaui(BANNER_FURY_OF_THE_EARTHEN_CORE)
     case 2:
         gachaui(BANNER_MEMORIES_OF_MONTHS_PAST)
-    case 3:
+    default:
         msgbox("Next time then.")
         waitmessage
         release
@@ -85,7 +85,7 @@ script MonBanners {
 script ItemBanner {
     lock
     msgbox("Hello!\pDo you want to try your luck on items?\nOr redeem what you want directly?")
-    dynmultichoice(0, 0, TRUE, 3, FALSE, DYN_MULTICHOICE_CB_NONE,
+    dynmultichoice(0, 0, FALSE, 3, FALSE, DYN_MULTICHOICE_CB_NONE,
                     "I'll try my luck!",
                     "I'll redeem an item.",
                     "Nothing for now.")
@@ -93,9 +93,9 @@ script ItemBanner {
     case 0:
         gachaui(BANNER_ITEMS)
     case 1:
-        msgbox("Of course, which rarity?\p4-star items cost 16 points,\n5-star 64, and 6-star costs 256")
+        msgbox("Of course, which rarity?\p4-star items cost 16 points,\n5-star 64, and 6-star costs 256.")
         callnative(DisplayItemPoints)
-        dynmultichoice(0, 0, TRUE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
+        dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
                         "4-Star!",
                         "5-Star!",
                         "6-Star!",
@@ -175,7 +175,7 @@ script ItemBanner {
             end
         }
         callnative(HideItemPoints)
-    case 2:
+    default:
         msgbox("Next time then.")
         waitmessage
         release
@@ -192,7 +192,8 @@ script ChooseGauntlet {
     lock
     faceplayer
     msgbox("Which gauntlet do you want to fight?")
-    dynmultichoice(0, 0, TRUE, 7, FALSE, DYN_MULTICHOICE_CB_NONE,
+    dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
+                    "Set Risks",
                     "Crisis Team",
                     "Wuling",
                     "Reconveners",
@@ -205,6 +206,10 @@ script ChooseGauntlet {
     setvar(VAR_GAUNTLET_POSITION, 0)
     switch(var(VAR_RESULT)) {
     case 0:
+        riskui
+        release
+        end
+    case 1:
         switch(var(VAR_TEMP_1)) {
         case 1:
             warpsilent(MAP_CRISIS_TEAM, 10, 11)
@@ -216,7 +221,7 @@ script ChooseGauntlet {
             warpsilent(MAP_CRISIS_TEAM, 10, 11)
         }
         waitstate
-    case 1:
+    case 2:
         switch(var(VAR_TEMP_1)) {
         case 1:
             warpsilent(MAP_WULING, 10, 11)
@@ -228,7 +233,7 @@ script ChooseGauntlet {
             warpsilent(MAP_WULING, 10, 11)
         }
         waitstate
-    case 2:
+    case 3:
         switch(var(VAR_TEMP_1)) {
         case 1:
             warpsilent(MAP_RECONVENERS, 10, 11)
@@ -240,7 +245,7 @@ script ChooseGauntlet {
             warpsilent(MAP_RECONVENERS, 10, 11)
         }
         waitstate
-    case 3:
+    case 4:
         switch(var(VAR_TEMP_1)) {
         case 1:
             warpsilent(MAP_ABYSSAL_HUNTERS, 10, 11)
@@ -252,7 +257,7 @@ script ChooseGauntlet {
             warpsilent(MAP_ABYSSAL_HUNTERS, 10, 11)
         }
         waitstate
-    case 4:
+    case 5:
         switch(var(VAR_TEMP_1)) {
         case 1:
             warpsilent(MAP_AK_YELLOW, 10, 11)
@@ -264,7 +269,7 @@ script ChooseGauntlet {
             warpsilent(MAP_AK_YELLOW, 10, 11)
         }
         waitstate
-    case 5:
+    case 6:
         switch(var(VAR_TEMP_1)) {
         case 1:
             warpsilent(MAP_AK_GREEN, 10, 11)
@@ -276,6 +281,8 @@ script ChooseGauntlet {
             warpsilent(MAP_AK_GREEN, 10, 11)
         }
         waitstate
+    default:
+        msgbox("Hope you'll be back soon!")
     }
     waitmessage
     release
