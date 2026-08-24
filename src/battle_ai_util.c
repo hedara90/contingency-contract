@@ -749,7 +749,7 @@ bool32 IsDamageMoveUnusable(struct DamageContext *ctx)
             return TRUE;
         break;
     case EFFECT_STEEL_ROLLER:
-        if (!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY))
+        if (!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY) && !(aiData->abilities[ctx->battlerAtk] == ABILITY_SEED_SOWER && gAiThinkingStruct->aiFlags[ctx->battlerAtk] & AI_FLAG_PREDICT_MOVE))
             return TRUE;
         break;
     case EFFECT_POLTERGEIST:
@@ -890,7 +890,7 @@ static inline void CalcDynamicMoveDamage(struct DamageContext *ctx, u16 *medianD
             random *= RandomUniform(RNG_AI_DMG_ROLL_RANDOM, 2, 5);
         }
     }
-    else if (ctx->abilities[ctx->battlerAtk] == ABILITY_PARENTAL_BOND
+    else if ((ctx->abilities[ctx->battlerAtk] == ABILITY_PARENTAL_BOND || IsRiskActive(RISK_PLAYER_HAS_PARENTAL_BOND))
           && strikeCount == 0
           && !AI_IsDoubleSpreadMove(ctx->battlerAtk, ctx->move))
     {
@@ -2751,6 +2751,19 @@ bool32 HasPhysicalBestMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
     return bestMoveIsPhysical;
 }
 
+bool32 ShouldBoostCritRate(enum BattlerId battlerAtk, enum BattlerId battlerDef)
+{
+    if (gBattleMons[battlerDef].statStages[STAT_DEF] > DEFAULT_STAT_STAGE && HasMoveWithCategory(battlerAtk, DAMAGE_CATEGORY_PHYSICAL))
+         return TRUE;
+    if (gBattleMons[battlerDef].statStages[STAT_SPDEF] > DEFAULT_STAT_STAGE && HasMoveWithCategory(battlerAtk, DAMAGE_CATEGORY_SPECIAL))
+         return TRUE;
+    if (gBattleMons[battlerAtk].statStages[STAT_ATK] < DEFAULT_STAT_STAGE && HasMoveWithCategory(battlerAtk, DAMAGE_CATEGORY_PHYSICAL))
+         return TRUE;
+    if (gBattleMons[battlerAtk].statStages[STAT_SPATK] < DEFAULT_STAT_STAGE && HasMoveWithCategory(battlerAtk, DAMAGE_CATEGORY_SPECIAL))
+         return TRUE;
+    return FALSE;
+}
+
 bool32 HasOnlyMovesWithCategory(enum BattlerId battlerId, enum DamageCategory category, bool32 onlyOffensive)
 {
     enum Move *moves = GetMovesArray(battlerId);
@@ -3007,6 +3020,28 @@ bool32 HasMoveThatRaisesOwnStats(enum BattlerId battlerId)
     {
         aiMove = moves[moveIndex];
         if (aiMove != MOVE_NONE && aiMove != MOVE_UNAVAILABLE)
+        {
+            u32 additionalEffectCount = GetMoveAdditionalEffectCount(aiMove);
+            for (u32 effectIndex = 0; effectIndex < additionalEffectCount; effectIndex++)
+            {
+                const struct AdditionalEffect *additionalEffect = GetMoveAdditionalEffectById(aiMove, effectIndex);
+                if (additionalEffect->moveEffect == MOVE_EFFECT_STAT_PLUS && additionalEffect->self)
+                    return TRUE;
+            }
+        }
+    }
+    return FALSE;
+}
+
+bool32 HasNonDamagingMoveThatRaisesOwnStats(enum BattlerId battlerId)
+{
+    enum Move aiMove;
+    enum Move *moves = GetMovesArray(battlerId);
+
+    for (u32 moveIndex = 0; moveIndex < MAX_MON_MOVES; moveIndex++)
+    {
+        aiMove = moves[moveIndex];
+        if (aiMove != MOVE_NONE && aiMove != MOVE_UNAVAILABLE && GetMovePower(aiMove) != 0)
         {
             u32 additionalEffectCount = GetMoveAdditionalEffectCount(aiMove);
             for (u32 effectIndex = 0; effectIndex < additionalEffectCount; effectIndex++)
@@ -4809,6 +4844,10 @@ static enum AIScore IncreaseStatUpScoreInternal(enum BattlerId battlerAtk, enum 
     if (gBattleMons[battlerAtk].statStages[statId] >= MAX_STAT_STAGE - 2)
         return NO_INCREASE;
 
+    // Don't increase stats if you'd die to Foul Play at +2
+    if (HasMoveWithEffect(battlerDef, EFFECT_FOUL_PLAY) && RandomPercentage(RNG_AI_DONT_BOOST_ATTACK_INTO_FOUL_PLAY, DONT_BOOST_ATTACK_INTO_FOUL_PLAY_CHANCE))
+        return NO_INCREASE;
+
     // Stat stages are effectively doubled under Simple.
     if (gAiLogicData->abilities[battlerAtk] == ABILITY_SIMPLE)
         stages *= 2;
@@ -6506,6 +6545,9 @@ s32 GetFoeStatChangeScore(enum BattlerId battlerAtk, enum BattlerId battlerDef, 
 {
     s32 score = 0;
     u32 numAdditionalEffects = GetMoveAdditionalEffectCount(move);
+
+    if (IsRiskActive(RISK_OPPONENT_ATTACKS_SWITCHES))
+        return score;
 
     for (u32 effectIndex = 0; effectIndex < numAdditionalEffects; effectIndex++)
     {

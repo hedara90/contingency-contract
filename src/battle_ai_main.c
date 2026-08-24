@@ -1273,6 +1273,29 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
         }
     }
 
+    if (IsRiskActive(RISK_OPPONENT_ATTACKS_SWITCHES))
+    {
+        if (HasNonDamagingMoveThatRaisesOwnStats(battlerDef) && GetMoveCategory(move) != DAMAGE_CATEGORY_STATUS)
+            ADJUST_SCORE(1);
+        switch (moveEffect)
+        {
+        case EFFECT_SOAK:
+        case EFFECT_LEECH_SEED:
+        case EFFECT_CURSE:
+        case EFFECT_CONFUSE:
+        case EFFECT_SWAGGER:
+        case EFFECT_MEMENTO:
+        case EFFECT_TAUNT:
+        case EFFECT_ENCORE:
+        case EFFECT_DESTINY_BOND:
+        case EFFECT_PERISH_SONG:
+            ADJUST_SCORE(-5);
+            break;
+        default:
+            break;
+        }
+    }
+
     // Don't setup into expected Focus Punch.
     if (GetMoveCategory(move) == DAMAGE_CATEGORY_STATUS
      && nonVolatileStatus != MOVE_EFFECT_SLEEP
@@ -2611,7 +2634,8 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
             ADJUST_SCORE(-10);
         break;
     case EFFECT_STEEL_ROLLER:
-        if (!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY)
+        if ((!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY) 
+         && !(aiData->abilities[battlerAtk] == ABILITY_SEED_SOWER && GetMoveCategory(predictedMove) == DAMAGE_CATEGORY_PHYSICAL && predictedMove != MOVE_NONE && AI_IsSlower(battlerAtk, battlerDef, move, predictedMove, CONSIDER_PRIORITY)))
          || (HasPartner(battlerAtk) && AreMovesEquivalent(battlerAtk, BATTLE_PARTNER(battlerAtk), move, aiData->partnerMove)))
             ADJUST_SCORE(-10);
         break;
@@ -3191,7 +3215,8 @@ static s32 AI_DoubleBattle(enum BattlerId battlerAtk, enum BattlerId battlerDef,
          && (atkPartnerHoldEffect == HOLD_EFFECT_SCOPE_LENS
           || IS_BATTLER_OF_TYPE(battlerAtkPartner, TYPE_DRAGON)
           || GetMoveCriticalHitStage(aiData->partnerMove) > 0
-          || HasMoveWithCriticalHitChance(battlerAtkPartner)))
+          || HasMoveWithCriticalHitChance(battlerAtkPartner)
+          || ShouldBoostCritRate(battlerAtkPartner, battlerDef)))
         {
             ADJUST_SCORE(GOOD_EFFECT);
         }
@@ -4199,6 +4224,10 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
     if (gBattleMons[battlerAtk].status1 & STATUS1_ICY_ANY && MoveThawsUser(move))
         ADJUST_SCORE(10);
 
+    // check Stormcaller
+    if (gBattleMons[battlerAtk].ability == ABILITY_STORMCALLER && IsWindMove(move) && !(AI_GetWeather() & B_WEATHER_RAIN))
+        ADJUST_SCORE(DECENT_EFFECT);
+
     // check burn / frostbite
     if (gAiThinkingStruct->aiFlags[battlerAtk] & AI_FLAG_SMART_SWITCHING && aiData->abilities[battlerAtk] == ABILITY_NATURAL_CURE)
     {
@@ -4498,11 +4527,15 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
             ADJUST_SCORE(GOOD_EFFECT);
         break;
     case EFFECT_FOCUS_ENERGY:
-    case EFFECT_LASER_FOCUS:
         if (aiData->abilities[battlerAtk] == ABILITY_SUPER_LUCK
          || aiData->abilities[battlerAtk] == ABILITY_SNIPER
          || aiData->holdEffects[battlerAtk] == HOLD_EFFECT_SCOPE_LENS
          || HasMoveWithFlag(battlerAtk, GetMoveCriticalHitStage))
+            ADJUST_SCORE(GOOD_EFFECT); // fall through
+    case EFFECT_LASER_FOCUS:
+        if (aiData->abilities[battlerAtk] == ABILITY_SNIPER)
+            ADJUST_SCORE(GOOD_EFFECT); // fall through
+        if (ShouldBoostCritRate(battlerAtk, battlerDef))
             ADJUST_SCORE(GOOD_EFFECT);
         break;
     case EFFECT_CONFUSE:
@@ -5223,6 +5256,8 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
                 ADJUST_SCORE(GOOD_EFFECT);
             if (ShouldSetFieldStatus(battlerDef, terrain))
                 ADJUST_SCORE(DECENT_EFFECT);
+            if (aiData->abilities[battlerAtk] == ABILITY_SEED_SOWER && GetMoveCategory(predictedMove) == DAMAGE_CATEGORY_PHYSICAL && predictedMove != MOVE_NONE && AI_IsSlower(battlerAtk, battlerDef, move, predictedMove, CONSIDER_PRIORITY))
+                ADJUST_SCORE(GOOD_EFFECT);
         }
         break;
     case EFFECT_ICE_SPINNER:
@@ -5623,6 +5658,12 @@ static s32 AI_CalcAdditionalEffectScore(enum BattlerId battlerAtk, enum BattlerI
                     ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, stat, stage));
                 }
                 break;
+            case MOVE_EFFECT_CRIT_PLUS_SIDE:
+            {
+                if (ShouldBoostCritRate(battlerAtk, battlerDef) && gBattleMons[battlerAtk].volatiles.bonusCritStages < 3)
+                    score +=10;
+                break;
+            }
             case MOVE_EFFECT_ORDER_UP:
             {
                 enum Stat stat = STAT_ATK;
@@ -6447,7 +6488,6 @@ static s32 AI_PredictSwitch(enum BattlerId battlerAtk, enum BattlerId battlerDef
                 ADJUST_SCORE(10);
         }
         break;
-
     case EFFECT_TELEPORT:
     case EFFECT_HIT_ESCAPE:
     case EFFECT_PARTING_SHOT:
