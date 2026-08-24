@@ -2635,7 +2635,7 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
         break;
     case EFFECT_STEEL_ROLLER:
         if ((!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY) 
-         && !(aiData->abilities[battlerAtk] == ABILITY_SEED_SOWER && GetMoveCategory(predictedMove) == DAMAGE_CATEGORY_PHYSICAL && predictedMove != MOVE_NONE))
+         && !(aiData->abilities[battlerAtk] == ABILITY_SEED_SOWER && GetMoveCategory(predictedMove) == DAMAGE_CATEGORY_PHYSICAL && predictedMove != MOVE_NONE && AI_IsSlower(battlerAtk, battlerDef, move, predictedMove, CONSIDER_PRIORITY)))
          || (HasPartner(battlerAtk) && AreMovesEquivalent(battlerAtk, BATTLE_PARTNER(battlerAtk), move, aiData->partnerMove)))
             ADJUST_SCORE(-10);
         break;
@@ -5256,7 +5256,7 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
                 ADJUST_SCORE(GOOD_EFFECT);
             if (ShouldSetFieldStatus(battlerDef, terrain))
                 ADJUST_SCORE(DECENT_EFFECT);
-            if (aiData->abilities[battlerAtk] == ABILITY_SEED_SOWER && GetMoveCategory(predictedMove) == DAMAGE_CATEGORY_PHYSICAL && predictedMove != MOVE_NONE)
+            if (aiData->abilities[battlerAtk] == ABILITY_SEED_SOWER && GetMoveCategory(predictedMove) == DAMAGE_CATEGORY_PHYSICAL && predictedMove != MOVE_NONE && AI_IsSlower(battlerAtk, battlerDef, move, predictedMove, CONSIDER_PRIORITY))
                 ADJUST_SCORE(GOOD_EFFECT);
         }
         break;

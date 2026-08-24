@@ -54,11 +54,17 @@ AI_SINGLE_BATTLE_TEST("AI will use wind moves if it has Stormcaller")
 
 AI_SINGLE_BATTLE_TEST("AI will predict Physical Moves and use Steel Roller if it has Seed Sower")
 {
+    u32 speed;
+    PARAMETRIZE { speed = 5; }
+    PARAMETRIZE { speed = 1; }
     GIVEN {
         AI_FLAGS(AI_FLAG_SMART_TRAINER | AI_FLAG_PREDICTION);
-        PLAYER(SPECIES_WOBBUFFET) { Moves(MOVE_FIRE_PUNCH, MOVE_CONFUSION); }
-        OPPONENT(SPECIES_FERROTHORN) { Moves(MOVE_STEEL_ROLLER, MOVE_GYRO_BALL); Ability(ABILITY_SEED_SOWER); }
+        PLAYER(SPECIES_WOBBUFFET) { Speed(speed); Moves(MOVE_FIRE_PUNCH, MOVE_CONFUSION); }
+        OPPONENT(SPECIES_FERROTHORN) { Speed(2); Moves(MOVE_STEEL_ROLLER, MOVE_GYRO_BALL); Ability(ABILITY_SEED_SOWER); }
     } WHEN {
-        TURN { MOVE(player, MOVE_FIRE_PUNCH); EXPECT_MOVE(opponent, MOVE_STEEL_ROLLER); }
+        if (speed == 5)
+            TURN { MOVE(player, MOVE_FIRE_PUNCH); EXPECT_MOVE(opponent, MOVE_STEEL_ROLLER); }
+        else
+            TURN { MOVE(player, MOVE_FIRE_PUNCH); EXPECT_MOVE(opponent, MOVE_GYRO_BALL); }
     }
 }
