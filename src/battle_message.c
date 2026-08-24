@@ -3278,10 +3278,43 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 nameString = BattleStringGetOpponentNameByTrainerId(TRAINER_BATTLE_PARAM.opponentA, textStart, multiplayerId, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT));
                 if (nameString != textStart)
                 {
-                    while (nameString[nameLength] != EOS)
+                    if (nameString[0] == CHAR_P
+                     && nameString[1] == CHAR_o
+                     && nameString[2] == CHAR_g
+                     && nameString[3] == EOS)
                     {
-                        textStart[nameLength] = nameString[nameLength];
+                        textStart[nameLength] = CHAR_P;
                         nameLength++;
+                        textStart[nameLength] = CHAR_o;
+                        nameLength++;
+                        textStart[nameLength] = CHAR_g;
+                        nameLength++;
+                        textStart[nameLength] = CHAR_r;
+                        nameLength++;
+                        textStart[nameLength] = CHAR_a;
+                        nameLength++;
+                        textStart[nameLength] = CHAR_n;
+                        nameLength++;
+                        textStart[nameLength] = CHAR_i;
+                        nameLength++;
+                        textStart[nameLength] = CHAR_c;
+                        nameLength++;
+                        textStart[nameLength] = CHAR_h;
+                        nameLength++;
+                        textStart[nameLength] = CHAR_n;
+                        nameLength++;
+                        textStart[nameLength] = CHAR_i;
+                        nameLength++;
+                        textStart[nameLength] = CHAR_k;
+                        nameLength++;
+                    }
+                    else
+                    {
+                        while (nameString[nameLength] != EOS)
+                        {
+                            textStart[nameLength] = nameString[nameLength];
+                            nameLength++;
+                        }
                     }
                     textStart[nameLength] = EOS;
                 }

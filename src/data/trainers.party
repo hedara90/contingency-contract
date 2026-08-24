@@ -1600,7 +1600,7 @@ Tags: Weather Setter
 - Stealth Rock 
 
 === TRAINER_PENANCE ===
-Name: GRUNT
+Name: Penance
 Class: Team Aqua
 Pic: Leaf
 Gender: Male
@@ -1697,7 +1697,7 @@ Pool Rules: Weather Doubles
 Pool Pick Functions: Default
 
 Ninetales-Alola @ Icy Rock  
-Ability: Snow Cloak  
+Ability: Snow Warning
 Level: 50  
 Tags: Lead / Weather Setter
 - Aurora Veil  
@@ -1757,7 +1757,7 @@ Level: 50
 - Dragon Pulse  
 
 Froslass (F) @ Focus Sash  
-Ability: Snow Cloak  
+Ability: Snow Warning
 Level: 50  
 Tags: Lead / Weather Setter
 - Destiny Bond  
@@ -1774,7 +1774,7 @@ Level: 50
 - Wish  
 
 Ninetales-Alola @ Icy Rock  
-Ability: Snow Cloak  
+Ability: Snow Warning
 Level: 50  
 Tags: Weather Setter
 - Aurora Veil  
@@ -1783,7 +1783,7 @@ Tags: Weather Setter
 - Encore  
 
 Froslass (F) @ Focus Sash  
-Ability: Snow Cloak  
+Ability: Snow Warning
 Level: 50  
 Tags: Weather Setter
 - Destiny Bond  
@@ -1792,7 +1792,7 @@ Tags: Weather Setter
 - Will-O-Wisp  
 
 === TRAINER_FIAMETTA ===
-Name: GRUNT
+Name: Fiametta
 Class: Team Aqua
 Pic: Leaf
 Gender: Male
@@ -2024,7 +2024,7 @@ Tags: Weather Setter
 - Surf  
 
 === TRAINER_GLADIIA ===
-Name: GRUNT
+Name: Gladiia
 Class: Team Aqua
 Pic: Leaf
 Gender: Male
@@ -2499,7 +2499,7 @@ Tags: Weather Abuser
 - Wild Charge  
 
 === TRAINER_IRENE ===
-Name: GRUNT
+Name: Irene
 Class: Team Aqua
 Pic: Leaf
 Gender: Male

@@ -4974,3 +4974,30 @@ void CheckEWRAMCounters(struct ScriptContext *ctx)
 void SetRisks(void)
 {
 }
+
+void TestTrainers(void)
+{
+    for (u32 i = TRAINER_ENDMIN; i <= TRAINER_IRENE; i++)
+    {
+        const struct Trainer *trainer = &gTrainers[DIFFICULTY_NORMAL][i];
+        u32 count = trainer->poolSize;
+        for (u32 i = 0; i < count; i++)
+        {
+            enum Species species = trainer->party[i].species;
+            enum Ability ability = trainer->party[i].ability;
+
+            bool32 isLegal = FALSE;
+            if (GetSpeciesAbility(species, 0) == ability
+             || GetSpeciesAbility(species, 1) == ability
+             || GetSpeciesAbility(species, 2) == ability)
+            {
+                isLegal = TRUE;
+            }
+
+            if (!isLegal)
+            {
+                DebugPrintf("Mon %S for trainer %S has illegal ability %S", GetSpeciesName(species), trainer->trainerName, gAbilitiesInfo[ability].name);
+            }
+        }
+    }
+}
