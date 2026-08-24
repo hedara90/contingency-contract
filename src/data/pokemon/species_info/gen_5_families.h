@@ -9319,9 +9319,9 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         .growthRate = GROWTH_MEDIUM_FAST,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_GRASS, EGG_GROUP_MINERAL),
     #if P_UPDATED_ABILITIES >= GEN_6
-        .abilities = { ABILITY_IRON_BARBS, ABILITY_NONE, ABILITY_ANTICIPATION },
+        .abilities = { ABILITY_IRON_BARBS, ABILITY_SEED_SOWER, ABILITY_ANTICIPATION },
     #else
-        .abilities = { ABILITY_IRON_BARBS, ABILITY_NONE, ABILITY_NONE },
+        .abilities = { ABILITY_IRON_BARBS, ABILITY_SEED_SOWER, ABILITY_NONE },
     #endif
         .bodyColor = BODY_COLOR_GRAY,
         .speciesName = _("Ferrothorn"),
