@@ -7233,7 +7233,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
 
     [MOVE_ICE_WISPS] =
     {
-        .name = COMPOUND_STRING("Ice Wisps"),
+        .name = COMPOUND_STRING("Frostwisp"),
         .description = COMPOUND_STRING(
             "Inflicts freeze on the foe\n"
             "with intense cold."),
