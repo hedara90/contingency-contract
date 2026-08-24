@@ -2,13 +2,24 @@
 #include "item.h"
 #include "pokedex.h"
 #include "script.h"
+#include "script_menu.h"
+#include "even_sprite.h"
 #include "event_data.h"
 #include "event_scripts.h"
+#include "list_menu.h"
+#include "malloc.h"
 #include "pokemon_storage_system.h"
+#include "string_util.h"
+#include "text.h"
 #include "constants/pokeball.h"
 #include "constants/items.h"
+#include "constants/characters.h"
 
 EWRAM_DATA struct GachaResult gGachaResults[10] = {0};
+EWRAM_DATA u8 sPointSprite;
+
+const u32 sPointsDisplayGfx[] = INCGFX_U32("graphics/gacha/points_indicator.png", ".4bpp");
+const u16 sPointsDisplayPal[] = INCGFX_U16("graphics/gacha/points_indicator.png", ".gbapal");
 
 const enum Item sItems4Stars[] =
 {
@@ -511,7 +522,7 @@ static enum Item RollGachaItem(enum Banner banner, u32 *star)
     return item;
 }
 
-enum GiveResult GiveGachaItem(enum Item item, u32 star)
+static bool32 HasItemAlready(enum Item item)
 {
     //  Look in bag for item
     bool32 hasItem = CheckBagHasItem(item, 1);
@@ -557,6 +568,13 @@ enum GiveResult GiveGachaItem(enum Item item, u32 star)
                 break;
         }
     }
+
+    return hasItem;
+}
+
+enum GiveResult GiveGachaItem(enum Item item, u32 star)
+{
+    bool32 hasItem = HasItemAlready(item);
 
     if (!hasItem)
     {
@@ -704,4 +722,231 @@ bool32 CheckRarities(void)
         }
     }
     return passed;
+}
+
+const u8 sNoItemString[] = _("Nevermind…");
+void BuildListOf4StarItems(void)
+{
+    u8 *buffer = Alloc(20);
+    u32 index = 0;
+    while (sNoItemString[index] != EOS)
+    {
+        buffer[index] = sNoItemString[index];
+        index++;
+    }
+    buffer[index] = EOS;
+    struct ListMenuItem basic;
+    basic.name = buffer;
+    basic.id = ITEM_NONE;
+    MultichoiceDynamic_PushElement(basic);
+
+    for (u32 i = 0; i < NELEMS(sItems4Stars); i++)
+    {
+        if (!HasItemAlready(sItems4Stars[i]))
+        {
+            u32 size = 0;
+            const u8 *itemName = GetItemName(sItems4Stars[i]);
+            while (itemName[size] != EOS)
+                size++;
+            size++;
+            u8 *nameBuffer = Alloc(size);
+            for (u32 i = 0; i < size; i++)
+            {
+                nameBuffer[i] = itemName[i];
+            }
+            struct ListMenuItem item;
+            item.name = nameBuffer;
+            item.id = sItems4Stars[i];
+            MultichoiceDynamic_PushElement(item);
+        }
+    }
+}
+
+void BuildListOf5StarItems(void)
+{
+    u8 *buffer = Alloc(20);
+    u32 index = 0;
+    while (sNoItemString[index] != EOS)
+    {
+        buffer[index] = sNoItemString[index];
+        index++;
+    }
+    buffer[index] = EOS;
+    struct ListMenuItem basic;
+    basic.name = buffer;
+    basic.id = ITEM_NONE;
+    MultichoiceDynamic_PushElement(basic);
+
+    for (u32 i = 0; i < NELEMS(sItems5Stars); i++)
+    {
+        if (!HasItemAlready(sItems5Stars[i]))
+        {
+            u32 size = 0;
+            const u8 *itemName = GetItemName(sItems5Stars[i]);
+            while (itemName[size] != EOS)
+                size++;
+            size++;
+            u8 *nameBuffer = Alloc(size);
+            for (u32 i = 0; i < size; i++)
+            {
+                nameBuffer[i] = itemName[i];
+            }
+            struct ListMenuItem item;
+            item.name = nameBuffer;
+            item.id = sItems5Stars[i];
+            MultichoiceDynamic_PushElement(item);
+        }
+    }
+}
+
+void BuildListOf6StarItems(void)
+{
+    u8 *buffer = Alloc(20);
+    u32 index = 0;
+    while (sNoItemString[index] != EOS)
+    {
+        buffer[index] = sNoItemString[index];
+        index++;
+    }
+    buffer[index] = EOS;
+    struct ListMenuItem basic;
+    basic.name = buffer;
+    basic.id = ITEM_NONE;
+    MultichoiceDynamic_PushElement(basic);
+
+    for (u32 i = 0; i < NELEMS(sItems6Stars); i++)
+    {
+        if (!HasItemAlready(sItems6Stars[i]))
+        {
+            u32 size = 0;
+            const u8 *itemName = GetItemName(sItems6Stars[i]);
+            while (itemName[size] != EOS)
+                size++;
+            size++;
+            u8 *nameBuffer = Alloc(size);
+            for (u32 i = 0; i < size; i++)
+            {
+                nameBuffer[i] = itemName[i];
+            }
+            struct ListMenuItem item;
+            item.name = nameBuffer;
+            item.id = sItems6Stars[i];
+            MultichoiceDynamic_PushElement(item);
+        }
+    }
+}
+
+const union TextColor sTextColor =
+{
+    .background = 0,
+    .foreground = 1,
+    .accent = 0,
+    .shadow = 4,
+};
+
+void DisplayItemPoints(void)
+{
+    u32 currBP = gSaveBlock2Ptr->frontier.battlePoints;
+
+    DebugPrintf("showing sprite");
+
+    struct Even_CreateSpriteStruct cs = {0};
+    cs.sprite = sPointsDisplayGfx;
+    cs.tileTag = 0xDEDE;
+    cs.palette = sPointsDisplayPal;
+    cs.palTag = 0xDEDE;
+    cs.posX = 240 - 32;
+    cs.posY = 16;
+    cs.spriteSize = SPRITE_SIZE(64x32);
+    cs.spriteShape = SPRITE_SHAPE(64x32);
+    sPointSprite = Even_CreateSprite(&cs);
+
+    u8 text[8];
+    ConvertIntToDecimalStringN(text, currBP, STR_CONV_MODE_LEFT_ALIGN, 4);
+    u32 stringWidth = GetStringWidth(FONT_NORMAL, text, 0);
+
+    AddSpriteTextPrinterParameterized6(sPointSprite, FONT_NORMAL, 32 - stringWidth / 2, 8, 0, 0, sTextColor, 0, text);
+}
+
+void HideItemPoints(void)
+{
+    DestroySprite(&gSprites[sPointSprite]);
+    FreeSpriteTilesByTag(0xDEDE);
+    FreeSpritePaletteByTag(0xDEDE);
+}
+
+void GiveItemFromPointShop(void)
+{
+    enum Item item = VarGet(VAR_RESULT);
+
+    u32 rarity = 0;
+    for (u32 i = 0; i < NELEMS(sItems6Stars); i++)
+    {
+        if (sItems6Stars[i] == item)
+        {
+            rarity = 6;
+            break;
+        }
+    }
+
+    if (rarity == 0)
+    {
+        for (u32 i = 0; i < NELEMS(sItems5Stars); i++)
+        {
+            if (sItems5Stars[i] == item)
+            {
+                rarity = 5;
+                break;
+            }
+        }
+    }
+
+    if (rarity == 0)
+    {
+        for (u32 i = 0; i < NELEMS(sItems4Stars); i++)
+        {
+            if (sItems4Stars[i] == item)
+            {
+                rarity = 4;
+                break;
+            }
+        }
+    }
+
+    bool32 canGiveItem = FALSE;
+    u32 currBP = gSaveBlock2Ptr->frontier.battlePoints;
+    switch (rarity)
+    {
+    case 4:
+        if (currBP >= 16)
+        {
+            canGiveItem = TRUE;
+            gSaveBlock2Ptr->frontier.battlePoints -= 16;
+        }
+        break;
+    case 5:
+        if (currBP >= 64)
+        {
+            canGiveItem = TRUE;
+            gSaveBlock2Ptr->frontier.battlePoints -= 64;
+        }
+        break;
+    case 6:
+        if (currBP >= 256)
+        {
+            canGiveItem = TRUE;
+            gSaveBlock2Ptr->frontier.battlePoints -= 256;
+        }
+        break;
+    }
+
+    if (canGiveItem)
+    {
+        AddBagItem(item, 1);
+        VarSet(VAR_RESULT, 1);
+    }
+    else
+    {
+        VarSet(VAR_RESULT, 0);
+    }
 }

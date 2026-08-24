@@ -1003,11 +1003,11 @@ static void Task_PullAnimItem(u8 taskId)
                     newBp += 4;
                     break;
                 case 6:
-                    newBp += 100;
+                    newBp += 16;
                     break;
                 }
-                if (newBp > 999)
-                    newBp = 999;
+                if (newBp > 1999)
+                    newBp = 1999;
                 gSaveBlock2Ptr->frontier.battlePoints = newBp;
                 sGachaUiState->indicatorIds[i] = SPRITE_NONE;
             }
