@@ -2961,3 +2961,8 @@
 	fadescreen FADE_TO_BLACK
 	callnative RiskUi_InitFromScript
 	.endm
+
+	.macro getvobjectgfxtag id:req
+	callnative GetVObjectGfxTag
+	.byte \id
+	.endm

@@ -3588,3 +3588,44 @@ void CreateQueue(void)
         CreateVirtualObject(gfxList[i], i, sQueueCoord[i][0], sQueueCoord[i][1], 3, sQueueCoord[i][2]);
     }
 }
+
+void DestroyQueue(void)
+{
+    for (u32 i = 0; i < sizeof(sQueueCoord) / 3; i++)
+    {
+        s32 spriteId = GetVirtualObjectSpriteId(i);
+        DestroySprite(&gSprites[spriteId]);
+    }
+}
+
+void GetVObjectGfxTag(struct ScriptContext *ctx)
+{
+    u8 vobjectId = ScriptReadByte(ctx);
+    s32 spriteId = GetVirtualObjectSpriteId(vobjectId);
+    u32 tag = gSprites[spriteId].data[7];
+    VarSet(VAR_RESULT, tag);
+}
+
+const u16 sNonQueueVObjects[][4] =
+{
+    {OBJ_EVENT_GFX_ACOLYTE_M, 20, 13, DIR_SOUTH},
+    {OBJ_EVENT_GFX_ACOLYTE_F, 32, 13, DIR_SOUTH},
+    {OBJ_EVENT_GFX_ACOLYTE_F, 9, 19, DIR_SOUTH},
+};
+
+void CreateOtherVObjects(void)
+{
+    for (u32 i = 0; i < sizeof(sNonQueueVObjects) / 8; i++)
+    {
+        CreateVirtualObject(sNonQueueVObjects[i][0], i, sNonQueueVObjects[i][1], sNonQueueVObjects[i][2], 3, sNonQueueVObjects[i][3]);
+    }
+}
+
+void DestroyOther(void)
+{
+    for (u32 i = 0; i < sizeof(sNonQueueVObjects) / 8; i++)
+    {
+        s32 spriteId = GetVirtualObjectSpriteId(i);
+        DestroySprite(&gSprites[spriteId]);
+    }
+}

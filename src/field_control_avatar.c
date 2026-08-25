@@ -303,6 +303,8 @@ static bool8 TryStartInteractionScript(struct MapPosition *position, u16 metatil
      && script != SixteenToLastQueuer
      && script != EighteenToLastQueuer
      && script != PayingQueuer
+     && script != MonBanners
+     && script != ItemBanner
      && script != EventScript_PC)
         PlaySE(SE_SELECT);
 

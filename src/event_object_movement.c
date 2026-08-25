@@ -2055,6 +2055,7 @@ u8 CreateObjectGraphicsSprite(u16 graphicsId, void (*callback)(struct Sprite *),
 
 #define sVirtualObjId   data[0]
 #define sVirtualObjElev data[1]
+#define sVirtualObjTag  data[7]
 
 // "Virtual Objects" are a class of sprites used instead of a full object event.
 // Used when more objects are needed than the object event limit (for Contest / Battle Dome audiences and group members in Union Room).
@@ -2095,6 +2096,7 @@ u8 CreateVirtualObject(u16 graphicsId, u8 virtualObjId, s16 x, s16 y, u8 elevati
         sprite->coordOffsetEnabled = TRUE;
         sprite->sVirtualObjId = virtualObjId;
         sprite->sVirtualObjElev = elevation;
+        sprite->sVirtualObjTag = graphicsId;
 
         if (OW_GFX_COMPRESS && graphicsInfo->compressed)
             spriteTemplate.tileTag = LoadSheetGraphicsInfo(graphicsInfo, graphicsId, sprite);
@@ -11082,7 +11084,7 @@ static void UNUSED DestroyVirtualObjects(void)
     }
 }
 
-static int GetVirtualObjectSpriteId(u8 virtualObjId)
+int GetVirtualObjectSpriteId(u8 virtualObjId)
 {
     int i;
 
@@ -11119,6 +11121,7 @@ void SetVirtualObjectGraphics(u8 virtualObjId, u16 graphicsId)
         sprite->oam = *graphicsInfo->oam;
         sprite->oam.tileNum = tileNum;
         sprite->images = graphicsInfo->images;
+        sprite->sVirtualObjTag = graphicsId;
 
         if (graphicsInfo->subspriteTables == NULL)
         {

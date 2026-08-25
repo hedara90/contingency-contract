@@ -261,6 +261,7 @@ void NewGameInitData(void)
     FlagSet(FLAG_SYS_POKEMON_GET);
     FlagSet(FLAG_RECEIVED_RUNNING_SHOES);
     FlagSet(FLAG_SYS_B_DASH);
+    FlagSet(FLAG_OTHER_LOADED);
 }
 
 static void ResetMiniGamesRecords(void)

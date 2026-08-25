@@ -1,13 +1,50 @@
 mapscripts ConventionCenter_MapScripts {
     MAP_SCRIPT_ON_RESUME {
+        if (flag(FLAG_QUEUE_LOADED) == TRUE) {
+            callnative(CreateQueue)
+        }
+        if (flag(FLAG_OTHER_LOADED) == TRUE) {
+            callnative(CreateOtherVObjects)
+        }
+    }
+}
+
+script TryLoadQueue {
+    if (flag(FLAG_QUEUE_LOADED) != TRUE) {
         callnative(CreateQueue)
+        setflag(FLAG_QUEUE_LOADED)
+    }
+}
+
+script TryUnloadQueue {
+    if (flag(FLAG_QUEUE_LOADED) == TRUE) {
+        callnative(DestroyQueue)
+        clearflag(FLAG_QUEUE_LOADED)
+    }
+    if (flag(FLAG_OTHER_LOADED) == TRUE) {
+        callnative(DestroyOther)
+        clearflag(FLAG_OTHER_LOADED)
+    }
+}
+
+script TryLoadOther {
+    if (flag(FLAG_OTHER_LOADED) == TRUE) {
+        callnative(CreateOtherVObjects)
+        clearflag(FLAG_OTHER_LOADED)
     }
 }
 
 script LastQueuer {
     lock
     turnvobject(0, DIR_NORTH)
-    msgbox("I hope this queue goes fast…")
+    getvobjectgfxtag(0)
+    switch(var(VAR_RESULT)) {
+    case OBJ_EVENT_GFX_SATSUKI:
+        setspeaker(SP_NAME_PLAYER)
+        msgbox("Why are you here?")
+    default:
+        msgbox("I hope this queue goes fast…")
+    }
     waitmessage
     turnvobject(0, DIR_SOUTH)
     release
@@ -17,9 +54,16 @@ script LastQueuer {
 script EightToLastQueuer {
     lock
     turnvobject(7, DIR_NORTH)
-    msgbox("I hope this queue goes fast…")
+    getvobjectgfxtag(7)
+    switch(var(VAR_RESULT)) {
+    case OBJ_EVENT_GFX_SATSUKI:
+        setspeaker(SP_NAME_PLAYER)
+        msgbox("Satsuki, why are you here?")
+    default:
+        msgbox("I hope this queue goes fast…")
+    }
     waitmessage
-    turnvobject(7, DIR_SOUTH)
+    turnvobject(7, DIR_EAST)
     release
     end
 }
@@ -27,9 +71,16 @@ script EightToLastQueuer {
 script SixteenToLastQueuer {
     lock
     turnvobject(15, DIR_NORTH)
-    msgbox("I hope this queue goes fast…")
+    getvobjectgfxtag(15)
+    switch(var(VAR_RESULT)) {
+    case OBJ_EVENT_GFX_SATSUKI:
+        setspeaker(SP_NAME_PLAYER)
+        msgbox("Satsuki, why are you here?")
+    default:
+        msgbox("I hope this queue goes fast…")
+    }
     waitmessage
-    turnvobject(15, DIR_SOUTH)
+    turnvobject(15, DIR_EAST)
     release
     end
 }
@@ -37,7 +88,14 @@ script SixteenToLastQueuer {
 script EighteenToLastQueuer {
     lock
     turnvobject(17, DIR_NORTH)
-    msgbox("I hope this queue goes fast…")
+    getvobjectgfxtag(17)
+    switch(var(VAR_RESULT)) {
+    case OBJ_EVENT_GFX_SATSUKI:
+        setspeaker(SP_NAME_PLAYER)
+        msgbox("Satsuki, why are you here?")
+    default:
+        msgbox("I hope this queue goes fast…")
+    }
     waitmessage
     turnvobject(17, DIR_SOUTH)
     release
@@ -47,7 +105,14 @@ script EighteenToLastQueuer {
 script PayingQueuer {
     lock
     turnvobject(33, DIR_NORTH)
-    msgbox("I hope this queue goes fast…")
+    getvobjectgfxtag(33)
+    switch(var(VAR_RESULT)) {
+    case OBJ_EVENT_GFX_SATSUKI:
+        setspeaker(SP_NAME_PLAYER)
+        msgbox("Satsuki, why are you here?")
+    default:
+        msgbox("I hope this queue goes fast…")
+    }
     waitmessage
     turnvobject(33, DIR_WEST)
     release
@@ -284,6 +349,14 @@ script ChooseGauntlet {
     default:
         msgbox("Hope you'll be back soon!")
     }
+    waitmessage
+    release
+    end
+}
+
+script WelcomeCounter {
+    lock
+    msgbox("Welcome!")
     waitmessage
     release
     end
