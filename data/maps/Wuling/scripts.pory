@@ -85,6 +85,9 @@ script WulingStartBattle {
         // Gauntlet won, give reward and display victory screen
         // Then return to the main area
         special(HealPlayerParty)
+        msgbox("You got ¥500 for winning!")
+        waitmessage
+        addmoney(500)
         warpsilent(MAP_CONVENTION_CENTER, 21, 24)
         waitstate
     }

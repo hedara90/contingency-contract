@@ -22,8 +22,8 @@ enum Banner
 #define PULL_1_COST     50
 #define PULL_10_COST    PULL_1_COST * 10
 
-#define MONEY_BASE      50
-#define MONEY_FACTOR    2
+#define MONEY_BASE      100
+#define MONEY_FACTOR    5
 
 #define ODDS_6_STAR 100
 #define ODDS_5_STAR 4
