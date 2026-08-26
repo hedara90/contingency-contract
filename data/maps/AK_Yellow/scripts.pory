@@ -66,7 +66,7 @@ script AKYellowStartBattle {
         waitmovement
     }
     switch(var(VAR_RESULT)) {
-    case 0: // Lost battle
+    default: // Lost battle
         special(HealPlayerParty)
         msgbox("wat")
         waitmessage
@@ -79,7 +79,7 @@ script AKYellowStartBattle {
         // Gauntlet won, give reward and display victory screen
         // Then return to the main area
         special(HealPlayerParty)
-        warpsilent(MAP_CONVENTION_CENTER, 10, 10)
+        warpsilent(MAP_CONVENTION_CENTER, 21, 24)
         waitstate
     }
     release
