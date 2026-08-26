@@ -2924,8 +2924,8 @@ BattleScript_LocalBattleLostPrintWhiteOut::
 	waitmessage B_WAIT_TIME_LONG
 	end2
 BattleScript_LocalBattleLostEnd::
-	printstring STRINGID_PLAYERWHITEOUT2_TRAINER
-	waitmessage B_WAIT_TIME_LONG
+	@printstring STRINGID_PLAYERWHITEOUT2_TRAINER
+	@waitmessage B_WAIT_TIME_LONG
 	printstring STRINGID_PLAYERWHITEOUT3
 	waitmessage B_WAIT_TIME_LONG
 	end2
