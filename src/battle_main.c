@@ -5788,6 +5788,9 @@ static void HandleEndTurn_FinishBattle(void)
                 if (maxHP != currHP)
                     SetMonData(mon, MON_DATA_HP, &maxHP);
 
+                u32 status = 0;
+                SetMonData(mon, MON_DATA_STATUS, &status);
+
                 if (!IsRiskActive(RISK_NO_PP_RESTORE))
                 {
                     for (u32 j = 0; j < 4; j++)
