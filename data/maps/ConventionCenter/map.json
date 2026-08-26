@@ -206,8 +206,62 @@
       "x": 17,
       "y": 26,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
-      "var_value": "VAR_VOBJECT_CHECKER",
+      "var": "VAR_VOBJECT_CHECKER",
+      "var_value": "0",
+      "script": "TryLoadOther"
+    },
+    {
+      "type": "trigger",
+      "x": 16,
+      "y": 26,
+      "elevation": 0,
+      "var": "VAR_VOBJECT_CHECKER",
+      "var_value": "0",
+      "script": "TryLoadOther"
+    },
+    {
+      "type": "trigger",
+      "x": 14,
+      "y": 26,
+      "elevation": 0,
+      "var": "VAR_VOBJECT_CHECKER",
+      "var_value": "0",
+      "script": "TryLoadOther"
+    },
+    {
+      "type": "trigger",
+      "x": 19,
+      "y": 26,
+      "elevation": 0,
+      "var": "VAR_VOBJECT_CHECKER",
+      "var_value": "0",
+      "script": "TryLoadOther"
+    },
+    {
+      "type": "trigger",
+      "x": 34,
+      "y": 26,
+      "elevation": 0,
+      "var": "VAR_VOBJECT_CHECKER",
+      "var_value": "0",
+      "script": "TryLoadOther"
+    },
+    {
+      "type": "trigger",
+      "x": 35,
+      "y": 26,
+      "elevation": 0,
+      "var": "VAR_VOBJECT_CHECKER",
+      "var_value": "0",
+      "script": "TryLoadOther"
+    },
+    {
+      "type": "trigger",
+      "x": 36,
+      "y": 26,
+      "elevation": 0,
+      "var": "VAR_VOBJECT_CHECKER",
+      "var_value": "0",
       "script": "TryLoadOther"
     }
   ],

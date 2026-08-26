@@ -3106,7 +3106,7 @@ static void ShowButtonPrompt(u8 type)
                 if (iconXPos < 0)
                     iconXPos = 0;
                 PrintButtonIcon(promptWindowId, sPromptButtonInfo[idx].iconType, iconXPos, 4);
-                PrintTextOnWindowWithFont(promptWindowId, text, stringXPos, 0, 0, 5, FONT_SMALL);
+                PrintTextOnWindowWithFont(promptWindowId, text, stringXPos, 0, 0, 13, FONT_SMALL);
                 curLeft += sPromptButtonInfo[idx].totalWidth + gap;
             }
             CopyWindowToVram(promptWindowId, COPYWIN_GFX);

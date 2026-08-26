@@ -203,6 +203,7 @@ static const u8 sFontColorTable[][3] =
     {0,  3,  4},  // PP state 3 (white)
     {0,  1,  2},  // Ability name, move names
     {0,  3,  6},  // Item multiuse
+    {0,  15, 2},
 };
 
 #define PARTY_LABEL_WINDOW_PROMPT 7

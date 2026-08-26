@@ -1465,7 +1465,7 @@ static void MoveSelectorX(s32 distance)
     {
         if (sRiskUiState->xSelector == 240 - 16)
         {
-            if (sRiskUiState->xOffset != 272)
+            if (sRiskUiState->xOffset < 114)
             {
                 sRiskUiState->xOffset += distance;
                 SetGpuReg(REG_OFFSET_BG1HOFS, sRiskUiState->xOffset);
@@ -1501,7 +1501,7 @@ static void MoveSelectorY(s32 distance)
     {
         if (sRiskUiState->ySelector == 160 - 40)
         {
-            if (sRiskUiState->yOffset != 352)
+            if (sRiskUiState->yOffset < 198)
             {
                 sRiskUiState->yOffset += distance;
                 SetGpuReg(REG_OFFSET_BG1VOFS, sRiskUiState->yOffset);

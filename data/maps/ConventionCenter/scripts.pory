@@ -28,9 +28,9 @@ script TryUnloadQueue {
 }
 
 script TryLoadOther {
-    if (flag(FLAG_OTHER_LOADED) == TRUE) {
+    if (flag(FLAG_OTHER_LOADED) != TRUE) {
         callnative(CreateOtherVObjects)
-        clearflag(FLAG_OTHER_LOADED)
+        setflag(FLAG_OTHER_LOADED)
     }
 }
 

@@ -3405,6 +3405,7 @@ static enum MoveEndResult MoveEndOpponentGastroAcid(struct BattleCalcValues *cv)
         enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
         if (IsRiskActive(RISK_OPPONENT_INFLICTS_GASTRO_ACID)
          && battler == cv->battlerAtk
+         && IsBattlerAlive(cv->battlerDef)
          && IsBattlerTurnDamaged(cv->battlerDef, EXCLUDING_SUBSTITUTES)
          && !gAbilitiesInfo[cv->abilities[cv->battlerDef]].cantBeSuppressed
          && !gBattleMons[cv->battlerDef].volatiles.gastroAcid
@@ -3433,6 +3434,7 @@ static enum MoveEndResult MoveEndAttacksDisable(struct BattleCalcValues *cv)
         enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
         if (IsRiskActive(RISK_OPPONENT_ATTACKS_DISABLE)
          && battler == cv->battlerDef
+         && IsBattlerAlive(cv->battlerDef)
          && IsBattlerTurnDamaged(battler, EXCLUDING_SUBSTITUTES)
          && gBattleMons[battler].volatiles.disabledMove == MOVE_NONE
          && gLastMoves[battler] != MOVE_NONE
@@ -3470,6 +3472,7 @@ static enum MoveEndResult MoveEndAttacksTorment(struct BattleCalcValues *cv)
         enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
         if (IsRiskActive(RISK_OPPONENT_ATTACKS_TORMENT)
          && battler == cv->battlerDef
+         && IsBattlerAlive(cv->battlerDef)
          && IsBattlerTurnDamaged(battler, EXCLUDING_SUBSTITUTES)
          && !gBattleMons[battler].volatiles.torment
          && !IsAbilityOnSide(battler, ABILITY_AROMA_VEIL)
