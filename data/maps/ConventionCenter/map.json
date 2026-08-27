@@ -231,7 +231,7 @@
     {
       "type": "trigger",
       "x": 19,
-      "y": 26,
+      "y": 25,
       "elevation": 0,
       "var": "VAR_VOBJECT_CHECKER",
       "var_value": "0",
@@ -263,6 +263,33 @@
       "var": "VAR_VOBJECT_CHECKER",
       "var_value": "0",
       "script": "TryLoadOther"
+    },
+    {
+      "type": "trigger",
+      "x": 19,
+      "y": 24,
+      "elevation": 0,
+      "var": "VAR_VOBJECT_CHECKER",
+      "var_value": "0",
+      "script": "TryLoadOther"
+    },
+    {
+      "type": "trigger",
+      "x": 20,
+      "y": 24,
+      "elevation": 0,
+      "var": "VAR_VOBJECT_CHECKER",
+      "var_value": "0",
+      "script": "TryUnloadQueue"
+    },
+    {
+      "type": "trigger",
+      "x": 20,
+      "y": 25,
+      "elevation": 0,
+      "var": "VAR_VOBJECT_CHECKER",
+      "var_value": "0",
+      "script": "TryUnloadQueue"
     }
   ],
   "bg_events": [
