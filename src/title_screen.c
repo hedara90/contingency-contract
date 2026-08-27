@@ -24,6 +24,7 @@
 #include "graphics.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "even_sprite.h"
 
 enum {
     TAG_VERSION = 1000,
@@ -37,6 +38,8 @@ enum {
 #define VERSION_BANNER_Y 2
 #define VERSION_BANNER_Y_GOAL 66
 #define START_BANNER_X 128
+
+#define PRESS_START_Y 132
 
 #define CLEAR_SAVE_BUTTON_COMBO (B_BUTTON | SELECT_BUTTON | DPAD_UP)
 #define RESET_RTC_BUTTON_COMBO (B_BUTTON | SELECT_BUTTON | DPAD_LEFT)
@@ -54,6 +57,8 @@ static void CB2_GoToBerryFixScreen(void);
 static void CB2_GoToCopyrightScreen(void);
 static void UpdateLegendaryMarkingColor(u8);
 
+static void AddTarcSprites(void);
+
 static void SpriteCB_VersionBannerLeft(struct Sprite *sprite);
 static void SpriteCB_VersionBannerRight(struct Sprite *sprite);
 static void SpriteCB_PressStartCopyrightBanner(struct Sprite *sprite);
@@ -68,6 +73,9 @@ static const u32 sTitleScreenLogoShineGfx[] = INCGFX_U32("graphics/title_screen/
 static const u32 sTitleScreenCloudsGfx[] = INCGFX_U32("graphics/title_screen/clouds.png", ".4bpp.smol");
 
 
+static const u16 sTarc_TitleBgPalette[] = INCGFX_U16("graphics/title_screen/Tarc_title_screen_tiles.png", ".gbapal");
+static const u32 sTarc_TitleBgTiles[] = INCGFX_U32("graphics/title_screen/Tarc_title_screen_tiles.png", ".4bpp.smol");
+static const u32 sTarc_TitleBgTilemap[] = INCGFX_U32("graphics/title_screen/Tarc_title_screen_tiles.bin", ".smolTM");
 
 // Used to blend "Emerald Version" as it passes over over the Pokémon banner.
 // Also used by the intro to blend the Game Freak name/logo in and out as they appear and disappear
@@ -435,7 +443,7 @@ static void CreateCopyrightBanner(s16 x, s16 y)
     u8 i;
     u8 spriteId;
 
-    x -= 64;
+    x -= 69;
     for (i = 0; i < NUM_COPYRIGHT_FRAMES; i++, x += 32)
     {
         spriteId = CreateSprite(&sStartCopyrightBannerSpriteTemplate, x, y, 0);
@@ -576,7 +584,7 @@ void CB2_InitTitleScreen(void)
         SetGpuReg(REG_OFFSET_BLDCNT, 0);
         SetGpuReg(REG_OFFSET_BLDALPHA, 0);
         SetGpuReg(REG_OFFSET_BLDY, 0);
-        *((u16 *)PLTT) = RGB_WHITE;
+        //*((u16 *)PLTT) = RGB_WHITE;
         SetGpuReg(REG_OFFSET_DISPCNT, 0);
         SetGpuReg(REG_OFFSET_BG2CNT, 0);
         SetGpuReg(REG_OFFSET_BG1CNT, 0);
@@ -595,25 +603,23 @@ void CB2_InitTitleScreen(void)
         break;
     case 1:
         // bg2
-        DecompressDataWithHeaderVram(gTitleScreenPokemonLogoGfx, (void *)(BG_CHAR_ADDR(0)));
-        DecompressDataWithHeaderVram(gTitleScreenPokemonLogoTilemap, (void *)(BG_SCREEN_ADDR(9)));
         LoadPalette(gTitleScreenBgPalettes, BG_PLTT_ID(0), 15 * PLTT_SIZE_4BPP);
+        LoadPalette(sTarc_TitleBgPalette, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
         // bg3
-        DecompressDataWithHeaderVram(sTitleScreenRayquazaGfx, (void *)(BG_CHAR_ADDR(2)));
-        DecompressDataWithHeaderVram(sTitleScreenRayquazaTilemap, (void *)(BG_SCREEN_ADDR(26)));
+        DecompressDataWithHeaderVram(sTarc_TitleBgTiles, (void *)(BG_CHAR_ADDR(2)));
+        DecompressDataWithHeaderVram(sTarc_TitleBgTilemap, (void *)(BG_SCREEN_ADDR(26)));
         // bg1
-        DecompressDataWithHeaderVram(sTitleScreenCloudsGfx, (void *)(BG_CHAR_ADDR(3)));
-        DecompressDataWithHeaderVram(gTitleScreenCloudsTilemap, (void *)(BG_SCREEN_ADDR(27)));
         ScanlineEffect_Stop();
         ResetTasks();
         ResetSpriteData();
         FreeAllSpritePalettes();
         gReservedSpritePaletteCount = 9;
-        LoadCompressedSpriteSheet(&sSpriteSheet_EmeraldVersion[0]);
+        //LoadCompressedSpriteSheet(&sSpriteSheet_EmeraldVersion[0]);
         LoadCompressedSpriteSheet(&sSpriteSheet_PressStart[0]);
         LoadCompressedSpriteSheet(&sPokemonLogoShineSpriteSheet[0]);
-        LoadPalette(gTitleScreenEmeraldVersionPal, OBJ_PLTT_ID(0), PLTT_SIZE_4BPP);
+        //LoadPalette(gTitleScreenEmeraldVersionPal, OBJ_PLTT_ID(0), PLTT_SIZE_4BPP);
         LoadSpritePalette(&sSpritePalette_PressStart[0]);
+        AddTarcSprites();
         gMain.state = 2;
         break;
     case 2:
@@ -628,7 +634,7 @@ void CB2_InitTitleScreen(void)
         break;
     }
     case 3:
-        BeginNormalPaletteFade(PALETTES_ALL, 1, 16, 0, RGB_WHITEALPHA);
+        //BeginNormalPaletteFade(PALETTES_ALL, 1, 16, 0, RGB_WHITEALPHA);
         SetVBlankCallback(VBlankCB);
         gMain.state = 4;
         break;
@@ -636,7 +642,7 @@ void CB2_InitTitleScreen(void)
         PanFadeAndZoomScreen(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 0x100, 0);
         SetGpuReg(REG_OFFSET_BG2X_L, -29 * 256);
         SetGpuReg(REG_OFFSET_BG2X_H, -1);
-        SetGpuReg(REG_OFFSET_BG2Y_L, -32 * 256);
+        //SetGpuReg(REG_OFFSET_BG2Y_L, -32 * 256);
         SetGpuReg(REG_OFFSET_BG2Y_H, -1);
         SetGpuReg(REG_OFFSET_WIN0H, 0);
         SetGpuReg(REG_OFFSET_WIN0V, 0);
@@ -648,8 +654,8 @@ void CB2_InitTitleScreen(void)
         SetGpuReg(REG_OFFSET_BLDALPHA, 0);
         SetGpuReg(REG_OFFSET_BLDY, 12);
         SetGpuReg(REG_OFFSET_BG0CNT, BGCNT_PRIORITY(3) | BGCNT_CHARBASE(2) | BGCNT_SCREENBASE(26) | BGCNT_16COLOR | BGCNT_TXT256x256);
-        SetGpuReg(REG_OFFSET_BG1CNT, BGCNT_PRIORITY(2) | BGCNT_CHARBASE(3) | BGCNT_SCREENBASE(27) | BGCNT_16COLOR | BGCNT_TXT256x256);
-        SetGpuReg(REG_OFFSET_BG2CNT, BGCNT_PRIORITY(1) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(9) | BGCNT_256COLOR | BGCNT_AFF256x256);
+        //SetGpuReg(REG_OFFSET_BG1CNT, BGCNT_PRIORITY(2) | BGCNT_CHARBASE(3) | BGCNT_SCREENBASE(27) | BGCNT_16COLOR | BGCNT_TXT256x256);
+        //SetGpuReg(REG_OFFSET_BG2CNT, BGCNT_PRIORITY(1) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(9) | BGCNT_256COLOR | BGCNT_AFF256x256);
         EnableInterrupts(INTR_FLAG_VBLANK);
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_MODE_1
                                     | DISPCNT_OBJ_1D_MAP
@@ -657,7 +663,7 @@ void CB2_InitTitleScreen(void)
                                     | DISPCNT_OBJ_ON
                                     | DISPCNT_WIN0_ON
                                     | DISPCNT_OBJWIN_ON);
-        m4aSongNumStart(MUS_TITLE);
+        m4aSongNumStart(MUS_B_PYRAMID_TOP);
         gMain.state = 5;
         break;
     case 5:
@@ -683,6 +689,7 @@ static void MainCB2(void)
 static void Task_TitleScreenPhase1(u8 taskId)
 {
     // Skip to next phase when A, B, Start, or Select is pressed
+    /*
     if (JOY_NEW(A_B_START_SELECT) || gTasks[taskId].tSkipToNext)
     {
         gTasks[taskId].tSkipToNext = TRUE;
@@ -701,7 +708,10 @@ static void Task_TitleScreenPhase1(u8 taskId)
     }
     else
     {
-        u8 spriteId;
+        */
+        gTasks[taskId].tSkipToNext = TRUE;
+        gTasks[taskId].tCounter = 0;
+        //u8 spriteId;
 
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_MODE_1 | DISPCNT_OBJ_1D_MAP | DISPCNT_BG2_ON | DISPCNT_OBJ_ON);
         SetGpuReg(REG_OFFSET_WININ, 0);
@@ -711,17 +721,17 @@ static void Task_TitleScreenPhase1(u8 taskId)
         SetGpuReg(REG_OFFSET_BLDY, 0);
 
         // Create left side of version banner
-        spriteId = CreateSprite(&sVersionBannerLeftSpriteTemplate, VERSION_BANNER_LEFT_X, VERSION_BANNER_Y, 0);
-        gSprites[spriteId].sAlphaBlendIdx = ARRAY_COUNT(gTitleScreenAlphaBlend);
-        gSprites[spriteId].sParentTaskId = taskId;
+        //spriteId = CreateSprite(&sVersionBannerLeftSpriteTemplate, VERSION_BANNER_LEFT_X, VERSION_BANNER_Y, 0);
+        //gSprites[spriteId].sAlphaBlendIdx = ARRAY_COUNT(gTitleScreenAlphaBlend);
+        //gSprites[spriteId].sParentTaskId = taskId;
 
         // Create right side of version banner
-        spriteId = CreateSprite(&sVersionBannerRightSpriteTemplate, VERSION_BANNER_RIGHT_X, VERSION_BANNER_Y, 0);
-        gSprites[spriteId].sParentTaskId = taskId;
+        //spriteId = CreateSprite(&sVersionBannerRightSpriteTemplate, VERSION_BANNER_RIGHT_X, VERSION_BANNER_Y, 0);
+        //gSprites[spriteId].sParentTaskId = taskId;
 
         gTasks[taskId].tCounter = 144;
         gTasks[taskId].func = Task_TitleScreenPhase2;
-    }
+    //}
 }
 
 #undef sParentTaskId
@@ -755,7 +765,7 @@ static void Task_TitleScreenPhase2(u8 taskId)
                                     | DISPCNT_BG1_ON
                                     | DISPCNT_BG2_ON
                                     | DISPCNT_OBJ_ON);
-        CreatePressStartBanner(START_BANNER_X, 108);
+        CreatePressStartBanner(START_BANNER_X, PRESS_START_Y);
         CreateCopyrightBanner(START_BANNER_X, 148);
         if (QUICKSTART && QUICKSTART_HUD)
             CreateQuickstartHud();
@@ -770,8 +780,8 @@ static void Task_TitleScreenPhase2(u8 taskId)
 
     // Slide Pokémon logo up
     yPos = gTasks[taskId].tBg2Y * 256;
-    SetGpuReg(REG_OFFSET_BG2Y_L, yPos);
-    SetGpuReg(REG_OFFSET_BG2Y_H, yPos / 0x10000);
+    //SetGpuReg(REG_OFFSET_BG2Y_L, yPos);
+    //SetGpuReg(REG_OFFSET_BG2Y_H, yPos / 0x10000);
 
     gTasks[taskId].data[5] = 15; // Unused
     gTasks[taskId].data[6] = 6;  // Unused
@@ -870,4 +880,39 @@ static void UpdateLegendaryMarkingColor(u8 frameNum)
         u16 color = RGB(r, g, b);
         LoadPalette(&color, BG_PLTT_ID(14) + 15, sizeof(color));
    }
+}
+
+static const u16 sTarcPokemonPal[] = INCGFX_U16("graphics/title_screen/pokemon_tarc.png", ".gbapal");
+static const u32 sTarcPokemonGfx[] = INCGFX_U32("graphics/title_screen/pokemon_tarc.png", ".4bpp", "-mwidth 8 -mheight 8");
+static const u16 sTarcTitlePal[] = INCGFX_U16("graphics/title_screen/recordkeepers.png", ".gbapal");
+static const u32 sTarcTitleGfx[] = INCGFX_U32("graphics/title_screen/recordkeepers.png", ".4bpp", "-mwidth 8 -mheight 8");
+
+static void AddTarcSprites(void)
+{
+    struct Even_CreateSpriteStruct cs = { 0 };
+    cs.spriteSize = SPRITE_SIZE(64x64);
+    cs.spriteShape = SPRITE_SHAPE(64x64);
+    cs.palette = sTarcPokemonPal;
+    cs.palTag = 0xCEC1;
+    for (u32 i = 0; i < 3; i++)
+    {
+        cs.sprite = &sTarcPokemonGfx[i * 512];
+        cs.tileTag = 0xCEC1 + i;
+        cs.posX = 56 + 64 * i;
+        cs.posY = 60;
+        u32 spriteId = Even_CreateSprite(&cs);
+        gSprites[spriteId].oam.priority = 0;
+    }
+
+    cs.palette = sTarcTitlePal;
+    cs.palTag = 0xCEC4;
+    for (u32 i = 0; i < 4; i++)
+    {
+        cs.sprite = &sTarcTitleGfx[i * 512];
+        cs.tileTag = 0xCEC4 + i;
+        cs.posX = 24 + 64 * i;
+        cs.posY = 100;
+        u32 spriteId = Even_CreateSprite(&cs);
+        gSprites[spriteId].oam.priority = 1;
+    }
 }
