@@ -833,15 +833,15 @@ static const s16 sBattlerHealthboxCoords[BATTLE_COORDS_COUNT][MAX_BATTLERS_COUNT
 {
     [BATTLE_COORDS_SINGLES] =
     {
-        [B_POSITION_PLAYER_LEFT]   = { 158, 88 },
-        [B_POSITION_OPPONENT_LEFT] = { 44,  30 },
+        [B_POSITION_PLAYER_LEFT]   = { 185, 88 },
+        [B_POSITION_OPPONENT_LEFT] = { 40,  26 },
     },
     [BATTLE_COORDS_DOUBLES] =
     {
-        [B_POSITION_PLAYER_LEFT]    = { 159, 76 },
-        [B_POSITION_PLAYER_RIGHT]   = { 171, 101 },
-        [B_POSITION_OPPONENT_LEFT]  = { 44,  19 },
-        [B_POSITION_OPPONENT_RIGHT] = { 32,  44 },
+        [B_POSITION_PLAYER_LEFT]    = { 178, 77 },
+        [B_POSITION_PLAYER_RIGHT]   = { 188, 98 },
+        [B_POSITION_OPPONENT_LEFT]  = { 45,  15 },
+        [B_POSITION_OPPONENT_RIGHT] = { 35,  36 },
     },
 };
 
@@ -1057,11 +1057,11 @@ void UpdateHpTextInHealthbox(u32 healthboxSpriteId, u32 maxOrCurrent, s16 currHp
     switch (GetBattlerCoordsIndex(battler))
     {
     default:
-    {
-        UpdateHpTextInHealthboxInDoubles(healthboxSpriteId, maxOrCurrent, currHp, maxHp);
-        break;
-    }
-    case BATTLE_COORDS_SINGLES:
+    //{
+    //    UpdateHpTextInHealthboxInDoubles(healthboxSpriteId, maxOrCurrent, currHp, maxHp);
+    //    break;
+    //}
+    //case BATTLE_COORDS_SINGLES:
     {
         if (IsOnPlayerSide(battler)) // Player
         {
@@ -1840,8 +1840,8 @@ void UpdateNickInHealthbox(u8 healthboxSpriteId, struct Pokemon *mon)
 
         SetupSpritesForTextPrinting(spriteIds, spriteSrc, 2, 1);
 
-        FillSpriteRectSprite(healthboxSpriteId, 16, 0, 72, 12);
-        AddSpriteTextPrinterParameterized6(healthboxSpriteId, fontId, 16, 0, 0, 0, sHealthBoxTextColor, 0, gDisplayedStringBattle);
+        FillSpriteRectSprite(healthboxSpriteId, 16, 3, 72, 12);
+        AddSpriteTextPrinterParameterized6(healthboxSpriteId, fontId, 16, 3, 0, 0, sHealthBoxTextColor, 0, gDisplayedStringBattle);
     }
     else
     {
@@ -1853,8 +1853,8 @@ void UpdateNickInHealthbox(u8 healthboxSpriteId, struct Pokemon *mon)
 
         SetupSpritesForTextPrinting(spriteIds, spriteSrc, 2, 1);
 
-        FillSpriteRectSprite(healthboxSpriteId, 0, 0, 72, 12);
-        AddSpriteTextPrinterParameterized6(healthboxSpriteId, fontId, 0, 0, 0, 0, sHealthBoxTextColor, 0, gDisplayedStringBattle);
+        FillSpriteRectSprite(healthboxSpriteId, 1, 2, 72, 12);
+        AddSpriteTextPrinterParameterized6(healthboxSpriteId, fontId, 1, 3, 0, 0, sHealthBoxTextColor, 0, gDisplayedStringBattle);
     }
 
     for (u32 i = 0; i < 5; i++)
