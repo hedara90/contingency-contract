@@ -20,7 +20,7 @@ void SetSpeedUpIcon(void)
     {
         //  Set icon to current speedup
         for (u32 i = 0; i < 8; i++)
-            vramPtr[i] = sSpeedupTiles[sNumSkips * 8 + i];
+            vramPtr[i] = sSpeedupTiles[(sNumSkips - 1) * 8 + i];
     }
     else
     {
@@ -58,7 +58,7 @@ void CheckSpeedupControls(void)
     {
         if (JOY_NEW(L_BUTTON))
         {
-            if (sNumSkips > 0)
+            if (sNumSkips > 1)
                 sNumSkips--;
             //  Change speedup number in sprite
             sChangedSpeedup = sNumSkips;
