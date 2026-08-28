@@ -1289,6 +1289,7 @@ static bool8 DecompressGraphics(void)
         break;
     case 12:
         LoadSpritePalette(&sSpritePal_SelectFrame);
+        LoadSpritePalette(&sSpritePalette_Cursor);
         sPartyMenuInternal->switchCounter++;
         break;
     case 13:
