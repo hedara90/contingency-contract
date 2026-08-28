@@ -16,6 +16,8 @@
 #include "gba/m4a_internal.h"
 #include "constants/rgb.h"
 
+#include "tarc_speedup.h"
+
 #define tMenuSelection data[0]
 #define tTextSpeed data[1]
 #define tBattleSceneOff data[2]
@@ -99,7 +101,7 @@ static const u8 *const sOptionMenuItemsNames[MENUITEM_COUNT] =
     //[MENUITEM_BATTLESTYLE] = COMPOUND_STRING("BATTLE STYLE"),
     [MENUITEM_SOUND]       = COMPOUND_STRING("SOUND"),
     [MENUITEM_BUTTONMODE]  = COMPOUND_STRING("BUTTON MODE"),
-    [MENUITEM_FRAMETYPE]   = COMPOUND_STRING("FRAME"),
+    [MENUITEM_FRAMETYPE]   = COMPOUND_STRING("Speedup"),
     [MENUITEM_CANCEL]      = COMPOUND_STRING("CANCEL"),
 };
 
@@ -249,7 +251,7 @@ void CB2_InitOptionMenu(void)
         gTasks[taskId].tBattleStyle = gSaveBlock2Ptr->optionsBattleStyle;
         gTasks[taskId].tSound = gSaveBlock2Ptr->optionsSound;
         gTasks[taskId].tButtonMode = gSaveBlock2Ptr->optionsButtonMode;
-        gTasks[taskId].tWindowFrameType = gSaveBlock2Ptr->optionsWindowFrameType;
+        gTasks[taskId].tWindowFrameType = gSaveBlock2Ptr->speedup;
 
         TextSpeed_DrawChoices(gTasks[taskId].tTextSpeed);
         BattleScene_DrawChoices(gTasks[taskId].tBattleSceneOff);
@@ -373,7 +375,7 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsBattleStyle = gTasks[taskId].tBattleStyle;
     gSaveBlock2Ptr->optionsSound = gTasks[taskId].tSound;
     gSaveBlock2Ptr->optionsButtonMode = gTasks[taskId].tButtonMode;
-    gSaveBlock2Ptr->optionsWindowFrameType = gTasks[taskId].tWindowFrameType;
+    gSaveBlock2Ptr->speedup = gTasks[taskId].tWindowFrameType;
 
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
     gTasks[taskId].func = Task_OptionMenuFadeOut;
@@ -537,13 +539,11 @@ static u8 FrameType_ProcessInput(u8 selection)
 {
     if (JOY_NEW(DPAD_RIGHT))
     {
-        if (selection < WINDOW_FRAMES_COUNT - 1)
+        if (selection < MAX_SPEEDUP)
             selection++;
         else
             selection = 0;
 
-        LoadBgTiles(1, GetWindowFrameTilesPal(selection)->tiles, 0x120, 0x1A2);
-        LoadPalette(GetWindowFrameTilesPal(selection)->pal, BG_PLTT_ID(7), PLTT_SIZE_4BPP);
         sArrowPressed = TRUE;
     }
     if (JOY_NEW(DPAD_LEFT))
@@ -551,19 +551,19 @@ static u8 FrameType_ProcessInput(u8 selection)
         if (selection != 0)
             selection--;
         else
-            selection = WINDOW_FRAMES_COUNT - 1;
-
-        LoadBgTiles(1, GetWindowFrameTilesPal(selection)->tiles, 0x120, 0x1A2);
-        LoadPalette(GetWindowFrameTilesPal(selection)->pal, BG_PLTT_ID(7), PLTT_SIZE_4BPP);
+            selection = MAX_SPEEDUP;
         sArrowPressed = TRUE;
     }
     return selection;
 }
 
+static const u8 sSpeedX[] = _("x    ");
+static const u8 sOff[] = _("OFF        ");
+
 static void FrameType_DrawChoices(u8 selection)
 {
     u8 text[16] = {EOS};
-    u8 n = selection + 1;
+    u8 n = selection;
     u16 i;
 
     for (i = 0; gText_FrameTypeNumber[i] != EOS && i <= 5; i++)
@@ -587,8 +587,15 @@ static void FrameType_DrawChoices(u8 selection)
 
     text[i] = EOS;
 
-    DrawOptionMenuChoice(gText_FrameType, 104, YPOS_FRAMETYPE, 0);
-    DrawOptionMenuChoice(text, 128, YPOS_FRAMETYPE, 1);
+    if (selection == 0)
+    {
+        DrawOptionMenuChoice(sOff, 104, YPOS_FRAMETYPE, 0);
+    }
+    else
+    {
+        DrawOptionMenuChoice(sSpeedX, 104, YPOS_FRAMETYPE, 0);
+        DrawOptionMenuChoice(text, 128, YPOS_FRAMETYPE, 1);
+    }
 }
 
 static u8 ButtonMode_ProcessInput(u8 selection)
