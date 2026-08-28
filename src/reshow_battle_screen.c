@@ -17,6 +17,8 @@
 #include "battle_anim.h"
 #include "data.h"
 
+#include "tarc_speedup.h"
+
 // this file's functions
 static void CB2_ReshowBattleScreenAfterMenu(void);
 static void CB2_ReshowBlankBattleScreenAfterMenu(void);
@@ -169,6 +171,7 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
         gPaletteFade.bufferTransferDisabled = 0;
         SetMainCallback2(BattleMainCB2);
         FillAroundBattleWindows();
+        CheckSpeedupBeforeEnteringBattleScreen();
         break;
     }
 

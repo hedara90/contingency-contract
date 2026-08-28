@@ -14,6 +14,8 @@
 #include "window.h"
 #include "constants/battle_string_ids.h"
 
+#include "tarc_speedup.h"
+
 void AllocateBattleGfxResources(void)
 {
     gBattleAnimBgTileBuffer = AllocZeroed(0x2000);
@@ -30,6 +32,7 @@ void CloseMainBattleScreen(void)
 {
     FreeBattleGfxResources();
     FreeAllWindowBuffers();
+    CheckSpeedupBeforeLeavingBattleScreen();
 }
 
 void AllocateBattleResources(void)

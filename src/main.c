@@ -26,6 +26,8 @@
 #include "test_runner.h"
 #include "constants/rgb.h"
 
+#include "tarc_speedup.h"
+
 static void VBlankIntr(void);
 static void HBlankIntr(void);
 static void VCountIntr(void);
@@ -167,9 +169,14 @@ void AgbMainLoop(void)
             }
         }
 
-        PlayTimeCounter_Update();
+        CheckSpeedupControls();
+
         MapMusicMain();
-        WaitForVBlank();
+        if (!SpeedupShouldSkip())
+        {
+            PlayTimeCounter_Update();
+            WaitForVBlank();
+        }
     }
 }
 

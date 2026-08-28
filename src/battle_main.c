@@ -81,6 +81,8 @@
 #include "cable_club.h"
 #include "risk.h"
 
+#include "tarc_speedup.h"
+
 extern const struct BgTemplate gBattleBgTemplates[];
 extern const struct WindowTemplate *const gBattleWindowTemplates[];
 
@@ -755,6 +757,7 @@ static void CB2_InitBattleInternal(void)
     #endif
 
     gBattleCommunication[MULTIUSE_STATE] = 0;
+    StartSpeedup();
 }
 
 #define BUFFER_PARTY_VS_SCREEN_STATUS(party, flags, i)                      \
@@ -4761,6 +4764,7 @@ static void HandleTurnActionSelectionState(void)
         }
 
         gBattleMainFunc = SetActionsAndBattlersTurnOrder;
+        StartSpeedup();
 
         if (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER)
         {
@@ -5695,6 +5699,8 @@ static void HandleEndTurn_MonFled(void)
 
 static void HandleEndTurn_FinishBattle(void)
 {
+    StopSpeedup();
+    ResetChangedSpeedup();
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
         if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK

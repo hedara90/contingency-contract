@@ -32,6 +32,8 @@
 #include "constants/trainers.h"
 #include "risk.h"
 
+#include "tarc_speedup.h"
+
 #if TESTING
 #include "test/battle.h"
 #endif
@@ -452,6 +454,7 @@ void ReconsiderGimmick(enum BattlerId battlerAtk, enum BattlerId battlerDef, enu
 
 static u32 ChooseMoveOrAction(enum BattlerId battler)
 {
+    StopSpeedup();
     if (IsDoubleBattle())
         return ChooseMoveOrAction_Doubles(battler);
     return ChooseMoveOrAction_Singles(battler);
