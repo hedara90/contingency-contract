@@ -12328,7 +12328,7 @@ void BS_JumpIfNoWhiteOut(void)
 {
     NATIVE_ARGS(const u8 *jumpInstr);
 
-    if (FlagGet(B_FLAG_NO_WHITEOUT))
+    if (TRUE)
         gBattlescriptCurrInstr = cmd->jumpInstr;
     else
         gBattlescriptCurrInstr = cmd->nextInstr;
