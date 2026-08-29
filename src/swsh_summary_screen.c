@@ -455,6 +455,8 @@ static bool32 ShouldDisplayFormChangeText(void);
 static void DisplayFormChangeText(void);
 static void RemoveFormChangeText(void);
 
+static void DrawRarity(void);
+
 // const rom data
 
 static const u8 sMemoNatureTextColor[]          = _("{COLOR LIGHT_BLUE}{SHADOW DYNAMIC_COLOR1}");
@@ -2180,6 +2182,7 @@ static bool8 LoadGraphics(void)
     case 26:
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         gPaletteFade.bufferTransferDisabled = 0;
+        DrawRarity();
         gMain.state++;
         break;
     case 27:
@@ -3141,6 +3144,8 @@ static void Task_ChangeSummaryMon(u8 taskId)
     case 10:
         SetTypeIcons();
         TrySetInfoPageIcons();
+        //  Update tilemap
+        DrawRarity();
         break;
     case 11:
         PrintMonPortraitInfo();
@@ -3179,6 +3184,8 @@ static void Task_ChangeSummaryMon(u8 taskId)
         TryDrawExperienceProgressBar();
         if (ShouldDisplayFormChangeText())
             DisplayFormChangeText();
+        //  Update tilemap
+        DrawRarity();
         break;
     case 13:
         gSprites[sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_MON]].sDelayAnim = 0;
@@ -6388,9 +6395,12 @@ static void StopPokemonAnimations(void)  // A subtle effect, this function stops
     }
 }
 
+const u32 sPotentialGfx[] = INCGFX_U32("graphics/summary_screen/swsh/potentials.png", ".4bpp");
+const u16 sPotentialPal[] = INCGFX_U16("graphics/summary_screen/swsh/potentials.png", ".gbapal");
 
 static void CreateMonMarkingsSprite(struct Pokemon *mon)
 {
+    /*
     struct Sprite *sprite = CreateMonMarkingComboSprite(TAG_MON_MARKINGS, TAG_CATEGORY_ICONS, sCategoryIcons_Pal);
 
     sMonSummaryScreen->markingsSprite = sprite;
@@ -6404,6 +6414,55 @@ static void CreateMonMarkingsSprite(struct Pokemon *mon)
         sMonSummaryScreen->markingsSprite->oam.priority = 2;
         if (sMonSummaryScreen->currPageIndex != PSS_PAGE_INFO)
             sMonSummaryScreen->markingsSprite->invisible = TRUE;
+    }
+    */
+
+    u32 numDupes = 0;
+    if (GetMonData(mon, MON_DATA_IS_SHINY))
+    {
+        numDupes = 5;
+    }
+    else
+    {
+        u32 markings = GetMonData(mon, MON_DATA_MARKINGS);
+        switch (markings)
+        {
+        case 1:
+            numDupes = 1;
+            break;
+        case 3:
+            numDupes = 2;
+            break;
+        case 7:
+            numDupes = 3;
+            break;
+        case 15:
+            numDupes = 4;
+            break;
+        }
+    }
+
+    if (sMonSummaryScreen->markingsSprite == NULL)
+    {
+        struct Even_CreateSpriteStruct cs = {0};
+        cs.sprite = &sPotentialGfx[32 * 32 / 8 * numDupes];
+        cs.tileTag = TAG_MON_MARKINGS;
+        cs.palette = sPotentialPal;
+        cs.palTag = TAG_MON_MARKINGS;
+        cs.spriteSize = SPRITE_SIZE(32x32);
+        cs.spriteShape = SPRITE_SHAPE(32x32);
+        cs.posX = 64;
+        cs.posY = 80;
+        u32 spriteId = Even_CreateSprite(&cs);
+        sMonSummaryScreen->markingsSprite = &gSprites[spriteId];;
+    }
+    else
+    {
+        for (u32 i = 0; i < 32 * 32 / 8; i++)
+        {
+            u32 *tileStart = (u32 *)(OBJ_VRAM0 + sMonSummaryScreen->markingsSprite->oam.tileNum * TILE_SIZE_4BPP);
+            tileStart[i] = sPotentialGfx[32 * 32 / 8 * numDupes + i];
+        }
     }
 }
 
@@ -6460,6 +6519,7 @@ static void SetFriendshipSprite(void)
 
 static void UpdateMonMarkingsSprite(struct Pokemon *mon)
 {
+    /*
     if (sMonSummaryScreen->markingsSprite != NULL && sMonSummaryScreen->markingComboTilesPtr != NULL)
     {
         UpdateMonMarkingTiles(GetMonData(mon, MON_DATA_MARKINGS), sMonSummaryScreen->markingComboTilesPtr, GetMonData(mon, MON_DATA_IS_SHINY));
@@ -6468,6 +6528,8 @@ static void UpdateMonMarkingsSprite(struct Pokemon *mon)
     {
         CreateMonMarkingsSprite(mon);
     }
+    */
+    CreateMonMarkingsSprite(mon);
 }
 
 static void CreateCaughtBallSprite(struct Pokemon *mon)
@@ -7243,5 +7305,82 @@ static void RemoveFormChangeText(void)
         FreeSpriteTilesByTag(0xCECE);
         FreeSpritePaletteByTag(0xCECE);
         sMonSummaryScreen->changeFormId = SPRITE_NONE;
+    }
+}
+
+const u16 s4StarTiles[32] = {
+    1024, 1024, 1024, 1024, 1025, 1026, 1026, 1026,
+    1027, 1024, 1028, 1028 + (1 << 10), 1029, 1030, 1031, 1024,
+    1032, 1026, 1026, 1026, 1033, 1024, 1024, 1024,
+    1024, 1024, 1024, 1024, 1028, 1028 + (1 << 10), 1034, 1034
+};
+
+const u16 s5StarTiles[32] = {
+    1149, 1149, 1149, 1149, 1150, 1151, 1151, 1151,
+    1152, 1149, 1153, 1153 + (1 << 10), 1154, 1155, 1156, 1149,
+    1157, 1151, 1151, 1151, 1158, 1149, 1149, 1149,
+    1149, 1149, 1149, 1149, 1153, 1153 + (1 << 10), 1034, 1034
+};
+
+const u16 s6StarTiles[32] = {
+    1159, 1159, 1159, 1159, 1160, 1161, 1161, 1161,
+    1162, 1159, 1163, 1163 + (1 << 10), 1164, 1165, 1165, 1166,
+    1167, 1161, 1161, 1161, 1168, 1159, 1159, 1159,
+    1159, 1159, 1159, 1159, 1163, 1163 + (1 << 10), 1034, 1034
+};
+
+static void DrawRarity(void)
+{
+    u16 *buffer = &sMonSummaryScreen->bg2TilemapBuffers[sMonSummaryScreen->currPageIndex][0];
+    const u16 *tiles;
+    enum Species species = SPECIES_NONE;
+
+    if (sMonSummaryScreen->isBoxMon)
+    {
+        species = GetBoxMonData(&sMonSummaryScreen->monList.boxMons[sMonSummaryScreen->curMonIndex], MON_DATA_SPECIES);
+    }
+    else
+    {
+        species = GetMonData(&sMonSummaryScreen->monList.mons[sMonSummaryScreen->curMonIndex], MON_DATA_SPECIES);
+    }
+
+    u32 rarity = gSpeciesInfo[species].rarity;
+    rarity = 5;
+
+    switch (rarity)
+    {
+    case 5:
+        tiles = s5StarTiles;
+        break;
+    case 6:
+        tiles = s6StarTiles;
+        break;
+    default:
+        tiles = s4StarTiles;
+        break;
+    }
+
+    for (u32 i = 0; i < 32; i++)
+    {
+        buffer[i] = tiles[i] - 1024;
+    }
+
+    //  Handle dugouts
+    switch (rarity)
+    {
+    case 5:
+        buffer[44] = 20;
+        buffer[45] = 20;
+        buffer[46] = 254;
+        break;
+    case 6:
+        buffer[44] = 20;
+        buffer[45] = 20;
+        buffer[46] = 20;
+        break;
+    default:
+        buffer[44] = 20;
+        buffer[45] = 20;
+        break;
     }
 }
