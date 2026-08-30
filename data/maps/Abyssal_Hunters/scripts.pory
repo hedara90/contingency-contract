@@ -82,6 +82,8 @@ script AbyssalHuntersStartBattle {
         msgbox("You got ¥500 for winning!")
         waitmessage
         addmoney(500)
+        victoryscreen(GAUNTLET_ABYSSAL_HUNTERS, FALSE)
+        waitstate
         warpsilent(MAP_CONVENTION_CENTER, 21, 24)
         waitstate
     }
