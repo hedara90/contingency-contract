@@ -2966,3 +2966,11 @@
 	callnative GetVObjectGfxTag
 	.byte \id
 	.endm
+
+	@ Opens the specified victory screen
+	.macro victoryscreen gauntlet:req fromsave:req
+	fadescreen FADE_TO_BLACK
+	callnative VictoryScreen_InitFromScript
+	.byte \gauntlet
+	.byte \fromsave
+	.endm

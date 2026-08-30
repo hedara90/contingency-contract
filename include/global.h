@@ -1219,7 +1219,8 @@ struct SaveBlock1
     // sizeof: 0x3???
     struct Risks risks;
     u32 gameVersion;
-    rng_value_t bannerRng[BANNER_COUNT];
+    rng_value_t bannerRng[20];
+    struct SavedGauntletWin wins[20];
 };
 
 extern struct SaveBlock1 *gSaveBlock1Ptr;
