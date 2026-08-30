@@ -82,6 +82,8 @@ script CrisisTeamStartBattle {
         msgbox("You got ¥500 for winning!")
         waitmessage
         addmoney(500)
+        victoryscreen(GAUNTLET_CRISIS_TEAM, FALSE)
+        waitstate
         warpsilent(MAP_CONVENTION_CENTER, 21, 24)
         waitstate
     }

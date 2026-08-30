@@ -81,7 +81,9 @@ script ReconvenersStartBattle {
         special(HealPlayerParty)
         msgbox("You got ¥500 for winning!")
         waitmessage
-        addmoney(500)
+        RECONVENERS(500)
+        victoryscreen(GAUNTLET_RECONVENERS, FALSE)
+        waitstate
         warpsilent(MAP_CONVENTION_CENTER, 21, 24)
         waitstate
     }
