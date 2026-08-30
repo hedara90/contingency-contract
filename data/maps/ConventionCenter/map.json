@@ -2,7 +2,7 @@
   "id": "MAP_CONVENTION_CENTER",
   "name": "ConventionCenter",
   "layout": "LAYOUT_CONVENTION_CENTER",
-  "music": "MUS_DUMMY",
+  "music": "MUS_CONTEST_LOBBY",
   "region_map_section": "MAPSEC_ABANDONED_SHIP",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -290,6 +290,78 @@
       "var": "VAR_VOBJECT_CHECKER",
       "var_value": "0",
       "script": "TryUnloadQueue"
+    },
+    {
+      "type": "trigger",
+      "x": 14,
+      "y": 11,
+      "elevation": 0,
+      "var": "VAR_MUSIC_CHECKER",
+      "var_value": "0",
+      "script": "PlayStageMusic"
+    },
+    {
+      "type": "trigger",
+      "x": 15,
+      "y": 11,
+      "elevation": 0,
+      "var": "VAR_MUSIC_CHECKER",
+      "var_value": "0",
+      "script": "PlayStageMusic"
+    },
+    {
+      "type": "trigger",
+      "x": 19,
+      "y": 8,
+      "elevation": 0,
+      "var": "VAR_MUSIC_CHECKER",
+      "var_value": "0",
+      "script": "PlayStageMusic"
+    },
+    {
+      "type": "trigger",
+      "x": 19,
+      "y": 7,
+      "elevation": 0,
+      "var": "VAR_MUSIC_CHECKER",
+      "var_value": "0",
+      "script": "PlayStageMusic"
+    },
+    {
+      "type": "trigger",
+      "x": 14,
+      "y": 12,
+      "elevation": 0,
+      "var": "VAR_MUSIC_CHECKER",
+      "var_value": "1",
+      "script": "PlayNormalMusic"
+    },
+    {
+      "type": "trigger",
+      "x": 15,
+      "y": 12,
+      "elevation": 0,
+      "var": "VAR_MUSIC_CHECKER",
+      "var_value": "1",
+      "script": "PlayNormalMusic"
+    },
+    {
+      "type": "trigger",
+      "x": 20,
+      "y": 8,
+      "elevation": 0,
+      "var": "VAR_MUSIC_CHECKER",
+      "var_value": "1",
+      "script": "PlayNormalMusic"
+    },
+    {
+      "type": "trigger",
+      "x": 20,
+      "y": 7,
+      "elevation": 0,
+      "var": "VAR_MUSIC_CHECKER",
+      "var_value": "1",
+      "script": "PlayNormalMusic"
     }
   ],
   "bg_events": [
@@ -356,6 +428,142 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "WelcomeCounter"
+    },
+    {
+      "type": "sign",
+      "x": 13,
+      "y": 25,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung1"
+    },
+    {
+      "type": "sign",
+      "x": 14,
+      "y": 25,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung1"
+    },
+    {
+      "type": "sign",
+      "x": 14,
+      "y": 24,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung1"
+    },
+    {
+      "type": "sign",
+      "x": 13,
+      "y": 24,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung1"
+    },
+    {
+      "type": "sign",
+      "x": 14,
+      "y": 19,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung2"
+    },
+    {
+      "type": "sign",
+      "x": 15,
+      "y": 19,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung2"
+    },
+    {
+      "type": "sign",
+      "x": 15,
+      "y": 18,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung2"
+    },
+    {
+      "type": "sign",
+      "x": 14,
+      "y": 18,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung2"
+    },
+    {
+      "type": "sign",
+      "x": 23,
+      "y": 14,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung3"
+    },
+    {
+      "type": "sign",
+      "x": 24,
+      "y": 14,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung3"
+    },
+    {
+      "type": "sign",
+      "x": 24,
+      "y": 13,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung3"
+    },
+    {
+      "type": "sign",
+      "x": 23,
+      "y": 13,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung3"
+    },
+    {
+      "type": "sign",
+      "x": 28,
+      "y": 14,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung4"
+    },
+    {
+      "type": "sign",
+      "x": 29,
+      "y": 14,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung4"
+    },
+    {
+      "type": "sign",
+      "x": 28,
+      "y": 13,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung4"
+    },
+    {
+      "type": "sign",
+      "x": 38,
+      "y": 27,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung5"
+    },
+    {
+      "type": "sign",
+      "x": 39,
+      "y": 27,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ChubbyLung5"
     }
   ]
 }
