@@ -522,7 +522,7 @@ static void Task_VictoryScreenWaitFadeIn(u8 taskId)
 
 static void Task_VictoryScreenMainInput(u8 taskId)
 {
-    if (JOY_NEW(B_BUTTON))
+    if (JOY_NEW(B_BUTTON) || JOY_NEW(A_BUTTON))
     {
         PlaySE(SE_PC_OFF);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
