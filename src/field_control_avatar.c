@@ -305,7 +305,12 @@ static bool8 TryStartInteractionScript(struct MapPosition *position, u16 metatil
      && script != PayingQueuer
      && script != MonBanners
      && script != ItemBanner
-     && script != EventScript_PC)
+     && script != EventScript_PC
+     && script != ChubbyLung1
+     && script != ChubbyLung2
+     && script != ChubbyLung3
+     && script != ChubbyLung4
+     && script != ChubbyLung5)
         PlaySE(SE_SELECT);
 
     ScriptContext_SetupScript(script);

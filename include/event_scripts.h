@@ -797,5 +797,10 @@ extern const u8 EighteenToLastQueuer[];
 extern const u8 PayingQueuer[];
 extern const u8 MonBanners[];
 extern const u8 ItemBanner[];
+extern const u8 ChubbyLung1[];
+extern const u8 ChubbyLung2[];
+extern const u8 ChubbyLung3[];
+extern const u8 ChubbyLung4[];
+extern const u8 ChubbyLung5[];
 
 #endif // GUARD_EVENT_SCRIPTS_H

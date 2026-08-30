@@ -9,6 +9,8 @@ mapscripts ConventionCenter_MapScripts {
     }
 }
 
+const player = OBJ_EVENT_ID_PLAYER
+
 script TryLoadQueue {
     if (flag(FLAG_QUEUE_LOADED) != TRUE) {
         callnative(CreateQueue)
@@ -34,18 +36,86 @@ script TryLoadOther {
     }
 }
 
+script ChubbyLung1 {
+    lock
+    applymovement(player, ContestHall_Movement_Heart)
+    waitmovement
+    msgbox("It's a big Chubby Lung!")
+    waitmessage
+    release
+    end
+}
+
+script ChubbyLung2 {
+    lock
+    msgbox("It's a big Chubby Lung!")
+    waitmessage
+    release
+    end
+}
+
+script ChubbyLung3 {
+    lock
+    msgbox("It's a big Chubby Lung!")
+    waitmessage
+    release
+    end
+}
+
+script ChubbyLung4 {
+    lock
+    msgbox("It's a big Chubby Lung!")
+    waitmessage
+    release
+    end
+}
+
+script ChubbyLung5 {
+    lock
+    msgbox("It's a big Chubby Lung!")
+    waitmessage
+    release
+    end
+}
+
+script PlayStageMusic {
+    playbgm(MUS_CREDITS, FALSE)
+    setvar(VAR_MUSIC_CHECKER, 1)
+}
+
+script PlayNormalMusic {
+    playbgm(MUS_CONTEST_LOBBY, FALSE)
+    setvar(VAR_MUSIC_CHECKER, 0)
+}
+
+script SatsukiTalk {
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Oh, Tiana")
+    waitmessage
+    return
+}
+
+script SatsukiPaying {
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Oh, Tiana")
+    waitmessage
+    return
+}
+
 script LastQueuer {
     lock
-    turnvobject(0, DIR_NORTH)
     getvobjectgfxtag(0)
     switch(var(VAR_RESULT)) {
     case OBJ_EVENT_GFX_SATSUKI:
         setspeaker(SP_NAME_PLAYER)
-        msgbox("Why are you here?")
+        msgbox("Satsuki? Why are you here?")
+        turnvobject(0, DIR_NORTH)
+        call(SatsukiTalk)
     default:
+        turnvobject(0, DIR_NORTH)
         msgbox("I hope this queue goes fast…")
+        waitmessage
     }
-    waitmessage
     turnvobject(0, DIR_SOUTH)
     release
     end
@@ -53,16 +123,18 @@ script LastQueuer {
 
 script EightToLastQueuer {
     lock
-    turnvobject(7, DIR_NORTH)
     getvobjectgfxtag(7)
     switch(var(VAR_RESULT)) {
     case OBJ_EVENT_GFX_SATSUKI:
         setspeaker(SP_NAME_PLAYER)
-        msgbox("Satsuki, why are you here?")
+        msgbox("Satsuki? Why are you here?")
+        turnvobject(7, DIR_NORTH)
+        call(SatsukiTalk)
     default:
+        turnvobject(7, DIR_NORTH)
         msgbox("I hope this queue goes fast…")
+        waitmessage
     }
-    waitmessage
     turnvobject(7, DIR_EAST)
     release
     end
@@ -70,16 +142,18 @@ script EightToLastQueuer {
 
 script SixteenToLastQueuer {
     lock
-    turnvobject(15, DIR_NORTH)
     getvobjectgfxtag(15)
     switch(var(VAR_RESULT)) {
     case OBJ_EVENT_GFX_SATSUKI:
         setspeaker(SP_NAME_PLAYER)
-        msgbox("Satsuki, why are you here?")
+        msgbox("Satsuki? Why are you here?")
+        turnvobject(15, DIR_NORTH)
+        call(SatsukiTalk)
     default:
+        turnvobject(15, DIR_NORTH)
         msgbox("I hope this queue goes fast…")
+        waitmessage
     }
-    waitmessage
     turnvobject(15, DIR_EAST)
     release
     end
@@ -87,16 +161,18 @@ script SixteenToLastQueuer {
 
 script EighteenToLastQueuer {
     lock
-    turnvobject(17, DIR_NORTH)
     getvobjectgfxtag(17)
     switch(var(VAR_RESULT)) {
     case OBJ_EVENT_GFX_SATSUKI:
         setspeaker(SP_NAME_PLAYER)
-        msgbox("Satsuki, why are you here?")
+        msgbox("Satsuki? Why are you here?")
+        turnvobject(17, DIR_NORTH)
+        call(SatsukiTalk)
     default:
+        turnvobject(17, DIR_NORTH)
         msgbox("I hope this queue goes fast…")
+        waitmessage
     }
-    waitmessage
     turnvobject(17, DIR_SOUTH)
     release
     end
@@ -104,16 +180,18 @@ script EighteenToLastQueuer {
 
 script PayingQueuer {
     lock
-    turnvobject(33, DIR_NORTH)
     getvobjectgfxtag(33)
     switch(var(VAR_RESULT)) {
     case OBJ_EVENT_GFX_SATSUKI:
         setspeaker(SP_NAME_PLAYER)
-        msgbox("Satsuki, why are you here?")
+        msgbox("Satsuki? Why are you here?")
+        turnvobject(33, DIR_NORTH)
+        call(SatsukiPaying)
     default:
+        turnvobject(33, DIR_NORTH)
         msgbox("I hope this queue goes fast…")
+        waitmessage
     }
-    waitmessage
     turnvobject(33, DIR_WEST)
     release
     end
