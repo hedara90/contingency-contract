@@ -238,9 +238,7 @@ Debug_EventScript_Script_7::
 	end
 
 Debug_EventScript_Script_8::
-	release
-	warpsilent MAP_RECONVENERS, 1, 9
-	waitstate
+	victoryscreen GAUNTLET_CRISIS_TEAM, FALSE
 	release
 	end
 

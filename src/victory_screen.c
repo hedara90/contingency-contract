@@ -87,11 +87,11 @@ static const struct BgTemplate sVictoryScreenBgTemplates[] =
     }
 };
 
-#define TITLE_WIDTH 32
-#define TITLE_HEIGHT 2
+#define TITLE_WIDTH 19
+#define TITLE_HEIGHT 3
 #define RISK_WIDTH 4
-#define RISK_HEIGHT 2
-#define TRAINER_WIDTH 32
+#define RISK_HEIGHT 3
+#define TRAINER_WIDTH 8
 #define TRAINER_HEIGHT 2
 
 #define TITLE_SIZE TITLE_WIDTH * TITLE_HEIGHT
@@ -107,31 +107,31 @@ static const struct WindowTemplate sVictoryScreenWindowTemplates[] =
     [WIN_TITLE] =
     {
         .bg = 0,
-        .tilemapLeft = 0,
+        .tilemapLeft = 30 - TITLE_WIDTH,
         .tilemapTop = 0,
         .width = TITLE_WIDTH,
         .height = TITLE_HEIGHT,
-        .paletteNum = 15,
+        .paletteNum = 0,
         .baseBlock = TITLE_BASEBLOCK,
     },
     [WIN_RISK] =
     {
         .bg = 0,
-        .tilemapLeft = 30 - 4,
-        .tilemapTop = 18,
+        .tilemapLeft = 6,
+        .tilemapTop = 2,
         .width = RISK_WIDTH,
         .height = RISK_HEIGHT,
-        .paletteNum = 15,
+        .paletteNum = 0,
         .baseBlock = RISK_BASEBLOCK,
     },
     [WIN_TRAINER] =
     {
         .bg = 0,
-        .tilemapLeft = 0,
-        .tilemapTop = 2,
+        .tilemapLeft = 30 - TRAINER_WIDTH,
+        .tilemapTop = 18,
         .width = TRAINER_WIDTH,
         .height = TRAINER_HEIGHT,
-        .paletteNum = 15,
+        .paletteNum = 0,
         .baseBlock = TRAINER_BASEBLOCK,
     },
     DUMMY_WIN_TEMPLATE
@@ -147,8 +147,8 @@ enum FontColor
 
 static const u8 sVictoryScreenWindowFontColors[][3] =
 {
-    [FONT_BLACK]  = {TEXT_COLOR_TRANSPARENT, 3,  4},
-    [FONT_WHITE]  = {TEXT_COLOR_TRANSPARENT, 1,  2},
+    [FONT_BLACK]  = {TEXT_COLOR_TRANSPARENT, 6,  9},
+    [FONT_WHITE]  = {TEXT_COLOR_TRANSPARENT, 1,  8},
     [FONT_FADED]  = {TEXT_COLOR_TRANSPARENT, 5,  6},
     [FONT_BLUE]   = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_BLUE,       TEXT_COLOR_LIGHT_GRAY},
 };
@@ -566,15 +566,15 @@ static void VictoryScreen_PrintText(void)
         break;
     }
     u32 width = GetStringWidth(FONT_NORMAL, str, 0);
-    AddTextPrinterParameterized4(WIN_TITLE, FONT_NORMAL, 120 - width / 2, 0, 0, 0, sVictoryScreenWindowFontColors[1], 0, str);
+    AddTextPrinterParameterized4(WIN_TITLE, FONT_NORMAL, 0, 4, 0, 0, sVictoryScreenWindowFontColors[FONT_BLACK], 0, str);
     CopyWindowToVram(WIN_TITLE, COPYWIN_GFX);
 
     u32 totalRisk = GetTotalTiskValue();
     u8 numStr[4];
     ConvertIntToDecimalStringN(numStr, totalRisk, STR_CONV_MODE_LEFT_ALIGN, 3);
     width = GetStringWidth(FONT_NORMAL, numStr, 0);
-    AddTextPrinterParameterized4(WIN_RISK, FONT_NORMAL, 16 - width / 2, 0, 0, 0, sVictoryScreenWindowFontColors[1], 0, numStr);
-    CopyWindowToVram(WIN_TITLE, COPYWIN_GFX);
+    AddTextPrinterParameterized4(WIN_RISK, FONT_NORMAL, 0, 4, 0, 0, sVictoryScreenWindowFontColors[FONT_WHITE], 0, numStr);
+    CopyWindowToVram(WIN_RISK, COPYWIN_GFX);
 
     u32 trainerId = gSaveBlock2Ptr->playerTrainerId[0] + (gSaveBlock2Ptr->playerTrainerId[1] << 8) + (gSaveBlock2Ptr->playerTrainerId[2] << 16) + (gSaveBlock2Ptr->playerTrainerId[3] << 24);
     u8 trainerStr[12];
@@ -639,7 +639,7 @@ static void VictoryScreen_PrintText(void)
     trainerStr[10] = EOS;
 
     width = GetStringWidth(FONT_NORMAL, trainerStr, 0);
-    AddTextPrinterParameterized4(WIN_TRAINER, FONT_NORMAL, 120 - width / 2, 0, 0, 0, sVictoryScreenWindowFontColors[1], 0, trainerStr);
+    AddTextPrinterParameterized4(WIN_TRAINER, FONT_NORMAL, 0, 0, 0, 0, sVictoryScreenWindowFontColors[1], 0, trainerStr);
     CopyWindowToVram(WIN_TRAINER, COPYWIN_GFX);
 }
 
@@ -652,24 +652,46 @@ static const u32 sMarkingsGfx[] = INCGFX_U32("graphics/interface/mon_markings.pn
 
 static void VictoryScreen_ShowMons(void)
 {
+    u32 xPos;
+    u32 yPos;
     LoadMonIconPalettes();
-    for (u32 i = 0; i < 6; i++)
-    {
-        if (sVictoryScreenState->species[i] == SPECIES_NONE)
-            break;
-        sVictoryScreenState->monSpriteIds[i] = CreateMonIcon(sVictoryScreenState->species[i], SpriteCB_Dummy, 20 + 40 * i, 80, 0, 0);
+    for(u32 y = 0; y < 3; y++){
+        for(u32 x = 0; x < 2; x++){
+            u32 i = x + 2 * y;
+            if (sVictoryScreenState->species[i] == SPECIES_NONE)
+                break;
+            xPos = 176 - y * 8 + x * 40;
+            yPos = 46 + y * 40;
+            sVictoryScreenState->monSpriteIds[i] = CreateMonIcon(sVictoryScreenState->species[i], SpriteCB_Dummy, xPos, yPos, 0, 0);
 
-        struct Even_CreateSpriteStruct cs = {0};
-        cs.sprite = &sMarkingsGfx[8 + 32 * sVictoryScreenState->numDupes[i]];
-        cs.tileTag = 6 + i;
-        cs.palette = sMarkingsPal;
-        cs.palTag = 6;
-        cs.spriteSize = SPRITE_SIZE(16x8);
-        cs.spriteShape = SPRITE_SHAPE(16x8);
-        cs.posX = 20 + 40 * i;
-        cs.posY = 100;
-        sVictoryScreenState->potSpriteIds[i] = Even_CreateSprite(&cs);
+            struct Even_CreateSpriteStruct cs = {0};
+            cs.sprite = &sMarkingsGfx[8 + 32 * sVictoryScreenState->numDupes[i]];
+            cs.tileTag = 6 + i;
+            cs.palette = sMarkingsPal;
+            cs.palTag = 6;
+            cs.spriteSize = SPRITE_SIZE(16x8);
+            cs.spriteShape = SPRITE_SHAPE(16x8);
+            cs.posX = xPos - 14;
+            cs.posY = yPos - 13;
+            sVictoryScreenState->potSpriteIds[i] = Even_CreateSprite(&cs);
+        }
     }
+    // {
+    //     if (sVictoryScreenState->species[i] == SPECIES_NONE)
+    //         break;
+    //     sVictoryScreenState->monSpriteIds[i] = CreateMonIcon(sVictoryScreenState->species[i], SpriteCB_Dummy, 20 + 40 * i, 80, 0, 0);
+
+    //     struct Even_CreateSpriteStruct cs = {0};
+    //     cs.sprite = &sMarkingsGfx[8 + 32 * sVictoryScreenState->numDupes[i]];
+    //     cs.tileTag = 6 + i;
+    //     cs.palette = sMarkingsPal;
+    //     cs.palTag = 6;
+    //     cs.spriteSize = SPRITE_SIZE(16x8);
+    //     cs.spriteShape = SPRITE_SHAPE(16x8);
+    //     cs.posX = 20 + 40 * i;
+    //     cs.posY = 100;
+    //     sVictoryScreenState->potSpriteIds[i] = Even_CreateSprite(&cs);
+    // }
 }
 
 static void VictoryScreen_LoadRisks(void)
@@ -686,8 +708,14 @@ static void VictoryScreen_LoadRisks(void)
             cs.palTag = 12;
             cs.spriteSize = SPRITE_SIZE(16x16);
             cs.spriteShape = SPRITE_SHAPE(16x16);
-            cs.posX = 8 + (numRisks % 15) * 16;
-            cs.posY = 120 + (numRisks / 15) * 16;
+            //cs.posX = 21 + (numRisks % 7) * 16;
+            //cs.posY = 48 + (numRisks / 7) * 16 + (((numRisks % 7 ) % 2) == 1 ? 5 : 0);
+
+            cs.posX = 21 + (numRisks % 7) * 16 + (((numRisks / 7 ) % 2) == 1 ? 5 : 0);
+            cs.posY = 50 + (numRisks / 7) * 18;
+
+            // cs.posX = 21 + (numRisks / 6) * 16 + (((numRisks % 6 ) % 2) == 1 ? 5 : 0);
+            // cs.posY = 50 + (numRisks % 6) * 19;
             sVictoryScreenState->riskSpriteIds[numRisks] = Even_CreateSprite(&cs);
             numRisks++;
         }
