@@ -96,6 +96,7 @@ const enum Risk sLinkedPool[] = { RISK_RANDOM_LEAD, RISK_USES_POOLS };
 const enum Risk sLinkedSpikes[] = { RISK_PLAYER_SPIKES_1, RISK_PLAYER_SPIKES_2, RISK_PLAYER_SPIKES_3 };
 const enum Risk sLinkedTSpikes[] = { RISK_PLAYER_TOXIC_SPIKES_1, RISK_PLAYER_TOXIC_SPIKES_2 };
 const enum Risk sLinkedAbilities[] = { RISK_PLAYER_HAS_PARENTAL_BOND, RISK_PLAYER_HAS_FILTER, RISK_PLAYER_HAS_PERISH_BODY, RISK_PLAYER_HAS_BEAST_BOOST };
+const enum Risk sLinkedPriority[] = { RISK_OPPONENT_ATTACKS_SWITCHES, RISK_OPPONENT_MOVES_FIRST };
 
 const enum Risk sLockedAbilitiyRisks[] =
 {
@@ -385,12 +386,16 @@ const struct RiskIcon sRiskData[] =
     },
     [RISK_OPPONENT_MOVES_FIRST] =
     {
+        .linkedRisks = sLinkedPriority,
+        .linkedCount = 2,
         .tiles = { COORD_TO_TILE(26, 28), COORD_TO_TILE(26, 29), COORD_TO_TILE(27, 28), COORD_TO_TILE(27, 29) },
         .name = COMPOUND_STRING("Initiative Priority"),
         .description = COMPOUND_STRING("Opponents moves first in their priority bracket."),
     },
     [RISK_OPPONENT_ATTACKS_SWITCHES] =
     {
+        .linkedRisks = sLinkedPriority,
+        .linkedCount = 2,
         .tiles = { COORD_TO_TILE(26, 30), COORD_TO_TILE(26, 31), COORD_TO_TILE(27, 30), COORD_TO_TILE(27, 31) },
         .name = COMPOUND_STRING("Formation Breaker"),
         .description = COMPOUND_STRING("Opponent attacks foribly switches the player.\nOpponents also moves last."),
@@ -1648,6 +1653,24 @@ static void ChangeTilemapPalettesBeforeLoad(void)
                 u16 palMask = PAL_INDEX_ACTIVE << 12;
                 u16 currVal = tilemapPtr[tileNum] & 0xFFF;
                 tilemapPtr[tileNum] = palMask | currVal;
+            }
+            if (sRiskData[risk].linkedCount > 0)
+            {
+                for (u32 i = 0; i < sRiskData[risk].linkedCount; i++)
+                {
+                    enum Risk tempRisk = sRiskData[risk].linkedRisks[i];
+                    if (risk != tempRisk)
+                    {
+                        for (u32 i = 0; i < 4; i++)
+                        {
+                            u32 tileNum = sRiskData[tempRisk].tiles[i];
+                            u16 *tilemapPtr = (u16 *)sBg1TilemapBuffer;
+                            u16 palMask = PAL_INDEX_LOCKED << 12;
+                            u16 currVal = tilemapPtr[tileNum] & 0xFFF;
+                            tilemapPtr[tileNum] = palMask | currVal;
+                        }
+                    }
+                }
             }
         }
         else if (sRiskData[risk].lockRisk != RISK_NONE)
