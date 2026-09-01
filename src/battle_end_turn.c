@@ -1423,6 +1423,151 @@ static bool32 HandleEndTurnEjectPack(enum BattlerId battler)
     return TrySwitchInEjectPack(END_TURN);
 }
 
+bool32 TrySwitchForced(void)
+{
+    s32 battler1PartyId = 0;
+    s32 battler2PartyId = 0;
+
+    s32 firstMonId;
+    s32 lastMonId = 0; // + 1
+    struct Pokemon *party = NULL;
+    u8 validMons[PARTY_SIZE];
+    s32 validMonsCount = 0;
+
+    bool32 hasMonToSwitch = FALSE;
+    enum BattlerId battler = 0;
+    for (u32 i = 0; i < gBattlersCount; i++)
+    {
+        if (gProtectStructs[i].shouldBeSwitched)
+        {
+            gProtectStructs[i].shouldBeSwitched = FALSE;
+            hasMonToSwitch = TRUE;
+            battler = i;
+            break;
+        }
+    }
+
+    if (!hasMonToSwitch)
+    {
+        return FALSE;
+    }
+
+    // Swapping Pokémon happens in:
+    // trainer battles
+    // wild double battles when an opposing Pokémon uses it against one of the two alive player mons
+    // wild double battle when a player Pokémon uses it against its partner
+    if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER))
+    {
+        party = GetBattlerParty(battler);
+
+        if (BATTLE_TWO_VS_ONE_OPPONENT && !IsOnPlayerSide(battler))
+        {
+            firstMonId = 0;
+            lastMonId = 6;
+            battler2PartyId = gBattlerPartyIndexes[battler];
+            battler1PartyId = gBattlerPartyIndexes[BATTLE_PARTNER(battler)];
+        }
+        else if ((gBattleTypeFlags & BATTLE_TYPE_BATTLE_TOWER && gBattleTypeFlags & BATTLE_TYPE_LINK)
+            || (gBattleTypeFlags & BATTLE_TYPE_BATTLE_TOWER && gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
+            || (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER))
+        {
+            if ((battler & BIT_FLANK) != B_FLANK_LEFT)
+            {
+                firstMonId = PARTY_SIZE / 2;
+                lastMonId = PARTY_SIZE;
+            }
+            else
+            {
+                firstMonId = 0;
+                lastMonId = PARTY_SIZE / 2;
+            }
+            battler2PartyId = gBattlerPartyIndexes[battler];
+            battler1PartyId = gBattlerPartyIndexes[BATTLE_PARTNER(battler)];
+        }
+        else if ((gBattleTypeFlags & BATTLE_TYPE_MULTI && gBattleTypeFlags & BATTLE_TYPE_LINK)
+                 || (gBattleTypeFlags & BATTLE_TYPE_MULTI && gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK))
+        {
+            firstMonId = 0;
+            lastMonId = PARTY_SIZE / 2;
+            battler2PartyId = gBattlerPartyIndexes[battler];
+            battler1PartyId = gBattlerPartyIndexes[BATTLE_PARTNER(battler)];
+        }
+        else if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
+        {
+            if (IsOnPlayerSide(battler))
+            {
+                firstMonId = 0;
+                lastMonId = PARTY_SIZE;
+            }
+            else
+            {
+                if ((battler & BIT_FLANK) != B_FLANK_LEFT)
+                {
+                    firstMonId = PARTY_SIZE / 2;
+                    lastMonId = PARTY_SIZE;
+                }
+                else
+                {
+                    firstMonId = 0;
+                    lastMonId = PARTY_SIZE / 2;
+                }
+            }
+            battler2PartyId = gBattlerPartyIndexes[battler];
+            battler1PartyId = gBattlerPartyIndexes[BATTLE_PARTNER(battler)];
+        }
+        else if (IsDoubleBattle())
+        {
+            firstMonId = 0;
+            lastMonId = PARTY_SIZE;
+            battler2PartyId = gBattlerPartyIndexes[battler];
+            battler1PartyId = gBattlerPartyIndexes[BATTLE_PARTNER(battler)];
+        }
+        else
+        {
+            firstMonId = 0;
+            lastMonId = PARTY_SIZE;
+            battler2PartyId = gBattlerPartyIndexes[battler]; // there is only one Pokémon out in single battles
+            battler1PartyId = gBattlerPartyIndexes[battler];
+        }
+
+        for (u32 i = firstMonId; i < lastMonId; i++)
+        {
+            if (GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE
+             && !GetMonData(&party[i], MON_DATA_IS_EGG)
+             && GetMonData(&party[i], MON_DATA_HP) != 0
+             && i != battler1PartyId
+             && i != battler2PartyId)
+             {
+                 validMons[validMonsCount++] = i;
+             }
+        }
+
+        if (validMonsCount == 0)
+        {
+            return FALSE;
+        }
+        else
+        {
+            gBattleStruct->battlerPartyIndexes[battler] = gBattlerPartyIndexes[battler];
+            gProtectStructs[battler].forcedSwitch = TRUE;
+            gBattleStruct->monToSwitchIntoId[battler] = validMons[RandomUniform(RNG_FORCE_RANDOM_SWITCH, 0, validMonsCount - 1)];
+
+            gEffectBattler = battler;
+
+            SwitchPartyOrder(battler);
+            BattleScriptCall(BattleScript_ForcedEndTurnSwitch);
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+static bool32 HandleEndTurnForcedSwitch(enum BattlerId battler)
+{
+    gBattleStruct->eventState.endTurn++;
+    return TrySwitchForced();
+}
+
 static bool32 TryEndTurnTrainerSlide(enum BattlerId battler)
 {
     return ((ShouldDoTrainerSlide(battler, TRAINER_SLIDE_LAST_LOW_HP) != TRAINER_SLIDE_TARGET_NONE)
@@ -1591,6 +1736,8 @@ static bool32 (*const sEndTurnEffectHandlers[])(enum BattlerId battler) =
     [ENDTURN_FORM_CHANGE] = HandleEndTurnFormChange,
     [ENDTURN_EJECT_PACK] = HandleEndTurnEjectPack,
     [ENDTURN_SEND_OUT_REPLACEMENTS_5] = HandleEndTurnSendOutReplacements,
+    [ENDTURN_FORCED_SWITCH_1] = HandleEndTurnForcedSwitch,
+    [ENDTURN_FORCED_SWITCH_2] = HandleEndTurnForcedSwitch,
     [ENDTURN_TRAINER_A_SLIDES] = HandleEndTurnTrainerASlides,
     [ENDTURN_TRAINER_B_SLIDES] = HandleEndTurnTrainerBSlides,
     [ENDTURN_TRAINER_PARTNER_SLIDES] = HandleEndTurnTrainerPartnerSlides,

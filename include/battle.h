@@ -101,7 +101,7 @@ struct ProtectStruct
     u8 physicalBattlerId:3;
     u8 specialBattlerId:3;
     u8 lastHitBySpecialMove:1;
-    u8 padding3:1;
+    u8 shouldBeSwitched:1;
 };
 
 struct StatStages

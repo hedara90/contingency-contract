@@ -3349,6 +3349,22 @@ BattleScript_BideNoEnergyToAttack::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_ButItFailed
 
+BattleScript_ForcedEndTurnSwitch::
+	returntoball BS_EFFECT_BATTLER, FALSE
+	waitstate
+	switchoutabilities BS_EFFECT_BATTLER
+	getswitchedmondata BS_EFFECT_BATTLER
+	switchindataupdate BS_EFFECT_BATTLER
+	trytoclearprimalweather
+	flushtextbox
+	switchinanim BS_EFFECT_BATTLER, FALSE, FALSE
+	waitstate
+	printstring STRINGID_PKMNWASDRAGGEDOUT
+	switchineffects BS_EFFECT_BATTLER
+	switchinevents
+	setbyte sSWITCH_CASE, B_SWITCH_NORMAL
+	return
+
 BattleScript_RoarSuccessSwitch::
 	call BattleScript_RoarSuccessRet
 	getswitchedmondata BS_TARGET

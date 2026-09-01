@@ -3858,6 +3858,14 @@ static enum MoveEndResult MoveEndOpponentForceSwitches(struct BattleCalcValues *
 {
     if (IsRiskActive(RISK_OPPONENT_ATTACKS_SWITCHES))
     {
+        if (IsOnPlayerSide(cv->battlerDef)
+         && IsBattlerTurnDamaged(cv->battlerDef, EXCLUDING_SUBSTITUTES)
+         && IsBattlerAlive(cv->battlerDef)
+         && gBattleStruct->battlerState[cv->battlerDef].commanderSpecies == SPECIES_NONE)
+        {
+            gProtectStructs[cv->battlerDef].shouldBeSwitched = TRUE;
+        }
+        /*
         while (gBattleStruct->eventState.moveEndBattler < gBattlersCount)
         {
             enum BattlerId battler = gBattleStruct->eventState.moveEndBattler++;
@@ -3899,6 +3907,7 @@ static enum MoveEndResult MoveEndOpponentForceSwitches(struct BattleCalcValues *
                     return MOVEEND_RESULT_RUN_SCRIPT;
             }
         }
+        */
     }
     gBattleStruct->eventState.moveEndBattler = 0;
     gBattleScripting.moveendState++;
