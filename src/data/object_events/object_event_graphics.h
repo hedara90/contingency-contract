@@ -647,3 +647,6 @@ const u16 gObjectEventPic_PidgeyOld[] = INCGFX_U16("graphics/object_events/pics/
 const u16 gObjectEventPic_ClefairyOld[] = INCGFX_U16("graphics/object_events/pics/pokemon_old/clefairy.png", ".4bpp", "-mwidth 2 -mheight 2");
 
 #endif // IS_FRLG
+
+const u32 gFieldEffectObjectPic_Saving[]    = INCGFX_U32("graphics/field_effects/pics/saving.png", ".4bpp", "-mwidth 8 -mheight 8");
+const u16 gFieldEffectObjectPaletteSaving[] = INCGFX_U16("graphics/field_effects/pics/saving.png", ".gbapal");

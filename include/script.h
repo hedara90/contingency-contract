@@ -67,6 +67,8 @@ void InitRamScript_NoObjectEvent(u8 *script, u16 scriptSize);
 bool32 Script_MatchesCallNative(const u8 *script, void *funcPtr, bool32 requestEffects);
 bool32 Script_MatchesSpecial(const u8 *script, void *funcPtr);
 
+void AutoSaveDoSave(void);
+
 // srccmd.h
 void SetMovingNpcId(u16 npcId);
 
