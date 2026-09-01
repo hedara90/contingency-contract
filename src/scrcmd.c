@@ -3629,3 +3629,12 @@ void DestroyOther(void)
         DestroySprite(&gSprites[spriteId]);
     }
 }
+
+bool8 OpenPartyGauntlet(struct ScriptContext *ctx)
+{
+    Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+
+    OpenPartyMenuDuringGauntlet();
+    ScriptContext_Stop();
+    return TRUE;
+}
