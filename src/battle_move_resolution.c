@@ -3861,6 +3861,7 @@ static enum MoveEndResult MoveEndOpponentForceSwitches(struct BattleCalcValues *
         if (IsOnPlayerSide(cv->battlerDef)
          && IsBattlerTurnDamaged(cv->battlerDef, EXCLUDING_SUBSTITUTES)
          && IsBattlerAlive(cv->battlerDef)
+         && cv->abilities[cv->battlerDef] != ABILITY_SUCTION_CUPS
          && gBattleStruct->battlerState[cv->battlerDef].commanderSpecies == SPECIES_NONE)
         {
             gProtectStructs[cv->battlerDef].shouldBeSwitched = TRUE;
