@@ -4907,9 +4907,6 @@ s32 GetBattleMovePriority(enum BattlerId battler, enum Ability ability, enum Mov
 
     priority = GetMovePriority(move);
 
-    if (IsRiskActive(RISK_OPPONENT_ATTACKS_SWITCHES) && !IsOnPlayerSide(battler) && !IsBattleMoveStatus(move))
-        priority = -6;
-
     // Max Guard check
     if (GetActiveGimmick(battler) == GIMMICK_DYNAMAX && GetMoveCategory(move) == DAMAGE_CATEGORY_STATUS)
         return GetMovePriority(MOVE_MAX_GUARD);

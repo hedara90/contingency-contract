@@ -734,4 +734,6 @@ extern const u8 BattleScript_AttackTorments[];
 extern const u8 BattleScript_RiskPerishBodyActivates[];
 extern const u8 BattleScript_RiskAbilityStatChange[];
 
+extern const u8 BattleScript_ForcedEndTurnSwitch[];
+
 #endif // GUARD_BATTLE_SCRIPTS_H

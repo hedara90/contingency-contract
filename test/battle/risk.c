@@ -488,7 +488,7 @@ SINGLE_BATTLE_TEST("Risk: Opponent inflicts Gastro Acid on attack")
     }
 }
 
-SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches")
+SINGLE_BATTLE_TEST("Risk: Opponent attacks makes targets be force switched at end of turn (singles)")
 {
     GIVEN {
         SetRisk(RISK_OPPONENT_ATTACKS_SWITCHES);
@@ -500,6 +500,26 @@ SINGLE_BATTLE_TEST("Risk: Opponent moves last but force switches")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponent);
         MESSAGE("Wynaut was dragged out!");
+    }
+}
+
+DOUBLE_BATTLE_TEST("Risk: Opponent attacks makes targets be force switched at end of turn (double)")
+{
+    GIVEN {
+        SetRisk(RISK_OPPONENT_ATTACKS_SWITCHES);
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_WYNAUT);
+        PLAYER(SPECIES_CHARMANDER);
+        PLAYER(SPECIES_BULBASAUR);
+        OPPONENT(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WYNAUT);
+    } WHEN {
+        TURN { MOVE(opponentLeft, MOVE_SCRATCH, target: playerLeft); MOVE(opponentRight, MOVE_SCRATCH, target: playerRight); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponentLeft);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponentRight);
+        MESSAGE("Bulbasaur was dragged out!");
+        MESSAGE("Charmander was dragged out!");
     }
 }
 
