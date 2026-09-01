@@ -692,3 +692,11 @@ void SetWalkingIntoSignVars(void)
     // gWalkAwayFromSignInhibitTimer = 6;
     // sMsgBoxIsCancelable = TRUE;
 }
+
+void AutoSave(void)
+{
+    ScriptContext_Stop();
+    AutoSaveDoSave();
+    FlagSet(FLAG_TEMP_F);
+    ScriptContext_Enable();
+}

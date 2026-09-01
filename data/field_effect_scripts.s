@@ -88,6 +88,11 @@ gFieldEffectScriptPointers::
 	.4byte gFieldEffectScript_HallOfFameRecordFrlg      @ FLDEFF_HALL_OF_FAME_RECORD_FRLG
 	.4byte gFldEffScript_PhotoFlash      		        @ FLDEFF_PHOTO_FLASH
 	.4byte gFieldEffectScript_OWE_SpawnAnim				@ FLDEFF_OW_ENCOUNTER_SPAWN_ANIM
+	.4byte gFieldEffectScript_Saving					@ FLDEFF_SAVING
+
+gFieldEffectScript_Saving::
+	field_eff_loadfadedpal_callnative gSpritePalette_SavingFieldEffect, FldEff_Saving
+	field_eff_end
 
 gFieldEffectScript_ExclamationMarkIcon1::
 	field_eff_callnative FldEff_ExclamationMarkIcon
