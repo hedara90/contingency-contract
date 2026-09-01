@@ -53,6 +53,9 @@
 
 #include "even_sprite.h"
 
+extern const u32 gFieldEffectObjectPic_Saving[];
+extern const u16 gFieldEffectObjectPaletteSaving[];
+
 // Menu actions
 enum
 {
@@ -653,6 +656,41 @@ void ShowStartMenu(void)
     CreateStartMenuTask(Task_ShowStartMenu);
     LockPlayerFieldControls();
 }
+void Even_SaveTask(u8 taskId)
+{
+    switch (gTasks[taskId].data[0])
+    {
+    case 0:
+    {
+        struct Even_CreateSpriteStruct cs = {0};
+        cs.sprite = gFieldEffectObjectPic_Saving;
+        cs.palette = gFieldEffectObjectPaletteSaving;
+        cs.tileTag = 0xBAD3;
+        cs.palTag = 0xBAD3;
+        cs.spriteSize = SPRITE_SIZE(64x64);
+        cs.spriteShape = SPRITE_SHAPE(64x64);
+        cs.posX = 120;
+        cs.posY = 120;
+        gTasks[taskId].data[1] = Even_CreateSprite(&cs);
+        //  Display save sprite
+        gTasks[taskId].data[0]++;
+        break;
+    }
+    case 1:
+        //  Start saving
+        AutoSaveDoSave();
+        gTasks[taskId].data[0]++;
+        break;
+    case 2:
+        //  Remove save sprite
+        DestroySprite(&gSprites[gTasks[taskId].data[1]]);
+        FreeSpriteTilesByTag(0xBAD3);
+        FreeSpritePaletteByTag(0xBAD3);
+        UnlockPlayerFieldControls();
+        DestroyTask(taskId);
+        break;
+    }
+}
 
 static bool8 HandleStartMenuInput(void)
 {
@@ -710,6 +748,14 @@ static bool8 HandleStartMenuInput(void)
             HideCCSTartMenu();
         }
         sStartMenuCursorPos = 4;
+
+        if (gMenuCallback == StartMenuSaveCallback)
+        {
+            LockPlayerFieldControls();
+            u32 taskId = CreateTask(Even_SaveTask, 0);
+            gTasks[taskId].data[0] = 0;
+            return TRUE;
+        }
 
         return FALSE;
     }
@@ -1631,4 +1677,15 @@ static void SetCCStartSpriteToActive(u32 id)
             slot = sCCMenuPalSlots[1];
         gSprites[sCCMenuSpriteIds[i]].oam.paletteNum = slot;
     }
+}
+
+void AutoSaveDoSave(void)
+{
+    u8 saveStatus;
+    SaveMapView();
+    sSavingComplete = FALSE;
+    IncrementGameStat(GAME_STAT_SAVED_GAME);
+    saveStatus = TrySavingData(SAVE_NORMAL);
+    gDifferentSaveFile = FALSE;
+    return;
 }

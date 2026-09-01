@@ -2974,3 +2974,11 @@
 	.byte \gauntlet
 	.byte \fromsave
 	.endm
+
+	@ Performs a Save Without the Save Menu
+	.macro autosave
+	clearflag FLAG_TEMP_F
+	dofieldeffect(FLDEFF_SAVING)
+	waitfieldeffect(FLDEFF_SAVING)
+	callnative AutoSave
+	.endm
