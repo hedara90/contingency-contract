@@ -31,36 +31,149 @@ script AbyssalHunters_StartBattle {
     switch(var(VAR_GAUNTLET_POSITION)) {
         case 0: 
             call(Gauntlet_OpponentMovement_BeforeBattle)
-            trainerbattle_no_intro(TRAINER_SPECTER, AbyssalHuntersAfter)
-            msgbox("Good battle!")
-            closemessage
+            call(AbyssalHunters_Specter)
             call(Gauntlet_PostBattle)
             goto(AbyssalHunters_StartBattle)
         case 1:
             call(Gauntlet_OpponentMovement_BeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
-            trainerbattle_no_intro(TRAINER_GLADIIA, AbyssalHuntersAfter)
-            msgbox("Good battle!")
-            closemessage
+            call(AbyssalHunters_Gladiia)
             call(Gauntlet_PostBattle)
             goto(AbyssalHunters_StartBattle)
         case 2:
             call(Gauntlet_OpponentMovement_BeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
-            trainerbattle_no_intro(TRAINER_SKADI, AbyssalHuntersAfter)
-            msgbox("Good battle!")
-            closemessage
+            call(AbyssalHunters_Skadi)
             call(Gauntlet_PostBattle)
             goto(AbyssalHunters_StartBattle)
         case 3:
             call(Gauntlet_OpponentMovement_BeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
-            trainerbattle_no_intro(TRAINER_ULPIANUS, AbyssalHuntersAfter)
-            msgbox("Good battle!")
-            closemessage
+            call(AbyssalHunters_Ulpianus)
             call(Gauntlet_PostBattle)
     }
 }
+
+script AbyssalHunters_Specter {
+    msgbox(SpecterBeforeBattle)
+    trainerbattle_no_intro(TRAINER_SPECTER, SpecterAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    if(var(VAR_RESULT)==1){
+        msgbox(SpecterAfterBattle_Lose)
+    }
+    else {
+        msgbox(SpecterAfterBattle_Win)
+    }
+    return
+}
+
+text SpecterBeforeBattle {
+    "Hello"
+}
+
+text SpecterAfterBattle {
+    ""
+}
+
+text SpecterAfterBattle_Win {
+    ""
+}
+
+text SpecterAfterBattle_Lose {
+    ""
+}
+
+script AbyssalHunters_Gladiia {
+    msgbox(GladiiaBeforeBattle)
+    trainerbattle_no_intro(TRAINER_SPECTER, GladiiaAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    if(var(VAR_RESULT)==1){
+        msgbox(GladiiaAfterBattle_Lose)
+    }
+    else {
+        msgbox(GladiiaAfterBattle_Win)
+    }
+    return
+}
+
+text GladiiaBeforeBattle {
+    "Hello"
+}
+
+text GladiiaAfterBattle {
+    ""
+}
+
+text GladiiaAfterBattle_Win {
+    ""
+}
+
+text GladiiaAfterBattle_Lose {
+    ""
+}
+
+script AbyssalHunters_Skadi {
+    msgbox(SkadiBeforeBattle)
+    trainerbattle_no_intro(TRAINER_SPECTER, SkadiAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    if(var(VAR_RESULT)==1){
+        msgbox(SkadiAfterBattle_Lose)
+    }
+    else {
+        msgbox(SkadiAfterBattle_Win)
+    }
+    return
+}
+
+text SkadiBeforeBattle {
+    "Hello"
+}
+
+text SkadiAfterBattle {
+    ""
+}
+
+text SkadiAfterBattle_Win {
+    ""
+}
+
+text SkadiAfterBattle_Lose {
+    ""
+}
+
+script AbyssalHunters_Ulpianus {
+    msgbox(UlpianusBeforeBattle)
+    trainerbattle_no_intro(TRAINER_SPECTER, UlpianusAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    if(var(VAR_RESULT)==1){
+        msgbox(UlpianusAfterBattle_Lose)
+    }
+    else {
+        msgbox(UlpianusAfterBattle_Win)
+    }
+    return
+}
+
+text UlpianusBeforeBattle {
+    "Hello"
+}
+
+text UlpianusAfterBattle {
+    ""
+}
+
+text UlpianusAfterBattle_Win {
+    ""
+}
+
+text UlpianusAfterBattle_Lose {
+    ""
+}
+
 
 text AbyssalHuntersAfter {
     "After battle."
