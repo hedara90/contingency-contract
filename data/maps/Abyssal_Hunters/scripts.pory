@@ -30,6 +30,8 @@ script AbyssalHunters_OnGauntletStart {
 script AbyssalHunters_StartBattle {
     switch(var(VAR_GAUNTLET_POSITION)) {
         case 0: 
+            applymovement(LOCALID_ONE, moves(walk_left*2))
+            waitmovement
             call(Gauntlet_OpponentMovement_BeforeBattle)
             call(AbyssalHunters_Specter)
             call(Gauntlet_PostBattle)
@@ -59,11 +61,11 @@ script AbyssalHunters_Specter {
     trainerbattle_no_intro(TRAINER_SPECTER, SpecterAfterBattle)
     // msgbox("Good battle!")
     closemessage
-    if(var(VAR_RESULT)==1){
-        msgbox(SpecterAfterBattle_Lose)
-    }
-    else {
-        msgbox(SpecterAfterBattle_Win)
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(SpecterAfterBattle_Lose)
+        case 1:
+            msgbox(SpecterAfterBattle_Win)
     }
     return
 }
@@ -89,11 +91,11 @@ script AbyssalHunters_Gladiia {
     trainerbattle_no_intro(TRAINER_SPECTER, GladiiaAfterBattle)
     // msgbox("Good battle!")
     closemessage
-    if(var(VAR_RESULT)==1){
-        msgbox(GladiiaAfterBattle_Lose)
-    }
-    else {
-        msgbox(GladiiaAfterBattle_Win)
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(GladiiaAfterBattle_Lose)
+        case 1:
+            msgbox(GladiiaAfterBattle_Win)
     }
     return
 }
@@ -119,11 +121,11 @@ script AbyssalHunters_Skadi {
     trainerbattle_no_intro(TRAINER_SPECTER, SkadiAfterBattle)
     // msgbox("Good battle!")
     closemessage
-    if(var(VAR_RESULT)==1){
-        msgbox(SkadiAfterBattle_Lose)
-    }
-    else {
-        msgbox(SkadiAfterBattle_Win)
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(SkadiAfterBattle_Lose)
+        case 1:
+            msgbox(SkadiAfterBattle_Win)
     }
     return
 }
@@ -149,11 +151,11 @@ script AbyssalHunters_Ulpianus {
     trainerbattle_no_intro(TRAINER_SPECTER, UlpianusAfterBattle)
     // msgbox("Good battle!")
     closemessage
-    if(var(VAR_RESULT)==1){
-        msgbox(UlpianusAfterBattle_Lose)
-    }
-    else {
-        msgbox(UlpianusAfterBattle_Win)
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(UlpianusAfterBattle_Lose)
+        case 1:
+            msgbox(UlpianusAfterBattle_Win)
     }
     return
 }

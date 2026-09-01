@@ -1,95 +1,179 @@
-mapscripts AK_Green_MapScripts {}
+mapscripts AK_Green_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: AKGreen_OnTransition
+    MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
+        VAR_TEMP_5, 0: AKGreen_Setup
+    ]
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_TEMP_5, 0: AKGreen_OnGauntletStart
+    ]
+}
 
 const player = OBJ_EVENT_ID_PLAYER
+const tiana = LOCALID_TIANA
 
-script AKGreenAttendant {
-    lock
-    faceplayer
-    msgbox("This is a message.")
-    callnative(PopulateRandomYesNoChoice)
-    dynmultistack(0, 0, TRUE, 2, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
-    //dynmultichoice(0, 0, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE,
-    //                "Yeppers",
-    //                "Not yet")
-    switch(var(VAR_RESULT)) {
-    case 0:
-        closemessage
-        goto(AKGreenStartBattle)
-    case 1:
-        closemessage
-        release
+script AKGreen_OnTransition {
+    if(var(VAR_GAUNTLET_POSITION)==0){
+        setobjectxyperm(tiana, 10, 11)
     }
 }
 
-script AKGreenStartBattle {
-    getobjectfacingdirection(LOCALID_ATTENDANT, VAR_TEMP_1)
-    switch(var(VAR_TEMP_1)) {
-    case 1: // Down
-        applymovement(player, moves(walk_right * 2))
-    case 2: // Up
-        applymovement(player, moves(walk_right, walk_down * 2, walk_right * 3))
-    case 3: // Left
-        applymovement(player, moves(walk_down, walk_right * 3))
-    case 4: // Right
-        applymovement(player, moves(walk_down, walk_right * 3))
-    }
-    waitmovement
+script AKGreen_Setup {
+    hideobjectat(player, MAP_AK_GREEN)
+}
+
+script AKGreen_OnGauntletStart {
+    setvar(VAR_TEMP_5, 1)
+    call(Gauntlet_SetupCamera)
+    goto(AKGreen_StartBattle)
+}
+
+script AKGreen_StartBattle {
     switch(var(VAR_GAUNTLET_POSITION)) {
-    case 0:
-        //applymovement(LOCALID_ONE, moves( walk_left * 2))
-        waitmovement
-        trainerbattle_no_intro(TRAINER_CARNELIAN, AKGreenAfter)
-        msgbox("Good battle!")
-        closemessage
-        //applymovement(LOCALID_ONE, moves(walk_up * 2))
-        waitmovement
-    case 1:
-        //applymovement(LOCALID_TWO, moves(walk_left * 2))
-        waitmovement
-        trainerbattle_no_intro(TRAINER_PENANCE, AKGreenAfter)
-        msgbox("Good battle!")
-        //applymovement(LOCALID_TWO, moves(walk_up * 1))
-        waitmovement
-    case 2:
-        //applymovement(LOCALID_THREE, moves(walk_left * 2))
-        waitmovement
-        trainerbattle_no_intro(TRAINER_PRAMANIX, AKGreenAfter)
-        msgbox("Good battle!")
-        //applymovement(LOCALID_THREE, moves(walk_down * 1))
-        waitmovement
-    case 3:
-        //applymovement(LOCALID_FOUR, moves(walk_left * 2))
-        waitmovement
-        trainerbattle_no_intro(TRAINER_FIAMETTA, AKGreenAfter)
-        msgbox("Good battle!")
-        //applymovement(LOCALID_FOUR, moves(walk_down * 2))
-        waitmovement
+        case 0: 
+            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(AKGreen_Carnelian)
+            call(Gauntlet_PostBattle)
+            goto(AKGreen_StartBattle)
+        case 1:
+            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MovePlayerBeforeBattle)
+            call(AKGreen_Penance)
+            call(Gauntlet_PostBattle)
+            goto(AKGreen_StartBattle)
+        case 2:
+            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MovePlayerBeforeBattle)
+            call(AKGreen_Pramanix)
+            call(Gauntlet_PostBattle)
+            goto(AKGreen_StartBattle)
+        case 3:
+            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MovePlayerBeforeBattle)
+            call(AKGreen_Fiametta)
+            call(Gauntlet_PostBattle)
     }
-    switch(var(VAR_RESULT)) {
-    default: // Lost battle
-        special(HealPlayerParty)
-        msgbox("wat")
-        waitmessage
-        warpsilent(MAP_CONVENTION_CENTER, 21, 24)
-        waitstate
-    case 1: // Won battle
-        addvar(VAR_GAUNTLET_POSITION, 1)
-    }
-    if (var(VAR_GAUNTLET_POSITION) == 4) {
-        // Gauntlet won, give reward and display victory screen
-        // Then return to the main area
-        special(HealPlayerParty)
-        msgbox("You got ¥500 for winning!")
-        waitmessage
-        addmoney(500)
-        victoryscreen(GAUNTLET_AK_GREEN, FALSE)
-        waitstate
-        warpsilent(MAP_CONVENTION_CENTER, 21, 24)
-        waitstate
-    }
-    release
-    end
 }
+
+script AKGreen_Carnelian {
+    msgbox(CarnelianBeforeBattle)
+    trainerbattle_no_intro(TRAINER_CARNELIAN, CarnelianAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(CarnelianAfterBattle_Lose)
+        case 1:
+            msgbox(CarnelianAfterBattle_Win)
+    }
+    return
+}
+
+text CarnelianBeforeBattle {
+    "Hello"
+}
+
+text CarnelianAfterBattle {
+    ""
+}
+
+text CarnelianAfterBattle_Win {
+    ""
+}
+
+text CarnelianAfterBattle_Lose {
+    ""
+}
+
+script AKGreen_Penance {
+    msgbox(PenanceBeforeBattle)
+    trainerbattle_no_intro(TRAINER_PENANCE, PenanceAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(PenanceAfterBattle_Lose)
+        case 1:
+            msgbox(PenanceAfterBattle_Win)
+    }
+    return
+}
+
+text PenanceBeforeBattle {
+    "Hello"
+}
+
+text PenanceAfterBattle {
+    ""
+}
+
+text PenanceAfterBattle_Win {
+    ""
+}
+
+text PenanceAfterBattle_Lose {
+    ""
+}
+
+script AKGreen_Pramanix {
+    msgbox(PramanixBeforeBattle)
+    trainerbattle_no_intro(TRAINER_PRAMANIX, PramanixAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(PramanixAfterBattle_Lose)
+        case 1:
+            msgbox(PramanixAfterBattle_Win)
+    }
+    return
+}
+
+text PramanixBeforeBattle {
+    "Hello"
+}
+
+text PramanixAfterBattle {
+    ""
+}
+
+text PramanixAfterBattle_Win {
+    ""
+}
+
+text PramanixAfterBattle_Lose {
+    ""
+}
+
+script AKGreen_Fiametta {
+    msgbox(FiamettaBeforeBattle)
+    trainerbattle_no_intro(TRAINER_FIAMETTA, FiamettaAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(FiamettaAfterBattle_Lose)
+        case 1:
+            msgbox(FiamettaAfterBattle_Win)
+    }
+    return
+}
+
+text FiamettaBeforeBattle {
+    "Hello"
+}
+
+text FiamettaAfterBattle {
+    ""
+}
+
+text FiamettaAfterBattle_Win {
+    ""
+}
+
+text FiamettaAfterBattle_Lose {
+    ""
+}
+
 
 text AKGreenAfter {
     "After battle."

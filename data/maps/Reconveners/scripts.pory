@@ -1,95 +1,179 @@
-mapscripts Reconveners_MapScripts {}
+mapscripts Reconveners_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: Reconveners_OnTransition
+    MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
+        VAR_TEMP_5, 0: Reconveners_Setup
+    ]
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_TEMP_5, 0: Reconveners_OnGauntletStart
+    ]
+}
 
 const player = OBJ_EVENT_ID_PLAYER
+const tiana = LOCALID_TIANA
 
-script ReconvenersAttendant {
-    lock
-    faceplayer
-    msgbox("This is a message.")
-    callnative(PopulateRandomYesNoChoice)
-    dynmultistack(0, 0, TRUE, 2, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
-    //dynmultichoice(0, 0, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE,
-    //                "Yeppers",
-    //                "Not yet")
-    switch(var(VAR_RESULT)) {
-    case 0:
-        closemessage
-        goto(ReconvenersStartBattle)
-    case 1:
-        closemessage
-        release
+script Reconveners_OnTransition {
+    if(var(VAR_GAUNTLET_POSITION)==0){
+        setobjectxyperm(tiana, 10, 11)
     }
 }
 
-script ReconvenersStartBattle {
-    getobjectfacingdirection(LOCALID_ATTENDANT, VAR_TEMP_1)
-    switch(var(VAR_TEMP_1)) {
-    case 1: // Down
-        applymovement(player, moves(walk_right * 2))
-    case 2: // Up
-        applymovement(player, moves(walk_right, walk_down * 2, walk_right * 3))
-    case 3: // Left
-        applymovement(player, moves(walk_down, walk_right * 3))
-    case 4: // Right
-        applymovement(player, moves(walk_down, walk_right * 3))
-    }
-    waitmovement
+script Reconveners_Setup {
+    hideobjectat(player, MAP_RECONVENERS)
+}
+
+script Reconveners_OnGauntletStart {
+    setvar(VAR_TEMP_5, 1)
+    call(Gauntlet_SetupCamera)
+    goto(Reconveners_StartBattle)
+}
+
+script Reconveners_StartBattle {
     switch(var(VAR_GAUNTLET_POSITION)) {
-    case 0:
-        //applymovement(LOCALID_ONE, moves(walk_down * 2, walk_left * 2))
-        waitmovement
-        trainerbattle_no_intro(TRAINER_ARDELIA, ReconvenersAfter)
-        msgbox("Good battle!")
-        closemessage
-        //applymovement(LOCALID_ONE, moves(walk_right * 2, walk_up * 2))
-        waitmovement
-    case 1:
-        //applymovement(LOCALID_TWO, moves(walk_down * 1, walk_left * 2))
-        waitmovement
-        trainerbattle_no_intro(TRAINER_POG, ReconvenersAfter)
-        msgbox("Good battle!")
-        //applymovement(LOCALID_TWO, moves(walk_right * 2, walk_up * 1))
-        waitmovement
-    case 2:
-        //applymovement(LOCALID_THREE, moves(walk_up * 1, walk_left * 2))
-        waitmovement
-        trainerbattle_no_intro(TRAINER_GILBERTA, ReconvenersAfter)
-        msgbox("Good battle!")
-        //applymovement(LOCALID_THREE, moves(walk_right * 2, walk_down * 1))
-        waitmovement
-    case 3:
-        //applymovement(LOCALID_FOUR, moves(walk_up * 2, walk_left * 2))
-        waitmovement
-        trainerbattle_no_intro(TRAINER_LAEVATAIN, ReconvenersAfter)
-        msgbox("Good battle!")
-        //applymovement(LOCALID_FOUR, moves(walk_right * 2, walk_down * 2))
-        waitmovement
+        case 0: 
+            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Reconveners_Ardelia)
+            call(Gauntlet_PostBattle)
+            goto(Reconveners_StartBattle)
+        case 1:
+            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MovePlayerBeforeBattle)
+            call(Reconveners_Pogranichnik)
+            call(Gauntlet_PostBattle)
+            goto(Reconveners_StartBattle)
+        case 2:
+            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MovePlayerBeforeBattle)
+            call(Reconveners_Gilberta)
+            call(Gauntlet_PostBattle)
+            goto(Reconveners_StartBattle)
+        case 3:
+            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MovePlayerBeforeBattle)
+            call(Reconveners_Laevatain)
+            call(Gauntlet_PostBattle)
     }
-    switch(var(VAR_RESULT)) {
-    default: // Lost battle
-        special(HealPlayerParty)
-        msgbox("wat")
-        waitmessage
-        warpsilent(MAP_CONVENTION_CENTER, 21, 24)
-        waitstate
-    case 1: // Won battle
-        addvar(VAR_GAUNTLET_POSITION, 1)
-    }
-    if (var(VAR_GAUNTLET_POSITION) == 4) {
-        // Gauntlet won, give reward and display victory screen
-        // Then return to the main area
-        special(HealPlayerParty)
-        msgbox("You got ¥500 for winning!")
-        waitmessage
-        addmoney(500)
-        victoryscreen(GAUNTLET_RECONVENERS, FALSE)
-        waitstate
-        warpsilent(MAP_CONVENTION_CENTER, 21, 24)
-        waitstate
-    }
-    release
-    end
 }
+
+script Reconveners_Ardelia {
+    msgbox(ArdeliaBeforeBattle)
+    trainerbattle_no_intro(TRAINER_ARDELIA, ArdeliaAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(ArdeliaAfterBattle_Lose)
+        case 1:
+            msgbox(ArdeliaAfterBattle_Win)
+    }
+    return
+}
+
+text ArdeliaBeforeBattle {
+    "Hello"
+}
+
+text ArdeliaAfterBattle {
+    ""
+}
+
+text ArdeliaAfterBattle_Win {
+    ""
+}
+
+text ArdeliaAfterBattle_Lose {
+    ""
+}
+
+script Reconveners_Pogranichnik {
+    msgbox(PogranichnikBeforeBattle)
+    trainerbattle_no_intro(TRAINER_POG, PogranichnikAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(PogranichnikAfterBattle_Lose)
+        case 1:
+            msgbox(PogranichnikAfterBattle_Win)
+    }
+    return
+}
+
+text PogranichnikBeforeBattle {
+    "Hello"
+}
+
+text PogranichnikAfterBattle {
+    ""
+}
+
+text PogranichnikAfterBattle_Win {
+    ""
+}
+
+text PogranichnikAfterBattle_Lose {
+    ""
+}
+
+script Reconveners_Gilberta {
+    msgbox(GilbertaBeforeBattle)
+    trainerbattle_no_intro(TRAINER_GILBERTA, GilbertaAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(GilbertaAfterBattle_Lose)
+        case 1:
+            msgbox(GilbertaAfterBattle_Win)
+    }
+    return
+}
+
+text GilbertaBeforeBattle {
+    "Hello"
+}
+
+text GilbertaAfterBattle {
+    ""
+}
+
+text GilbertaAfterBattle_Win {
+    ""
+}
+
+text GilbertaAfterBattle_Lose {
+    ""
+}
+
+script Reconveners_Laevatain {
+    msgbox(LaevatainBeforeBattle)
+    trainerbattle_no_intro(TRAINER_LAEVATAIN, LaevatainAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(LaevatainAfterBattle_Lose)
+        case 1:
+            msgbox(LaevatainAfterBattle_Win)
+    }
+    return
+}
+
+text LaevatainBeforeBattle {
+    "Hello"
+}
+
+text LaevatainAfterBattle {
+    ""
+}
+
+text LaevatainAfterBattle_Win {
+    ""
+}
+
+text LaevatainAfterBattle_Lose {
+    ""
+}
+
 
 text ReconvenersAfter {
     "After battle."
