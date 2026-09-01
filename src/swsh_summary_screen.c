@@ -6400,6 +6400,10 @@ const u16 sPotentialPal[] = INCGFX_U16("graphics/summary_screen/swsh/potentials.
 
 static void CreateMonMarkingsSprite(struct Pokemon *mon)
 {
+    if (sMonSummaryScreen->currPageIndex != PSS_PAGE_INFO)
+    {
+        return;
+    }
     /*
     struct Sprite *sprite = CreateMonMarkingComboSprite(TAG_MON_MARKINGS, TAG_CATEGORY_ICONS, sCategoryIcons_Pal);
 
