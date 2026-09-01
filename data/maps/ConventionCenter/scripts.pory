@@ -353,76 +353,22 @@ script ChooseGauntlet {
         release
         end
     case 1:
-        switch(var(VAR_TEMP_1)) {
-        case 1:
-            warpsilent(MAP_CRISIS_TEAM, 10, 11)
-        case 2:
-            warpsilent(MAP_CRISIS_TEAM, 10, 11)
-        case 3:
-            warpsilent(MAP_CRISIS_TEAM, 9, 10)
-        case 4:
-            warpsilent(MAP_CRISIS_TEAM, 10, 11)
-        }
+        warpsilent(MAP_CRISIS_TEAM, 14, 11)
         waitstate
     case 2:
-        switch(var(VAR_TEMP_1)) {
-        case 1:
-            warpsilent(MAP_WULING, 10, 11)
-        case 2:
-            warpsilent(MAP_WULING, 10, 11)
-        case 3:
-            warpsilent(MAP_WULING, 9, 10)
-        case 4:
-            warpsilent(MAP_WULING, 10, 11)
-        }
+        warpsilent(MAP_WULING, 14, 11)
         waitstate
     case 3:
-        switch(var(VAR_TEMP_1)) {
-        case 1:
-            warpsilent(MAP_RECONVENERS, 10, 11)
-        case 2:
-            warpsilent(MAP_RECONVENERS, 10, 11)
-        case 3:
-            warpsilent(MAP_RECONVENERS, 9, 10)
-        case 4:
-            warpsilent(MAP_RECONVENERS, 10, 11)
-        }
+        warpsilent(MAP_RECONVENERS, 14, 11)
         waitstate
     case 4:
-        switch(var(VAR_TEMP_1)) {
-        case 1:
-            warpsilent(MAP_ABYSSAL_HUNTERS, 10, 11)
-        case 2:
-            warpsilent(MAP_ABYSSAL_HUNTERS, 10, 11)
-        case 3:
-            warpsilent(MAP_ABYSSAL_HUNTERS, 9, 10)
-        case 4:
-            warpsilent(MAP_ABYSSAL_HUNTERS, 10, 11)
-        }
+        warpsilent(MAP_ABYSSAL_HUNTERS, 14, 11)
         waitstate
     case 5:
-        switch(var(VAR_TEMP_1)) {
-        case 1:
-            warpsilent(MAP_AK_YELLOW, 10, 11)
-        case 2:
-            warpsilent(MAP_AK_YELLOW, 10, 11)
-        case 3:
-            warpsilent(MAP_AK_YELLOW, 9, 10)
-        case 4:
-            warpsilent(MAP_AK_YELLOW, 10, 11)
-        }
+        warpsilent(MAP_AK_YELLOW, 14, 11)
         waitstate
     case 6:
-        switch(var(VAR_TEMP_1)) {
-        case 1:
-            warpsilent(MAP_AK_GREEN, 10, 11)
-        case 2:
-            warpsilent(MAP_AK_GREEN, 10, 11)
-        case 3:
-            warpsilent(MAP_AK_GREEN, 9, 10)
-        case 4:
-            warpsilent(MAP_AK_GREEN, 10, 11)
-        }
+        warpsilent(MAP_AK_GREEN, 14, 11)
         waitstate
     default:
         msgbox("Hope you'll be back soon!")

@@ -1,0 +1,119 @@
+const camera = LOCALID_CAMERA
+const player = LOCALID_PLAYER
+const tiana = LOCALID_TIANA
+
+
+script Gauntlet_SetupCamera {
+    // special(SpawnCameraObject)
+    // applymovement(camera, moves(walk_right*3))
+    applymovement(tiana, moves(walk_right*2))
+    applymovement(player, moves(walk_right*3))
+    waitmovement(camera)
+    return
+}
+
+script Gauntlet_MovePlayerBeforeBattle {
+    applymovement(tiana, moves(walk_right*2))
+    applymovement(player, moves(walk_right*4))
+    waitmovement(player)
+}
+
+script Gauntlet_OpponentMovement_BeforeBattle {
+    switch(var(VAR_GAUNTLET_POSITION)){
+        case 0: applymovement(LOCALID_ONE, moves(walk_left*3))
+        case 1: applymovement(LOCALID_TWO, moves(walk_left*3))
+        case 2: applymovement(LOCALID_THREE, moves(walk_left*3))
+        case 3: applymovement(LOCALID_FOUR, moves(walk_left*3))
+    }
+    waitmovement
+}
+
+script Gauntlet_PostBattle {
+    call(Gauntlet_CheckBattleResult)
+    call(Gauntlet_OpponentMovement_AfterBattle)
+    call(Gauntlet_Attendant)
+}
+
+script Gauntlet_OpponentMovement_AfterBattle {
+    switch(var(VAR_GAUNTLET_POSITION)){
+        case 0: applymovement(LOCALID_ONE, moves(walk_right*3))
+        case 1: applymovement(LOCALID_TWO, moves(walk_right*3))
+        case 2: applymovement(LOCALID_TWO, moves(walk_right*3))
+        case 3: applymovement(LOCALID_THREE, moves(walk_right*3))
+    }
+    waitmovement
+}
+
+script Gauntlet_Attendant {
+    // special(SpawnCameraObject)
+    applymovement(tiana, moves(walk_left*2, face_up))
+    applymovement(player, moves(walk_left*4))
+    waitmovement(player)
+    msgbox("Well done! your next opponent will be X")
+    goto(Gauntlet_Multichoice)
+}
+
+script Gauntlet_Multichoice {
+    dynmultichoice(12,0, TRUE, 4, 0, DYN_MULTICHOICE_CB_NONE,
+        "I'm good to go!",
+        "Save progress",
+        "Adjust party members",
+        "Quit")
+    switch(var(VAR_RESULT)){
+        case 0:
+            goto(Gauntlet_Confirmation)
+        case 1: 
+            msgbox("Save game")
+            goto(Gauntlet_Multichoice_Loop)
+        case 2:
+            callnative(OpenPartyGauntlet)
+            waitstate
+            goto(Gauntlet_Multichoice_Loop)
+        case 3:
+            special(HealPlayerParty)
+            warpsilent(MAP_CONVENTION_CENTER, 21, 24)
+            waitstate
+    }
+}
+
+script Gauntlet_Multichoice_Loop {
+    msgbox("Anything else?")
+    goto(Gauntlet_Multichoice)
+}
+
+script Gauntlet_Confirmation {
+    msgbox("Are you ready for the next fight?")
+    callnative(PopulateRandomYesNoChoice)
+    dynmultistack(0, 0, TRUE, 2, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
+    switch(var(VAR_RESULT))    {
+        case 0:
+            closemessage
+            return
+        case 1:
+            closemessage
+            goto(Gauntlet_Multichoice_Loop)
+    }
+}
+
+script Gauntlet_CheckBattleResult {
+    switch(var(VAR_RESULT)) {
+    default: // Lost battle
+        special(HealPlayerParty)
+        msgbox("wat")
+        waitmessage
+        warpsilent(MAP_CONVENTION_CENTER, 21, 24)
+        waitstate
+    case 1: // Won battle
+        addvar(VAR_GAUNTLET_POSITION, 1)
+    }
+    if(var(VAR_GAUNTLET_POSITION)== 4){
+        special(HealPlayerParty)
+        msgbox("You got ¥500 for winning!")
+        waitmessage
+        addmoney(500)
+        victoryscreen(GAUNTLET_ABYSSAL_HUNTERS, FALSE)
+        waitstate
+        warpsilent(MAP_CONVENTION_CENTER, 21, 24)
+        waitstate
+    }
+}

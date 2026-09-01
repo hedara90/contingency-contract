@@ -580,6 +580,8 @@ static void FieldCallback_RockClimb(void);
 static void SavePartyMenuStateForPC(void);
 void CB2_ReopenPartyMenuFromPC(void);
 #endif
+static void Task_OpenPartyMenuDuringGauntlet(u8 taskId);
+void OpenPartyMenuDuringGauntlet(void);
 // Multiuse item code from Kasen
 static void DisplayGiveHowManyMessage(void);
 static bool8 DoesItemIncreaseEV(u8 itemType);
@@ -10813,6 +10815,23 @@ static void Task_FirstBattleEnterParty_WaitFadeNormal(u8 taskId)
         else
             DisplayPartyMenuStdMessage(PARTY_MSG_CHOOSE_MON);
         gTasks[taskId].func = Task_HandleChooseMonInput;
+    }
+}
+
+void OpenPartyMenuDuringGauntlet(void)
+{
+    LockPlayerFieldControls();
+    FadeScreen(FADE_TO_BLACK, 0);
+    CreateTask(Task_OpenPartyMenuDuringGauntlet, 10);
+}
+
+static void Task_OpenPartyMenuDuringGauntlet(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        CleanupOverworldWindowsAndTilemaps();
+        InitPartyMenu(PARTY_MENU_TYPE_FIELD, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_MON, FALSE, PARTY_MSG_CHOOSE_MON, Task_HandleChooseMonInput, CB2_ReturnToFieldContinueScript);
+        DestroyTask(taskId);
     }
 }
 

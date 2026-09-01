@@ -1757,3 +1757,5 @@ EventScript_GiveGachaMon::
 	.include "data/maps/AK_Yellow/scripts.inc"
 
 	.include "data/maps/AK_Green/scripts.inc"
+
+	.include "data/scripts/gauntlet_handling.inc"

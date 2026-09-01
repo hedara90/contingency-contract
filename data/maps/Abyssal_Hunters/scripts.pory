@@ -1,95 +1,179 @@
-mapscripts Abyssal_Hunters_MapScripts {}
+mapscripts Abyssal_Hunters_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: AbyssalHunters_OnTransition
+    MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
+        VAR_TEMP_5, 0: AbyssalHunters_Setup
+    ]
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_TEMP_5, 0: AbyssalHunters_OnGauntletStart
+    ]
+}
 
 const player = OBJ_EVENT_ID_PLAYER
+const tiana = LOCALID_TIANA
 
-script AbyssalHuntersAttendant {
-    lock
-    faceplayer
-    msgbox("This is a message.")
-    callnative(PopulateRandomYesNoChoice)
-    dynmultistack(0, 0, TRUE, 2, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
-    //dynmultichoice(0, 0, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE,
-    //                "Yeppers",
-    //                "Not yet")
-    switch(var(VAR_RESULT)) {
-    case 0:
-        closemessage
-        goto(AbyssalHuntersStartBattle)
-    case 1:
-        closemessage
-        release
+script AbyssalHunters_OnTransition {
+    if(var(VAR_GAUNTLET_POSITION)==0){
+        setobjectxyperm(tiana, 10, 11)
     }
 }
 
-script AbyssalHuntersStartBattle {
-    getobjectfacingdirection(LOCALID_ATTENDANT, VAR_TEMP_1)
-    switch(var(VAR_TEMP_1)) {
-    case 1: // Down
-        applymovement(player, moves(walk_right * 2))
-    case 2: // Up
-        applymovement(player, moves(walk_right, walk_down * 2, walk_right * 3))
-    case 3: // Left
-        applymovement(player, moves(walk_down, walk_right * 3))
-    case 4: // Right
-        applymovement(player, moves(walk_down, walk_right * 3))
-    }
-    waitmovement
+script AbyssalHunters_Setup {
+    hideobjectat(player, MAP_ABYSSAL_HUNTERS)
+}
+
+script AbyssalHunters_OnGauntletStart {
+    setvar(VAR_TEMP_5, 1)
+    call(Gauntlet_SetupCamera)
+    goto(AbyssalHunters_StartBattle)
+}
+
+script AbyssalHunters_StartBattle {
     switch(var(VAR_GAUNTLET_POSITION)) {
-    case 0:
-        //applymovement(LOCALID_ONE, moves( walk_left * 2))
-        waitmovement
-        trainerbattle_no_intro(TRAINER_SPECTER, AbyssalHuntersAfter)
-        msgbox("Good battle!")
-        closemessage
-        //applymovement(LOCALID_ONE, moves(walk_up * 2))
-        waitmovement
-    case 1:
-        //applymovement(LOCALID_TWO, moves(walk_left * 2))
-        waitmovement
-        trainerbattle_no_intro(TRAINER_GLADIIA, AbyssalHuntersAfter)
-        msgbox("Good battle!")
-        //applymovement(LOCALID_TWO, moves(walk_up * 1))
-        waitmovement
-    case 2:
-        //applymovement(LOCALID_THREE, moves(walk_left * 2))
-        waitmovement
-        trainerbattle_no_intro(TRAINER_SKADI, AbyssalHuntersAfter)
-        msgbox("Good battle!")
-        //applymovement(LOCALID_THREE, moves(walk_down * 1))
-        waitmovement
-    case 3:
-        //applymovement(LOCALID_FOUR, moves(walk_left * 2))
-        waitmovement
-        trainerbattle_no_intro(TRAINER_ULPIANUS, AbyssalHuntersAfter)
-        msgbox("Good battle!")
-        //applymovement(LOCALID_FOUR, moves(walk_down * 2))
-        waitmovement
+        case 0: 
+            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(AbyssalHunters_Specter)
+            call(Gauntlet_PostBattle)
+            goto(AbyssalHunters_StartBattle)
+        case 1:
+            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MovePlayerBeforeBattle)
+            call(AbyssalHunters_Gladiia)
+            call(Gauntlet_PostBattle)
+            goto(AbyssalHunters_StartBattle)
+        case 2:
+            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MovePlayerBeforeBattle)
+            call(AbyssalHunters_Skadi)
+            call(Gauntlet_PostBattle)
+            goto(AbyssalHunters_StartBattle)
+        case 3:
+            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MovePlayerBeforeBattle)
+            call(AbyssalHunters_Ulpianus)
+            call(Gauntlet_PostBattle)
     }
-    switch(var(VAR_RESULT)) {
-    default: // Lost battle
-        special(HealPlayerParty)
-        msgbox("wat")
-        waitmessage
-        warpsilent(MAP_CONVENTION_CENTER, 21, 24)
-        waitstate
-    case 1: // Won battle
-        addvar(VAR_GAUNTLET_POSITION, 1)
-    }
-    if (var(VAR_GAUNTLET_POSITION) == 4) {
-        // Gauntlet won, give reward and display victory screen
-        // Then return to the main area
-        special(HealPlayerParty)
-        msgbox("You got ¥500 for winning!")
-        waitmessage
-        addmoney(500)
-        victoryscreen(GAUNTLET_ABYSSAL_HUNTERS, FALSE)
-        waitstate
-        warpsilent(MAP_CONVENTION_CENTER, 21, 24)
-        waitstate
-    }
-    release
-    end
 }
+
+script AbyssalHunters_Specter {
+    msgbox(SpecterBeforeBattle)
+    trainerbattle_no_intro(TRAINER_SPECTER, SpecterAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(SpecterAfterBattle_Lose)
+        case 1:
+            msgbox(SpecterAfterBattle_Win)
+    }
+    return
+}
+
+text SpecterBeforeBattle {
+    "Hello"
+}
+
+text SpecterAfterBattle {
+    ""
+}
+
+text SpecterAfterBattle_Win {
+    ""
+}
+
+text SpecterAfterBattle_Lose {
+    ""
+}
+
+script AbyssalHunters_Gladiia {
+    msgbox(GladiiaBeforeBattle)
+    trainerbattle_no_intro(TRAINER_SPECTER, GladiiaAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(GladiiaAfterBattle_Lose)
+        case 1:
+            msgbox(GladiiaAfterBattle_Win)
+    }
+    return
+}
+
+text GladiiaBeforeBattle {
+    "Hello"
+}
+
+text GladiiaAfterBattle {
+    ""
+}
+
+text GladiiaAfterBattle_Win {
+    ""
+}
+
+text GladiiaAfterBattle_Lose {
+    ""
+}
+
+script AbyssalHunters_Skadi {
+    msgbox(SkadiBeforeBattle)
+    trainerbattle_no_intro(TRAINER_SPECTER, SkadiAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(SkadiAfterBattle_Lose)
+        case 1:
+            msgbox(SkadiAfterBattle_Win)
+    }
+    return
+}
+
+text SkadiBeforeBattle {
+    "Hello"
+}
+
+text SkadiAfterBattle {
+    ""
+}
+
+text SkadiAfterBattle_Win {
+    ""
+}
+
+text SkadiAfterBattle_Lose {
+    ""
+}
+
+script AbyssalHunters_Ulpianus {
+    msgbox(UlpianusBeforeBattle)
+    trainerbattle_no_intro(TRAINER_SPECTER, UlpianusAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(UlpianusAfterBattle_Lose)
+        case 1:
+            msgbox(UlpianusAfterBattle_Win)
+    }
+    return
+}
+
+text UlpianusBeforeBattle {
+    "Hello"
+}
+
+text UlpianusAfterBattle {
+    ""
+}
+
+text UlpianusAfterBattle_Win {
+    ""
+}
+
+text UlpianusAfterBattle_Lose {
+    ""
+}
+
 
 text AbyssalHuntersAfter {
     "After battle."
