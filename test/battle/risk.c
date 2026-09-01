@@ -973,6 +973,23 @@ SINGLE_BATTLE_TEST("Risk: Player cannot remove hazards")
     }
 }
 
+SINGLE_BATTLE_TEST("Risk: Player cannot remove hazards, grounded poison")
+{
+    GIVEN {
+        SetRisk(RISK_PLAYER_HAZARDS_NOT_REMOVABLE);
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_EKANS);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_TOXIC_SPIKES); }
+        TURN { SWITCH(player, 1); }
+        TURN { SWITCH(player, 0); }
+    } SCENE {
+        NOT MESSAGE("The poison spikes disappeared from the ground around your team!");
+        STATUS_ICON(player, poison: TRUE);
+    }
+}
+
 //  Can't test this here since tests doesn't go through the standard path for setting HP
 /*
 SINGLE_BATTLE_TEST("Risk: Opponent has extra HP", s16 damage)

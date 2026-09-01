@@ -274,6 +274,7 @@ static EWRAM_DATA struct PokemonSummaryScreenData
     u16 monAnimTimer; // tracks time between re-playing mon anims
     u8 monAnimPlayed; // tracks if anim has been played at least once
     u8 changeFormId;
+    bool8 changedScreen;
     u8 maxSlotPP[4];
 #if SWSH_SUMMARY_SHOW_CONTEST_PAGES
     struct ConditionGraph conditionGraph;
@@ -2818,6 +2819,12 @@ static void TryRotateOricorio(u8 taskId)
 
 static void Task_HandleInput(u8 taskId)
 {
+    if (sMonSummaryScreen->changedScreen)
+    {
+        DrawRarity();
+        ScheduleBgCopyTilemapToVram(2);
+        sMonSummaryScreen->changedScreen = FALSE;
+    }
     s16 *data = gTasks[taskId].data;
     u8 defaultSkillsState = SKILL_STATE_STATS;
 
@@ -2828,24 +2835,28 @@ static void Task_HandleInput(u8 taskId)
             RemoveFormChangeText();
             tSkillsState = defaultSkillsState;
             ChangeSummaryPokemon(taskId, -1);
+            sMonSummaryScreen->changedScreen = TRUE;
         }
         else if (JOY_NEW(DPAD_DOWN))
         {
             RemoveFormChangeText();
             tSkillsState = defaultSkillsState;
             ChangeSummaryPokemon(taskId, 1);
+            sMonSummaryScreen->changedScreen = TRUE;
         }
         else if ((JOY_NEW(DPAD_LEFT)))
         {
             RemoveFormChangeText();
             tSkillsState = defaultSkillsState;
             ChangePage(taskId, -1);
+            sMonSummaryScreen->changedScreen = TRUE;
         }
         else if ((JOY_NEW(DPAD_RIGHT)))
         {
             RemoveFormChangeText();
             tSkillsState = defaultSkillsState;
             ChangePage(taskId, 1);
+            sMonSummaryScreen->changedScreen = TRUE;
         }
         else if (JOY_NEW(A_BUTTON))
         {
@@ -3392,6 +3403,7 @@ static void PssScrollEnd(u8 taskId)
 
     SetGpuReg(REG_OFFSET_MOSAIC, 0);
     ScheduleBgCopyTilemapToVram(2);
+    DrawRarity();
     PutPageWindowTilemaps(sMonSummaryScreen->currPageIndex);
 
     SetTypeIcons();
@@ -6400,6 +6412,10 @@ const u16 sPotentialPal[] = INCGFX_U16("graphics/summary_screen/swsh/potentials.
 
 static void CreateMonMarkingsSprite(struct Pokemon *mon)
 {
+    if (sMonSummaryScreen->currPageIndex != PSS_PAGE_INFO)
+    {
+        return;
+    }
     /*
     struct Sprite *sprite = CreateMonMarkingComboSprite(TAG_MON_MARKINGS, TAG_CATEGORY_ICONS, sCategoryIcons_Pal);
 
@@ -7345,7 +7361,6 @@ static void DrawRarity(void)
     }
 
     u32 rarity = gSpeciesInfo[species].rarity;
-    rarity = 5;
 
     switch (rarity)
     {
@@ -7381,6 +7396,7 @@ static void DrawRarity(void)
     default:
         buffer[44] = 20;
         buffer[45] = 20;
+        buffer[46] = 21;
         break;
     }
 }

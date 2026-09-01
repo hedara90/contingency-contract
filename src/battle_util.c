@@ -4387,12 +4387,14 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
             break;
         case ABILITY_CONTAGION:
             if ((GetMoveEffect(gCurrentMove) == EFFECT_ABSORB
-              || GetMoveEffect(gCurrentMove) == EFFECT_DREAM_EATER)
+              || GetMoveEffect(gCurrentMove) == EFFECT_DREAM_EATER
+              || GetMoveEffect(gCurrentMove) == EFFECT_STRENGTH_SAP)
              && IsBattlerAlive(gBattlerTarget)
              && !IsMoveEffectBlockedByTarget(GetBattlerAbility(gBattlerTarget))
-             && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES) // Need to actually hit the target
+             && !IsBattlerUnaffectedByMove(gBattlerTarget)
+             //&& IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES) // Need to actually hit the target
              && CanBePoisoned(gBattlerAttacker, gBattlerTarget, gLastUsedAbility, GetBattlerAbility(gBattlerTarget))
-             && gBattleMons[gBattlerAttacker].hp != gBattleMons[gBattlerAttacker].maxHP
+             //&& gBattleMons[gBattlerAttacker].hp != gBattleMons[gBattlerAttacker].maxHP
              && !gBattleMons[gBattlerAttacker].volatiles.healBlock)
             {
                 gEffectBattler = gBattlerTarget;
