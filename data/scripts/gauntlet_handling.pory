@@ -8,7 +8,7 @@ script Gauntlet_SetupCamera {
     // applymovement(camera, moves(walk_right*3))
     applymovement(tiana, moves(walk_right*2))
     applymovement(player, moves(walk_right*3))
-    waitmovement(camera)
+    waitmovement(player)
     return
 }
 
@@ -18,28 +18,35 @@ script Gauntlet_MovePlayerBeforeBattle {
     waitmovement(player)
 }
 
-script Gauntlet_OpponentMovement_BeforeBattle {
+script Gauntlet_MoveOpponentBeforeBattle {
     switch(var(VAR_GAUNTLET_POSITION)){
-        case 0: applymovement(LOCALID_ONE, moves(walk_left*3))
-        case 1: applymovement(LOCALID_TWO, moves(walk_left*3))
-        case 2: applymovement(LOCALID_THREE, moves(walk_left*3))
-        case 3: applymovement(LOCALID_FOUR, moves(walk_left*3))
+        case 0:
+            addobject(LOCALID_ONE) 
+            applymovement(LOCALID_ONE, moves(walk_left*3))
+        case 1: 
+            addobject(LOCALID_TWO)
+            applymovement(LOCALID_TWO, moves(walk_left*3))
+        case 2:
+            addobject(LOCALID_THREE) 
+            applymovement(LOCALID_THREE, moves(walk_left*3))
+        case 3:
+            addobject(LOCALID_FOUR) 
+            applymovement(LOCALID_FOUR, moves(walk_left*3))
     }
     waitmovement
 }
 
 script Gauntlet_PostBattle {
-    call(Gauntlet_CheckBattleResult)
-    call(Gauntlet_OpponentMovement_AfterBattle)
+    call(Gauntlet_MoveOpponentAfterBattle)
     call(Gauntlet_Attendant)
 }
 
-script Gauntlet_OpponentMovement_AfterBattle {
+script Gauntlet_MoveOpponentAfterBattle {
     switch(var(VAR_GAUNTLET_POSITION)){
-        case 0: applymovement(LOCALID_ONE, moves(walk_right*3))
-        case 1: applymovement(LOCALID_TWO, moves(walk_right*3))
+        case 1: applymovement(LOCALID_ONE, moves(walk_right*3))
         case 2: applymovement(LOCALID_TWO, moves(walk_right*3))
         case 3: applymovement(LOCALID_THREE, moves(walk_right*3))
+        //case 4: applymovement(LOCALID_FOUR, moves(walk_right*3))
     }
     waitmovement
 }
@@ -95,25 +102,30 @@ script Gauntlet_Confirmation {
     }
 }
 
-script Gauntlet_CheckBattleResult {
-    switch(var(VAR_RESULT)) {
-    default: // Lost battle
-        special(HealPlayerParty)
-        msgbox("wat")
-        waitmessage
-        warpsilent(MAP_CONVENTION_CENTER, 21, 24)
-        waitstate
-    case 1: // Won battle
-        addvar(VAR_GAUNTLET_POSITION, 1)
-    }
-    if(var(VAR_GAUNTLET_POSITION)== 4){
-        special(HealPlayerParty)
-        msgbox("You got ¥500 for winning!")
-        waitmessage
-        addmoney(500)
-        victoryscreen(GAUNTLET_ABYSSAL_HUNTERS, FALSE)
-        waitstate
-        warpsilent(MAP_CONVENTION_CENTER, 21, 24)
-        waitstate
-    }
+script Gauntlet_BattleWon {
+    closemessage
+    addvar(VAR_GAUNTLET_POSITION, 1)
+}
+
+script Gauntlet_BattleLost {
+    closemessage
+    special(HealPlayerParty)
+    msgbox("wat")
+    waitmessage
+    warpsilent(MAP_CONVENTION_CENTER, 21, 24)
+    waitstate
+}
+
+script Gauntlet_AfterGauntletWin {
+    closemessage
+    special(HealPlayerParty)
+    msgbox("You got ¥500 for winning!")
+    waitmessage
+    addmoney(500)
+    return
+}
+
+script Gauntlet_WarpOutAfterWin {
+    warpsilent(MAP_CONVENTION_CENTER, 21, 24)
+    waitstate
 }
