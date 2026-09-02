@@ -30,29 +30,37 @@ script AbyssalHunters_OnGauntletStart {
 script AbyssalHunters_StartBattle {
     switch(var(VAR_GAUNTLET_POSITION)) {
         case 0: 
-            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(AbyssalHunters_Specter)
             call(Gauntlet_PostBattle)
             goto(AbyssalHunters_StartBattle)
         case 1:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
             call(AbyssalHunters_Gladiia)
             call(Gauntlet_PostBattle)
             goto(AbyssalHunters_StartBattle)
         case 2:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
             call(AbyssalHunters_Skadi)
             call(Gauntlet_PostBattle)
             goto(AbyssalHunters_StartBattle)
         case 3:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
             call(AbyssalHunters_Ulpianus)
-            call(Gauntlet_PostBattle)
+            goto(AbyssalHunters_WonGauntlet)
     }
 }
+
+script AbyssalHunters_WonGauntlet {
+    call(Gauntlet_AfterGauntletWin)
+    victoryscreen(GAUNTLET_ABYSSAL_HUNTERS, FALSE)
+    waitstate
+    call(Gauntlet_WarpOutAfterWin)
+}
+
 
 script AbyssalHunters_Specter {
     msgbox(SpecterBeforeBattle)
@@ -62,9 +70,12 @@ script AbyssalHunters_Specter {
     switch(var(VAR_RESULT)){
         default:
             msgbox(SpecterAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(SpecterAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
+    closemessage
     return
 }
 
@@ -77,24 +88,27 @@ text SpecterAfterBattle {
 }
 
 text SpecterAfterBattle_Win {
-    ""
+    "Win"
 }
 
 text SpecterAfterBattle_Lose {
-    ""
+    "Lose"
 }
 
 script AbyssalHunters_Gladiia {
     msgbox(GladiiaBeforeBattle)
-    trainerbattle_no_intro(TRAINER_SPECTER, GladiiaAfterBattle)
+    trainerbattle_no_intro(TRAINER_GLADIIA, GladiiaAfterBattle)
     // msgbox("Good battle!")
     closemessage
     switch(var(VAR_RESULT)){
         default:
             msgbox(GladiiaAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(GladiiaAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
+    closemessage
     return
 }
 
@@ -107,24 +121,27 @@ text GladiiaAfterBattle {
 }
 
 text GladiiaAfterBattle_Win {
-    ""
+    "Win"
 }
 
 text GladiiaAfterBattle_Lose {
-    ""
+    "Lose"
 }
 
 script AbyssalHunters_Skadi {
     msgbox(SkadiBeforeBattle)
-    trainerbattle_no_intro(TRAINER_SPECTER, SkadiAfterBattle)
+    trainerbattle_no_intro(TRAINER_SKADI, SkadiAfterBattle)
     // msgbox("Good battle!")
     closemessage
     switch(var(VAR_RESULT)){
         default:
             msgbox(SkadiAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(SkadiAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
+    closemessage
     return
 }
 
@@ -137,24 +154,27 @@ text SkadiAfterBattle {
 }
 
 text SkadiAfterBattle_Win {
-    ""
+    "Win"
 }
 
 text SkadiAfterBattle_Lose {
-    ""
+    "Lose"
 }
 
 script AbyssalHunters_Ulpianus {
     msgbox(UlpianusBeforeBattle)
-    trainerbattle_no_intro(TRAINER_SPECTER, UlpianusAfterBattle)
+    trainerbattle_no_intro(TRAINER_ULPIANUS, UlpianusAfterBattle)
     // msgbox("Good battle!")
     closemessage
     switch(var(VAR_RESULT)){
         default:
             msgbox(UlpianusAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(UlpianusAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
+    closemessage
     return
 }
 
@@ -167,14 +187,9 @@ text UlpianusAfterBattle {
 }
 
 text UlpianusAfterBattle_Win {
-    ""
+    "Win"
 }
 
 text UlpianusAfterBattle_Lose {
-    ""
-}
-
-
-text AbyssalHuntersAfter {
-    "After battle."
+    "Lose"
 }

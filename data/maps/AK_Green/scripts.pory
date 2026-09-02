@@ -30,28 +30,35 @@ script AKGreen_OnGauntletStart {
 script AKGreen_StartBattle {
     switch(var(VAR_GAUNTLET_POSITION)) {
         case 0: 
-            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(AKGreen_Carnelian)
             call(Gauntlet_PostBattle)
             goto(AKGreen_StartBattle)
         case 1:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
             call(AKGreen_Penance)
             call(Gauntlet_PostBattle)
             goto(AKGreen_StartBattle)
         case 2:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
             call(AKGreen_Pramanix)
             call(Gauntlet_PostBattle)
             goto(AKGreen_StartBattle)
         case 3:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
             call(AKGreen_Fiametta)
-            call(Gauntlet_PostBattle)
+            call(AKGeen_WonGauntlet)
     }
+}
+
+script AKGeen_WonGauntlet {
+    call(Gauntlet_AfterGauntletWin)
+    victoryscreen(GAUNTLET_AK_GREEN, FALSE)
+    waitstate
+    call(Gauntlet_WarpOutAfterWin)
 }
 
 script AKGreen_Carnelian {
@@ -62,8 +69,10 @@ script AKGreen_Carnelian {
     switch(var(VAR_RESULT)){
         default:
             msgbox(CarnelianAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(CarnelianAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
@@ -92,8 +101,10 @@ script AKGreen_Penance {
     switch(var(VAR_RESULT)){
         default:
             msgbox(PenanceAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(PenanceAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
@@ -122,8 +133,10 @@ script AKGreen_Pramanix {
     switch(var(VAR_RESULT)){
         default:
             msgbox(PramanixAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(PramanixAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
@@ -152,8 +165,10 @@ script AKGreen_Fiametta {
     switch(var(VAR_RESULT)){
         default:
             msgbox(FiamettaAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(FiamettaAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
