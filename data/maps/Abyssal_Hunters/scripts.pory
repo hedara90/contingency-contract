@@ -35,20 +35,20 @@ script AbyssalHunters_StartBattle {
             call(Gauntlet_PostBattle)
             goto(AbyssalHunters_StartBattle)
         case 1:
-            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(AbyssalHunters_Gladiia)
             call(Gauntlet_PostBattle)
             goto(AbyssalHunters_StartBattle)
         case 2:
-            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(AbyssalHunters_Skadi)
             call(Gauntlet_PostBattle)
             goto(AbyssalHunters_StartBattle)
         case 3:
-            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(AbyssalHunters_Ulpianus)
             goto(AbyssalHunters_WonGauntlet)
     }

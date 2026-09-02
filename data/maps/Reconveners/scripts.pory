@@ -35,20 +35,20 @@ script Reconveners_StartBattle {
             call(Gauntlet_PostBattle)
             goto(Reconveners_StartBattle)
         case 1:
-            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Reconveners_Pogranichnik)
             call(Gauntlet_PostBattle)
             goto(Reconveners_StartBattle)
         case 2:
-            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Reconveners_Gilberta)
             call(Gauntlet_PostBattle)
             goto(Reconveners_StartBattle)
         case 3:
-            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Reconveners_Laevatain)
             call(Reconveners_WonGauntlet)
     }

@@ -35,20 +35,20 @@ script CrisisTeam_StartBattle {
             call(Gauntlet_PostBattle)
             goto(CrisisTeam_StartBattle)
         case 1:
-            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(CrisisTeam_Chen)
             call(Gauntlet_PostBattle)
             goto(CrisisTeam_StartBattle)
         case 2:
-            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(CrisisTeam_Perlica)
             call(Gauntlet_PostBattle)
             goto(CrisisTeam_StartBattle)
         case 3:
-            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(CrisisTeam_Endmin)
             call(CrisisTeam_WonGauntlet)
     }

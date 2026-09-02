@@ -35,20 +35,20 @@ script AKGreen_StartBattle {
             call(Gauntlet_PostBattle)
             goto(AKGreen_StartBattle)
         case 1:
-            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(AKGreen_Penance)
             call(Gauntlet_PostBattle)
             goto(AKGreen_StartBattle)
         case 2:
-            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(AKGreen_Pramanix)
             call(Gauntlet_PostBattle)
             goto(AKGreen_StartBattle)
         case 3:
-            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(AKGreen_Fiametta)
             call(AKGeen_WonGauntlet)
     }
