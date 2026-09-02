@@ -316,14 +316,13 @@ Level: 50
 - Knock Off  
 - Quick Attack  
 
-Chien-Pao  
-Ability: Sword of Ruin  
+Haxorus @ Expert Belt  
+Ability: Intimidate  
 Level: 50  
-Tags: Ace
-- Ice Spinner  
-- Crunch  
-- Sacred Sword  
-- Sucker Punch  
+- Outrage  
+- Poison Jab  
+- Scale Shot  
+- Iron Head  
 
 Jolteon @ Throat Spray  
 Ability: Volt Absorb  
@@ -340,14 +339,6 @@ Level: 50
 - Leaf Blade  
 - Knock Off  
 - Victory Dance  
-
-Haxorus @ Expert Belt  
-Ability: Intimidate  
-Level: 50  
-- Outrage  
-- Poison Jab  
-- Scale Shot  
-- Iron Head  
 
 Kartana  
 Ability: Beast Boost  
@@ -366,6 +357,15 @@ Tags: Ace
 - Surf  
 - Flip Turn  
 - Vacuum Wave  
+
+Chien-Pao  
+Ability: Sword of Ruin  
+Level: 50  
+Tags: Ace
+- Ice Spinner  
+- Crunch  
+- Sacred Sword  
+- Sucker Punch  
 
 === TRAINER_XAIHI ===
 Name: Xaihi
@@ -641,7 +641,7 @@ Tags: Weather Abuser
 - Acrobatics  
 - Night Slash  
 
-Froslass (F) @ Focus Sash  
+Froslass (F) @ Colbur Berry  
 Ability: Serene Grace  
 Level: 50  
 Tags: Weather Setter

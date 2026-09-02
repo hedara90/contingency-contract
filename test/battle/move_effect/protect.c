@@ -13,6 +13,7 @@ ASSUMPTIONS
     ASSUME(GetMoveEffect(MOVE_CRAFTY_SHIELD) == EFFECT_PROTECT);
     ASSUME(GetMoveEffect(MOVE_BANEFUL_BUNKER) == EFFECT_PROTECT);
     ASSUME(GetMoveEffect(MOVE_BURNING_BULWARK) == EFFECT_PROTECT);
+    ASSUME(GetMoveEffect(MOVE_BOREAL_BASTION) == EFFECT_PROTECT);
     ASSUME(GetMoveCategory(MOVE_SCRATCH) == DAMAGE_CATEGORY_PHYSICAL);
     ASSUME(MoveMakesContact(MOVE_SCRATCH));
     ASSUME(GetMoveCategory(MOVE_LEER) == DAMAGE_CATEGORY_STATUS);
@@ -29,6 +30,7 @@ SINGLE_BATTLE_TEST("Protect: Protect, Detect, Spiky Shield, Baneful Bunker and B
         MOVE_SPIKY_SHIELD,
         MOVE_BANEFUL_BUNKER,
         MOVE_BURNING_BULWARK,
+        MOVE_BOREAL_BASTION,
     };
     enum Move protectMove = MOVE_NONE;
     enum Move usedMove = MOVE_NONE;
