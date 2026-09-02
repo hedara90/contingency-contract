@@ -199,40 +199,46 @@ Gauntlet_Confirmation_3:
 
 Gauntlet_BattleWon::
 # 106 "data/scripts/gauntlet_handling.pory"
+	closemessage
+# 107 "data/scripts/gauntlet_handling.pory"
 	addvar VAR_GAUNTLET_POSITION, 1
 	return
 
 
 Gauntlet_BattleLost::
-# 110 "data/scripts/gauntlet_handling.pory"
-	special HealPlayerParty
 # 111 "data/scripts/gauntlet_handling.pory"
-	msgbox Gauntlet_BattleLost_Text_0
+	closemessage
 # 112 "data/scripts/gauntlet_handling.pory"
-	waitmessage
+	special HealPlayerParty
 # 113 "data/scripts/gauntlet_handling.pory"
-	warpsilent MAP_CONVENTION_CENTER, 21, 24
+	msgbox Gauntlet_BattleLost_Text_0
 # 114 "data/scripts/gauntlet_handling.pory"
+	waitmessage
+# 115 "data/scripts/gauntlet_handling.pory"
+	warpsilent MAP_CONVENTION_CENTER, 21, 24
+# 116 "data/scripts/gauntlet_handling.pory"
 	waitstate
 	return
 
 
 Gauntlet_AfterGauntletWin::
-# 118 "data/scripts/gauntlet_handling.pory"
-	special HealPlayerParty
-# 119 "data/scripts/gauntlet_handling.pory"
-	msgbox Gauntlet_AfterGauntletWin_Text_0
 # 120 "data/scripts/gauntlet_handling.pory"
-	waitmessage
+	closemessage
 # 121 "data/scripts/gauntlet_handling.pory"
+	special HealPlayerParty
+# 122 "data/scripts/gauntlet_handling.pory"
+	msgbox Gauntlet_AfterGauntletWin_Text_0
+# 123 "data/scripts/gauntlet_handling.pory"
+	waitmessage
+# 124 "data/scripts/gauntlet_handling.pory"
 	addmoney 500
 	return
 
 
 Gauntlet_WarpOutAfterWin::
-# 126 "data/scripts/gauntlet_handling.pory"
+# 129 "data/scripts/gauntlet_handling.pory"
 	warpsilent MAP_CONVENTION_CENTER, 21, 24
-# 127 "data/scripts/gauntlet_handling.pory"
+# 130 "data/scripts/gauntlet_handling.pory"
 	waitstate
 	return
 
@@ -332,9 +338,9 @@ Gauntlet_Confirmation_Text_0:
 	.string "Are you ready for the next fight?$"
 
 Gauntlet_BattleLost_Text_0:
-# 111 "data/scripts/gauntlet_handling.pory"
+# 113 "data/scripts/gauntlet_handling.pory"
 	.string "wat$"
 
 Gauntlet_AfterGauntletWin_Text_0:
-# 119 "data/scripts/gauntlet_handling.pory"
+# 122 "data/scripts/gauntlet_handling.pory"
 	.string "You got ¥500 for winning!$"
