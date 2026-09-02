@@ -83,22 +83,22 @@ Gauntlet_OpponentMovement_AfterBattle_1:
 
 Gauntlet_OpponentMovement_AfterBattle_3:
 # 39 "data/scripts/gauntlet_handling.pory"
-	applymovement LOCALID_ONE, Gauntlet_SetupCamera_Movement_0
+	applymovement LOCALID_ONE, Gauntlet_SetupCamera_Movement_1
 	goto Gauntlet_OpponentMovement_AfterBattle_1
 
 Gauntlet_OpponentMovement_AfterBattle_4:
 # 40 "data/scripts/gauntlet_handling.pory"
-	applymovement LOCALID_TWO, Gauntlet_SetupCamera_Movement_0
+	applymovement LOCALID_TWO, Gauntlet_SetupCamera_Movement_1
 	goto Gauntlet_OpponentMovement_AfterBattle_1
 
 Gauntlet_OpponentMovement_AfterBattle_5:
 # 41 "data/scripts/gauntlet_handling.pory"
-	applymovement LOCALID_TWO, Gauntlet_SetupCamera_Movement_0
+	applymovement LOCALID_TWO, Gauntlet_SetupCamera_Movement_1
 	goto Gauntlet_OpponentMovement_AfterBattle_1
 
 Gauntlet_OpponentMovement_AfterBattle_6:
 # 42 "data/scripts/gauntlet_handling.pory"
-	applymovement LOCALID_THREE, Gauntlet_SetupCamera_Movement_0
+	applymovement LOCALID_THREE, Gauntlet_SetupCamera_Movement_1
 	goto Gauntlet_OpponentMovement_AfterBattle_1
 
 
@@ -276,6 +276,8 @@ Gauntlet_MovePlayerBeforeBattle_Movement_0:
 
 # 23 "data/scripts/gauntlet_handling.pory"
 Gauntlet_OpponentMovement_BeforeBattle_Movement_0:
+# 23 "data/scripts/gauntlet_handling.pory"
+	walk_left
 # 23 "data/scripts/gauntlet_handling.pory"
 	walk_left
 # 23 "data/scripts/gauntlet_handling.pory"

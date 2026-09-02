@@ -1301,7 +1301,7 @@ Level: 50
 === TRAINER_SHU ===
 Name: Shu
 Class: Team Aqua
-Pic: Leaf
+Pic: Shu
 Gender: Female
 Music: Aqua
 Double Battle: Yes
@@ -1409,7 +1409,7 @@ Tags: Weather Setter
 === TRAINER_NIAN ===
 Name: Nian
 Class: Swimmer M
-Pic: Leaf
+Pic: Nian
 Gender: Male
 Music: Swimmer
 Double Battle: No
@@ -1499,7 +1499,7 @@ Tags: Weather Abuser
 === TRAINER_CARNELIAN ===
 Name: Carnelian
 Class: Team Aqua
-Pic: Leaf
+Pic: Carnelian
 Gender: Male
 Music: Aqua
 Double Battle: No
@@ -1602,7 +1602,7 @@ Tags: Weather Setter
 === TRAINER_PENANCE ===
 Name: Penance
 Class: Team Aqua
-Pic: Leaf
+Pic: Penance
 Gender: Male
 Music: Aqua
 Double Battle: No
@@ -1687,7 +1687,7 @@ Level: 50
 === TRAINER_PRAMANIX ===
 Name: Pramanix
 Class: Team Aqua
-Pic: Leaf
+Pic: Pramanix
 Gender: Male
 Music: Aqua
 Double Battle: No
@@ -1794,7 +1794,7 @@ Tags: Weather Setter
 === TRAINER_FIAMETTA ===
 Name: Fiametta
 Class: Team Aqua
-Pic: Leaf
+Pic: Fiametta
 Gender: Male
 Music: Aqua
 Double Battle: Yes
@@ -1919,7 +1919,7 @@ Tags: Weather Setter
 === TRAINER_SPECTER ===
 Name: Specter
 Class: Team Aqua
-Pic: Leaf
+Pic: Specter
 Gender: Male
 Music: Aqua
 Double Battle: No
@@ -2026,7 +2026,7 @@ Tags: Weather Setter
 === TRAINER_GLADIIA ===
 Name: Gladiia
 Class: Team Aqua
-Pic: Leaf
+Pic: Gladiia
 Gender: Male
 Music: Aqua
 Double Battle: No
@@ -2137,7 +2137,7 @@ Tags: Lead
 === TRAINER_SKADI ===
 Name: Skadi
 Class: Team Magma
-Pic: Leaf
+Pic: Skadi
 Gender: Male
 Music: Magma
 Double Battle: Yes
@@ -2265,7 +2265,7 @@ Tags: Weather Setter
 === TRAINER_ULPIANUS ===
 Name: Ulpianus
 Class: Team Aqua
-Pic: Leaf
+Pic: Ulpianus
 Gender: Male
 Music: Aqua
 Double Battle: No
@@ -2376,7 +2376,7 @@ Level: 50
 === TRAINER_ELYSIUM ===
 Name: Elysium
 Class: Team Aqua
-Pic: Leaf
+Pic: Elysium
 Gender: Male
 Music: Aqua
 Double Battle: Yes
@@ -2501,7 +2501,7 @@ Tags: Weather Abuser
 === TRAINER_IRENE ===
 Name: Irene
 Class: Team Aqua
-Pic: Leaf
+Pic: Irene
 Gender: Male
 Music: Aqua
 Double Battle: Yes

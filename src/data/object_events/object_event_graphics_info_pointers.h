@@ -411,6 +411,31 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Monk;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PrayerGirl;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Satsuki;
 
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Arcane;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Ardelia;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Carnelian;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Chen;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Elysium;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Endmin;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Fiametta;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Gilberta;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Gladiia;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Irene;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Laevatain;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MiFu;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Nian;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Penance;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Perlica;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Pog;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Pramanix;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Shu;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Skadi;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Specter;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_TangTang;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Ulpianus;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Xaihi;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Zhuang;
+
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
     [OBJ_EVENT_GFX_BRENDAN_NORMAL] =           &gObjectEventGraphicsInfo_BrendanNormal,
     [OBJ_EVENT_GFX_BRENDAN_MACH_BIKE] =        &gObjectEventGraphicsInfo_BrendanMachBike,
@@ -809,6 +834,30 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_MONK]                     = &gObjectEventGraphicsInfo_Monk,
     [OBJ_EVENT_GFX_PRAYERGIRL]               = &gObjectEventGraphicsInfo_PrayerGirl,
     [OBJ_EVENT_GFX_SATSUKI]                  = &gObjectEventGraphicsInfo_Satsuki,
+    [OBJ_EVENT_GFX_ARCANE]                   = &gObjectEventGraphicsInfo_Arcane,
+    [OBJ_EVENT_GFX_ARDELIA]                  = &gObjectEventGraphicsInfo_Ardelia,
+    [OBJ_EVENT_GFX_CARNELIAN]                = &gObjectEventGraphicsInfo_Carnelian,
+    [OBJ_EVENT_GFX_CHEN]                     = &gObjectEventGraphicsInfo_Chen,
+    [OBJ_EVENT_GFX_ELYSIUM]                  = &gObjectEventGraphicsInfo_Elysium,
+    [OBJ_EVENT_GFX_ENDMIN]                   = &gObjectEventGraphicsInfo_Endmin,
+    [OBJ_EVENT_GFX_FIAMETTA]                 = &gObjectEventGraphicsInfo_Fiametta,
+    [OBJ_EVENT_GFX_GILBERTA]                 = &gObjectEventGraphicsInfo_Gilberta,
+    [OBJ_EVENT_GFX_GLADIIA]                  = &gObjectEventGraphicsInfo_Gladiia,
+    [OBJ_EVENT_GFX_IRENE]                    = &gObjectEventGraphicsInfo_Irene,
+    [OBJ_EVENT_GFX_LAEVATAIN]                = &gObjectEventGraphicsInfo_Laevatain,
+    [OBJ_EVENT_GFX_MIFU]                     = &gObjectEventGraphicsInfo_MiFu,
+    [OBJ_EVENT_GFX_NIAN]                     = &gObjectEventGraphicsInfo_Nian,
+    [OBJ_EVENT_GFX_PENANCE]                  = &gObjectEventGraphicsInfo_Penance,
+    [OBJ_EVENT_GFX_PERLICA]                  = &gObjectEventGraphicsInfo_Perlica,
+    [OBJ_EVENT_GFX_POG]                      = &gObjectEventGraphicsInfo_Pog,
+    [OBJ_EVENT_GFX_PRAMANIX]                 = &gObjectEventGraphicsInfo_Pramanix,
+    [OBJ_EVENT_GFX_SHU]                      = &gObjectEventGraphicsInfo_Shu,
+    [OBJ_EVENT_GFX_SKADI]                    = &gObjectEventGraphicsInfo_Skadi,
+    [OBJ_EVENT_GFX_SPECTER]                  = &gObjectEventGraphicsInfo_Specter,
+    [OBJ_EVENT_GFX_TANGTANG]                 = &gObjectEventGraphicsInfo_TangTang,
+    [OBJ_EVENT_GFX_ULPIANUS]                 = &gObjectEventGraphicsInfo_Ulpianus,
+    [OBJ_EVENT_GFX_XAIHI]                    = &gObjectEventGraphicsInfo_Xaihi,
+    [OBJ_EVENT_GFX_ZHUANG]                   = &gObjectEventGraphicsInfo_Zhuang,
 };
 
 const struct ObjectEventGraphicsInfo *const gMauvilleOldManGraphicsInfoPointers[] = {
