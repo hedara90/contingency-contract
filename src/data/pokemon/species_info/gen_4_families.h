@@ -5299,7 +5299,6 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .growthRate = GROWTH_MEDIUM_FAST,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_HUMAN_LIKE),
         .abilities = { ABILITY_DRY_SKIN, ABILITY_POISON_TOUCH, ABILITY_NONE },
-        .ability1Threshold = 2,
         .bodyColor = BODY_COLOR_BLUE,
         .speciesName = _("Toxicroak"),
         .cryId = CRY_TOXICROAK,
