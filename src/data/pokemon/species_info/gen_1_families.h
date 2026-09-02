@@ -16301,7 +16301,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .growthRate = GROWTH_MEDIUM_FAST,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_BUG),
     #if P_UPDATED_ABILITIES >= GEN_4
-        .abilities = { ABILITY_HYPER_CUTTER, ABILITY_TECHNICIAN, ABILITY_NONE },
+        .abilities = { ABILITY_TECHNICIAN, ABILITY_ARMOR_TAIL, ABILITY_NONE },
     #else
         .abilities = { ABILITY_SWARM, ABILITY_NONE, ABILITY_LIGHT_METAL },
     #endif
@@ -17057,8 +17057,8 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_MEDIUM_FAST,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_HUMAN_LIKE),
-        .abilities = { ABILITY_VITAL_SPIRIT, ABILITY_MEGA_LAUNCHER, ABILITY_NONE },
-        .ability1Threshold = 4,
+        .abilities = { ABILITY_SERENE_GRACE, ABILITY_MEGA_LAUNCHER, ABILITY_NONE },
+        .ability1Threshold = 3,
         .bodyColor = BODY_COLOR_RED,
         .noFlip = TRUE,
         .speciesName = _("Magmortar"),
