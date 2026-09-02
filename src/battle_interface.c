@@ -1853,7 +1853,7 @@ void UpdateNickInHealthbox(u8 healthboxSpriteId, struct Pokemon *mon)
 
         SetupSpritesForTextPrinting(spriteIds, spriteSrc, 2, 1);
 
-        FillSpriteRectSprite(healthboxSpriteId, 1, 2, 72, 12);
+        FillSpriteRectSprite(healthboxSpriteId, 1, 3, 72, 12);
         AddSpriteTextPrinterParameterized6(healthboxSpriteId, fontId, 1, 3, 0, 0, sHealthBoxTextColor, 0, gDisplayedStringBattle);
     }
 
