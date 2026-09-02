@@ -1650,6 +1650,8 @@ static void ShowCCStartMenu(void)
     cs.posX = 80;
     cs.posY = 76;
     sCCMenuSpriteIds[3] = Even_CreateSprite(&cs);
+
+    sStartMenuCursorPos = 4;
 }
 
 static void HideCCSTartMenu(void)
