@@ -406,6 +406,35 @@ const u32 gObjectEventPic_PrayerGirl[] = INCGFX_U32("graphics/object_events/pics
 const u32 gObjectEventPic_Satsuki[] = INCGFX_U32("graphics/object_events/pics/people/satsuki.png", ".4bpp", "-mwidth 4 -mheight 4");
 const u16 gObjectEventPal_Satsuki[] = INCGFX_U16("graphics/object_events/palettes/satsuki.pal", ".gbapal");
 
+const u16 gObjectEventPal_Operator1[] = INCGFX_U16("graphics/object_events/palettes/OP1.pal", ".gbapal");
+const u16 gObjectEventPal_Operator2[] = INCGFX_U16("graphics/object_events/palettes/OP2.pal", ".gbapal");
+const u16 gObjectEventPal_Operator3[] = INCGFX_U16("graphics/object_events/palettes/OP3.pal", ".gbapal");
+
+const u32 gObjectEventPic_Arcane[]        = INCGFX_U32("graphics/object_events/pics/people/arknights/Arcane.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Ardelia[]       = INCGFX_U32("graphics/object_events/pics/people/arknights/Ardelia.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Carnelian[]     = INCGFX_U32("graphics/object_events/pics/people/arknights/Carnelian.png", ".4bpp", "-mwidth 4 -mheight 4");
+const u32 gObjectEventPic_Chen[]          = INCGFX_U32("graphics/object_events/pics/people/arknights/Chen.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Elysium[]       = INCGFX_U32("graphics/object_events/pics/people/arknights/Elysium.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Endmin[]        = INCGFX_U32("graphics/object_events/pics/people/arknights/Endmin.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Fiametta[]      = INCGFX_U32("graphics/object_events/pics/people/arknights/Fiametta.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Gilberta[]      = INCGFX_U32("graphics/object_events/pics/people/arknights/Gilberta.png", ".4bpp", "-mwidth 4 -mheight 4");
+const u32 gObjectEventPic_Gladiia[]       = INCGFX_U32("graphics/object_events/pics/people/arknights/Gladiia.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Irene[]         = INCGFX_U32("graphics/object_events/pics/people/arknights/Irene.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Laevatain[]     = INCGFX_U32("graphics/object_events/pics/people/arknights/Laevatain.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_MiFu[]          = INCGFX_U32("graphics/object_events/pics/people/arknights/MiFu.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Nian[]          = INCGFX_U32("graphics/object_events/pics/people/arknights/Nian.png", ".4bpp", "-mwidth 4 -mheight 4");
+const u32 gObjectEventPic_Penance[]       = INCGFX_U32("graphics/object_events/pics/people/arknights/Penance.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Perlica[]       = INCGFX_U32("graphics/object_events/pics/people/arknights/Perlica.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Pog[]           = INCGFX_U32("graphics/object_events/pics/people/arknights/Pog.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Pramanix[]      = INCGFX_U32("graphics/object_events/pics/people/arknights/Pramanix.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Shu[]           = INCGFX_U32("graphics/object_events/pics/people/arknights/Shu.png", ".4bpp", "-mwidth 4 -mheight 4");
+const u32 gObjectEventPic_Skadi[]         = INCGFX_U32("graphics/object_events/pics/people/arknights/Skadi.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Specter[]       = INCGFX_U32("graphics/object_events/pics/people/arknights/Specter.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Ulpianus[]      = INCGFX_U32("graphics/object_events/pics/people/arknights/Ulpianus.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_TangTang[]      = INCGFX_U32("graphics/object_events/pics/people/arknights/TangTang.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Xaihi[]         = INCGFX_U32("graphics/object_events/pics/people/arknights/Xaihi.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u32 gObjectEventPic_Zhuang[]        = INCGFX_U32("graphics/object_events/pics/people/arknights/Zhuang.png", ".4bpp", "-mwidth 4 -mheight 4");
+
 #if OW_FOLLOWERS_POKEBALLS
 const u32 gObjectEventPic_MasterBall[] = INCGFX_U32("graphics/object_events/pics/misc/ball_master.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_UltraBall[] = INCGFX_U32("graphics/object_events/pics/misc/ball_ultra.png", ".4bpp", "-mwidth 2 -mheight 4");

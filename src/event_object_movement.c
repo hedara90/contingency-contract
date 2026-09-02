@@ -551,6 +551,9 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_NPCRecordkeepers_1,    OBJ_EVENT_PAL_TAG_NPC_RECORDKEEPERS_1},
     {gObjectEventPal_NPCRecordkeepers_2,    OBJ_EVENT_PAL_TAG_NPC_RECORDKEEPERS_2},
     {gObjectEventPal_Satsuki,               OBJ_EVENT_PAL_TAG_SATSUKI},
+    {gObjectEventPal_Operator1,             OBJ_EVENT_PAL_TAG_OPERATOR_1},
+    {gObjectEventPal_Operator2,             OBJ_EVENT_PAL_TAG_OPERATOR_2},
+    {gObjectEventPal_Operator3,             OBJ_EVENT_PAL_TAG_OPERATOR_3},
 #if OW_FOLLOWERS_POKEBALLS
     {gObjectEventPal_MasterBall,            OBJ_EVENT_PAL_TAG_BALL_MASTER},
     {gObjectEventPal_UltraBall,             OBJ_EVENT_PAL_TAG_BALL_ULTRA},
