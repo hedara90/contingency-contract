@@ -21975,6 +21975,29 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .battleAnimScript = gBattleAnimMove_BurningBulwark,
     },
 
+    [MOVE_BOREAL_BASTION] =
+    {
+        .name = COMPOUND_STRING("Boreal Bastion"),
+        .description = COMPOUND_STRING(
+            "Evades attack, frostbites\n"
+            "the foe if struck."),
+        .effect = EFFECT_PROTECT,
+        .power = 0,
+        .type = TYPE_ICE,
+        .accuracy = 0,
+        .pp = 10,
+        .target = TARGET_USER,
+        .priority = 4,
+        .category = DAMAGE_CATEGORY_STATUS,
+        .argument = { .protectMethod = PROTECT_BOREAL_BASTION },
+        .zMove = { .effect = Z_EFFECT_RESET_STATS },
+        .ignoresProtect = TRUE,
+        .mirrorMoveBanned = TRUE,
+        .copycatBanned = TRUE,
+        .assistBanned = TRUE,
+        .battleAnimScript = gBattleAnimMove_BurningBulwark,
+    },
+
     [MOVE_THUNDERCLAP] =
     {
         .name = COMPOUND_STRING("Thunderclap"),

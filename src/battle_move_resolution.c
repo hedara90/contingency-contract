@@ -2554,6 +2554,14 @@ static enum MoveEndResult MoveEndProtectLikeEffect(struct BattleCalcValues *cv)
             result = MOVEEND_RESULT_RUN_SCRIPT;
         }
         break;
+    case PROTECT_BOREAL_BASTION:
+        if (CanBeFrozen(cv->battlerDef, cv->battlerAtk, cv->abilities[cv->battlerAtk]))
+        {
+            gBattleScripting.moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE;
+            BattleScriptCall(BattleScript_BanefulBunkerEffect);
+            result = MOVEEND_RESULT_RUN_SCRIPT;
+        }
+        break;
     case PROTECT_OBSTRUCT:
         gEffectBattler = gBattlerAttacker;
         SetStatChange(gEffectBattler, STAT_DEF, -2);

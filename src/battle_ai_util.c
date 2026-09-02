@@ -2252,6 +2252,7 @@ bool32 IsAllyProtectingFromMove(enum BattlerId battlerAtk, enum Move attackerMov
     case PROTECT_MAX_GUARD:
     case PROTECT_BANEFUL_BUNKER:
     case PROTECT_BURNING_BULWARK:
+    case PROTECT_BOREAL_BASTION:
         return TRUE;
     case PROTECT_OBSTRUCT:
     case PROTECT_SILK_TRAP:
