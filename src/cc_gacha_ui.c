@@ -447,7 +447,7 @@ static bool8 GachaUi_LoadGraphics(void)
         }
         break;
     case 2:
-        LoadPalette(sGachaGraphics[sGachaUiState->banner].palette, BG_PLTT_ID(0), PLTT_SIZE_4BPP * 2);
+        LoadPalette(sGachaGraphics[sGachaUiState->banner].palette, BG_PLTT_ID(0), PLTT_SIZE_4BPP * 14);
         LoadPalette(gMessageBox_Pal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
         sGachaUiState->loadState++;
     default:
