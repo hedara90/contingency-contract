@@ -103,9 +103,15 @@ script AbyssalHunters_Gladiia {
     closemessage
     switch(var(VAR_RESULT)){
         default:
+        if(var(VAR_GLADIIA) < 2){
+            addvar(VAR_GLADIIA, 1)
+        }
             msgbox(GladiiaAfterBattle_Lose)
             goto(Gauntlet_BattleLost)
         case 1:
+        if(var(VAR_GLADIIA) < 3 ){
+            addvar(VAR_GLADIIA, 1)
+        }
             msgbox(GladiiaAfterBattle_Win)
             call(Gauntlet_BattleWon)
     }

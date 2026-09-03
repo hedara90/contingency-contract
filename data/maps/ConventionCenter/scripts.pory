@@ -19,22 +19,41 @@ const Event_GilbertaBooth = FLAG_TEMP_18
 const Event_GilbertaCafe = FLAG_TEMP_17
 
 script CC_OnTransition {
+    call(CC_GilbertaEvent)
+    call(CC_PickRandomEvents)
+}
+
+script CC_GilbertaEvent {
     random(5)
-    // switch(var(VAR_RESULT)){
-    //     case 0:
-    //         setflag(Event_GilbertaBooth)
-    //         setflag(Event_GilbertaCafe)
-    //     case 1:
-    //         setflag(Event_GilbertaEntrance)
-    //         setflag(Event_GilbertaCafe)
-    //     case 2:
-    //         setflag(Event_GilbertaEntrance)
-    //         setflag(Event_GilbertaBooth)
-    //     default:
-    //         setflag(Event_GilbertaEntrance)
-    //         setflag(Event_GilbertaBooth)
-    //         setflag(Event_GilbertaCafe)
-    // }
+    switch(var(VAR_RESULT)){
+        case 0:
+            setflag(Event_GilbertaBooth)
+            setflag(Event_GilbertaCafe)
+        case 1:
+            setflag(Event_GilbertaEntrance)
+            setflag(Event_GilbertaCafe)
+        case 2:
+            setflag(Event_GilbertaEntrance)
+            setflag(Event_GilbertaBooth)
+        default:
+            setflag(Event_GilbertaEntrance)
+            setflag(Event_GilbertaBooth)
+            setflag(Event_GilbertaCafe)
+    }
+}
+
+script CC_PickRandomEvents {
+    //Abyssal Hunters group
+    //Gladiia in lounge
+    random(1)
+    switch(var(VAR_RESULT)){
+        case 0: setflag(FLAG_GLADIIA)
+        default: clearflag(FLAG_GLADIIA)
+    }
+    //some other people in lounge (excl. with Gladiia)
+    //Endmin & Penance
+    //Various people at the photobooth
+    //TangTang + MiFu
 }
 
 script TryLoadQueue {
@@ -439,10 +458,10 @@ script CC_Dragons {
     applymovement(nian, moves(jump_in_place_left))
     playse(SE_LEDGE)
     waitmovement
-    msgbox("Yeah, she's really good at that.\nYou should see her Mym cosplay!\p")
+    msgbox("Yeah, she's really good at that.\nYou should see her Mym cosplay!")
     waitmessage
     applymovement(nian, moves(face_down))
-    msgbox("She created a whole armor ton\put on her tail for that one,\lsince it's so much bigger")
+    msgbox("She created a whole armor to\nput on her tail for that one,\lsince it's so much bigger")
     closemessage
     applymovement(shu, moves(walk_in_place_up))
     msgbox("Yeah that... took some time to\nfigure out.\pVery happy with the result, though.")
@@ -458,7 +477,7 @@ script CC_Dragons {
     msgbox("Nian takes off her tail")
     closemessage
     fadescreen(FADE_FROM_BLACK)
-    msgbox("But it's also made of foam.\nI'm just a regular ol' human after all."
+    msgbox("But it's also made of foam.\nI'm just a regular ol' human after all.\p"
             "I just pop it on my back with\nsome magnets, and there's a harness\lunder my outfit it attaches to.")
     closemessage
     applymovement(shu, moves(face_left))
@@ -470,10 +489,10 @@ script CC_Dragons {
     applymovement(zhuang, moves(face_right))
     msgbox("It never occured to me that it wasn't\nactually moving.")
     waitmessage
-    applymovement(zhuang, moves(face_down))
+    applymovement(zhuang, moves(walk_in_place_right))
     msgbox("So what sorta paint do you use for\nyour tail?")
     closemessage
-    applymovement(shu, moves(face_left))
+    applymovement(shu, moves(face_up))
     msgbox("We custom order it so it does what\nwe want.\lTo... mixed results.\p"
             "Turns out scales are pretty hard\nto keep dye on.")
     closemessage
@@ -483,6 +502,182 @@ script CC_Dragons {
     applymovement(shu, moves(face_up))
     applymovement(zhuang, moves(face_right))
     msgbox("Ohhh I'll take you up on that!")
+    closemessage
+    release
+}
+
+const gladiia = LOCALID_CC_GLADIIA
+const skadi = LOCALID_CC_SKADI
+const irene = LOCALID_CC_IRENE
+const ulpianus = LOCALID_CC_ULPIANUS
+const specter = LOCALID_CC_SPECTER
+
+script CC_AbyssalHunters {
+    lock
+    applymovement(irene, moves(walk_in_place_left))
+    msgbox("Hey... where's your Gladiia?\nEveryone else is here")//irene
+    closemessage
+    applymovement(skadi, moves(face_up))
+    msgbox("Dunno.")
+    closemessage
+    applymovement(specter, moves(walk_in_place_right))
+    msgbox("Oh, Sylva? She's not great at dealing\nwith crowds.\p"
+            "She's probably somewhere less crowded.")
+    closemessage
+    applymovement(irene, moves(emote_question_mark))
+    msgbox("You've met her before the con?")
+    applymovement(ulpianus, moves(walk_in_place_right))
+    msgbox("Yeah, we've been hired for smaller cons\nbefore as a group.\p"
+            "And usually those don't require us to\ndo battles")
+    closemessage
+    applymovement(skadi, moves(walk_in_place_left))
+    applymovement(irene, moves(face_down))
+    msgbox("This her first time on a big stage?")
+    closemessage
+    applymovement(irene, moves(face_left))
+    applymovement(specter, moves(jump_in_place_left))
+    msgbox("Yes! She definitely deserves it.")
+    closemessage
+    applymovement(ulpianus, moves(walk_in_place_right))
+    msgbox("She made her costume herself! It\nis incredibly well put together.\lShe just needs to get over the jitters")
+    closemessage
+    applymovement(skadi, moves(walk_in_place_left))
+    applymovement(irene, moves(face_down))
+    msgbox("Well, if she doesn't, then I'll just have\nto pick up the slack.\p"
+            "I got a funny team from the organizers.\nPerish Trap!\p"
+            "Quite excited to use it.")
+    applymovement(ulpianus, moves(walk_in_place_right))
+    applymovement(irene, moves(face_left))
+    applymovement(specter, moves(face_down))
+    msgbox("Fortunately, they gave me something\nmuch more straightforward.\p"
+            "I'm not a great battler, so mons that\njust hit moves and hit hard is a\lbetter fit for me")
+    closemessage
+    applymovement(specter, moves(walk_in_place_right))
+    applymovement(ulpianus, moves(face_up))
+    msgbox("At least you guys get to stay dry\nduring your fights")
+    closemessage
+    applymovement(irene, moves(walk_in_place_left))
+    msgbox("They gave you a rain team?\pThat's rough...")
+    closemessage
+    release
+}
+
+script CC_Gladiia {
+    lock
+    if(var(VAR_GLADIIA)==0){
+        goto(CC_DidntFightGladiia)
+    }
+    elif(var(VAR_GLADIIA) < 3){
+        goto(CC_FoughtGladiia4times)
+    }
+    else {
+        goto(CC_FoughtGladiia)
+    }
+}
+
+script CC_DidntFightGladiia {
+    msgbox("Oh man...\nWhat did they tell me now again?\p"
+            "Just use the trapping moves? Hmm...")
+    closemessage
+    release
+}
+
+script CC_FoughtGladiia {
+    faceplayer
+    msgbox("Oh hey, it's you.")
+    dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
+            "Catching a break?")
+    waitmessage
+    msgbox("Yeah, it's a bit overwhelming.\nSo many people...")
+    closemessage
+    applymovement(gladiia, moves(face_right, delay_16*4, face_down))
+    msgbox("I really like cosplaying, but maybe\nI'll pass on this con next year")
+    closemessage
+    applymovement(player, moves(jump_in_place_up))
+    playse(SE_LEDGE)
+    msgbox("But you looked like you had fun!")
+    closemessage
+    applymovement(gladiia, moves(emote_question_mark))
+    waitmessage
+    msgbox("Did I?\pI just felt nervous, being on such a\nstage with pokemon I'm not familiar with")
+    closemessage
+    dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
+            "Are they unruly?")
+    waitmessage
+    msgbox("No they're absolute sweethearts.\nIt's just... weird, y'know?")
+    closemessage
+    applymovement(player, moves(walk_in_place_up))
+    msgbox("Fair enough.\nHey, maybe it'll click later on!")
+    closemessage
+    applymovement(gladiia, moves(face_right, delay_16*3, face_down))
+    msgbox("Mmm.. perhaps.")
+    release
+}
+
+script CC_FoughtGladiia4times {
+    faceplayer
+    msgbox("Hey there!\nI think I finally caught my\lstride with the team")
+    closemessage
+    applymovement(player, moves(emote_exclamation_mark))
+    waitmovement
+    msgbox("Nice! Just needed some\nmore practcie, huh?")
+    closemessage
+    applymovement(gladiia, moves(walk_in_place_down))
+    msgbox("Yeah, I guess so.\p"
+            "But you were pretty good too!\p"
+            "Even with all the things thrown\nyour way.\p"
+            "Do you practice often?")
+    closemessage
+    applymovement(player, moves(jump_in_place_up))
+    msgbox("Yeah! Quite a lot at my job.\nThough usually it's a bit... different.")
+    closemessage
+    applymovement(gladiia, moves(emote_question_mark))
+    waitmovement
+    msgbox("Oh, how so?")
+    closemessage
+    applymovement(player, moves(walk_in_place_up))
+    msgbox("I work at the Library, one of my tasks\nis deciphering & categorizing myths.\p"
+            "My boss Satsuki has set up a\nwhole battle system for that.\p" 
+            "Basically a juiced up\nrotation battle system")
+    closemessage
+    applymovement(gladiia, moves(walk_in_place_down))
+    msgbox("Is that where you can swap your\npokemon in and out quickly?")
+    closemessage
+    applymovement(player, moves(jump_in_place_up))
+    msgbox("Yes! And there's a bunch of other\nthings too!")
+    closemessage
+    applymovement(gladiia, moves(walk_in_place_down))
+    msgbox("Sounds... rather odd, but you sound\nlike you enjoy it."
+            "I'll stick with what I'm doing\nright now, haha.")
+    closemessage
+    applymovement(player, moves(walk_in_place_up))
+    msgbox("Alright, Good luck with that!\nLooking forward to facing you again.")
+    closemessage
+    applymovement(gladiia, moves(emote_heart))
+    msgbox("Yeah, for sure.")
+    closemessage
+    setvar(VAR_GLADIIA, 4)
+    release
+}
+
+script CC_GladiiaEnd {
+    msgbox("So, if I use Dugtrio to deal with\nsomething, they'll probably send in\la flying type after...\p"
+            "Then I can use Memento and swap in\nJolteon... Hey, that may work!")
+    closemessage
+    applymovement(gladiia, moves(emote_exclamation_mark, delay_16*3, face_down))
+    playse(SE_PIN)
+    waitmovement
+    msgbox("Oh no, you weren't supposed\nto hear that!")
+    closemessage
+    applymovement(gladiia, moves(face_right))
+    closemessage
+    release
+}
+
+script CC_OldMan {
+    lock
+    faceplayer
+    msgbox("I'm glad this room exists.\nIt's too noisy for my ears!")
     closemessage
     release
 }
@@ -551,6 +746,7 @@ script CC_GilbertaEntrance {
     applymovement(gilberta1, moves(jump_right, lock_facing_direction, walk_down, unlock_facing_direction))
     playse(SE_LEDGE)
     msgbox("Heppy now?")
+    setvar(VAR_TEMP_9, 1)
     release
 }
 
@@ -637,4 +833,27 @@ script CC_Pog {
     closemessage
     applymovement(pog, moves(face_right))
     waitmovement
+}
+
+const penance = LOCALID_CC_PENANCE
+const endmin = LOCALID_CC_ENDMIN
+
+script CC_Endmin {
+    lock
+    applymovement(endmin, moves(walk_in_place_up))
+    msgbox("Look at that arena.\nI'm gonna be endfielding all over it")
+    closemessage
+    applymovement(penance, moves(walk_in_place_right))
+    msgbox("Please behave yourself.\pThis gavel might be a prop, but it'll\nstill hurt when I hit you with it.")
+    closemessage
+    release
+}
+
+script CC_Penance {
+    lock
+    faceplayer
+    msgbox("My boyfriend desperately needs\nless screentime.")
+    closemessage
+    applymovement(penance, moves(face_right))
+    release
 }
