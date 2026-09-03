@@ -161,22 +161,22 @@ static const struct BgTemplate sGachaUiBgTemplates[] =
 {
     {
         .bg = 0,
-        .charBaseIndex = 0,
-        .mapBaseIndex = 20,
+        .charBaseIndex = 3,
+        .mapBaseIndex = 28,
         .priority = 0,
         .screenSize = 2,
     },
     {
         .bg = 1,
         .charBaseIndex = 1,
-        .mapBaseIndex = 24,
+        .mapBaseIndex = 30,
         .priority = 2,
         .screenSize = 2,
     },
     {
         .bg = 2,
         .charBaseIndex = 0,
-        .mapBaseIndex = 28,
+        .mapBaseIndex = 26,
         .priority = 1,
         .screenSize = 2,
     }
