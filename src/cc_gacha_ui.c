@@ -57,6 +57,8 @@ struct GachaUiState
     u16 ballAnimState;
     u16 ballAnimIndex;
     enum Banner banner;
+    u16 offset;
+    u16 infoState;
 };
 
 enum WindowIds
@@ -70,6 +72,7 @@ enum WindowIds
 
 static EWRAM_DATA struct GachaUiState *sGachaUiState = NULL;
 static EWRAM_DATA u8 *sBg1TilemapBuffer = NULL;
+static EWRAM_DATA u8 *sBg2TilemapBuffer = NULL;
 
 static const u32 sItemsTiles[] = INCGFX_U32("graphics/gacha/items_tiles.png", ".4bpp.smol");
 static const u32 sItemsTilemap[] = INCBIN_U32("graphics/gacha/items_tiles.bin.smolTM");
@@ -90,11 +93,18 @@ static const u16 sMemoriesPalette[] = INCGFX_U16("graphics/gacha/memories_tiles.
 static const u32 sNewGfx[] = INCGFX_U32("graphics/gacha/new.png", ".4bpp");
 static const u16 sNewPal[] = INCGFX_U16("graphics/gacha/new.png", ".gbapal");
 
+static const u32 sIndomitabilityTilesMon[] = INCGFX_U32("graphics/gacha/indomitability_Mon_tiles.png", ".4bpp.smol");
+static const u32 sIndomitabilityTilemapMon[] = INCBIN_U32("graphics/gacha/indomitability_Mon_tiles.bin.smolTM");
+static const u16 sIndomitabilityPaletteMon[] = INCGFX_U16("graphics/gacha/indomitability_Mon_tiles.png", ".gbapal");
+
 struct GachaGraphics
 {
     const u32 *tiles;
     const u32 *tilemap;
     const u16 *palette;
+    const u32 *tilesMon;
+    const u32 *tilemapMon;
+    const u16 *paletteMon;
 };
 
 static const struct GachaGraphics sGachaGraphics[] =
@@ -104,24 +114,40 @@ static const struct GachaGraphics sGachaGraphics[] =
         .tiles = sItemsTiles,
         .tilemap = sItemsTilemap,
         .palette = sItemsPalette,
+
+        .tilesMon = sIndomitabilityTilesMon,
+        .tilemapMon = sIndomitabilityTilemapMon,
+        .paletteMon = sIndomitabilityPaletteMon,
     },
     [BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT] =
     {
         .tiles = sIndomitabilityTiles,
         .tilemap = sIndomitabilityTilemap,
         .palette = sIndomitabilityPalette,
+
+        .tilesMon = sIndomitabilityTilesMon,
+        .tilemapMon = sIndomitabilityTilemapMon,
+        .paletteMon = sIndomitabilityPaletteMon,
     },
     [BANNER_FURY_OF_THE_EARTHEN_CORE] =
     {
         .tiles = sFuryTiles,
         .tilemap = sFuryTilemap,
         .palette = sFuryPalette,
+
+        .tilesMon = sIndomitabilityTilesMon,
+        .tilemapMon = sIndomitabilityTilemapMon,
+        .paletteMon = sIndomitabilityPaletteMon,
     },
     [BANNER_MEMORIES_OF_MONTHS_PAST] =
     {
         .tiles = sMemoriesTiles,
         .tilemap = sMemoriesTilemap,
         .palette = sMemoriesPalette,
+
+        .tilesMon = sIndomitabilityTilesMon,
+        .tilemapMon = sIndomitabilityTilemapMon,
+        .paletteMon = sIndomitabilityPaletteMon,
     },
 };
 
@@ -137,15 +163,22 @@ static const struct BgTemplate sGachaUiBgTemplates[] =
     {
         .bg = 0,
         .charBaseIndex = 0,
-        .mapBaseIndex = 24,
-        .priority = 1,
+        .mapBaseIndex = 20,
+        .priority = 0,
         .screenSize = 2,
     },
     {
         .bg = 1,
         .charBaseIndex = 1,
-        .mapBaseIndex = 16,
+        .mapBaseIndex = 24,
         .priority = 2,
+        .screenSize = 2,
+    },
+    {
+        .bg = 2,
+        .charBaseIndex = 0,
+        .mapBaseIndex = 28,
+        .priority = 1,
         .screenSize = 2,
     }
 };
@@ -175,7 +208,7 @@ static const struct WindowTemplate sGachaUiWindowTemplates[] =
     {
         .bg = 0,
         .tilemapLeft = 30 - MONEY_WIDTH,
-        .tilemapTop = 0,
+        .tilemapTop = 0 + 20,
         .width = MONEY_WIDTH,
         .height = MONEY_HEIGHT,
         .paletteNum = 15,
@@ -185,7 +218,7 @@ static const struct WindowTemplate sGachaUiWindowTemplates[] =
     {
         .bg = 0,
         .tilemapLeft = 0,
-        .tilemapTop = 16,
+        .tilemapTop = 16 + 20,
         .width = PITY_WIDTH,
         .height = PITY_HEIGHT,
         .paletteNum = 15,
@@ -195,7 +228,7 @@ static const struct WindowTemplate sGachaUiWindowTemplates[] =
     {
         .bg = 0,
         .tilemapLeft = 30 - PULL_10_WIDTH - PULL_1_WIDTH - 1,
-        .tilemapTop = 16,
+        .tilemapTop = 16 + 20,
         .width = PULL_1_WIDTH,
         .height = PULL_1_HEIGHT,
         .paletteNum = 15,
@@ -205,7 +238,7 @@ static const struct WindowTemplate sGachaUiWindowTemplates[] =
     {
         .bg = 0,
         .tilemapLeft = 30 - PULL_10_WIDTH,
-        .tilemapTop = 16,
+        .tilemapTop = 16 + 20,
         .width = PULL_10_WIDTH,
         .height = PULL_10_HEIGHT,
         .paletteNum = 15,
@@ -250,6 +283,8 @@ static void DrawPity(void);
 static void DrawPull(void);
 static void Task_PullAnim(u8 taskId);
 static void Task_PullAnimItem(u8 taskId);
+static void Task_InfoTask(u8 taskId);
+static void Task_InfoTaskItems(u8 taskId);
 
 static void Task_GachaUiWaitFadeAndExitGracefully(u8 taskId);
 
@@ -318,6 +353,11 @@ static void GachaUi_SetupCB(void)
         gMain.state++;
         break;
     case 6:
+        //  Set base offset
+        SetGpuReg(REG_OFFSET_BG0VOFS, 160);
+        SetGpuReg(REG_OFFSET_BG1VOFS, 160);
+        SetGpuReg(REG_OFFSET_BG2VOFS, 160);
+        sGachaUiState->offset = 160;
         CreateTask(Task_GachaUiWaitFadeIn, 0);
         gMain.state++;
         break;
@@ -372,16 +412,22 @@ static bool8 GachaUi_InitBgs(void)
     sBg1TilemapBuffer = AllocZeroed(TILEMAP_BUFFER_SIZE);
     if (sBg1TilemapBuffer == NULL)
         return FALSE;
+    //sBg2TilemapBuffer = AllocZeroed(TILEMAP_BUFFER_SIZE);
+    //if (sBg2TilemapBuffer == NULL)
+    //    return FALSE;
 
     ResetBgsAndClearDma3BusyFlags(0);
 
     InitBgsFromTemplates(0, sGachaUiBgTemplates, NELEMS(sGachaUiBgTemplates));
     SetBgTilemapBuffer(1, sBg1TilemapBuffer);
+    //SetBgTilemapBuffer(2, sBg1TilemapBuffer);
 
     ScheduleBgCopyTilemapToVram(1);
+    //ScheduleBgCopyTilemapToVram(2);
 
     ShowBg(0);
     ShowBg(1);
+    //ShowBg(2);
 
     return TRUE;
 }
@@ -422,6 +468,10 @@ static void GachaUi_FreeResources(void)
     {
         Free(sBg1TilemapBuffer);
     }
+    //if (sBg2TilemapBuffer != NULL)
+    //{
+    //    Free(sBg2TilemapBuffer);
+    //}
     FreeAllWindowBuffers();
     ResetSpriteData();
 }
@@ -443,17 +493,20 @@ static bool8 GachaUi_LoadGraphics(void)
     case 0:
         ResetTempTileDataBuffers();
         DecompressAndCopyTileDataToVram(1, sGachaGraphics[sGachaUiState->banner].tiles, 0, 0, 0);
+        //DecompressAndCopyTileDataToVram(2, sGachaGraphics[sGachaUiState->banner].tilesMon, 0, 0, 0);
         sGachaUiState->loadState++;
         break;
     case 1:
         if (FreeTempTileDataBuffersIfPossible() != TRUE)
         {
             DecompressDataWithHeaderWram(sGachaGraphics[sGachaUiState->banner].tilemap, sBg1TilemapBuffer);
+            //DecompressDataWithHeaderWram(sGachaGraphics[sGachaUiState->banner].tilemapMon, sBg2TilemapBuffer);
             sGachaUiState->loadState++;
         }
         break;
     case 2:
-        LoadPalette(sGachaGraphics[sGachaUiState->banner].palette, BG_PLTT_ID(0), PLTT_SIZE_4BPP * 4);
+        LoadPalette(sGachaGraphics[sGachaUiState->banner].palette, BG_PLTT_ID(0), PLTT_SIZE_4BPP * 2);
+        //LoadPalette(sGachaGraphics[sGachaUiState->banner].paletteMon, BG_PLTT_ID(2), PLTT_SIZE_4BPP * 13);
         LoadPalette(gMessageBox_Pal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
         sGachaUiState->loadState++;
     default:
@@ -490,6 +543,14 @@ static void Task_GachaUiMainInput(u8 taskId)
         PlaySE(SE_PC_OFF);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
         gTasks[taskId].func = Task_GachaUiWaitFadeAndExitGracefully;
+    }
+    else if (JOY_NEW(A_BUTTON))
+    {
+        sGachaUiState->infoState = 0;
+        if (sGachaUiState->banner == BANNER_ITEMS)
+            gTasks[taskId].func = Task_InfoTaskItems;
+        else
+            gTasks[taskId].func = Task_InfoTask;
     }
     else if (JOY_NEW(L_BUTTON))
     {
@@ -654,9 +715,17 @@ static void Task_PullAnim(u8 taskId)
     switch (sGachaUiState->pullState)
     {
     case 0:
-        SetGpuReg(REG_OFFSET_BG0VOFS, 160);
-        SetGpuReg(REG_OFFSET_BG1VOFS, 160);
-        sGachaUiState->pullState++;
+        if (sGachaUiState->offset > 0)
+        {
+            sGachaUiState->offset -= 8;
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+        }
+        else
+        {
+            sGachaUiState->pullState++;
+        }
         break;
     case 1:
         switch (sGachaUiState->numToPull)
@@ -828,6 +897,41 @@ static void Task_PullAnim(u8 taskId)
         if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
         {
             DrawText();
+            sGachaUiState->pullState = 8;
+        }
+        break;
+    case 8:
+        if (sGachaUiState->offset < 160)
+        {
+            sGachaUiState->offset += 8;
+            for (u32 i = 0; i < sGachaUiState->numToPull; i++)
+            {
+                if (sGachaUiState->indicatorIds[i] != SPRITE_NONE)
+                {
+                    gSprites[sGachaUiState->indicatorIds[i]].y -= 8;
+                    if (gSprites[sGachaUiState->indicatorIds[i]].y < -32)
+                    {
+                        gSprites[sGachaUiState->indicatorIds[i]].invisible = TRUE;
+                    }
+                }
+
+                gSprites[sGachaUiState->ballSpriteIds[i]].y -= 8;
+                if (gSprites[sGachaUiState->ballSpriteIds[i]].y < -32)
+                {
+                    gSprites[sGachaUiState->ballSpriteIds[i]].invisible = TRUE;
+                }
+                gSprites[sGachaUiState->iconSpriteIds[i]].y -= 8;
+                if (gSprites[sGachaUiState->iconSpriteIds[i]].y < -32)
+                {
+                    gSprites[sGachaUiState->iconSpriteIds[i]].invisible = TRUE;
+                }
+            }
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+        }
+        else
+        {
             ReleaseComfyAnims();
             for (u32 i = 0; i < sGachaUiState->numToPull; i++)
             {
@@ -846,10 +950,9 @@ static void Task_PullAnim(u8 taskId)
             FreeBallGfx(BALL_4_STAR);
             FreeBallGfx(BALL_5_STAR);
             FreeBallGfx(BALL_6_STAR);
-            SetGpuReg(REG_OFFSET_BG0VOFS, 0);
-            SetGpuReg(REG_OFFSET_BG1VOFS, 0);
             gTasks[taskId].func = Task_GachaUiMainInput;
         }
+        break;
     }
 }
 
@@ -874,9 +977,17 @@ static void Task_PullAnimItem(u8 taskId)
     switch (sGachaUiState->pullState)
     {
     case 0:
-        SetGpuReg(REG_OFFSET_BG0VOFS, 160);
-        SetGpuReg(REG_OFFSET_BG1VOFS, 160);
-        sGachaUiState->pullState++;
+        if (sGachaUiState->offset > 0)
+        {
+            sGachaUiState->offset -= 8;
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+        }
+        else
+        {
+            sGachaUiState->pullState++;
+        }
         break;
     case 1:
         switch (sGachaUiState->numToPull)
@@ -1018,6 +1129,35 @@ static void Task_PullAnimItem(u8 taskId)
         if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
         {
             DrawText();
+            sGachaUiState->pullState = 6;
+        }
+        break;
+    case 6:
+        if (sGachaUiState->offset < 160)
+        {
+            sGachaUiState->offset += 8;
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            for (u32 i = 0; i < sGachaUiState->numToPull; i++)
+            {
+                if (sGachaUiState->indicatorIds[i] != SPRITE_NONE)
+                {
+                    gSprites[sGachaUiState->indicatorIds[i]].y -= 8;
+                    if (gSprites[sGachaUiState->indicatorIds[i]].y < -32)
+                    {
+                        gSprites[sGachaUiState->indicatorIds[i]].invisible = TRUE;
+                    }
+                }
+                gSprites[sGachaUiState->ballSpriteIds[i]].y -= 8;
+                if (gSprites[sGachaUiState->ballSpriteIds[i]].y < -32)
+                {
+                    gSprites[sGachaUiState->ballSpriteIds[i]].invisible = TRUE;
+                }
+            }
+        }
+        else
+        {
             ReleaseComfyAnims();
             for (u32 i = 0; i < sGachaUiState->numToPull; i++)
             {
@@ -1030,10 +1170,37 @@ static void Task_PullAnimItem(u8 taskId)
             }
             FreeSpriteTilesByTag(10);
             FreeSpritePaletteByTag(10);
-            SetGpuReg(REG_OFFSET_BG0VOFS, 0);
-            SetGpuReg(REG_OFFSET_BG1VOFS, 0);
             gTasks[taskId].func = Task_GachaUiMainInput;
         }
         break;
     }
+}
+
+static void Task_InfoTask(u8 taskId)
+{
+    switch (sGachaUiState->infoState)
+    {
+    case 0:
+        sGachaUiState->infoState++;
+        break;
+    case 1:
+        if (sGachaUiState->offset < 328)
+        {
+            sGachaUiState->offset += 8;
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+        }
+        else
+        {
+            sGachaUiState->infoState++;
+        }
+        break;
+    case 2:
+        break;
+    }
+}
+
+static void Task_InfoTaskItems(u8 taskId)
+{
 }
