@@ -78,19 +78,27 @@ script Reconveners_Ardelia {
 }
 
 text ArdeliaBeforeBattle {
-    "Hello"
+    "Could you stand back a little\n"
+    "further? I, uh… I don't want you\l"
+    "to get hurt by accident."
 }
 
 text ArdeliaAfterBattle {
-    ""
+    "Do you ever find yourself counting\n"
+    "sheep before bed? I sure do."
 }
 
 text ArdeliaAfterBattle_Win {
-    ""
+    "My diary is like the rings of an\n"
+    "ancient tree. It keeps a record of\p"
+    "every lesson I learned growing up.\n"
+    "Time to add a new page!"
 }
 
 text ArdeliaAfterBattle_Lose {
-    ""
+    "Losing isn't the end of the world.\n"
+    "Learn from the experience and I'm\l"
+    "sure you'll do better next time."
 }
 
 script Reconveners_Pogranichnik {
@@ -110,19 +118,27 @@ script Reconveners_Pogranichnik {
 }
 
 text PogranichnikBeforeBattle {
-    "Hello"
+    "One must learn to wield violence-\n"
+    "not for good nor malice, but for\l"
+    "the sake of survival."
 }
 
 text PogranichnikAfterBattle {
-    ""
+    "A valuable battle… my fighting\n"
+    "spirit has been stirred."
 }
 
 text PogranichnikAfterBattle_Win {
-    ""
+    "Every victory bears its price… Hold\n"
+    "dear what you've learned, but don't\p"
+    "forget what we've paid. Also, here,\n"
+    "have a candy. Good for the soul."
 }
 
 text PogranichnikAfterBattle_Lose {
-    ""
+    "Remissness and negligence pose the\n"
+    "deadliest threat on the\l"
+    "battlefield."
 }
 
 script Reconveners_Gilberta {
@@ -142,19 +158,26 @@ script Reconveners_Gilberta {
 }
 
 text GilbertaBeforeBattle {
-    "Hello"
+    "Lovely to see so many new faces on\n"
+    "the road! Thought I'd take a break\p"
+    "between deliveries to see what all\n"
+    "the fuss was about. Looks like fun!"
 }
 
 text GilbertaAfterBattle {
-    ""
+    "I hope you had fun floating!"
 }
 
 text GilbertaAfterBattle_Win {
-    ""
+    "Got a few tips to help you on the\n"
+    "road ahead. Broaden your horizons,\p"
+    "learn from the experiences… and\n"
+    "add a dash of imagination!"
 }
 
 text GilbertaAfterBattle_Lose {
-    ""
+    "No matter how hard you try, you\n"
+    "can't escape gravity!"
 }
 
 script Reconveners_Laevatain {
@@ -174,22 +197,25 @@ script Reconveners_Laevatain {
 }
 
 text LaevatainBeforeBattle {
-    "Hello"
+    "I hate trouble, but boredom's worse.\n"
+    "Whatever comes next better be\l"
+    "memorable."
 }
 
 text LaevatainAfterBattle {
-    ""
+    "What a blaze! I won't forget this\n"
+    "anytime soon."
 }
 
 text LaevatainAfterBattle_Win {
-    ""
+    "Have you seen the ice cream bar\n"
+    "yet? Better get there soon, there\p"
+    "might not be much left after I'm\n"
+    "through with it."
 }
 
 text LaevatainAfterBattle_Lose {
-    ""
-}
-
-
-text ReconvenersAfter {
-    "After battle."
+    "Cheer up! At least I got through\n"
+    "this battle without accidentally\l"
+    "burning anything to ash."
 }

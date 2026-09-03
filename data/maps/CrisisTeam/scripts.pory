@@ -78,19 +78,27 @@ script CrisisTeam_Xaihi {
 }
 
 text XaihiBeforeBattle {
-    "Hello"
+    "With my prayers, I shall lift up\n"
+    "those who have gone astray."
 }
 
 text XaihiAfterBattle {
-    ""
+    "Contemplation… computation…\n"
+    "utterance… abandonment."
 }
 
 text XaihiAfterBattle_Win {
-    ""
+    "I shall return to my work. Chen tells\n"
+    "me the toaster has broken again,\p"
+    "and my prayers are all that will\n"
+    "cleanse its codes of malice."
 }
 
 text XaihiAfterBattle_Lose {
-    ""
+    "Behold, the benevolence of the Law\n"
+    "made manifest. I shall pray for\p"
+    "wisdom to bless your terminal and\n"
+    "its boxes."
 }
 
 script CrisisTeam_Chen {
@@ -110,19 +118,26 @@ script CrisisTeam_Chen {
 }
 
 text ChenBeforeBattle {
-    "Hello"
+    "Get ready? Heh. My blades are\n"
+    "always ready as they never rest!"
 }
 
 text ChenAfterBattle {
-    ""
+    "Hmm… Maybe a true master should\n"
+    "wear lighter gear."
 }
 
 text ChenAfterBattle_Win {
-    ""
+    "So this… and follow up with this?\n"
+    "Alright, I got it!\p"
+    "I'm grabbing a front row seat for\n"
+    "the rest of these matches!"
 }
 
 text ChenAfterBattle_Lose {
-    ""
+    "I can use standard issue\n"
+    "weaponry to unleash a healthy dose\l"
+    "of whoop-ass!"
 }
 
 script CrisisTeam_Perlica {
@@ -142,19 +157,24 @@ script CrisisTeam_Perlica {
 }
 
 text PerlicaBeforeBattle {
-    "Hello"
+    "Sterilize this area!"
 }
 
 text PerlicaAfterBattle {
-    ""
+    "Don't push yourself too hard.\n"
+    "Keep yourself rested and well."
 }
 
 text PerlicaAfterBattle_Win {
-    ""
+    "All Operators accounted for. The\n"
+    "team is ready for the mission."
 }
 
 text PerlicaAfterBattle_Lose {
-    ""
+    "Though I am a little too young and\n"
+    "untested, my mind is set. I shall\p"
+    "fulfill my duties as Supervisor of\n"
+    "Endfield Industries."
 }
 
 script CrisisTeam_Endmin {
@@ -174,22 +194,18 @@ script CrisisTeam_Endmin {
 }
 
 text EndminBeforeBattle {
-    "Hello"
+    "Originium will carve a path for us."
 }
 
 text EndminAfterBattle {
-    ""
+    "Not too shabby."
 }
 
 text EndminAfterBattle_Win {
-    ""
+    "No need to worry. We'll regroup and\n"
+    "figure this out."
 }
 
 text EndminAfterBattle_Lose {
-    ""
-}
-
-
-text CrisisTeamAfter {
-    "After battle."
+    "I hear Originium singing."
 }

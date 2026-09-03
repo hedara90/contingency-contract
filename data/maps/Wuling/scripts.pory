@@ -78,19 +78,23 @@ script Wuling_TangTang {
 }
 
 text TangTangBeforeBattle {
-    "Hello"
+    "Your crew's pretty tough, but I've\n"
+    "never lost a real spar!"
 }
 
 text TangTangAfterBattle {
-    ""
+    "What a scuffle!"
 }
 
 text TangTangAfterBattle_Win {
-    ""
+    "Huff… I'm totally beat… Can't go on?\n"
+    "Hah! The word can't isn't in my\l"
+    "dictionary! I'll get you next time!"
 }
 
 text TangTangAfterBattle_Lose {
-    ""
+    "Wow you're strong! Maybe you can\n"
+    "even take down that mad woman!"
 }
 
 script Wuling_MiFu {
@@ -110,19 +114,29 @@ script Wuling_MiFu {
 }
 
 text MiFuBeforeBattle {
-    "Hello"
+    "Managed to get through the little\n"
+    "kitty, huh? Heh, sounds about\p"
+    "right. If you're ready to fight,\n"
+    "I'm in. "
 }
 
 text MiFuAfterBattle {
-    ""
+    "Hah, I see a worthy opponent."
 }
 
 text MiFuAfterBattle_Win {
-    ""
+    "I never concede if I'm still on my\n"
+    "feet, but I know when my team's\p"
+    "had enough. Good luck when you\n"
+    "meet boss later."
 }
 
 text MiFuAfterBattle_Lose {
-    ""
+    "I bond with people by fighting them.\n"
+    "Only those who can take a win, a\p"
+    "loss, and a beating are reliable.\n"
+    "You? Hmm… I think you're way\l"
+    "beyond reliable."
 }
 
 script Wuling_Arcane {
@@ -148,19 +162,26 @@ script Wuling_Arcane {
 }
 
 text ArcaneBeforeBattle {
-    "Hello"
+    "I will uphold the honor of the\n"
+    "Yinglungs."
 }
 
 text ArcaneAfterBattle {
-    ""
+    "I used to spend all night poring\n"
+    "over combat records."
 }
 
 text ArcaneAfterBattle_Win {
-    ""
+    "Thank you for the match… I don't\n"
+    "often get to be in situations like\p"
+    "this as a Task Leader, so it's… kind\n"
+    "of novel."
 }
 
 text ArcaneAfterBattle_Lose {
-    ""
+    "Hone yourself to extreme perfection,\n"
+    "and you can calmly prevail, no\l"
+    "matter the situation."
 }
 
 script Wuling_ZhuangFangyi {
@@ -180,22 +201,26 @@ script Wuling_ZhuangFangyi {
 }
 
 text ZhuangFangyiBeforeBattle {
-    "Hello"
+    "Mi Fu told me about your match. I'm\n"
+    "so excited! I've just finished a\p"
+    "refreshing cup of tea and I'm eager\n"
+    "to get started."
 }
 
 text ZhuangFangyiAfterBattle {
-    ""
+    "My heart is racing! It's just like\n"
+    "making a breakthrough in the lab."
 }
 
 text ZhuangFangyiAfterBattle_Win {
-    ""
+    "What d'you think of the Chubby Lungs\n"
+    "around the convention centre? I\p"
+    "designed them you know! Aren't they\n"
+    "just the cutest?"
 }
 
 text ZhuangFangyiAfterBattle_Lose {
-    ""
-}
-
-
-text WulingAfter {
-    "After battle."
+    "Never hesitate to take a break. What\n"
+    "lies ahead could prove even more\l"
+    "demanding."
 }
