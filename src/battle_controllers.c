@@ -2016,6 +2016,11 @@ void StartSendOutAnim(enum BattlerId battler, bool32 dontClearTransform, bool32 
         sendoutType = POKEBALL_OPPONENT_SENDOUT;
     }
 
+    if (IsOnPlayerSide(battler))
+    {
+        gBattleStruct->turnsWithoutSwitching = 0;
+    }
+
     ClearTemporarySpeciesSpriteData(battler, dontClearTransform, dontClearSubstituteBit);
     gBattlerPartyIndexes[battler] = gBattleResources->bufferA[battler][1];
     species = GetBattlerVisualSpecies(battler);
