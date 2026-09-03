@@ -59,6 +59,7 @@ struct GachaUiState
     enum Banner banner;
     u16 offset;
     u16 infoState;
+    u8 infoIconIds[23];
 };
 
 enum WindowIds
@@ -1136,12 +1137,45 @@ static void Task_PullAnimItem(u8 taskId)
     }
 }
 
+static void SpriteCB_Dummy(struct Sprite *sprite)
+{
+}
+
 static void Task_InfoTask(u8 taskId)
 {
     switch (sGachaUiState->infoState)
     {
     case 0:
+    {
+        struct BannerInfo info = GetBannerInfo(sGachaUiState->banner, 6);
+        LoadMonIconPalettes();
+        for (u32 i = 0; i < info.count; i++)
+        {
+            sGachaUiState->infoIconIds[i] = CreateMonIcon(info.species[i], SpriteCB_Dummy, 70 + i * 32, 24 + 160, 0 , 0);
+            gSprites[sGachaUiState->infoIconIds[i]].invisible = TRUE;
+        }
+
+        info = GetBannerInfo(sGachaUiState->banner, 5);
+        for (u32 i = 0; i < info.count; i++)
+        {
+            sGachaUiState->infoIconIds[2 + i] = CreateMonIcon(info.species[i], SpriteCB_Dummy, 40 + i * 27, 63 + 160, 0 , 0);
+            gSprites[sGachaUiState->infoIconIds[2 + i]].invisible = TRUE;
+        }
+        info = GetBannerInfo(sGachaUiState->banner, 4);
+        for (u32 i = 0; i < info.count - 7; i++)
+        {
+            sGachaUiState->infoIconIds[10 + i] = CreateMonIcon(info.species[i], SpriteCB_Dummy, 32 + i * 34, 113 + 160, 0 , 0);
+            gSprites[sGachaUiState->infoIconIds[10 + i]].invisible = TRUE;
+        }
+        for (u32 i = 0; i < 7; i++)
+        {
+            sGachaUiState->infoIconIds[16 + i] = CreateMonIcon(info.species[6 + i], SpriteCB_Dummy, 16 + i * 34, 136 + 160, 0 , 0);
+            gSprites[sGachaUiState->infoIconIds[16 + i]].invisible = TRUE;
+        }
+
         sGachaUiState->infoState++;
+        break;
+    }
         break;
     case 1:
         if (sGachaUiState->offset < 328)
@@ -1150,6 +1184,17 @@ static void Task_InfoTask(u8 taskId)
             SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
             SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
             SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            if (sGachaUiState->offset < 328)
+            {
+                for (u32 i = 0; i < 23; i++)
+                {
+                    gSprites[sGachaUiState->infoIconIds[i]].y -= 8;
+                    if (gSprites[sGachaUiState->infoIconIds[i]].y < 184)
+                    {
+                        gSprites[sGachaUiState->infoIconIds[i]].invisible = FALSE;
+                    }
+                }
+            }
         }
         else
         {
@@ -1157,6 +1202,36 @@ static void Task_InfoTask(u8 taskId)
         }
         break;
     case 2:
+        if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
+        {
+            sGachaUiState->infoState++;
+        }
+        break;
+    case 3:
+        if (sGachaUiState->offset > 160)
+        {
+            sGachaUiState->offset -= 8;
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            for (u32 i = 0; i < 23; i++)
+            {
+                gSprites[sGachaUiState->infoIconIds[i]].y += 8;
+                if (gSprites[sGachaUiState->infoIconIds[i]].y > 184)
+                {
+                    gSprites[sGachaUiState->infoIconIds[i]].invisible = TRUE;
+                }
+            }
+        }
+        else
+        {
+            FreeMonIconPalettes();
+            for (u32 i = 0; i < 23; i++)
+            {
+                FreeAndDestroyMonIconSprite(&gSprites[sGachaUiState->infoIconIds[i]]);
+            }
+            gTasks[taskId].func = Task_GachaUiMainInput;
+        }
         break;
     }
 }
