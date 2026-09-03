@@ -1848,6 +1848,9 @@ static void ToggleLock(enum Risk risk, bool32 beforeLoad)
     for (u32 i = 0; i < sRiskData[risk].unlockCount; i++)
     {
         enum Risk lockRisk = sRiskData[risk].unlockedRisks[i];
+        if (beforeLoad && IsRiskActive(risk))
+            continue;
+
         if (IsRiskActive(lockRisk))
             SetRiskInactive(lockRisk);
 
