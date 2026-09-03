@@ -65,8 +65,7 @@ enum WindowIds
 {
     WIN_MONEY,
     WIN_PITY,
-    WIN_PULL_1,
-    WIN_PULL_10,
+    WIN_PULLS,
     WIN_COUNT
 };
 
@@ -187,20 +186,16 @@ static const struct BgTemplate sGachaUiBgTemplates[] =
 #define MONEY_HEIGHT    2
 #define PITY_WIDTH      12
 #define PITY_HEIGHT     4
-#define PULL_1_WIDTH    6
-#define PULL_1_HEIGHT   4
-#define PULL_10_WIDTH   7
-#define PULL_10_HEIGHT  4
+#define PULLS_WIDTH     12
+#define PULLS_HEIGHT    4
 
 #define MONEY_SIZE      MONEY_WIDTH * MONEY_HEIGHT
 #define PITY_SIZE       PITY_WIDTH * PITY_HEIGHT
-#define PULL_1_SIZE     PULL_1_WIDTH * PULL_1_HEIGHT
-#define PULL_10_SIZE     PULL_10_WIDTH * PULL_10_HEIGHT
+#define PULLS_SIZE     PULL_1_WIDTH * PULL_1_HEIGHT
 
 #define MONEY_BASEBLOCK     1
 #define PITY_BASEBLOCK      MONEY_BASEBLOCK + MONEY_SIZE
-#define PULL_1_BASEBLOCK    PITY_BASEBLOCK + PITY_SIZE
-#define PULL_10_BASEBLOCK   PULL_1_BASEBLOCK + PULL_1_SIZE
+#define PULLS_BASEBLOCK     PITY_BASEBLOCK + PITY_SIZE
 
 static const struct WindowTemplate sGachaUiWindowTemplates[] =
 {
@@ -224,25 +219,15 @@ static const struct WindowTemplate sGachaUiWindowTemplates[] =
         .paletteNum = 15,
         .baseBlock = PITY_BASEBLOCK
     },
-    [WIN_PULL_1] =
+    [WIN_PULLS] =
     {
         .bg = 0,
-        .tilemapLeft = 30 - PULL_10_WIDTH - PULL_1_WIDTH - 1,
+        .tilemapLeft = 30 - PULLS_WIDTH,
         .tilemapTop = 16 + 20,
-        .width = PULL_1_WIDTH,
-        .height = PULL_1_HEIGHT,
+        .width = PULLS_WIDTH,
+        .height = PULLS_HEIGHT,
         .paletteNum = 15,
-        .baseBlock = PULL_1_BASEBLOCK
-    },
-    [WIN_PULL_10] =
-    {
-        .bg = 0,
-        .tilemapLeft = 30 - PULL_10_WIDTH,
-        .tilemapTop = 16 + 20,
-        .width = PULL_10_WIDTH,
-        .height = PULL_10_HEIGHT,
-        .paletteNum = 15,
-        .baseBlock = PULL_10_BASEBLOCK
+        .baseBlock = PULLS_BASEBLOCK
     },
     DUMMY_WIN_TEMPLATE
 };
@@ -625,7 +610,8 @@ static void DrawMoney(void)
     CopyWindowToVram(WIN_MONEY, COPYWIN_GFX);
 }
 
-const u8 sPityStr[] = _(" pulls to\nguaranteed 6-star");
+const u8 sPityStr1[] = _(" pulls to");
+const u8 sPityStr2[] = _("guaranteed 6-star");
 
 static void DrawPity(void)
 {
@@ -638,22 +624,27 @@ static void DrawPity(void)
     u8 str[32];
 
     u8 *strPtr = ConvertIntToDecimalStringN(str, toGuaranteed, STR_CONV_MODE_LEFT_ALIGN, 2);
-    StringCopy(strPtr, sPityStr);
+    StringCopy(strPtr, sPityStr1);
 
     FillWindowPixelBuffer(WIN_PITY, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
     AddTextPrinterParameterized4(WIN_PITY,
                                  FONT_NORMAL,
-                                 0, 0, 0, 0,
+                                 0, 7, 0, 0,
                                  sGachaUiWindowFontColors[FONT_WHITE],
                                  TEXT_SKIP_DRAW,
                                  str);
+    AddTextPrinterParameterized4(WIN_PITY,
+                                 FONT_NORMAL,
+                                 0, 17, 0, 0,
+                                 sGachaUiWindowFontColors[FONT_WHITE],
+                                 TEXT_SKIP_DRAW,
+                                 sPityStr2);
     CopyWindowToVram(WIN_PITY, COPYWIN_GFX);
 }
 
 static void DrawPull(void)
 {
-    FillWindowPixelBuffer(WIN_PULL_1, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
-    FillWindowPixelBuffer(WIN_PULL_10, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    FillWindowPixelBuffer(WIN_PULLS, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
 
     enum FontColor color = FONT_WHITE;
 
@@ -662,25 +653,38 @@ static void DrawPull(void)
     if (money < PULL_1_COST)
         color = FONT_RED;
 
-    AddTextPrinterParameterized4(WIN_PULL_1,
+    AddTextPrinterParameterized4(WIN_PULLS,
                                  FONT_NORMAL,
-                                 0, 0, 0, 0,
+                                 0, 6, 0, 0,
                                  sGachaUiWindowFontColors[color],
                                  TEXT_SKIP_DRAW,
-                                 COMPOUND_STRING("{L_BUTTON} 1 Pull\n{CLEAR_TO 20}50"));
+                                 COMPOUND_STRING("{L_BUTTON} 1 Pull"));
+
+    AddTextPrinterParameterized4(WIN_PULLS,
+                                 FONT_NORMAL,
+                                 65, 6, 0, 0,
+                                 sGachaUiWindowFontColors[color],
+                                 TEXT_SKIP_DRAW,
+                                 COMPOUND_STRING("50"));
 
     if (money < PULL_10_COST)
         color = FONT_RED;
 
-    AddTextPrinterParameterized4(WIN_PULL_10,
+    AddTextPrinterParameterized4(WIN_PULLS,
                                  FONT_NORMAL,
-                                 0, 0, 0, 0,
+                                 0, 18, 0, 0,
                                  sGachaUiWindowFontColors[color],
                                  TEXT_SKIP_DRAW,
-                                 COMPOUND_STRING("{R_BUTTON} 10 Pull\n{CLEAR_TO 20}500"));
+                                 COMPOUND_STRING("{R_BUTTON} 10 Pull"));
 
-    CopyWindowToVram(WIN_PULL_1, COPYWIN_GFX);
-    CopyWindowToVram(WIN_PULL_10, COPYWIN_GFX);
+    AddTextPrinterParameterized4(WIN_PULLS,
+                                 FONT_NORMAL,
+                                 65, 18, 0, 0,
+                                 sGachaUiWindowFontColors[color],
+                                 TEXT_SKIP_DRAW,
+                                 COMPOUND_STRING("500"));
+
+    CopyWindowToVram(WIN_PULLS, COPYWIN_GFX);
 }
 
 static void UpdateBall(struct Sprite *sprite)
