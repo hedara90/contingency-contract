@@ -1,4 +1,5 @@
 mapscripts ConventionCenter_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: CC_OnTransition
     MAP_SCRIPT_ON_RESUME {
         if (flag(FLAG_QUEUE_LOADED) == TRUE) {
             callnative(CreateQueue)
@@ -10,6 +11,31 @@ mapscripts ConventionCenter_MapScripts {
 }
 
 const player = OBJ_EVENT_ID_PLAYER
+const zhuang = LOCALID_CC_ZHUANG
+const nian = LOCALID_CC_NIAN
+const shu = LOCALID_CC_SHU
+const Event_GilbertaEntrance = FLAG_TEMP_19
+const Event_GilbertaBooth = FLAG_TEMP_18
+const Event_GilbertaCafe = FLAG_TEMP_17
+
+script CC_OnTransition {
+    random(5)
+    // switch(var(VAR_RESULT)){
+    //     case 0:
+    //         setflag(Event_GilbertaBooth)
+    //         setflag(Event_GilbertaCafe)
+    //     case 1:
+    //         setflag(Event_GilbertaEntrance)
+    //         setflag(Event_GilbertaCafe)
+    //     case 2:
+    //         setflag(Event_GilbertaEntrance)
+    //         setflag(Event_GilbertaBooth)
+    //     default:
+    //         setflag(Event_GilbertaEntrance)
+    //         setflag(Event_GilbertaBooth)
+    //         setflag(Event_GilbertaCafe)
+    // }
+}
 
 script TryLoadQueue {
     if (flag(FLAG_QUEUE_LOADED) != TRUE) {
@@ -384,4 +410,231 @@ script WelcomeCounter {
     waitmessage
     release
     end
+}
+
+script CC_Dragons {
+    lock
+    applymovement(shu, moves(walk_in_place_up))
+    waitmovement
+    msgbox("I do hope washing my tail's not going\nto be too messy with the new paint.")
+    closemessage
+    applymovement(nian, moves(face_down))
+    waitmovement
+    msgbox("Yeah, it has always been a pain for you,\nhasn't it?")
+    closemessage
+    applymovement(zhuang, moves(walk_in_place_right))
+    waitmovement
+    msgbox("Huh? Wait, you painted it?")
+    closemessage
+    applymovement(shu, moves(walk_in_place_up))
+    applymovement(zhuang, moves(face_down))
+    waitmovement
+    msgbox("Yeah! Normally it's the same color\nas yours.\p"
+            "We even had to dye the hair to match\nShu's pattern")
+    closemessage
+    applymovement(zhuang, moves(emote_exclamation_mark))
+    waitmovement
+    msgbox("Wow, I didn't even notice it wasn't\nnatural.\pThat's amazing!")
+    closemessage
+    applymovement(nian, moves(jump_in_place_left))
+    playse(SE_LEDGE)
+    waitmovement
+    msgbox("Yeah, she's really good at that.\nYou should see her Mym cosplay!\p")
+    waitmessage
+    applymovement(nian, moves(face_down))
+    msgbox("She created a whole armor ton\put on her tail for that one,\lsince it's so much bigger")
+    closemessage
+    applymovement(shu, moves(walk_in_place_up))
+    msgbox("Yeah that... took some time to\nfigure out.\pVery happy with the result, though.")
+    closemessage
+    applymovement(zhuang, moves(face_right))
+    waitmovement
+    msgbox("So is yours also painted then?")
+    closemessage
+    applymovement(nian, moves(face_left))
+    msgbox("Mine? Yeah, technically I suppose.")
+    closemessage
+    fadescreen(FADE_TO_BLACK)
+    msgbox("Nian takes off her tail")
+    closemessage
+    fadescreen(FADE_FROM_BLACK)
+    msgbox("But it's also made of foam.\nI'm just a regular ol' human after all."
+            "I just pop it on my back with\nsome magnets, and there's a harness\lunder my outfit it attaches to.")
+    closemessage
+    applymovement(shu, moves(face_left))
+    msgbox("It's pretty convincing, right?")
+    closemessage
+    applymovement(zhuang, moves(face_down))
+    msgbox("You can say that, yeah.")
+    waitmessage
+    applymovement(zhuang, moves(face_right))
+    msgbox("It never occured to me that it wasn't\nactually moving.")
+    waitmessage
+    applymovement(zhuang, moves(face_down))
+    msgbox("So what sorta paint do you use for\nyour tail?")
+    closemessage
+    applymovement(shu, moves(face_left))
+    msgbox("We custom order it so it does what\nwe want.\lTo... mixed results.\p"
+            "Turns out scales are pretty hard\nto keep dye on.")
+    closemessage
+    applymovement(nian, moves(walk_in_place_left))
+    msgbox("Say, if you ever want to do something\nthat needs tail mods,\lyou can shoot us a message!")
+    closemessage
+    applymovement(shu, moves(face_up))
+    applymovement(zhuang, moves(face_right))
+    msgbox("Ohhh I'll take you up on that!")
+    closemessage
+    release
+}
+
+const tangtang = LOCALID_CC_TANGTANG
+const mifuTop = LOCALID_CC_MIFU1
+const mifuSide = LOCALID_CC_MIFU2
+const mifuBottom = LOCALID_CC_MIFU3
+
+script CC_MiFus {
+    lock
+    applymovement(mifuSide, moves(walk_in_place_left))
+    msgbox("Girls, I think we gotta lock her up")
+    closemessage
+    applymovement(mifuBottom, moves(jump_in_place_up))
+    playse(SE_LEDGE)
+    msgbox("Yeah, she's been a bad kitty.")
+    closemessage
+    applymovement(mifuTop, moves(walk_in_place_down))
+    msgbox("Sounds good")
+    closemessage
+    applymovement(tangtang, moves(emote_exclamation_mark))
+    playse(SE_PIN)
+    waitse
+    msgbox("Wait wait wait a second.\nI haven't done anything wrong!")
+    closemessage
+    applymovement(mifuTop, moves(walk_in_place_down))
+    applymovement(tangtang, moves(face_up))
+    msgbox("That's what they all say.")
+    closemessage
+    applymovement(tangtang, moves(jump_in_place_up*2, delay_16*3, face_down, delay_16*3, face_right))
+    msgbox("Aren't we all... pretending here?\nI'm not actually TangTang!")
+    waitmessage
+    applymovement(tangtang, moves(face_down))
+    msgbox("Nooo....")
+    closemessage
+    release
+}
+
+script CC_MiFuSpectator {
+    lock
+    msgbox("It should've been me, not her...")
+    closemessage
+    release
+}
+
+const guard1 = LOCALID_CC_GUARD1
+const guard2 = LOCALID_CC_GUARD2
+const guard3 = LOCALID_CC_GUARD3
+const gilberta1 = LOCALID_CC_GILBERTA1
+const gilberta2 = LOCALID_CC_GILBERTA2
+const gilberta3 = LOCALID_CC_GILBERTA3
+
+script CC_GilbertaEntrance {
+    if(var(VAR_TEMP_9)==1){
+        goto(CC_GilbertaEntrance_After)
+    }
+    lock
+    applymovement(guard1, moves(emote_exclamation_mark))
+    playse(SE_PIN)
+    waitmovement
+    msgbox("Hey, girl! Get off that Lung!")
+    waitmessage
+    applymovement(gilberta1, moves(face_left))
+    msgbox("Allright, fiiiiine")
+    applymovement(gilberta1, moves(jump_right, lock_facing_direction, walk_down, unlock_facing_direction))
+    playse(SE_LEDGE)
+    msgbox("Heppy now?")
+    release
+}
+
+script CC_GilbertaEntrance_After {
+    lock
+    applymovement(gilberta1, moves(walk_in_place_right))
+    waitmovement
+    msgbox("I won't go up there anymore, okay?")
+    closemessage
+    applymovement(guard1, moves(walk_in_place_left))
+    waitmovement
+    msgbox("I'm sure you won't.")
+    closemessage
+    release
+}
+
+script CC_GilbertaBooth {
+    lock
+    faceplayer
+    msgbox("How in the world did she even get\nup there...")
+    closemessage
+    applymovement(guard2, moves(face_down))
+    release
+}
+
+script CC_GilbertaCafe {
+    lock
+    applymovement(guard3, moves(walk_in_place_up))
+    waitmovement
+    msgbox("Miss, please, stop getting up on things.\p"
+            "It's dangerous for everyone here.")
+    closemessage
+    applymovement(gilberta3, moves(emote_exclamation_mark))
+    msgbox("I can't help it!\nThey asked me to be in character!")
+    waitmessage
+    msgbox("...")
+    closemessage
+    release
+}
+
+const merchclerk = LOCALID_CC_MERCHCLERK
+
+script CC_MerchCounter {
+    lock
+    msgbox("Hello! Welcome to the merch shop!")
+    closemessage
+    delay(30)
+    msgbox("...is what I'd like to say.\p"
+            "We ran out of stock in the first\n30 minutes of the convention...")
+    closemessage
+    applymovement(player,moves(walk_in_place_right))
+    waitmovement
+    dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
+            "Isn't there merch right next to you?")
+    applymovement(merchclerk, moves(face_up, delay_16*4, face_left))
+    waitmovement
+    msgbox("Oh these?\pNo, they're just 2D displays of\nwhat the things would look like.\p"
+            "Sorry to disappoint...")
+    closemessage
+    release
+}
+
+const cameraman = LOCALID_CC_CAMERAMAN
+const pog = LOCALID_CC_POG
+
+script CC_CameraBooth_TurnBack {
+    lock
+    applymovement(cameraman, moves(face_left))
+    msgbox("Hey kid, please don't interrupt me here.")
+    closemessage
+    applymovement(player, moves(walk_left))
+    waitmovement
+    applymovement(cameraman, moves(face_up))
+    waitmovement
+    release
+}
+
+script CC_Pog {
+    lock
+    faceplayer
+    msgbox("Sigh... I get that she wants\nto portray Fiametta properly.\p"
+            "But did she really have to say\nthat line?")
+    msgbox("T/N: we cannot put this sentence\nin the text.")
+    closemessage
+    applymovement(pog, moves(face_right))
+    waitmovement
 }
