@@ -1377,9 +1377,12 @@ static void Task_RiskUiMainInput(u8 taskId)
     }
     else if (JOY_NEW(START_BUTTON))
     {
-        sRiskUiState->isShowingDescription = TRUE;
-        gSprites[sRiskUiState->selectorId].invisible = TRUE;
-        gTasks[taskId].func = Task_DisplayDescription;
+        if (GetRiskUnderCursor() != RISK_NONE)
+        {
+            sRiskUiState->isShowingDescription = TRUE;
+            gSprites[sRiskUiState->selectorId].invisible = TRUE;
+            gTasks[taskId].func = Task_DisplayDescription;
+        }
     }
     else if (JOY_NEW(DPAD_ANY) || JOY_HELD(DPAD_ANY))
     {
@@ -1692,6 +1695,7 @@ static void PrintRiskData(enum Risk risk)
     //  First clear out windows
     FillWindowPixelBuffer(WIN_RISK_NAME, PIXEL_FILL(2));
     FillWindowPixelBuffer(WIN_RISK_DESCRIPTION, PIXEL_FILL(2));
+    FillWindowPixelBuffer(WIN_RISK_TOTAL, PIXEL_FILL(5));
 
     //  Then if risk is not RISK_NONE
     //  print new risk text
