@@ -80,7 +80,8 @@ script AbyssalHunters_Specter {
 }
 
 text SpecterBeforeBattle {
-    "Hello"
+    "Miss, please, stop getting up on things.\p"
+    "It's dangerous for everyone here."
 }
 
 text SpecterAfterBattle {
