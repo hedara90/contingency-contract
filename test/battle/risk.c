@@ -1132,3 +1132,21 @@ SINGLE_BATTLE_TEST("Risk: Opponent has Filter")
         EXPECT_MUL_EQ(damagePlayer, Q_4_12(0.75), damageFoe);
     }
 }
+
+SINGLE_BATTLE_TEST("Risk: Regenerator heals the user and not a fainted party member when switching out with a hit escape move")
+{
+    GIVEN {
+        SetRisk(RISK_HAS_REGENERATOR);
+        ASSUME(GetMoveEffect(MOVE_U_TURN) == EFFECT_HIT_ESCAPE);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET) { HP(1); }
+        OPPONENT(SPECIES_WOBBUFFET) { HP(1); MaxHP(300); }
+        OPPONENT(SPECIES_WYNAUT);
+    } WHEN {
+        TURN { MOVE(player, MOVE_POUND); SEND_OUT(opponent, 1); }
+        TURN { MOVE(opponent, MOVE_U_TURN); MOVE(player, MOVE_CELEBRATE); SEND_OUT(opponent, 2); }
+    } THEN {
+        EXPECT_EQ(GetMonData(&gParties[B_TRAINER_OPPONENT_A][0], MON_DATA_HP), 0);
+        EXPECT_EQ(GetMonData(&gParties[B_TRAINER_OPPONENT_A][1], MON_DATA_HP), 1 + 300 / 3);
+    }
+}
