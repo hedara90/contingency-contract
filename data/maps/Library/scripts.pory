@@ -3,3 +3,82 @@ mapscripts Library_MapScripts {
         callnative(Init_PulseNeonLights)
     }
 }
+
+const player = OBJ_EVENT_ID_PLAYER
+
+script Library_Trigger1 {
+    applymovement(player, moves(walk_right * 3, walk_up * 3, walk_right * 2))
+    waitmovement
+    goto(Library_MainScript)
+}
+
+script Library_Trigger2 {
+    applymovement(player, moves(walk_right * 3, walk_up * 4, walk_right * 2))
+    waitmovement
+    goto(Library_MainScript)
+}
+
+script Library_Trigger3 {
+    applymovement(player, moves(walk_up, walk_right * 3, walk_up, walk_up * 3, walk_right * 2))
+    waitmovement
+    goto(Library_MainScript)
+}
+
+script Library_PC {
+    playse(SE_PC_ON)
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("(Wait, why am I turning on the PC?)\n(It's my day off)")
+    closemessage
+    applymovement(player, moves(face_down))
+    waitmovement
+    playse(SE_PC_OFF)
+}
+
+script Library_MainScript {
+    applymovement(LOCALID_SATSUKI_LIBRARY, moves(face_left))
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Morning miss Satsuki.")
+    waitmessage
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Good morning {PLAYER}.\pUp earlier than usual today, hmm?\pAnd on a day you've taken off even.")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Well, yes, but…")
+    closemessage
+    applymovement(player, moves(face_up, delay_16 * 2, face_down, delay_16 * 2, face_right))
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("I have things planned today, and over\nthe weekend.")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("It was good timing on your part.\pI also have some tasks taking me out\nof the Library today.")
+    closemessage
+    applymovement(LOCALID_SATSUKI_LIBRARY, moves(face_up, delay_16 * 2, face_left))
+    waitmovement
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("By the way, I think your friend is\nwaiting for you in the public area.")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Chisa is here already!?")
+    closemessage
+    applymovement(player, moves(player_run_left, player_run_down * 4, player_run_right * 2, player_run_down * 10))
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Chisa! You're here already!\pWhy didn't you message me?")
+    setspeaker(SP_NAME_CHISA)
+    msgbox("Hi Tiana!\pWell, Satsuki said you'd be up soon\nI only waited a few minutes.\pI had time for some 2-8 runs.")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("How could she possibly know that…\pAnyway! Ready to head out?")
+    setspeaker(SP_NAME_CHISA)
+    msgbox("Yup! Bag is empty, camera is charged\nshoes are comfy and friend is awake!")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Let's go then!")
+    closemessage
+    applymovement(player, moves(walk_down))
+    applymovement(LOCALID_CHISA_LIBRARY, moves(walk_down))
+    waitmovement
+    fadescreen(FADE_TO_BLACK)
+    applymovement(player, moves(walk_down * 2))
+    applymovement(LOCALID_CHISA_LIBRARY, moves(walk_down * 2))
+    waitmovement
+    warpsilent(MAP_CONVENTION_CENTER, 7, 21)
+    waitstate
+}
