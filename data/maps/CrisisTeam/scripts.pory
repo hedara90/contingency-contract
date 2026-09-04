@@ -6,6 +6,9 @@ mapscripts CrisisTeam_MapScripts {
     MAP_SCRIPT_ON_FRAME_TABLE [
         VAR_TEMP_5, 0: CrisisTeam_OnGauntletStart
     ]
+    MAP_SCRIPT_ON_RESUME {
+        callnative(SpectatorVObjects)
+    }
 }
 
 const player = OBJ_EVENT_ID_PLAYER
