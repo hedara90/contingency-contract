@@ -68,6 +68,8 @@
 #include "constants/map_types.h"
 #include "constants/party_menu.h"
 
+#include "field_control_avatar.h"
+
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(struct ScriptContext *ctx);
 
@@ -3639,7 +3641,6 @@ const u16 sNonQueueVObjects[][4] =
 {
     {OBJ_EVENT_GFX_ACOLYTE_M, 20, 13, DIR_SOUTH},
     {OBJ_EVENT_GFX_ACOLYTE_F, 32, 13, DIR_SOUTH},
-    {OBJ_EVENT_GFX_ACOLYTE_F, 9, 19, DIR_SOUTH},
     {OBJ_EVENT_GFX_ACOLYTE_M, 44, 19, DIR_WEST},
     {OBJ_EVENT_GFX_ACOLYTE_F, 44, 20, DIR_WEST},
 };
@@ -3668,6 +3669,140 @@ bool8 OpenPartyGauntlet(struct ScriptContext *ctx)
     OpenPartyMenuDuringGauntlet();
     ScriptContext_Stop();
     return TRUE;
+}
+
+const u16 sSpectatorGfx[] =
+{
+    OBJ_EVENT_GFX_SATSUKI,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+};
+
+struct SpectatorCoord
+{
+    s8 x;
+    s8 y;
+    u16 facing;
+};
+
+const struct SpectatorCoord sSpectatorCoords[] =
+{
+    {10, 16, DIR_NORTH},
+    {11, 16, DIR_NORTH},
+    {12, 16, DIR_NORTH},
+    {13, 16, DIR_NORTH},
+    {14, 16, DIR_NORTH},
+    {15, 16, DIR_NORTH},
+    {16, 16, DIR_NORTH},
+    {17, 16, DIR_NORTH},
+    {18, 16, DIR_NORTH},
+    {19, 16, DIR_NORTH},
+    {20, 16, DIR_NORTH},
+    {21, 16, DIR_NORTH},
+    {22, 16, DIR_NORTH},
+    {10, 6, DIR_SOUTH},
+    {11, 6, DIR_SOUTH},
+    {12, 6, DIR_SOUTH},
+    {13, 6, DIR_SOUTH},
+    {14, 6, DIR_SOUTH},
+    {15, 6, DIR_SOUTH},
+    {16, 6, DIR_SOUTH},
+    {17, 6, DIR_SOUTH},
+    {18, 6, DIR_SOUTH},
+    {19, 6, DIR_SOUTH},
+    {20, 6, DIR_SOUTH},
+    {21, 6, DIR_SOUTH},
+    {22, 6, DIR_SOUTH},
+};
+
+void SpectatorVObjects(void)
+{
+    u32 objectCount = 6 + (Random32() % 16);
+    u32 extraVal = 0;
+    if (FlagGet(FLAG_SPECTATOR_POS))
+    {
+        extraVal = 1;
+    }
+
+    u16 gfxList[NELEMS(sSpectatorGfx)];
+    for (u32 i = 0; i < NELEMS(sSpectatorGfx); i++)
+    {
+        gfxList[i] = sSpectatorGfx[i];
+    }
+    Shuffle16(gfxList, NELEMS(sSpectatorGfx));
+
+    struct SpectatorCoord coordList[NELEMS(sSpectatorCoords)];
+    for (u32 i = 0; i < NELEMS(sSpectatorCoords); i++)
+    {
+        coordList[i] = sSpectatorCoords[i];
+    }
+    Shuffle32(coordList, NELEMS(sSpectatorCoords));
+
+    for (u32 i = 0; i < objectCount; i++)
+    {
+        CreateVirtualObject(gfxList[i], i, coordList[i].x - extraVal, coordList[i].y - extraVal, 3, coordList[i].facing);
+    }
+}
+
+void SetSpectatorHandlingFlag(void)
+{
+    struct MapPosition pos;
+    GetPlayerPosition(&pos);
+    if (pos.x == 26 && pos.y == 31)
+    {
+        FlagSet(FLAG_SPECTATOR_POS);
+    }
+    else
+    {
+        FlagClear(FLAG_SPECTATOR_POS);
+    }
 }
 
 static u16 GetBoxMonGraphicsId(struct BoxPokemon *boxmon)
