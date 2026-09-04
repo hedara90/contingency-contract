@@ -802,5 +802,6 @@ extern const u8 ChubbyLung2[];
 extern const u8 ChubbyLung3[];
 extern const u8 ChubbyLung4[];
 extern const u8 ChubbyLung5[];
+extern const u8 Library_PC[];
 
 #endif // GUARD_EVENT_SCRIPTS_H

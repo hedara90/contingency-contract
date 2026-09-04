@@ -694,7 +694,7 @@ void Even_SaveTask(u8 taskId)
 
 static bool8 HandleStartMenuInput(void)
 {
-    if (JOY_NEW(DPAD_UP))
+    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(MAP_LIBRARY) && JOY_NEW(DPAD_UP))
     {
         PlaySE(SE_SELECT);
         sStartMenuCursorPos = 0;
@@ -1368,7 +1368,7 @@ static bool32 InitSaveWindowAfterLinkBattle(u8 *state)
         SetVBlankCallback(NULL);
         ScanlineEffect_Stop();
         DmaClear16(3, PLTT, PLTT_SIZE);
-        DmaFillLarge16(3, 0, (void *)VRAM, VRAM_SIZE, 0x1000);
+        DmaClearLarge16(3, (void *)VRAM, VRAM_SIZE, 0x1000);
         break;
     case 1:
         ResetSpriteData();
@@ -1628,14 +1628,22 @@ static void ShowCCStartMenu(void)
     cs.spriteShape = SPRITE_SHAPE(64x32);
     cs.subpriority = 0;
 
-    cs.sprite = gCCStart_Party;
-    cs.tileTag = 0xDED1;
-    cs.posX = 120;
-    cs.posY = 48;
-    sCCMenuSpriteIds[0] = Even_CreateSprite(&cs);
+    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(MAP_LIBRARY))
+    {
+        cs.sprite = gCCStart_Party;
+        cs.tileTag = 0xDED1;
+        cs.posX = 120;
+        cs.posY = 48;
+        sCCMenuSpriteIds[0] = Even_CreateSprite(&cs);
+    }
+    else
+    {
+        sCCMenuSpriteIds[0] = SPRITE_NONE;
+    }
 
     cs.sprite = gCCStart_Bag;
     cs.tileTag = 0xDED2;
+    cs.posX = 120;
     cs.posY = 104;
     sCCMenuSpriteIds[1] = Even_CreateSprite(&cs);
 
@@ -1658,7 +1666,8 @@ static void HideCCSTartMenu(void)
 {
     for (u32 i = 0; i < 4; i++)
     {
-        DestroySprite(&gSprites[sCCMenuSpriteIds[i]]);
+        if (sCCMenuSpriteIds[i] != SPRITE_NONE)
+            DestroySprite(&gSprites[sCCMenuSpriteIds[i]]);
     }
     FreeSpritePaletteByTag(0xDED1);
     FreeSpritePaletteByTag(0xDED2);

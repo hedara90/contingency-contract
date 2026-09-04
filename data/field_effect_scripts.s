@@ -86,9 +86,11 @@ gFieldEffectScriptPointers::
 	.4byte gFieldEffectScript_ORASDowse                 @ FLDEFF_ORAS_DOWSE
 	.4byte gFldEffScript_SmileyFaceIcon    		        @ FLDEFF_SMILEY_FACE_ICON
 	.4byte gFieldEffectScript_HallOfFameRecordFrlg      @ FLDEFF_HALL_OF_FAME_RECORD_FRLG
-	.4byte gFldEffScript_PhotoFlash      		        @ FLDEFF_PHOTO_FLASH
+	.4byte gFldEffScript_PhotoFlash                     @ FLDEFF_PHOTO_FLASH
 	.4byte gFieldEffectScript_OWE_SpawnAnim				@ FLDEFF_OW_ENCOUNTER_SPAWN_ANIM
 	.4byte gFieldEffectScript_Saving					@ FLDEFF_SAVING
+	.4byte gFieldEffectScript_JumpOnBird                @ FLDEFF_JUMP_ON_BIRD
+	.4byte gFieldEffectScript_JumpOffBird               @ FLDEFF_JUMP_OFF_BIRD
 
 gFieldEffectScript_Saving::
 	field_eff_loadfadedpal_callnative gSpritePalette_SavingFieldEffect, FldEff_Saving
@@ -424,4 +426,12 @@ gFldEffScript_PhotoFlash::
 
 gFieldEffectScript_OWE_SpawnAnim::
 	field_eff_callnative FldEff_OWE_SpawnAnim
+	field_eff_end
+
+gFieldEffectScript_JumpOnBird::
+	field_eff_callnative FldEff_JumpOnBird
+	field_eff_end
+
+gFieldEffectScript_JumpOffBird::
+	field_eff_callnative FldEff_JumpOffBird
 	field_eff_end

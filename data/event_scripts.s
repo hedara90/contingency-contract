@@ -19,6 +19,7 @@
 #include "constants/berry.h"
 #include "constants/cable_club.h"
 #include "constants/coins.h"
+#include "constants/comparison_operators.h"
 #include "constants/contest.h"
 #include "constants/daycare.h"
 #include "constants/decorations.h"
@@ -77,6 +78,7 @@
 #include "constants/cc_version.h"
 	.include "asm/macros.inc"
 	.include "asm/macros/event.inc"
+	.include "asm/macros/jamies_transformation_pack.inc"
 	.include "constants/constants.inc"
 
 	.section script_data, "aw", %progbits

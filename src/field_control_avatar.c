@@ -310,7 +310,8 @@ static bool8 TryStartInteractionScript(struct MapPosition *position, u16 metatil
      && script != ChubbyLung2
      && script != ChubbyLung3
      && script != ChubbyLung4
-     && script != ChubbyLung5)
+     && script != ChubbyLung5
+     && script != Library_PC)
         PlaySE(SE_SELECT);
 
     ScriptContext_SetupScript(script);

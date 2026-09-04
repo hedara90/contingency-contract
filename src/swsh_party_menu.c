@@ -3280,7 +3280,7 @@ static void DisplayPartyPokemonBarDetailToFit(u8 windowId, const u8 *str, u8 col
 static u8 GetPPFontColorIndexForMove(enum Move move, u8 currentPP, u8 ppBonuses, int m)
 {
     u8 maxPP = CalculatePPWithBonus(move, ppBonuses, m);
-    u8 ppState = GetCurrentPpToMaxPpState(currentPP, maxPP);
+    u8 ppState = GetCurrentPPToMaxPPState(currentPP, maxPP);
 
     return 7 + ppState;
 }
@@ -9530,7 +9530,7 @@ static bool8 TrySwitchInPokemon(void)
         StringExpandPlaceholders(gStringVar4, gText_EggCantBattle);
         return FALSE;
     }
-    if (BattlersShareParty(gBattlerInMenuId, BATTLE_PARTNER(gBattlerInMenuId))
+    if (BattlersShareParty(gBattlerInMenuId, GetPartnerBattler(gBattlerInMenuId))
         && battlePartyId == gBattleStruct->prevSelectedPartySlot)
     {
         GetMonNickname(&party[partySlot], gStringVar1);
