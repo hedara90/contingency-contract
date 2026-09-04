@@ -440,6 +440,7 @@ static void CreatePressStartBanner(s16 x, s16 y)
 
 static void CreateCopyrightBanner(s16 x, s16 y)
 {
+    /*
     u8 i;
     u8 spriteId;
 
@@ -448,6 +449,20 @@ static void CreateCopyrightBanner(s16 x, s16 y)
     {
         spriteId = CreateSprite(&sStartCopyrightBannerSpriteTemplate, x, y, 0);
         StartSpriteAnim(&gSprites[spriteId], i + NUM_PRESS_START_FRAMES);
+    }
+    */
+    for (u32 i = 0; i < 5; i++)
+    {
+        struct Even_CreateSpriteStruct cs = {0};
+        cs.sprite = &gCCDevsGfx[32 * 16 / 8 * i];
+        cs.tileTag = 0xDED1 + i;
+        cs.palette = gTitleScreenPressStartPal;
+        cs.palTag = TAG_PRESS_START_COPYRIGHT;
+        cs.spriteSize = SPRITE_SIZE(32x16);
+        cs.spriteShape = SPRITE_SHAPE(32x16);
+        cs.posX = 16 + 42 + 32 * i;
+        cs .posY = 160 - 8;
+        Even_CreateSprite(&cs);
     }
 }
 
@@ -882,10 +897,16 @@ static void UpdateLegendaryMarkingColor(u8 frameNum)
    }
 }
 
-static const u16 sTarcPokemonPal[] = INCGFX_U16("graphics/title_screen/pokemon_tarc.png", ".gbapal");
-static const u32 sTarcPokemonGfx[] = INCGFX_U32("graphics/title_screen/pokemon_tarc.png", ".4bpp", "-mwidth 8 -mheight 8");
+static const u16 sTarcPokemonPal[] = INCGFX_U16("graphics/title_screen/pokemon_tarc3.png", ".gbapal");
+static const u32 sTarcPokemonGfx[] = INCGFX_U32("graphics/title_screen/pokemon_tarc3.png", ".4bpp", "-mwidth 8 -mheight 8");
 static const u16 sTarcTitlePal[] = INCGFX_U16("graphics/title_screen/recordkeepers.png", ".gbapal");
 static const u32 sTarcTitleGfx[] = INCGFX_U32("graphics/title_screen/recordkeepers.png", ".4bpp", "-mwidth 8 -mheight 8");
+
+static const u16 sCCPal[] = INCGFX_U16("graphics/title_screen/header.png", ".gbapal");
+static const u32 sCCLogo[] = INCGFX_U32("graphics/title_screen/CCLogo.png", ".4bpp", "-mwidth 4 -mheight 4");
+static const u32 sCCHeader[] = INCGFX_U32("graphics/title_screen/header.png", ".4bpp", "-mwidth 4 -mheight 4");
+static const u32 sCCMasquerade[] = INCGFX_U32("graphics/title_screen/Masquerade.png", ".4bpp", "-mwidth 4 -mheight 4");
+static const u32 sCCOperation[] = INCGFX_U32("graphics/title_screen/operation.png", ".4bpp", "-mwidth 4 -mheight 2");
 
 static void AddTarcSprites(void)
 {
@@ -898,21 +919,66 @@ static void AddTarcSprites(void)
     {
         cs.sprite = &sTarcPokemonGfx[i * 512];
         cs.tileTag = 0xCEC1 + i;
-        cs.posX = 56 + 64 * i;
-        cs.posY = 60;
+        cs.posX = 24 + 64 * i;
+        cs.posY = 27;
         u32 spriteId = Even_CreateSprite(&cs);
         gSprites[spriteId].oam.priority = 0;
     }
 
-    cs.palette = sTarcTitlePal;
-    cs.palTag = 0xCEC4;
-    for (u32 i = 0; i < 4; i++)
+    //  Pokeball star thing 3x3 32x32px sprites, 9 uniques
+    cs.palette = sCCPal;
+    cs.palTag = 0x4444;
+    cs.spriteSize = SPRITE_SIZE(32x32);
+    cs.spriteShape = SPRITE_SHAPE(32x32);
+    cs.subpriority = 0;
+    for (u32 y = 0; y < 3; y++)
     {
-        cs.sprite = &sTarcTitleGfx[i * 512];
-        cs.tileTag = 0xCEC4 + i;
-        cs.posX = 24 + 64 * i;
-        cs.posY = 100;
-        u32 spriteId = Even_CreateSprite(&cs);
-        gSprites[spriteId].oam.priority = 1;
+        for (u32 x = 0; x < 3; x++)
+        {
+            cs.sprite = &sCCLogo[32 * 32 / 8 * (y * 3 + x)];
+            cs.tileTag = 0x4444 + (y * 3 + x);
+            cs.posX = 24 + 32 * x;
+            cs.posY = 48 + 32 * y;
+            Even_CreateSprite(&cs);
+        }
+    }
+
+    //  Header 5x1 32x32px sprites, 4 uniques
+    cs.posY = 80;
+    for (u32 x = 0; x < 4; x++)
+    {
+        cs.sprite = &sCCHeader[32 * 32 / 8 * x];
+        cs.tileTag = 0x4444 + 9 + x;
+        cs.posX = 96 + 32 * x;
+        Even_CreateSprite(&cs);
+    }
+    cs.posX = 96 + 32 * 4;
+    Even_CreateSprite(&cs);
+
+    //  Masquerade 8x1 32x32px sprites, 6 uniques
+    cs.posY = 114;
+    for (s32 x = 5; x >= 0; x--)
+    {
+        cs.sprite = &sCCMasquerade[32 * 32 / 8 * x];
+        cs.tileTag = 0x4444 + 9 + 4 + x;
+        cs.posX = 240 - 16 - 32 * (5 - x);
+        cs.subpriority = 1;
+        Even_CreateSprite(&cs);
+    }
+    cs.posX = 32;
+    Even_CreateSprite(&cs);
+    cs.posX = 16;
+    Even_CreateSprite(&cs);
+
+    //  Operation 4x1 32x16px sprites, 4 uniques
+    cs.spriteSize = SPRITE_SIZE(32x16);
+    cs.spriteShape = SPRITE_SHAPE(32x16);
+    cs.posY = 91;
+    for (u32 x = 0; x < 4; x++)
+    {
+        cs.sprite = &sCCOperation[32 * 16 / 8 * x];
+        cs.tileTag = 0x4444 + 9 + 4 + 6 + x;
+        cs.posX = 240 - 16 - 96 + 32 * x;
+        Even_CreateSprite(&cs);
     }
 }
