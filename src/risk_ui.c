@@ -398,7 +398,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_HAS_GUARANTEED_EFFECTS] =
     {
         .tiles = { COORD_TO_TILE(16, 14), COORD_TO_TILE(16, 15), COORD_TO_TILE(17, 14), COORD_TO_TILE(17, 15) },
-        .name = COMPOUND_STRING("Target: Windfall"),
+        .name = COMPOUND_STRING("Special Execution"),
         .description = COMPOUND_STRING("Opponent's moves with secondary effects\nare guaranteed to proc those effects."),
     },
     [RISK_OPPONENT_ATTACKS_DISABLE] =
@@ -582,7 +582,7 @@ const struct RiskIcon sRiskData[] =
     {
         .tiles = { COORD_TO_TILE(20, 26), COORD_TO_TILE(20, 27), COORD_TO_TILE(21, 26), COORD_TO_TILE(21, 27) },
         .lockRisk = RISK_MINUS_1_MOVE,
-        .name = COMPOUND_STRING("Target: Metabolism Boost"),
+        .name = COMPOUND_STRING("Target: Second Wind"),
         .description = COMPOUND_STRING("Opponent mons have Regenerator."),
     },
     [RISK_HAS_BATTLE_ARMOR] =
@@ -784,8 +784,8 @@ const enum Risk sRiskMap[64][64] =
 
     [20][20] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
     [20][21] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
-    [31][20] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
-    [31][21] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
+    [21][20] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
+    [21][21] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
 
     [22][20] = RISK_FOE_HAS_METRONOME,
     [22][21] = RISK_FOE_HAS_METRONOME,
