@@ -178,3 +178,81 @@ SINGLE_BATTLE_TEST("Sand Blast sets Sandstorm")
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SANDSTORM_CONTINUES);
     }
 }
+
+SINGLE_BATTLE_TEST("Protect: Boreal Bastion frostbites Pokémon for moves making contact")
+{
+    enum Move usedMove = MOVE_NONE;
+
+    PARAMETRIZE { usedMove = MOVE_SCRATCH; }
+    PARAMETRIZE { usedMove = MOVE_LEER; }
+    PARAMETRIZE { usedMove = MOVE_WATER_GUN; }
+
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_BOREAL_BASTION); MOVE(player, usedMove); }
+        TURN {}
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_BOREAL_BASTION, opponent);
+        MESSAGE("The opposing Wobbuffet protected itself!");
+        NOT ANIMATION(ANIM_TYPE_MOVE, usedMove, player);
+        MESSAGE("The opposing Wobbuffet protected itself!");
+        if (usedMove == MOVE_SCRATCH) {
+            NOT HP_BAR(opponent);
+            STATUS_ICON(player, STATUS1_FROSTBITE);
+        } else {
+            NONE_OF {
+                HP_BAR(opponent);
+                STATUS_ICON(player, STATUS1_FROSTBITE);
+            }
+        }
+    }
+}
+
+SINGLE_BATTLE_TEST("Protect: Boreal Bastion can't frostbite Pokémon if they are already statused")
+{
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_TOXIC); }
+        TURN { MOVE(opponent, MOVE_BOREAL_BASTION); MOVE(player, MOVE_SCRATCH); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TOXIC, opponent);
+        STATUS_ICON(player, STATUS1_TOXIC_POISON);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_BOREAL_BASTION, opponent);
+        NONE_OF {
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
+            HP_BAR(opponent);
+            STATUS_ICON(player, STATUS1_FROSTBITE);
+        }
+    }
+}
+
+SINGLE_BATTLE_TEST("Protect: Boreal Bastion doesn't frostbite attacker when charging a two turn move")
+{
+    u32 move;
+    PARAMETRIZE { move = MOVE_BOUNCE; }
+    PARAMETRIZE { move = MOVE_DIG; }
+
+    GIVEN {
+        ASSUME(MoveMakesContact(MOVE_BOUNCE));
+        ASSUME(MoveMakesContact(MOVE_DIG));
+        ASSUME(gBattleMoveEffects[GetMoveEffect(MOVE_BOUNCE)].twoTurnEffect);
+        ASSUME(gBattleMoveEffects[GetMoveEffect(MOVE_DIG)].twoTurnEffect);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_BOREAL_BASTION); MOVE(opponent, move); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_BOREAL_BASTION, player);
+
+        ANIMATION(ANIM_TYPE_MOVE, move, opponent);
+        NONE_OF {
+            HP_BAR(player);
+            STATUS_ICON(opponent, STATUS1_FROSTBITE);
+        }
+    }
+}

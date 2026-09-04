@@ -30,28 +30,35 @@ script AKYellow_OnGauntletStart {
 script AKYellow_StartBattle {
     switch(var(VAR_GAUNTLET_POSITION)) {
         case 0: 
-            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(AKYellow_Shu)
             call(Gauntlet_PostBattle)
             goto(AKYellow_StartBattle)
         case 1:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(AKYellow_Nian)
             call(Gauntlet_PostBattle)
             goto(AKYellow_StartBattle)
         case 2:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(AKYellow_Elysium)
             call(Gauntlet_PostBattle)
             goto(AKYellow_StartBattle)
         case 3:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(AKYellow_Irene)
-            call(Gauntlet_PostBattle)
+            call(AKYellow_WonGauntlet)
     }
+}
+
+script AKYellow_WonGauntlet {
+    call(Gauntlet_AfterGauntletWin)
+    victoryscreen(GAUNTLET_AK_YELLOW, FALSE)
+    waitstate
+    call(Gauntlet_WarpOutAfterWin)
 }
 
 script AKYellow_Shu {
@@ -62,8 +69,10 @@ script AKYellow_Shu {
     switch(var(VAR_RESULT)){
         default:
             msgbox(ShuAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(ShuAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
@@ -92,8 +101,10 @@ script AKYellow_Nian {
     switch(var(VAR_RESULT)){
         default:
             msgbox(NianAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(NianAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
@@ -122,8 +133,10 @@ script AKYellow_Elysium {
     switch(var(VAR_RESULT)){
         default:
             msgbox(ElysiumAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(ElysiumAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
@@ -152,8 +165,10 @@ script AKYellow_Irene {
     switch(var(VAR_RESULT)){
         default:
             msgbox(IreneAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(IreneAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }

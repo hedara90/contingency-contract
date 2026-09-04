@@ -145,7 +145,7 @@ const struct RiskIcon sRiskData[] =
         .tiles = { COORD_TO_TILE(12, 8), COORD_TO_TILE(12, 9), COORD_TO_TILE(13, 8), COORD_TO_TILE(13, 9) },
         .linkedCount = 3,
         .name = COMPOUND_STRING("Fortification III"),
-        .description = COMPOUND_STRING("Foes have 25% more HP"),
+        .description = COMPOUND_STRING("Foes have 50% more HP"),
     },
     [RISK_TURN_LIMIT_1] =
     {
@@ -273,7 +273,7 @@ const struct RiskIcon sRiskData[] =
         .tiles = { COORD_TO_TILE(14, 14), COORD_TO_TILE(14, 15), COORD_TO_TILE(15, 14), COORD_TO_TILE(15, 15) },
         .linkedCount = 2,
         .name = COMPOUND_STRING("Scout Deployment"),
-        .description = COMPOUND_STRING("AI knows the players party, moves and abilities."),
+        .description = COMPOUND_STRING("AI knows the players party, moves and\nabilities."),
     },
     [RISK_HAS_PREDICTION_AI] =
     {
@@ -281,7 +281,7 @@ const struct RiskIcon sRiskData[] =
         .tiles = { COORD_TO_TILE(14, 16), COORD_TO_TILE(14, 17), COORD_TO_TILE(15, 16), COORD_TO_TILE(15, 17) },
         .linkedCount = 2,
         .name = COMPOUND_STRING("Strategize"),
-        .description = COMPOUND_STRING("AI knows the players party, moves and abilities.\nAI predicts the player's action."),
+        .description = COMPOUND_STRING("AI knows the players party, moves and\nabilities.\nAI predicts the player's action."),
     },
     [RISK_RANDOM_LEAD] =
     {
@@ -297,7 +297,7 @@ const struct RiskIcon sRiskData[] =
         .tiles = { COORD_TO_TILE(16, 14), COORD_TO_TILE(16, 15), COORD_TO_TILE(17, 14), COORD_TO_TILE(17, 15) },
         .linkedCount = 2,
         .name = COMPOUND_STRING("Target: Unknown"),
-        .description = COMPOUND_STRING("Opponent's party is picked from a pool of mons."),
+        .description = COMPOUND_STRING("Opponent's party is picked from a pool of\nmons, creating a semi-random team."),
     },
     [RISK_PLAYER_JUST_BERRIES] =
     {
@@ -309,7 +309,7 @@ const struct RiskIcon sRiskData[] =
     {
         .tiles = { COORD_TO_TILE(22, 22), COORD_TO_TILE(22, 23), COORD_TO_TILE(23, 22), COORD_TO_TILE(23, 23) },
         .name = COMPOUND_STRING("Resource Depletion"),
-        .description = COMPOUND_STRING("Move PP doesn't restore between battles"),
+        .description = COMPOUND_STRING("Move PP doesn't restore between battles."),
     },
     [RISK_OPPONENT_HAS_ITEMS] =
     {
@@ -339,7 +339,7 @@ const struct RiskIcon sRiskData[] =
     {
         .tiles = { COORD_TO_TILE(20, 14), COORD_TO_TILE(20, 15), COORD_TO_TILE(21, 14), COORD_TO_TILE(21, 15) },
         .name = COMPOUND_STRING("Ambient: Ancient Crits"),
-        .description = COMPOUND_STRING("Crit rate is calculated using Gen 1 formulas.\nFaster mons have a higher chance of critting."),
+        .description = COMPOUND_STRING("Crit rate is calculated using Gen 1 formulas.\nFaster mons have a higher chance of\ncritting."),
     },
     [RISK_STATUS_GETS_PARA] =
     {
@@ -351,25 +351,25 @@ const struct RiskIcon sRiskData[] =
     {
         .tiles = { COORD_TO_TILE(26, 20), COORD_TO_TILE(26, 21), COORD_TO_TILE(27, 20), COORD_TO_TILE(27, 21) },
         .name = COMPOUND_STRING("Below Average"),
-        .description = COMPOUND_STRING("Player attack rolls use only the lower half of results."),
+        .description = COMPOUND_STRING("Player attack rolls use only the lower\nhalf of results."),
     },
     [RISK_OPPONENT_HIGHER_DAMAGE_ROLLS] =
     {
         .tiles = { COORD_TO_TILE(28, 20), COORD_TO_TILE(28, 21), COORD_TO_TILE(29, 20), COORD_TO_TILE(29, 21) },
         .name = COMPOUND_STRING("Above Average"),
-        .description = COMPOUND_STRING("Opponent attack rolls use only the upper half of the results."),
+        .description = COMPOUND_STRING("Opponent attack rolls use only the upper\nhalf of the results."),
     },
     [RISK_PLAYER_HAS_NEGATIVE_METRONOME] =
     {
         .tiles = { COORD_TO_TILE(30, 20), COORD_TO_TILE(30, 21), COORD_TO_TILE(31, 20), COORD_TO_TILE(31, 21) },
         .name = COMPOUND_STRING("Damping"),
-        .description = COMPOUND_STRING("Player has a negative Metronome item effect of them.\nConsequtive attacking moves does less damage."),
+        .description = COMPOUND_STRING("Player has a negative Metronome item\neffect of them.\nConsecutive attacking moves does less\ndamage."),
     },
     [RISK_FOE_HAS_METRONOME] =
     {
         .tiles = { COORD_TO_TILE(32, 20), COORD_TO_TILE(32, 21), COORD_TO_TILE(33, 20), COORD_TO_TILE(33, 21) },
-        .name = COMPOUND_STRING("Damping"),
-        .description = COMPOUND_STRING("Opponent has a positive Metronome item effect on them.\nConsequtive attacking moves does more damage."),
+        .name = COMPOUND_STRING("Ramping"),
+        .description = COMPOUND_STRING("Opponent has a positive Metronome item\neffect on them.\nConsecutive attacking moves does more\ndamage."),
     },
     [RISK_PLAYER_HAS_RECOIL] =
     {
@@ -381,31 +381,31 @@ const struct RiskIcon sRiskData[] =
     {
         .tiles = { COORD_TO_TILE(34, 20), COORD_TO_TILE(34, 21), COORD_TO_TILE(35, 20), COORD_TO_TILE(35, 21) },
         .name = COMPOUND_STRING("Deadeye Bolts"),
-        .description = COMPOUND_STRING("Opponent can't miss moves"),
+        .description = COMPOUND_STRING("Opponent can't miss moves."),
     },
     [RISK_OPPONENT_MOVES_FIRST] =
     {
         .tiles = { COORD_TO_TILE(26, 28), COORD_TO_TILE(26, 29), COORD_TO_TILE(27, 28), COORD_TO_TILE(27, 29) },
         .name = COMPOUND_STRING("Initiative Priority"),
-        .description = COMPOUND_STRING("Opponents moves first in their priority bracket."),
+        .description = COMPOUND_STRING("Opponents moves first in their priority\nbracket."),
     },
     [RISK_OPPONENT_ATTACKS_SWITCHES] =
     {
         .tiles = { COORD_TO_TILE(26, 30), COORD_TO_TILE(26, 31), COORD_TO_TILE(27, 30), COORD_TO_TILE(27, 31) },
         .name = COMPOUND_STRING("Formation Breaker"),
-        .description = COMPOUND_STRING("Opponent attacks foribly switches the player."),
+        .description = COMPOUND_STRING("Opponent attacks foribly switches the\nplayer at end of turn."),
     },
     [RISK_HAS_GUARANTEED_EFFECTS] =
     {
         .tiles = { COORD_TO_TILE(32, 28), COORD_TO_TILE(32, 29), COORD_TO_TILE(33, 28), COORD_TO_TILE(33, 29) },
         .name = COMPOUND_STRING("Target: Windfall"),
-        .description = COMPOUND_STRING("Opponent's moves with secondary effects are\nguaranteed to proc those effects."),
+        .description = COMPOUND_STRING("Opponent's moves with secondary effects\nare guaranteed to proc those effects."),
     },
     [RISK_OPPONENT_ATTACKS_DISABLE] =
     {
         .tiles = { COORD_TO_TILE(30, 26), COORD_TO_TILE(30, 27), COORD_TO_TILE(31, 26), COORD_TO_TILE(31, 27) },
         .name = COMPOUND_STRING("Disabling"),
-        .description = COMPOUND_STRING("Opponents attacks apply the Disable effect."),
+        .description = COMPOUND_STRING("Opponents attacks apply the Disable\neffect."),
     },
     [RISK_OPPONENT_INFLICTS_GASTRO_ACID] =
     {
@@ -417,7 +417,7 @@ const struct RiskIcon sRiskData[] =
     {
         .tiles = { COORD_TO_TILE(32, 26), COORD_TO_TILE(32, 27), COORD_TO_TILE(33, 26), COORD_TO_TILE(33, 27) },
         .name = COMPOUND_STRING("Tormenting"),
-        .description = COMPOUND_STRING("Opponents attacks apply the Torment effect,\npreventing mons from repeating attacks."),
+        .description = COMPOUND_STRING("Opponents attacks apply the Torment\neffect, preventing mons from repeating\nattacks."),
     },
     [RISK_PLAYER_HAZARDS_NOT_REMOVABLE] =
     {
@@ -483,7 +483,7 @@ const struct RiskIcon sRiskData[] =
         .linkedCount = 2,
         .tiles = { COORD_TO_TILE(32, 16), COORD_TO_TILE(32, 17), COORD_TO_TILE(33, 16), COORD_TO_TILE(33, 17) },
         .lockRisk = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
-        .name = COMPOUND_STRING("Environment: Noxious I"),
+        .name = COMPOUND_STRING("Environment: Noxious II"),
         .description = COMPOUND_STRING("Player starts with 2 layer of toxic spikes\non their side of the field."),
     },
     [RISK_PLAYER_STEALTH_ROCK] =
@@ -1377,9 +1377,12 @@ static void Task_RiskUiMainInput(u8 taskId)
     }
     else if (JOY_NEW(START_BUTTON))
     {
-        sRiskUiState->isShowingDescription = TRUE;
-        gSprites[sRiskUiState->selectorId].invisible = TRUE;
-        gTasks[taskId].func = Task_DisplayDescription;
+        if (GetRiskUnderCursor() != RISK_NONE)
+        {
+            sRiskUiState->isShowingDescription = TRUE;
+            gSprites[sRiskUiState->selectorId].invisible = TRUE;
+            gTasks[taskId].func = Task_DisplayDescription;
+        }
     }
     else if (JOY_NEW(DPAD_ANY) || JOY_HELD(DPAD_ANY))
     {
@@ -1692,6 +1695,7 @@ static void PrintRiskData(enum Risk risk)
     //  First clear out windows
     FillWindowPixelBuffer(WIN_RISK_NAME, PIXEL_FILL(2));
     FillWindowPixelBuffer(WIN_RISK_DESCRIPTION, PIXEL_FILL(2));
+    FillWindowPixelBuffer(WIN_RISK_TOTAL, PIXEL_FILL(5));
 
     //  Then if risk is not RISK_NONE
     //  print new risk text
@@ -1848,6 +1852,9 @@ static void ToggleLock(enum Risk risk, bool32 beforeLoad)
     for (u32 i = 0; i < sRiskData[risk].unlockCount; i++)
     {
         enum Risk lockRisk = sRiskData[risk].unlockedRisks[i];
+        if (beforeLoad && IsRiskActive(risk))
+            continue;
+
         if (IsRiskActive(lockRisk))
             SetRiskInactive(lockRisk);
 

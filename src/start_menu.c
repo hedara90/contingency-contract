@@ -1368,7 +1368,7 @@ static bool32 InitSaveWindowAfterLinkBattle(u8 *state)
         SetVBlankCallback(NULL);
         ScanlineEffect_Stop();
         DmaClear16(3, PLTT, PLTT_SIZE);
-        DmaFillLarge16(3, 0, (void *)VRAM, VRAM_SIZE, 0x1000);
+        DmaClearLarge16(3, (void *)VRAM, VRAM_SIZE, 0x1000);
         break;
     case 1:
         ResetSpriteData();
@@ -1658,6 +1658,8 @@ static void ShowCCStartMenu(void)
     cs.posX = 80;
     cs.posY = 76;
     sCCMenuSpriteIds[3] = Even_CreateSprite(&cs);
+
+    sStartMenuCursorPos = 4;
 }
 
 static void HideCCSTartMenu(void)

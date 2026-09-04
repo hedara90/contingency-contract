@@ -5785,7 +5785,7 @@ static void PrintMoveNameAndPP(u8 slotIndex)
     if (move != MOVE_NONE)
     {
         u8 pp = CalculatePPWithBonus(move, summary->ppBonuses, slotIndex);
-        u8 ppState = GetCurrentPpToMaxPpState(summary->pp[slotIndex], pp);
+        u8 ppState = GetCurrentPPToMaxPPState(summary->pp[slotIndex], pp);
         ConvertIntToDecimalStringN(gStringVar1, summary->pp[slotIndex], STR_CONV_MODE_RIGHT_ALIGN, 2);
         ConvertIntToDecimalStringN(gStringVar2, pp, STR_CONV_MODE_RIGHT_ALIGN, 2);
         DynamicPlaceholderTextUtil_Reset();
@@ -6412,10 +6412,6 @@ const u16 sPotentialPal[] = INCGFX_U16("graphics/summary_screen/swsh/potentials.
 
 static void CreateMonMarkingsSprite(struct Pokemon *mon)
 {
-    if (sMonSummaryScreen->currPageIndex != PSS_PAGE_INFO)
-    {
-        return;
-    }
     /*
     struct Sprite *sprite = CreateMonMarkingComboSprite(TAG_MON_MARKINGS, TAG_CATEGORY_ICONS, sCategoryIcons_Pal);
 
@@ -6471,6 +6467,8 @@ static void CreateMonMarkingsSprite(struct Pokemon *mon)
         cs.posY = 80;
         u32 spriteId = Even_CreateSprite(&cs);
         sMonSummaryScreen->markingsSprite = &gSprites[spriteId];;
+        if (sMonSummaryScreen->currPageIndex != PSS_PAGE_INFO)
+            sMonSummaryScreen->markingsSprite->invisible = TRUE;
     }
     else
     {

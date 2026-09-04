@@ -242,9 +242,9 @@ void NewGameInitData(void)
     {
         gSaveBlock1Ptr->bannerRng[i] = LocalRandomSeed(Random32());
     }
-    VarSet(VAR_TEMP_1, SPECIES_VAPOREON);
-    RunScriptImmediately(EventScript_GiveGachaMon);
     VarSet(VAR_TEMP_1, SPECIES_JOLTEON);
+    RunScriptImmediately(EventScript_GiveGachaMon);
+    VarSet(VAR_TEMP_1, SPECIES_VAPOREON);
     RunScriptImmediately(EventScript_GiveGachaMon);
     VarSet(VAR_TEMP_1, SPECIES_FLAREON);
     RunScriptImmediately(EventScript_GiveGachaMon);

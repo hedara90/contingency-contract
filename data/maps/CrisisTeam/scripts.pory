@@ -30,28 +30,35 @@ script CrisisTeam_OnGauntletStart {
 script CrisisTeam_StartBattle {
     switch(var(VAR_GAUNTLET_POSITION)) {
         case 0: 
-            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(CrisisTeam_Xaihi)
             call(Gauntlet_PostBattle)
             goto(CrisisTeam_StartBattle)
         case 1:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(CrisisTeam_Chen)
             call(Gauntlet_PostBattle)
             goto(CrisisTeam_StartBattle)
         case 2:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(CrisisTeam_Perlica)
             call(Gauntlet_PostBattle)
             goto(CrisisTeam_StartBattle)
         case 3:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(CrisisTeam_Endmin)
-            call(Gauntlet_PostBattle)
+            call(CrisisTeam_WonGauntlet)
     }
+}
+
+script CrisisTeam_WonGauntlet {
+    call(Gauntlet_AfterGauntletWin)
+    victoryscreen(GAUNTLET_CRISIS_TEAM, FALSE)
+    waitstate
+    call(Gauntlet_WarpOutAfterWin)
 }
 
 script CrisisTeam_Xaihi {
@@ -62,8 +69,10 @@ script CrisisTeam_Xaihi {
     switch(var(VAR_RESULT)){
         default:
             msgbox(XaihiAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(XaihiAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
@@ -92,8 +101,10 @@ script CrisisTeam_Chen {
     switch(var(VAR_RESULT)){
         default:
             msgbox(ChenAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(ChenAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
@@ -122,8 +133,10 @@ script CrisisTeam_Perlica {
     switch(var(VAR_RESULT)){
         default:
             msgbox(PerlicaAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(PerlicaAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
@@ -152,8 +165,10 @@ script CrisisTeam_Endmin {
     switch(var(VAR_RESULT)){
         default:
             msgbox(EndminAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(EndminAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }

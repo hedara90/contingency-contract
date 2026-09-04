@@ -340,9 +340,9 @@ script ChooseGauntlet {
                     "Crisis Team",
                     "Wuling",
                     "Reconveners",
-                    "AK 1",
-                    "AK 2",
-                    "AK 3",
+                    "Abyssal Hunters",
+                    "Confluence of East and West",
+                    "Band of Misfits",
                     "Not right now")
     getobjectfacingdirection(LOCALID_ATTENDANT_MAIN, VAR_TEMP_1)
     special(HealPlayerParty)

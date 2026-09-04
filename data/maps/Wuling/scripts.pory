@@ -30,28 +30,35 @@ script Wuling_OnGauntletStart {
 script Wuling_StartBattle {
     switch(var(VAR_GAUNTLET_POSITION)) {
         case 0: 
-            call(Gauntlet_OpponentMovement_BeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Wuling_TangTang)
             call(Gauntlet_PostBattle)
             goto(Wuling_StartBattle)
         case 1:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Wuling_MiFu)
             call(Gauntlet_PostBattle)
             goto(Wuling_StartBattle)
         case 2:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Wuling_Arcane)
             call(Gauntlet_PostBattle)
             goto(Wuling_StartBattle)
         case 3:
-            call(Gauntlet_OpponentMovement_BeforeBattle)
             call(Gauntlet_MovePlayerBeforeBattle)
+            call(Gauntlet_MoveOpponentBeforeBattle)
             call(Wuling_ZhuangFangyi)
-            call(Gauntlet_PostBattle)
+            goto(Wuling_WonGauntlet)
     }
+}
+
+script Wuling_WonGauntlet {
+    call(Gauntlet_AfterGauntletWin)
+    victoryscreen(GAUNTLET_WULING, FALSE)
+    waitstate
+    call(Gauntlet_WarpOutAfterWin)
 }
 
 script Wuling_TangTang {
@@ -59,11 +66,13 @@ script Wuling_TangTang {
     trainerbattle_no_intro(TRAINER_TANGTANG, TangTangAfterBattle)
     // msgbox("Good battle!")
     closemessage
-    if(var(VAR_RESULT)==1){
-        msgbox(TangTangAfterBattle_Lose)
-    }
-    else {
-        msgbox(TangTangAfterBattle_Win)
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(TangTangAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
+        case 1:
+            msgbox(TangTangAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
@@ -89,11 +98,13 @@ script Wuling_MiFu {
     trainerbattle_no_intro(TRAINER_MIFU, MiFuAfterBattle)
     // msgbox("Good battle!")
     closemessage
-    if(var(VAR_RESULT)==1){
-        msgbox(MiFuAfterBattle_Lose)
-    }
-    else {
-        msgbox(MiFuAfterBattle_Win)
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(MiFuAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
+        case 1:
+            msgbox(MiFuAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
@@ -128,8 +139,10 @@ script Wuling_Arcane {
     switch (var(VAR_RESULT)){
         default:
             msgbox(ArcaneAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
         case 1:
             msgbox(ArcaneAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }
@@ -155,11 +168,13 @@ script Wuling_ZhuangFangyi {
     trainerbattle_no_intro(TRAINER_FANGYI, ZhuangFangyiAfterBattle)
     // msgbox("Good battle!")
     closemessage
-    if(var(VAR_RESULT)==1){
-        msgbox(ZhuangFangyiAfterBattle_Lose)
-    }
-    else {
-        msgbox(ZhuangFangyiAfterBattle_Win)
+    switch(var(VAR_RESULT)){
+        default:
+            msgbox(ZhuangFangyiAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
+        case 1:
+            msgbox(ZhuangFangyiAfterBattle_Win)
+            call(Gauntlet_BattleWon)
     }
     return
 }

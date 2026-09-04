@@ -51,4 +51,13 @@ bool32 CheckRarities(void);
 
 extern struct GachaResult gGachaResults[10];
 
+struct BannerInfo
+{
+    const enum Species *species;
+    const enum Item *items;
+    u32 count;
+};
+
+struct BannerInfo GetBannerInfo(enum Banner banner, u32 rarity);
+
 #endif

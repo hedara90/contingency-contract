@@ -1291,6 +1291,7 @@ static bool8 DecompressGraphics(void)
         break;
     case 12:
         LoadSpritePalette(&sSpritePal_SelectFrame);
+        LoadSpritePalette(&sSpritePalette_Cursor);
         sPartyMenuInternal->switchCounter++;
         break;
     case 13:
@@ -3279,7 +3280,7 @@ static void DisplayPartyPokemonBarDetailToFit(u8 windowId, const u8 *str, u8 col
 static u8 GetPPFontColorIndexForMove(enum Move move, u8 currentPP, u8 ppBonuses, int m)
 {
     u8 maxPP = CalculatePPWithBonus(move, ppBonuses, m);
-    u8 ppState = GetCurrentPpToMaxPpState(currentPP, maxPP);
+    u8 ppState = GetCurrentPPToMaxPPState(currentPP, maxPP);
 
     return 7 + ppState;
 }
@@ -3785,6 +3786,7 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
 
     // Add field moves to action list
+    /*
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         for (j = 0; j != FIELD_MOVES_COUNT; j++)
@@ -3796,6 +3798,7 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
             }
         }
     }
+    */
 
     if (!InBattlePike())
     {
@@ -9527,7 +9530,7 @@ static bool8 TrySwitchInPokemon(void)
         StringExpandPlaceholders(gStringVar4, gText_EggCantBattle);
         return FALSE;
     }
-    if (BattlersShareParty(gBattlerInMenuId, BATTLE_PARTNER(gBattlerInMenuId))
+    if (BattlersShareParty(gBattlerInMenuId, GetPartnerBattler(gBattlerInMenuId))
         && battlePartyId == gBattleStruct->prevSelectedPartySlot)
     {
         GetMonNickname(&party[partySlot], gStringVar1);

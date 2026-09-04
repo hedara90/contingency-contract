@@ -4914,7 +4914,7 @@ const struct SpeciesInfo gSpeciesInfoGen2[] =
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_BUG),
-        .abilities = { ABILITY_PICKPOCKET, ABILITY_UNBURDEN, ABILITY_POISON_HEAL },
+        .abilities = { ABILITY_MAGICIAN, ABILITY_UNBURDEN, ABILITY_POISON_HEAL },
         .ability1Threshold = 1,
         .ability2Threshold = 3,
         .bodyColor = BODY_COLOR_PURPLE,
@@ -7297,7 +7297,7 @@ const struct SpeciesInfo gSpeciesInfoGen2[] =
         .growthRate = GROWTH_SLOW,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FLYING),
         .abilities = { ABILITY_STALWART, ABILITY_STALWART, ABILITY_STALWART },
-        .bodyColor = BODY_COLOR_GRAY,
+        .bodyColor = BODY_COLOR_YELLOW,
         .speciesName = _("Skarmory"),
     #if P_MODIFIED_MEGA_CRIES
         .cryId = CRY_SKARMORY_MEGA,

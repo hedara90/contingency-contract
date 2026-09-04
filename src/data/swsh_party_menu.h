@@ -27,6 +27,7 @@ static const u32 sStatusIcons_Gfx[]             = INCGFX_U32("graphics/party_men
 static const u16 sHeldItem_Pal[]                = INCGFX_U16("graphics/party_menu/swsh/status_icons_new.png", ".gbapal");
 static const u16 sStatusIcons_Pal[]             = INCGFX_U16("graphics/party_menu/swsh/status_icons_new.png", ".gbapal");
 static const u16 sMonShadow_Pal[]               = INCGFX_U16("graphics/party_menu/swsh/shadow.pal", ".gbapal");
+static const u16 sCursor_Pal[]                  = INCGFX_U16("graphics/party_menu/swsh/cursor_new.png", ".gbapal");
 
 static const u8 sButtons_Gfx[][4 * TILE_SIZE_4BPP] = {
     [BUTTON_START]  = INCGFX_U8("graphics/party_menu/swsh/button_start.png", ".4bpp"),
@@ -807,7 +808,7 @@ static const u8 *const sActionStringTable[] =
     [PARTY_MSG_UNUSED]                 = gText_EmptyString2,
     [PARTY_MSG_DO_WHAT_WITH_MON]       = gText_DoWhatWithPokemon,
     [PARTY_MSG_RESTORE_WHICH_MOVE]     = gText_RestoreWhichMove, //TODO: set cursor on move slots
-    [PARTY_MSG_BOOST_PP_WHICH_MOVE]    = gText_BoostPp,
+    [PARTY_MSG_BOOST_PP_WHICH_MOVE]    = gText_BoostPP,
     [PARTY_MSG_DO_WHAT_WITH_ITEM]      = gText_DoWhatWithItem,
     [PARTY_MSG_DO_WHAT_WITH_MAIL]      = gText_DoWhatWithMail,
     [PARTY_MSG_ALREADY_HOLDING_ONE]    = gText_AlreadyHoldingOne,
@@ -1044,10 +1045,15 @@ static const union AnimCmd *const sAnims_Cursor[] =
     sAnim_Cursor,
 };
 
+static const struct SpritePalette sSpritePalette_Cursor =
+{
+    .data = sCursor_Pal, .tag = TAG_CURSOR
+};
+
 static const struct SpriteTemplate sSpriteTemplate_Cursor =
 {
     .tileTag = TAG_CURSOR,
-    .paletteTag = TAG_HELD_ITEM,
+    .paletteTag = TAG_CURSOR,
     .oam = &sOamData_Cursor,
     .anims = sAnims_Cursor,
 };
