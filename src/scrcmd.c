@@ -3588,6 +3588,13 @@ static const u8 sQueueCoord[][3] =
     {22, 37, DIR_WEST},
 };
 
+const u16 sQueueClerks[][4] =
+{
+    {OBJ_EVENT_GFX_ACOLYTE_M, 20, 37, DIR_EAST},
+    {OBJ_EVENT_GFX_ACOLYTE_F, 20, 38, DIR_EAST},
+    {OBJ_EVENT_GFX_ACOLYTE_F, 20, 39, DIR_EAST},
+};
+
 STATIC_ASSERT(NELEMS(sQueueObjects) >= (sizeof(sQueueCoord) / 3), ListMustBeAsLarge);
 
 void CreateQueue(void)
@@ -3604,11 +3611,16 @@ void CreateQueue(void)
     {
         CreateVirtualObject(gfxList[i], i, sQueueCoord[i][0], sQueueCoord[i][1], 3, sQueueCoord[i][2]);
     }
+
+    for (u32 i = 0; i < 3; i++)
+    {
+        CreateVirtualObject(sQueueClerks[i][0], sizeof(sQueueCoord) / 3 + i, sQueueClerks[i][1], sQueueClerks[i][2], 3, sQueueClerks[i][3]);
+    }
 }
 
 void DestroyQueue(void)
 {
-    for (u32 i = 0; i < sizeof(sQueueCoord) / 3; i++)
+    for (u32 i = 0; i < sizeof(sQueueCoord) / 3 + 3; i++)
     {
         s32 spriteId = GetVirtualObjectSpriteId(i);
         DestroySprite(&gSprites[spriteId]);
@@ -3628,6 +3640,8 @@ const u16 sNonQueueVObjects[][4] =
     {OBJ_EVENT_GFX_ACOLYTE_M, 20, 13, DIR_SOUTH},
     {OBJ_EVENT_GFX_ACOLYTE_F, 32, 13, DIR_SOUTH},
     {OBJ_EVENT_GFX_ACOLYTE_F, 9, 19, DIR_SOUTH},
+    {OBJ_EVENT_GFX_ACOLYTE_M, 44, 19, DIR_WEST},
+    {OBJ_EVENT_GFX_ACOLYTE_F, 44, 20, DIR_WEST},
 };
 
 void CreateOtherVObjects(void)
