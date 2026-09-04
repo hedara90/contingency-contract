@@ -57,19 +57,24 @@ struct GachaUiState
     u16 ballAnimState;
     u16 ballAnimIndex;
     enum Banner banner;
+    u16 offset;
+    u16 infoState;
+    u8 infoIconIds[23];
+    u32 numItems;
 };
 
 enum WindowIds
 {
     WIN_MONEY,
     WIN_PITY,
-    WIN_PULL_1,
-    WIN_PULL_10,
+    WIN_PULLS,
+    WIN_ITEMS,
     WIN_COUNT
 };
 
 static EWRAM_DATA struct GachaUiState *sGachaUiState = NULL;
 static EWRAM_DATA u8 *sBg1TilemapBuffer = NULL;
+static EWRAM_DATA u8 *sBg2TilemapBuffer = NULL;
 
 static const u32 sItemsTiles[] = INCGFX_U32("graphics/gacha/items_tiles.png", ".4bpp.smol");
 static const u32 sItemsTilemap[] = INCBIN_U32("graphics/gacha/items_tiles.bin.smolTM");
@@ -90,11 +95,19 @@ static const u16 sMemoriesPalette[] = INCGFX_U16("graphics/gacha/memories_tiles.
 static const u32 sNewGfx[] = INCGFX_U32("graphics/gacha/new.png", ".4bpp");
 static const u16 sNewPal[] = INCGFX_U16("graphics/gacha/new.png", ".gbapal");
 
+static const u32 sIndomitabilityMonTiles[] = INCGFX_U32("graphics/gacha/indomitability_Mon_tiles.png", ".4bpp.smol");
+static const u32 sIndomitabilityMonTilemap[] = INCBIN_U32("graphics/gacha/indomitability_Mon_tiles.bin.smolTM");
+static const u16 sIndomitabilityMonPalette[] = INCGFX_U16("graphics/gacha/indomitability_Mon_tiles.png", ".gbapal");
+
 struct GachaGraphics
 {
     const u32 *tiles;
     const u32 *tilemap;
     const u16 *palette;
+
+    const u32 *tilesMon;
+    const u32 *tilemapMon;
+    const u16 *paletteMon;
 };
 
 static const struct GachaGraphics sGachaGraphics[] =
@@ -104,24 +117,40 @@ static const struct GachaGraphics sGachaGraphics[] =
         .tiles = sItemsTiles,
         .tilemap = sItemsTilemap,
         .palette = sItemsPalette,
+
+        .tilesMon = sIndomitabilityMonTiles,
+        .tilemapMon = sIndomitabilityMonTilemap,
+        .paletteMon = sIndomitabilityMonPalette,
     },
     [BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT] =
     {
         .tiles = sIndomitabilityTiles,
         .tilemap = sIndomitabilityTilemap,
         .palette = sIndomitabilityPalette,
+
+        .tilesMon = sIndomitabilityMonTiles,
+        .tilemapMon = sIndomitabilityMonTilemap,
+        .paletteMon = sIndomitabilityMonPalette,
     },
     [BANNER_FURY_OF_THE_EARTHEN_CORE] =
     {
         .tiles = sFuryTiles,
         .tilemap = sFuryTilemap,
         .palette = sFuryPalette,
+
+        .tilesMon = sIndomitabilityMonTiles,
+        .tilemapMon = sIndomitabilityMonTilemap,
+        .paletteMon = sIndomitabilityMonPalette,
     },
     [BANNER_MEMORIES_OF_MONTHS_PAST] =
     {
         .tiles = sMemoriesTiles,
         .tilemap = sMemoriesTilemap,
         .palette = sMemoriesPalette,
+
+        .tilesMon = sIndomitabilityMonTiles,
+        .tilemapMon = sIndomitabilityMonTilemap,
+        .paletteMon = sIndomitabilityMonPalette,
     },
 };
 
@@ -136,38 +165,45 @@ static const struct BgTemplate sGachaUiBgTemplates[] =
 {
     {
         .bg = 0,
-        .charBaseIndex = 0,
-        .mapBaseIndex = 24,
-        .priority = 1,
+        .charBaseIndex = 3,
+        .mapBaseIndex = 28,
+        .priority = 0,
         .screenSize = 2,
     },
     {
         .bg = 1,
         .charBaseIndex = 1,
-        .mapBaseIndex = 16,
+        .mapBaseIndex = 30,
         .priority = 2,
         .screenSize = 2,
-    }
+    },
+    {
+        .bg = 2,
+        .charBaseIndex = 0,
+        .mapBaseIndex = 26,
+        .priority = 1,
+        .screenSize = 2,
+    },
 };
 
 #define MONEY_WIDTH     6
 #define MONEY_HEIGHT    2
 #define PITY_WIDTH      12
 #define PITY_HEIGHT     4
-#define PULL_1_WIDTH    6
-#define PULL_1_HEIGHT   4
-#define PULL_10_WIDTH   7
-#define PULL_10_HEIGHT  4
+#define PULLS_WIDTH     12
+#define PULLS_HEIGHT    4
+#define ITEM_WIDTH      10
+#define ITEM_HEIGHT     2
 
 #define MONEY_SIZE      MONEY_WIDTH * MONEY_HEIGHT
 #define PITY_SIZE       PITY_WIDTH * PITY_HEIGHT
-#define PULL_1_SIZE     PULL_1_WIDTH * PULL_1_HEIGHT
-#define PULL_10_SIZE     PULL_10_WIDTH * PULL_10_HEIGHT
+#define PULLS_SIZE      PULLS_WIDTH * PULLS_HEIGHT
+#define ITEM_SIZE       ITEM_WIDTH * ITEM_HEIGHT
 
 #define MONEY_BASEBLOCK     1
 #define PITY_BASEBLOCK      MONEY_BASEBLOCK + MONEY_SIZE
-#define PULL_1_BASEBLOCK    PITY_BASEBLOCK + PITY_SIZE
-#define PULL_10_BASEBLOCK   PULL_1_BASEBLOCK + PULL_1_SIZE
+#define PULLS_BASEBLOCK     PITY_BASEBLOCK + PITY_SIZE
+#define ITEM_BASEBLOCK      PULLS_BASEBLOCK + PULLS_SIZE
 
 static const struct WindowTemplate sGachaUiWindowTemplates[] =
 {
@@ -175,7 +211,7 @@ static const struct WindowTemplate sGachaUiWindowTemplates[] =
     {
         .bg = 0,
         .tilemapLeft = 30 - MONEY_WIDTH,
-        .tilemapTop = 0,
+        .tilemapTop = 0 + 20,
         .width = MONEY_WIDTH,
         .height = MONEY_HEIGHT,
         .paletteNum = 15,
@@ -185,31 +221,31 @@ static const struct WindowTemplate sGachaUiWindowTemplates[] =
     {
         .bg = 0,
         .tilemapLeft = 0,
-        .tilemapTop = 16,
+        .tilemapTop = 16 + 20,
         .width = PITY_WIDTH,
         .height = PITY_HEIGHT,
         .paletteNum = 15,
         .baseBlock = PITY_BASEBLOCK
     },
-    [WIN_PULL_1] =
+    [WIN_PULLS] =
     {
         .bg = 0,
-        .tilemapLeft = 30 - PULL_10_WIDTH - PULL_1_WIDTH - 1,
-        .tilemapTop = 16,
-        .width = PULL_1_WIDTH,
-        .height = PULL_1_HEIGHT,
+        .tilemapLeft = 30 - PULLS_WIDTH,
+        .tilemapTop = 16 + 20,
+        .width = PULLS_WIDTH,
+        .height = PULLS_HEIGHT,
         .paletteNum = 15,
-        .baseBlock = PULL_1_BASEBLOCK
+        .baseBlock = PULLS_BASEBLOCK
     },
-    [WIN_PULL_10] =
+    [WIN_ITEMS] =
     {
         .bg = 0,
-        .tilemapLeft = 30 - PULL_10_WIDTH,
-        .tilemapTop = 16,
-        .width = PULL_10_WIDTH,
-        .height = PULL_10_HEIGHT,
+        .tilemapLeft = 10,
+        .tilemapTop = 16 + 20 + 20,
+        .width = ITEM_WIDTH,
+        .height = ITEM_HEIGHT,
         .paletteNum = 15,
-        .baseBlock = PULL_10_BASEBLOCK
+        .baseBlock = ITEM_BASEBLOCK,
     },
     DUMMY_WIN_TEMPLATE
 };
@@ -250,6 +286,8 @@ static void DrawPity(void);
 static void DrawPull(void);
 static void Task_PullAnim(u8 taskId);
 static void Task_PullAnimItem(u8 taskId);
+static void Task_InfoTask(u8 taskId);
+static void Task_InfoTaskItems(u8 taskId);
 
 static void Task_GachaUiWaitFadeAndExitGracefully(u8 taskId);
 
@@ -318,6 +356,11 @@ static void GachaUi_SetupCB(void)
         gMain.state++;
         break;
     case 6:
+        //  Set base offset
+        SetGpuReg(REG_OFFSET_BG0VOFS, 160);
+        SetGpuReg(REG_OFFSET_BG1VOFS, 160);
+        SetGpuReg(REG_OFFSET_BG2VOFS, 160);
+        sGachaUiState->offset = 160;
         CreateTask(Task_GachaUiWaitFadeIn, 0);
         gMain.state++;
         break;
@@ -373,15 +416,22 @@ static bool8 GachaUi_InitBgs(void)
     if (sBg1TilemapBuffer == NULL)
         return FALSE;
 
+    sBg2TilemapBuffer = AllocZeroed(TILEMAP_BUFFER_SIZE);
+    if (sBg2TilemapBuffer == NULL)
+        return FALSE;
+
     ResetBgsAndClearDma3BusyFlags(0);
 
     InitBgsFromTemplates(0, sGachaUiBgTemplates, NELEMS(sGachaUiBgTemplates));
     SetBgTilemapBuffer(1, sBg1TilemapBuffer);
+    SetBgTilemapBuffer(2, sBg2TilemapBuffer);
 
     ScheduleBgCopyTilemapToVram(1);
+    ScheduleBgCopyTilemapToVram(2);
 
     ShowBg(0);
     ShowBg(1);
+    ShowBg(2);
 
     return TRUE;
 }
@@ -422,6 +472,10 @@ static void GachaUi_FreeResources(void)
     {
         Free(sBg1TilemapBuffer);
     }
+    if (sBg2TilemapBuffer != NULL)
+    {
+        Free(sBg2TilemapBuffer);
+    }
     FreeAllWindowBuffers();
     ResetSpriteData();
 }
@@ -443,17 +497,20 @@ static bool8 GachaUi_LoadGraphics(void)
     case 0:
         ResetTempTileDataBuffers();
         DecompressAndCopyTileDataToVram(1, sGachaGraphics[sGachaUiState->banner].tiles, 0, 0, 0);
+        DecompressAndCopyTileDataToVram(2, sGachaGraphics[sGachaUiState->banner].tilesMon, 0, 0, 0);
         sGachaUiState->loadState++;
         break;
     case 1:
         if (FreeTempTileDataBuffersIfPossible() != TRUE)
         {
             DecompressDataWithHeaderWram(sGachaGraphics[sGachaUiState->banner].tilemap, sBg1TilemapBuffer);
+            DecompressDataWithHeaderWram(sGachaGraphics[sGachaUiState->banner].tilemapMon, sBg2TilemapBuffer);
             sGachaUiState->loadState++;
         }
         break;
     case 2:
-        LoadPalette(sGachaGraphics[sGachaUiState->banner].palette, BG_PLTT_ID(0), PLTT_SIZE_4BPP * 4);
+        LoadPalette(sGachaGraphics[sGachaUiState->banner].palette, BG_PLTT_ID(0), PLTT_SIZE_4BPP * 2);
+        LoadPalette(&sGachaGraphics[sGachaUiState->banner].paletteMon[32], BG_PLTT_ID(2), PLTT_SIZE_4BPP * 13);
         LoadPalette(gMessageBox_Pal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
         sGachaUiState->loadState++;
     default:
@@ -490,6 +547,14 @@ static void Task_GachaUiMainInput(u8 taskId)
         PlaySE(SE_PC_OFF);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
         gTasks[taskId].func = Task_GachaUiWaitFadeAndExitGracefully;
+    }
+    else if (JOY_NEW(A_BUTTON))
+    {
+        sGachaUiState->infoState = 0;
+        if (sGachaUiState->banner == BANNER_ITEMS)
+            gTasks[taskId].func = Task_InfoTaskItems;
+        else
+            gTasks[taskId].func = Task_InfoTask;
     }
     else if (JOY_NEW(L_BUTTON))
     {
@@ -564,7 +629,8 @@ static void DrawMoney(void)
     CopyWindowToVram(WIN_MONEY, COPYWIN_GFX);
 }
 
-const u8 sPityStr[] = _(" pulls to\nguaranteed 6-star");
+const u8 sPityStr1[] = _(" pulls to");
+const u8 sPityStr2[] = _("guaranteed 6-star");
 
 static void DrawPity(void)
 {
@@ -577,22 +643,27 @@ static void DrawPity(void)
     u8 str[32];
 
     u8 *strPtr = ConvertIntToDecimalStringN(str, toGuaranteed, STR_CONV_MODE_LEFT_ALIGN, 2);
-    StringCopy(strPtr, sPityStr);
+    StringCopy(strPtr, sPityStr1);
 
     FillWindowPixelBuffer(WIN_PITY, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
     AddTextPrinterParameterized4(WIN_PITY,
                                  FONT_NORMAL,
-                                 0, 0, 0, 0,
+                                 0, 7, 0, 0,
                                  sGachaUiWindowFontColors[FONT_WHITE],
                                  TEXT_SKIP_DRAW,
                                  str);
+    AddTextPrinterParameterized4(WIN_PITY,
+                                 FONT_NORMAL,
+                                 0, 17, 0, 0,
+                                 sGachaUiWindowFontColors[FONT_WHITE],
+                                 TEXT_SKIP_DRAW,
+                                 sPityStr2);
     CopyWindowToVram(WIN_PITY, COPYWIN_GFX);
 }
 
 static void DrawPull(void)
 {
-    FillWindowPixelBuffer(WIN_PULL_1, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
-    FillWindowPixelBuffer(WIN_PULL_10, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    FillWindowPixelBuffer(WIN_PULLS, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
 
     enum FontColor color = FONT_WHITE;
 
@@ -601,25 +672,38 @@ static void DrawPull(void)
     if (money < PULL_1_COST)
         color = FONT_RED;
 
-    AddTextPrinterParameterized4(WIN_PULL_1,
+    AddTextPrinterParameterized4(WIN_PULLS,
                                  FONT_NORMAL,
-                                 0, 0, 0, 0,
+                                 0, 6, 0, 0,
                                  sGachaUiWindowFontColors[color],
                                  TEXT_SKIP_DRAW,
-                                 COMPOUND_STRING("{L_BUTTON} 1 Pull\n{CLEAR_TO 20}50"));
+                                 COMPOUND_STRING("{L_BUTTON} 1 Pull"));
+
+    AddTextPrinterParameterized4(WIN_PULLS,
+                                 FONT_NORMAL,
+                                 65, 6, 0, 0,
+                                 sGachaUiWindowFontColors[color],
+                                 TEXT_SKIP_DRAW,
+                                 COMPOUND_STRING("50"));
 
     if (money < PULL_10_COST)
         color = FONT_RED;
 
-    AddTextPrinterParameterized4(WIN_PULL_10,
+    AddTextPrinterParameterized4(WIN_PULLS,
                                  FONT_NORMAL,
-                                 0, 0, 0, 0,
+                                 0, 18, 0, 0,
                                  sGachaUiWindowFontColors[color],
                                  TEXT_SKIP_DRAW,
-                                 COMPOUND_STRING("{R_BUTTON} 10 Pull\n{CLEAR_TO 20}500"));
+                                 COMPOUND_STRING("{R_BUTTON} 10 Pull"));
 
-    CopyWindowToVram(WIN_PULL_1, COPYWIN_GFX);
-    CopyWindowToVram(WIN_PULL_10, COPYWIN_GFX);
+    AddTextPrinterParameterized4(WIN_PULLS,
+                                 FONT_NORMAL,
+                                 65, 18, 0, 0,
+                                 sGachaUiWindowFontColors[color],
+                                 TEXT_SKIP_DRAW,
+                                 COMPOUND_STRING("500"));
+
+    CopyWindowToVram(WIN_PULLS, COPYWIN_GFX);
 }
 
 static void UpdateBall(struct Sprite *sprite)
@@ -654,9 +738,17 @@ static void Task_PullAnim(u8 taskId)
     switch (sGachaUiState->pullState)
     {
     case 0:
-        SetGpuReg(REG_OFFSET_BG0VOFS, 160);
-        SetGpuReg(REG_OFFSET_BG1VOFS, 160);
-        sGachaUiState->pullState++;
+        if (sGachaUiState->offset > 0)
+        {
+            sGachaUiState->offset -= 8;
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+        }
+        else
+        {
+            sGachaUiState->pullState++;
+        }
         break;
     case 1:
         switch (sGachaUiState->numToPull)
@@ -828,6 +920,41 @@ static void Task_PullAnim(u8 taskId)
         if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
         {
             DrawText();
+            sGachaUiState->pullState = 8;
+        }
+        break;
+    case 8:
+        if (sGachaUiState->offset < 160)
+        {
+            sGachaUiState->offset += 8;
+            for (u32 i = 0; i < sGachaUiState->numToPull; i++)
+            {
+                if (sGachaUiState->indicatorIds[i] != SPRITE_NONE)
+                {
+                    gSprites[sGachaUiState->indicatorIds[i]].y -= 8;
+                    if (gSprites[sGachaUiState->indicatorIds[i]].y < -32)
+                    {
+                        gSprites[sGachaUiState->indicatorIds[i]].invisible = TRUE;
+                    }
+                }
+
+                gSprites[sGachaUiState->ballSpriteIds[i]].y -= 8;
+                if (gSprites[sGachaUiState->ballSpriteIds[i]].y < -32)
+                {
+                    gSprites[sGachaUiState->ballSpriteIds[i]].invisible = TRUE;
+                }
+                gSprites[sGachaUiState->iconSpriteIds[i]].y -= 8;
+                if (gSprites[sGachaUiState->iconSpriteIds[i]].y < -32)
+                {
+                    gSprites[sGachaUiState->iconSpriteIds[i]].invisible = TRUE;
+                }
+            }
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+        }
+        else
+        {
             ReleaseComfyAnims();
             for (u32 i = 0; i < sGachaUiState->numToPull; i++)
             {
@@ -846,10 +973,9 @@ static void Task_PullAnim(u8 taskId)
             FreeBallGfx(BALL_4_STAR);
             FreeBallGfx(BALL_5_STAR);
             FreeBallGfx(BALL_6_STAR);
-            SetGpuReg(REG_OFFSET_BG0VOFS, 0);
-            SetGpuReg(REG_OFFSET_BG1VOFS, 0);
             gTasks[taskId].func = Task_GachaUiMainInput;
         }
+        break;
     }
 }
 
@@ -874,9 +1000,17 @@ static void Task_PullAnimItem(u8 taskId)
     switch (sGachaUiState->pullState)
     {
     case 0:
-        SetGpuReg(REG_OFFSET_BG0VOFS, 160);
-        SetGpuReg(REG_OFFSET_BG1VOFS, 160);
-        sGachaUiState->pullState++;
+        if (sGachaUiState->offset > 0)
+        {
+            sGachaUiState->offset -= 8;
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+        }
+        else
+        {
+            sGachaUiState->pullState++;
+        }
         break;
     case 1:
         switch (sGachaUiState->numToPull)
@@ -1018,6 +1152,35 @@ static void Task_PullAnimItem(u8 taskId)
         if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
         {
             DrawText();
+            sGachaUiState->pullState = 6;
+        }
+        break;
+    case 6:
+        if (sGachaUiState->offset < 160)
+        {
+            sGachaUiState->offset += 8;
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            for (u32 i = 0; i < sGachaUiState->numToPull; i++)
+            {
+                if (sGachaUiState->indicatorIds[i] != SPRITE_NONE)
+                {
+                    gSprites[sGachaUiState->indicatorIds[i]].y -= 8;
+                    if (gSprites[sGachaUiState->indicatorIds[i]].y < -32)
+                    {
+                        gSprites[sGachaUiState->indicatorIds[i]].invisible = TRUE;
+                    }
+                }
+                gSprites[sGachaUiState->ballSpriteIds[i]].y -= 8;
+                if (gSprites[sGachaUiState->ballSpriteIds[i]].y < -32)
+                {
+                    gSprites[sGachaUiState->ballSpriteIds[i]].invisible = TRUE;
+                }
+            }
+        }
+        else
+        {
             ReleaseComfyAnims();
             for (u32 i = 0; i < sGachaUiState->numToPull; i++)
             {
@@ -1030,8 +1193,366 @@ static void Task_PullAnimItem(u8 taskId)
             }
             FreeSpriteTilesByTag(10);
             FreeSpritePaletteByTag(10);
-            SetGpuReg(REG_OFFSET_BG0VOFS, 0);
-            SetGpuReg(REG_OFFSET_BG1VOFS, 0);
+            gTasks[taskId].func = Task_GachaUiMainInput;
+        }
+        break;
+    }
+}
+
+static void SpriteCB_Dummy(struct Sprite *sprite)
+{
+}
+
+static void Task_InfoTask(u8 taskId)
+{
+    switch (sGachaUiState->infoState)
+    {
+    case 0:
+    {
+        struct BannerInfo info = GetBannerInfo(sGachaUiState->banner, 6);
+        LoadMonIconPalettes();
+        for (u32 i = 0; i < info.count; i++)
+        {
+            sGachaUiState->infoIconIds[i] = CreateMonIcon(info.species[i], SpriteCB_Dummy, 70 + i * 32, 24 + 160, 0 , 0);
+            gSprites[sGachaUiState->infoIconIds[i]].invisible = TRUE;
+        }
+
+        info = GetBannerInfo(sGachaUiState->banner, 5);
+        for (u32 i = 0; i < info.count; i++)
+        {
+            sGachaUiState->infoIconIds[2 + i] = CreateMonIcon(info.species[i], SpriteCB_Dummy, 40 + i * 27, 63 + 160, 0 , 0);
+            gSprites[sGachaUiState->infoIconIds[2 + i]].invisible = TRUE;
+        }
+        info = GetBannerInfo(sGachaUiState->banner, 4);
+        for (u32 i = 0; i < info.count - 7; i++)
+        {
+            sGachaUiState->infoIconIds[10 + i] = CreateMonIcon(info.species[i], SpriteCB_Dummy, 32 + i * 34, 113 + 160, 0 , 0);
+            gSprites[sGachaUiState->infoIconIds[10 + i]].invisible = TRUE;
+        }
+        for (u32 i = 0; i < 7; i++)
+        {
+            sGachaUiState->infoIconIds[16 + i] = CreateMonIcon(info.species[6 + i], SpriteCB_Dummy, 16 + i * 34, 136 + 160, 0 , 0);
+            gSprites[sGachaUiState->infoIconIds[16 + i]].invisible = TRUE;
+        }
+
+        sGachaUiState->infoState++;
+        break;
+    }
+        break;
+    case 1:
+        if (sGachaUiState->offset < 328)
+        {
+            sGachaUiState->offset += 8;
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            if (sGachaUiState->offset < 328)
+            {
+                for (u32 i = 0; i < 23; i++)
+                {
+                    gSprites[sGachaUiState->infoIconIds[i]].y -= 8;
+                    if (gSprites[sGachaUiState->infoIconIds[i]].y < 184)
+                    {
+                        gSprites[sGachaUiState->infoIconIds[i]].invisible = FALSE;
+                    }
+                }
+            }
+        }
+        else
+        {
+            sGachaUiState->infoState++;
+        }
+        break;
+    case 2:
+        if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
+        {
+            sGachaUiState->infoState++;
+        }
+        break;
+    case 3:
+        if (sGachaUiState->offset > 160)
+        {
+            sGachaUiState->offset -= 8;
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            for (u32 i = 0; i < 23; i++)
+            {
+                gSprites[sGachaUiState->infoIconIds[i]].y += 8;
+                if (gSprites[sGachaUiState->infoIconIds[i]].y > 184)
+                {
+                    gSprites[sGachaUiState->infoIconIds[i]].invisible = TRUE;
+                }
+            }
+        }
+        else
+        {
+            FreeMonIconPalettes();
+            for (u32 i = 0; i < 23; i++)
+            {
+                FreeAndDestroyMonIconSprite(&gSprites[sGachaUiState->infoIconIds[i]]);
+            }
+            gTasks[taskId].func = Task_GachaUiMainInput;
+        }
+        break;
+    }
+}
+
+static u32 ShowItem(enum Item item, s32 x, s32 y, u32 index)
+{
+    u32 fuckingItemGfxBuffer[32 * 16];
+    DecompressDataWithHeaderWram(gItemsInfo[item].iconPic, fuckingItemGfxBuffer);
+    for (u32 i = 0; i < 8; i++)
+    {
+        fuckingItemGfxBuffer[8 * 10 + i] = fuckingItemGfxBuffer[8 * 8 + i];
+        fuckingItemGfxBuffer[8 * 9 + i] = fuckingItemGfxBuffer[8 * 7 + i];
+        fuckingItemGfxBuffer[8 * 8 + i] = fuckingItemGfxBuffer[8 * 6 + i];
+
+        fuckingItemGfxBuffer[8 * 6 + i] = fuckingItemGfxBuffer[8 * 5 + i];
+        fuckingItemGfxBuffer[8 * 5 + i] = fuckingItemGfxBuffer[8 * 4 + i];
+        fuckingItemGfxBuffer[8 * 4 + i] = fuckingItemGfxBuffer[8 * 3 + i];
+
+        fuckingItemGfxBuffer[8 * 3 + i] = 0;
+        fuckingItemGfxBuffer[8 * 7 + i] = 0;
+        fuckingItemGfxBuffer[8 * 11 + i] = 0;
+        fuckingItemGfxBuffer[8 * 12 + i] = 0;
+        fuckingItemGfxBuffer[8 * 13 + i] = 0;
+        fuckingItemGfxBuffer[8 * 14 + i] = 0;
+        fuckingItemGfxBuffer[8 * 15 + i] = 0;
+    }
+
+    struct Even_CreateSpriteStruct cs = {0};
+    cs.sprite = fuckingItemGfxBuffer;
+    cs.tileTag = index;
+    cs.palette = gItemsInfo[item].iconPalette;
+    cs.palTag = index;
+    cs.spriteSize = SPRITE_SIZE(32x32);
+    cs.spriteShape =  SPRITE_SHAPE(32x32);
+    cs.posX = x;
+    cs.posY = y;
+    return Even_CreateSprite(&cs);
+}
+
+static void Task_InfoTaskItems(u8 taskId)
+{
+    struct BannerInfo info;
+    switch (sGachaUiState->infoState)
+    {
+    case 0:
+        //  Create 6-star item icons
+        info = GetBannerInfo(BANNER_ITEMS, 6);
+        FillWindowPixelBuffer(WIN_ITEMS, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+        AddTextPrinterParameterized4(WIN_ITEMS,
+                                     FONT_NORMAL,
+                                     3, 0, 0, 0,
+                                     sGachaUiWindowFontColors[FONT_WHITE],
+                                     TEXT_SKIP_DRAW,
+                                     COMPOUND_STRING("6-star items"));
+        CopyWindowToVram(WIN_ITEMS, COPYWIN_GFX);
+
+        for (u32 i = 0; i < 6; i++)
+        {
+            sGachaUiState->infoIconIds[i] = ShowItem(info.items[i], 40 + 32 * i, 80 + 160, i);
+            gSprites[sGachaUiState->infoIconIds[i]].invisible = TRUE;
+        }
+        sGachaUiState->infoState++;
+        break;
+    case 1:
+        //  Slide down
+        if (sGachaUiState->offset < 328)
+        {
+            sGachaUiState->offset += 8;
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            if (sGachaUiState->offset < 328)
+            {
+                for (u32 i = 0; i < 6; i++)
+                {
+                    gSprites[sGachaUiState->infoIconIds[i]].y -= 8;
+                    if (gSprites[sGachaUiState->infoIconIds[i]].y < 184)
+                    {
+                        gSprites[sGachaUiState->infoIconIds[i]].invisible = FALSE;
+                    }
+                }
+            }
+        }
+        else
+        {
+            sGachaUiState->infoState++;
+        }
+        break;
+    case 2:
+        //  Wait for input
+        if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON) || JOY_NEW(START_BUTTON) || JOY_NEW(SELECT_BUTTON)
+         || JOY_NEW(R_BUTTON) || JOY_NEW(L_BUTTON)
+         || JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT) || JOY_NEW(DPAD_RIGHT))
+        {
+            sGachaUiState->infoState++;
+        }
+        break;
+    case 3:
+        for (u32 i = 0; i < 6; i++)
+        {
+            DestroySprite(&gSprites[sGachaUiState->infoIconIds[i]]);
+            FreeSpriteTilesByTag(i);
+            FreeSpritePaletteByTag(i);
+        }
+
+        info = GetBannerInfo(BANNER_ITEMS, 5);
+        FillWindowPixelBuffer(WIN_ITEMS, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+        AddTextPrinterParameterized4(WIN_ITEMS,
+                                     FONT_NORMAL,
+                                     3, 0, 0, 0,
+                                     sGachaUiWindowFontColors[FONT_WHITE],
+                                     TEXT_SKIP_DRAW,
+                                     COMPOUND_STRING("5-star items"));
+        CopyWindowToVram(WIN_ITEMS, COPYWIN_GFX);
+        for (u32 i = 0; i < 12; i++)
+        {
+            sGachaUiState->infoIconIds[i] = ShowItem(info.items[i], 40 + 32 * (i % 6), 60 + 32 * (i / 6), i);
+        }
+        sGachaUiState->infoState++;
+        break;
+    case 4:
+        //  Wait for input
+        if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON) || JOY_NEW(START_BUTTON) || JOY_NEW(SELECT_BUTTON)
+         || JOY_NEW(R_BUTTON) || JOY_NEW(L_BUTTON)
+         || JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT) || JOY_NEW(DPAD_RIGHT))
+        {
+            sGachaUiState->infoState++;
+        }
+        break;
+    case 5:
+        for (u32 i = 0; i < 12; i++)
+        {
+            DestroySprite(&gSprites[sGachaUiState->infoIconIds[i]]);
+            FreeSpriteTilesByTag(i);
+            FreeSpritePaletteByTag(i);
+        }
+
+        info = GetBannerInfo(BANNER_ITEMS, 5);
+        for (u32 i = 0; i < 6; i++)
+        {
+            sGachaUiState->infoIconIds[i] = ShowItem(info.items[12 + i], 40 + 32 * i, 60, i);
+        }
+        for (u32 i = 6; i < 11; i++)
+        {
+            sGachaUiState->infoIconIds[i] = ShowItem(info.items[12 + i], 40 + 16 + 32 * (i - 6), 60 + 32, i);
+        }
+        sGachaUiState->infoState++;
+        break;
+    case 6:
+        //  Wait for input
+        if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON) || JOY_NEW(START_BUTTON) || JOY_NEW(SELECT_BUTTON)
+         || JOY_NEW(R_BUTTON) || JOY_NEW(L_BUTTON)
+         || JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT) || JOY_NEW(DPAD_RIGHT))
+        {
+            sGachaUiState->infoState++;
+        }
+        break;
+    case 7:
+        for (u32 i = 0; i < 11; i++)
+        {
+            DestroySprite(&gSprites[sGachaUiState->infoIconIds[i]]);
+            FreeSpriteTilesByTag(i);
+            FreeSpritePaletteByTag(i);
+        }
+
+        info = GetBannerInfo(BANNER_ITEMS, 4);
+        FillWindowPixelBuffer(WIN_ITEMS, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+        AddTextPrinterParameterized4(WIN_ITEMS,
+                                     FONT_NORMAL,
+                                     3, 0, 0, 0,
+                                     sGachaUiWindowFontColors[FONT_WHITE],
+                                     TEXT_SKIP_DRAW,
+                                     COMPOUND_STRING("4-star items"));
+        CopyWindowToVram(WIN_ITEMS, COPYWIN_GFX);
+        for (u32 i = 0; i < 14; i++)
+        {
+            sGachaUiState->infoIconIds[i] = ShowItem(info.items[i], 24 + 32 * (i % 7), 60 + 32 * (i / 7), i);
+        }
+        sGachaUiState->infoState++;
+        break;
+    case 8:
+        if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON) || JOY_NEW(START_BUTTON) || JOY_NEW(SELECT_BUTTON)
+         || JOY_NEW(R_BUTTON) || JOY_NEW(L_BUTTON)
+         || JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT) || JOY_NEW(DPAD_RIGHT))
+        {
+            sGachaUiState->infoState++;
+        }
+        break;
+    case 9:
+        for (u32 i = 0; i < 14; i++)
+        {
+            DestroySprite(&gSprites[sGachaUiState->infoIconIds[i]]);
+            FreeSpriteTilesByTag(i);
+            FreeSpritePaletteByTag(i);
+        }
+
+        info = GetBannerInfo(BANNER_ITEMS, 4);
+        for (u32 i = 0; i < 14; i++)
+        {
+            sGachaUiState->infoIconIds[i] = ShowItem(info.items[14 + i], 24 + 32 * (i % 7), 60 + 32 * (i / 7), i);
+        }
+        sGachaUiState->infoState++;
+        break;
+    case 10:
+        if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON) || JOY_NEW(START_BUTTON) || JOY_NEW(SELECT_BUTTON)
+         || JOY_NEW(R_BUTTON) || JOY_NEW(L_BUTTON)
+         || JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT) || JOY_NEW(DPAD_RIGHT))
+        {
+            sGachaUiState->infoState++;
+        }
+        break;
+    case 11:
+        for (u32 i = 0; i < 14; i++)
+        {
+            DestroySprite(&gSprites[sGachaUiState->infoIconIds[i]]);
+            FreeSpriteTilesByTag(i);
+            FreeSpritePaletteByTag(i);
+        }
+
+        info = GetBannerInfo(BANNER_ITEMS, 4);
+        for (u32 i = 0; i < 14; i++)
+        {
+            sGachaUiState->infoIconIds[i] = ShowItem(info.items[28 + i], 24 + 32 * (i % 7), 60 + 32 * (i / 7), i);
+        }
+        sGachaUiState->infoState++;
+        break;
+    case 12:
+        if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON) || JOY_NEW(START_BUTTON) || JOY_NEW(SELECT_BUTTON)
+         || JOY_NEW(R_BUTTON) || JOY_NEW(L_BUTTON)
+         || JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_UP) || JOY_NEW(DPAD_LEFT) || JOY_NEW(DPAD_RIGHT))
+        {
+            sGachaUiState->infoState++;
+        }
+        break;
+    case 13:
+        //  slide away
+        if (sGachaUiState->offset > 160)
+        {
+            sGachaUiState->offset -= 8;
+            SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            for (u32 i = 0; i < 14; i++)
+            {
+                gSprites[sGachaUiState->infoIconIds[i]].y += 8;
+                if (gSprites[sGachaUiState->infoIconIds[i]].y > 184)
+                {
+                    gSprites[sGachaUiState->infoIconIds[i]].invisible = TRUE;
+                }
+            }
+        }
+        else
+        {
+            for (u32 i = 0; i < 14; i++)
+            {
+                DestroySprite(&gSprites[sGachaUiState->infoIconIds[i]]);
+                FreeSpriteTilesByTag(i);
+                FreeSpritePaletteByTag(i);
+            }
             gTasks[taskId].func = Task_GachaUiMainInput;
         }
         break;
