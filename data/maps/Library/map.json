@@ -2,7 +2,7 @@
   "id": "MAP_LIBRARY",
   "name": "Library",
   "layout": "LAYOUT_LIBRARY",
-  "music": "MUS_DUMMY",
+  "music": "MUS_LILYCOVE_MUSEUM",
   "region_map_section": "MAPSEC_ABANDONED_SHIP",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -13,8 +13,87 @@
   "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": null,
-  "object_events": [],
+  "object_events": [
+    {
+      "local_id": "LOCALID_SATSUKI_LIBRARY",
+      "graphics_id": "OBJ_EVENT_GFX_SATSUKI",
+      "x": 25,
+      "y": 12,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_ACOLYTE_M",
+      "x": 22,
+      "y": 22,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_CHISA_LIBRARY",
+      "graphics_id": "OBJ_EVENT_GFX_CHISA",
+      "x": 25,
+      "y": 27,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
+    }
+  ],
   "warp_events": [],
-  "coord_events": [],
-  "bg_events": []
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 19,
+      "y": 15,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Library_Trigger1"
+    },
+    {
+      "type": "trigger",
+      "x": 19,
+      "y": 16,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Library_Trigger2"
+    },
+    {
+      "type": "trigger",
+      "x": 19,
+      "y": 17,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Library_Trigger3"
+    }
+  ],
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 8,
+      "y": 11,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Library_PC"
+    }
+  ]
 }
