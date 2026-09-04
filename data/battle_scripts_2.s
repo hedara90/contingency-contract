@@ -174,7 +174,7 @@ BattleScript_BallThrow::
 	handleballthrow
 
 BattleScript_BallThrowByWally::
-	printstring STRINGID_WALLYUSEDITEM
+	printstring STRINGID_TRAINER1USEDITEM
 	handleballthrow
 
 BattleScript_SafariBallThrow::
@@ -314,6 +314,15 @@ BattleScript_TrainerPartnerSlideMsgRet::
 BattleScript_TrainerPartnerSlideMsgEnd2::
 	call BattleScript_TrainerPartnerSlideMsgRet
 	end2
+
+BattleScript_TrainerSlideMsg::
+	trainerslidein BS_SCRIPTING
+	handletrainerslidemsg BS_SCRIPTING, PRINT_SLIDE_MESSAGE
+	waitstate
+	trainerslideout BS_SCRIPTING
+	waitstate
+	handletrainerslidemsg BS_SCRIPTING, RESTORE_BATTLER_SLIDE_CONTROL
+	end3
 
 BattleScript_GhostBallDodge::
 	waitmessage B_WAIT_TIME_LONG
