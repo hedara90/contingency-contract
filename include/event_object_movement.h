@@ -569,4 +569,6 @@ u8 MovementType_OverworldWildEncounter_Despawn_Step8(struct ObjectEvent *objectE
 u8 MovementType_OverworldWildEncounter_Despawn_Step10(struct ObjectEvent *objectEvent, struct Sprite *sprite);
 u8 MovementType_OverworldWildEncounter_Despawn_Step11(struct ObjectEvent *objectEvent, struct Sprite *sprite);
 
+void FaceDirection(struct ObjectEvent *objectEvent, struct Sprite *sprite, enum Direction direction);
+
 #endif //GUARD_EVENT_OBJECT_MOVEMENT_H
