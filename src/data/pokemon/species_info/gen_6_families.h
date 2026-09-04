@@ -4513,6 +4513,7 @@ const struct SpeciesInfo gSpeciesInfoGen6[] =
         )
         .levelUpLearnset = sHelioliskLevelUpLearnset,
         .teachableLearnset = sHelioliskTeachableLearnset,
+        .rarity = 5,
     },
 #endif //P_FAMILY_HELIOPTILE
 
