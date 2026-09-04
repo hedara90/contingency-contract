@@ -3638,3 +3638,84 @@ bool8 OpenPartyGauntlet(struct ScriptContext *ctx)
     ScriptContext_Stop();
     return TRUE;
 }
+
+static u16 GetBoxMonGraphicsId(struct BoxPokemon *boxmon)
+{
+    u32 species = GetBoxMonData(boxmon, MON_DATA_SPECIES_OR_EGG);
+    if (species == SPECIES_NONE || species == SPECIES_EGG)
+        return OBJ_EVENT_MON;
+    u16 graphicsId = species | OBJ_EVENT_MON;
+    if (GetBoxMonData(boxmon, MON_DATA_IS_SHINY))
+        graphicsId |= OBJ_EVENT_MON_SHINY;
+    if (GetBoxMonGender(boxmon))
+        graphicsId |= OBJ_EVENT_MON_FEMALE;
+    return graphicsId;
+}
+
+void Script_SetVar_MonCanLearnMoveGfx(struct ScriptContext *ctx)
+{
+    u16 var = ScriptReadHalfword(ctx);
+    u16 move = ScriptReadHalfword(ctx);
+
+    u16 graphicsId = OBJ_EVENT_MON;
+    for (u32 i = 0; i < gPartiesCount[B_TRAINER_PLAYER]; i++)
+    {
+        u32 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES_OR_EGG);
+        if (CanLearnTeachableMove(species, move))
+        {
+            graphicsId = GetBoxMonGraphicsId(&gParties[B_TRAINER_PLAYER][i].box);
+            break;
+        }
+    }
+    VarSet(var, graphicsId);
+}
+
+void Script_SetVar_MonKnowsMoveGfx(struct ScriptContext *ctx)
+{
+    u16 var = ScriptReadHalfword(ctx);
+    u16 move = ScriptReadHalfword(ctx);
+
+    u16 graphicsId = OBJ_EVENT_MON;
+    for (u32 i = 0; i < gPartiesCount[B_TRAINER_PLAYER]; i++)
+    {
+        u32 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES_OR_EGG);
+        if (species == SPECIES_NONE || species == SPECIES_EGG)
+            continue;
+        if (MonKnowsMove(&gParties[B_TRAINER_PLAYER][i], move))
+        {
+            graphicsId = GetBoxMonGraphicsId(&gParties[B_TRAINER_PLAYER][i].box);
+            break;
+        }
+    }
+    VarSet(var, graphicsId);
+}
+
+void Script_SetVar_ChooseMonGfx(struct ScriptContext *ctx)
+{
+    u16 var = ScriptReadHalfword(ctx);
+
+    struct BoxPokemon *boxmon = GetSelectedBoxMonFromPcOrParty();
+    u32 graphicsId = GetBoxMonGraphicsId(boxmon);
+
+    VarSet(var, graphicsId);
+}
+
+void Script_SetVar_RandomPartyMonGfx(struct ScriptContext *ctx)
+{
+    u16 var = ScriptReadHalfword(ctx);
+    u32 graphicsId = OBJ_EVENT_MON;
+
+    u32 tmpGfxIds[PARTY_SIZE];
+    u32 validMonsCount = 0;
+    for (u32 i = 0; i < gPartiesCount[B_TRAINER_PLAYER]; i++)
+    {
+        u32 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES_OR_EGG);
+        if (species == SPECIES_NONE || species == SPECIES_EGG)
+            continue;
+        tmpGfxIds[validMonsCount++] = GetBoxMonGraphicsId(&gParties[B_TRAINER_PLAYER][i].box);
+    }
+    if (validMonsCount > 0)
+        graphicsId = tmpGfxIds[RandomUniform(RNG_NONE, 0, validMonsCount - 1)];
+
+    VarSet(var, graphicsId);
+}
