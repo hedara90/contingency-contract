@@ -8,19 +8,28 @@ mapscripts ConventionCenter_MapScripts {
             callnative(CreateOtherVObjects)
         }
     }
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_INTRO, 0 : CC_Intro
+    ]
 }
 
 const player = OBJ_EVENT_ID_PLAYER
+const camera = LOCALID_CAMERA
 const zhuang = LOCALID_CC_ZHUANG
 const nian = LOCALID_CC_NIAN
 const shu = LOCALID_CC_SHU
 const Event_GilbertaEntrance = FLAG_TEMP_19
 const Event_GilbertaBooth = FLAG_TEMP_18
 const Event_GilbertaCafe = FLAG_TEMP_17
+const chisa = LOCALID_CC_CHISA
+const receptionist = LOCALID_CC_RECEPTIONIST
 
 script CC_OnTransition {
     call(CC_GilbertaEvent)
     call(CC_PickRandomEvents)
+    if(var(VAR_INTRO)==0){
+        setobjectxyperm(chisa, 7, 22)
+    }
 }
 
 script CC_GilbertaEvent {
@@ -73,6 +82,162 @@ script CC_PickRandomEvents {
     //Endmin & Penance
     //Various people at the photobooth
     //TangTang + MiFu
+}
+
+script CC_Intro {
+    lock
+    setvar(VAR_INTRO, 1)
+    applymovement(player, moves(walk_right))
+    applymovement(chisa, moves(walk_right))
+    waitmovement
+    applymovement(receptionist, moves(emote_exclamation_mark))
+    msgbox("Welcome! Have you gotten your\npasses yet?")
+    applymovement(player, moves(face_up))
+    applymovement(chisa, moves(walk_right, walk_up))
+    waitmovement
+    applymovement(chisa, moves(walk_in_place_up))
+    waitmovement
+    msgbox("Not yet! Here are our tickets.")
+    waitmessage
+    applymovement(receptionist, moves(walk_in_place_down))
+    msgbox("Let me check...")
+    closemessage
+    applymovement(receptionist, moves(walk_left, delay_16*6, walk_right, face_down))
+    msgbox("...Looks like everything's in order.\nHere you go")
+    closemessage
+    playse(MUS_OBTAIN_ITEM)
+    msgbox("Obtained a CC pass!")
+    waitse
+    applymovement(player, moves(emote_heart))
+    msgbox("Thanks!")
+    closemessage
+    applymovement(receptionist, moves(walk_in_place_down))
+    msgbox("I see here that you both signed\nup for the CC simulation battles?")
+    closemessage
+    applymovement(player, moves(emote_question_mark))
+    waitmovement
+    msgbox("Huh? But I didn't-")
+    applymovement(chisa, moves(jump_in_place_up))
+    applymovement(player, moves(face_right))
+    playse(SE_LEDGE)
+    msgbox("Yep, we did!")
+    closemessage
+    applymovement(player, moves(face_up))
+    applymovement(receptionist, moves(walk_in_place_down))
+    msgbox("Would you like me to explain how\neverything's set up?")
+    dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
+            "Yeah sure, give me the brief.",
+            "I can figure it out myself!")
+    switch(var(VAR_RESULT)){
+        case 0: goto(CC_Intro_Explanation)
+        case 1: goto(CC_Intro_NoExplanation)
+    }
+}
+
+script CC_Intro_Explanation {
+    special(SpawnCameraObject)
+    msgbox("Gotcha.\p"
+            "So, let's start with the basics.\p"
+            "We have set up various different\ntrainer gauntlets where you fight\lcharacters from the games.\p"
+            "Each gauntlet consists of 4 trainers.")
+    closemessage
+    applymovement(receptionist, moves(walk_right*2))
+    applymovement(chisa, moves(delay_16*3, walk_down, face_right))
+    applymovement(player, moves(delay_16*4, walk_right))
+    applymovement(camera, moves(walk_diag_southeast*2, walk_right*8))
+    waitmovement(camera)
+    msgbox("You can start a gauntlet by talking\nto my colleague there.\p"
+            "While in a gauntlet, you cannot swap\nout Pokemon, and you cannot change\ltheir moves or abilities.\p"
+            "You will be healed after each fight,\nhowever.\p"
+            "Additionally, the battles can have a\nvariety of risks enabled, which alter\lthe fights.\p"
+            "This will generally make them more\ndifficult.\p"
+            "Winning battles gives you some credit,\nwhich can be spent...")
+    closemessage
+    applymovement(camera, moves(walk_up*6, walk_diag_northeast))
+    waitmessage
+    msgbox("...Here. This is the Pokemon booth.\p"
+            "Here, you can spend your credit to\nobtain pokemon for use in battle.\p"
+            "Each pokemon will come out of the\nbox with 4 moves and 1 ability.\p"
+            "The more you get the same Pokemon,\nthe more options will unlock for its\lmoves and abilities.")
+    closemessage
+    applymovement(camera, moves(walk_fast_right*10))
+    msgbox("And over there is the Item booth.\p"
+            "This is similar to the Pokemon booth,\nbut for items instead!")
+    closemessage
+    setobjectxyperm(chisa, 10, 22)
+    fadescreen(FADE_TO_BLACK)
+    applymovement(camera, moves(walk_faster_left*20, walk_faster_down*5))
+    waitmovement
+    special(RemoveCameraObject)
+    fadescreen(FADE_FROM_BLACK)
+    delay(30)
+    applymovement(player, moves(face_up))
+    applymovement(chisa, moves(face_up))
+    msgbox("To start you off, we have provided\n500 credits that you can spend at\lthe booths.\p"
+            "That should cover it.")
+    closemessage
+    applymovement(player, moves(walk_in_place_up))
+    waitmovement
+    msgbox("Thanks, miss!")
+    closemessage
+    applymovement(player, moves(walk_right*3, face_down))
+    applymovement(chisa, moves(delay_16, walk_right*2, face_up))
+    waitmovement
+    msgbox("Another take on battling, huh?")
+    closemessage
+    applymovement(chisa, moves(jump_in_place_up))
+    playse(SE_LEDGE)
+    waitmovement
+    msgbox("Hehe, yep! I figured you'd enjoy this.")
+    closemessage
+    applymovement(player, moves(walk_in_place_down))
+    msgbox("It definitely sounds interesting, but\nI was planning on just winding down\la bit from work.")
+    closemessage
+    applymovement(chisa, moves(face_right, delay_16*5, face_up))
+    waitmovement
+    msgbox("You say that, but you'll be in that\narena in no time.")
+    closemessage
+    msgbox("...")
+    closemessage
+    applymovement(player, moves(delay_16*2, face_right))
+    applymovement(chisa, moves(walk_right*2, face_left))
+    waitmovement(chisa)
+    msgbox("I'm going ahead then!")
+    closemessage
+    applymovement(chisa, moves(walk_right*3, walk_up*9))
+    waitmovement
+    setobjectxy(chisa, 38, 15)
+    setobjectxyperm(chisa, 38, 15)
+    msgbox("Well, she's not off the mark there...")
+    closemessage
+    release
+}
+
+script CC_Intro_NoExplanation {
+    applymovement(chisa, moves(walk_in_place_left))
+    msgbox("Well look at miss confidence here!")
+    applymovement(player, moves(face_right))
+    applymovement(chisa, moves(lock_facing_direction, walk_right, unlock_facing_direction))
+    msgbox("If you can figure it out, then I\nprobably can too!")
+    closemessage
+    applymovement(receptionist, moves(walk_in_place_down))
+    applymovement(player, moves(face_up))
+    applymovement(chisa, moves(face_up))
+    waitmovement
+    msgbox("Before you two head off, I need\nto mention you've got 500 credits\lto start with.\pHave fun battling!")
+    applymovement(chisa, moves(emote_heart))
+    waitmovement
+    msgbox("Thank you, miss.")
+    closemessage
+    applymovement(chisa, moves(face_left))
+    applymovement(player, moves(face_right))
+    msgbox("Okay Tiana, I'll see you around!\nI'm gonna try my luck at the\lPokemon booth.")
+    closemessage
+    applymovement(chisa, moves(walk_right*8))
+    waitmovement
+    setobjectxy(chisa, 38, 15)
+    setobjectxyperm(chisa, 38, 15)
+    release
 }
 
 script TryLoadQueue {
@@ -470,6 +635,8 @@ script WelcomeCounter {
     release
     end
 }
+
+
 
 script CC_Dragons {
     lock
