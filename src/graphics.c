@@ -2126,6 +2126,8 @@ const u32 gFrontierPassBg_Tilemap[]                      = INCGFX_U32("graphics/
 const u32 gFrontierPassCancelButton_Tilemap[]            = INCBIN_U32("graphics/frontier_pass/cancel.bin");
 const u32 gFrontierPassCancelButtonHighlighted_Tilemap[] = INCBIN_U32("graphics/frontier_pass/cancel_highlighted.bin");
 
+const u32 gCCDevsGfx[] = INCGFX_U32("graphics/title_screen/devs.png", ".4bpp", "-mwidth 4 -mheight 2");
+
 // Berry Crush
 const u16 gBerryCrush_Crusher_Pal[] = INCGFX_U16("graphics/berry_crush/crusher.png", ".gbapal");
 const u32 gBerryCrush_Crusher_Gfx[] = INCGFX_U32("graphics/berry_crush/crusher.png", ".4bpp.smol");
