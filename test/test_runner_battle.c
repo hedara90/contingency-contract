@@ -373,6 +373,16 @@ static void SetImplicitSpeeds(void)
     }
 }
 
+static void ResetTestInventory()
+{
+    ClearBag();
+    for (u32 i = 0; i < TEST_ITEM_SLOTS; i++)
+    {
+        if (DATA.inventory[i].itemId != ITEM_NONE)
+            AddBagItem(DATA.inventory[i].itemId, DATA.inventory[i].quantity);
+    }
+}
+
 static void StartBattle(void)
 {
     memset(&DATA.trial, 0, sizeof(DATA.trial));
@@ -384,6 +394,7 @@ static void StartBattle(void)
         gMain.savedCallback = CB2_BattleTest_NextParameter;
     else
         gMain.savedCallback = CB2_TestRunner;
+    ResetTestInventory();
     SetMainCallback2(CB2_InitBattle);
 
     STATE->checkProgressParameter = 0;
@@ -877,7 +888,7 @@ void TestRunner_Battle_RecordAbilityPopUp(enum BattlerId battlerId, enum Ability
             if (DATA.queuedEvents[DATA.queuedEventsFailIndex].as.ability.ability == ABILITY_NONE)
                 Test_MgbaPrintf("%s:%d: Did you mean: ABILITY_POPUP(%s)", filename, line, BattlerIdentifier(battlerId));
             else
-                Test_MgbaPrintf("%s:%d: Did you mean: ABILITY_POPUP(%s, ABILITY_%C)", filename, line, BattlerIdentifier(battlerId), gAbilitiesInfo[ability].name);
+                Test_MgbaPrintf("%s:%d: Did you mean: ABILITY_POPUP(%s, ABILITY_%U)", filename, line, BattlerIdentifier(battlerId), gAbilitiesInfo[ability].name);
         }
         break;
     case QUEUE_GROUP_NONE_OF:
@@ -967,11 +978,11 @@ void TestRunner_Battle_RecordAnimation(u32 animType, u32 animId)
                 if (animId == MOVE_CELEBRATE)
                     ; // TODO: Only if implicit. Difficult to know if it's an action or, e.g. Mirror Move.
                 else if (checkAttacker && checkTarget)
-                    Test_MgbaPrintf("%s:%d: Did you mean: ANIMATION(%s, MOVE_%C, %s, target: %s)", filename, line, sAnimTypeNames[animType], gMovesInfo[animId].name, BattlerIdentifier(gBattleAnimAttacker), BattlerIdentifier(gBattleAnimTarget));
+                    Test_MgbaPrintf("%s:%d: Did you mean: ANIMATION(%s, MOVE_%U, %s, target: %s)", filename, line, sAnimTypeNames[animType], gMovesInfo[animId].name, BattlerIdentifier(gBattleAnimAttacker), BattlerIdentifier(gBattleAnimTarget));
                 else if (checkAttacker)
-                    Test_MgbaPrintf("%s:%d: Did you mean: ANIMATION(%s, MOVE_%C, %s)", filename, line, sAnimTypeNames[animType], gMovesInfo[animId].name, BattlerIdentifier(gBattleAnimAttacker));
+                    Test_MgbaPrintf("%s:%d: Did you mean: ANIMATION(%s, MOVE_%U, %s)", filename, line, sAnimTypeNames[animType], gMovesInfo[animId].name, BattlerIdentifier(gBattleAnimAttacker));
                 else
-                    Test_MgbaPrintf("%s:%d: Did you mean: ANIMATION(%s, MOVE_%C)", filename, line, sAnimTypeNames[animType], gMovesInfo[animId].name);
+                    Test_MgbaPrintf("%s:%d: Did you mean: ANIMATION(%s, MOVE_%U)", filename, line, sAnimTypeNames[animType], gMovesInfo[animId].name);
             }
             else if (animType < ARRAY_COUNT(sAnimTypeNames))
             {
@@ -2077,16 +2088,6 @@ static inline rng_value_t MakeRngValue(const u16 seed)
     return result;
 }
 
-static void ResetTestInventory()
-{
-    ClearBag();
-    for (u32 i = 0; i < TEST_ITEM_SLOTS; i++)
-    {
-        if (DATA.inventory[i].itemId != ITEM_NONE)
-            AddBagItem(DATA.inventory[i].itemId, DATA.inventory[i].quantity);
-    }
-}
-
 static void CB2_BattleTest_NextTrial(void)
 {
     TearDownBattle();
@@ -2875,7 +2876,7 @@ s32 MoveGetTarget(enum BattlerId battlerId, enum Move moveId, struct MoveContext
          || moveTarget == TARGET_FOES_AND_ALLY
          || moveTarget == TARGET_OPPONENTS_FIELD)
         {
-            target = BATTLE_OPPOSITE(battlerId);
+            target = ((battlerId ^ BIT_SIDE)); // Note: this could be bugged under Ally Switch, but Getters do not work here
         }
         else if (moveTarget == TARGET_SELECTED || moveTarget == TARGET_SMART || moveTarget == TARGET_OPPONENT)
         {
@@ -2885,7 +2886,7 @@ s32 MoveGetTarget(enum BattlerId battlerId, enum Move moveId, struct MoveContext
                 INVALID_IF(STATE->battlersCount > 2, "%S requires explicit target", GetMoveName(moveId));
             }
 
-            target = BATTLE_OPPOSITE(battlerId);
+            target = ((battlerId ^ BIT_SIDE)); // Note: this could be bugged under Ally Switch, but Getters do not work here
         }
         else if (moveTarget == TARGET_USER
               || moveTarget == TARGET_ALL_BATTLERS
@@ -2896,7 +2897,7 @@ s32 MoveGetTarget(enum BattlerId battlerId, enum Move moveId, struct MoveContext
         }
         else if (moveTarget == TARGET_ALLY)
         {
-            target = BATTLE_PARTNER(battlerId);
+            target = (battlerId ^ BIT_FLANK);
         }
         else
         {
@@ -3163,7 +3164,7 @@ s32 GetAiMoveTargetForScoreCompare(enum BattlerId battlerId, enum Move moveId, s
     // In Single Battles ai always targets the opposing mon.
     if (GetBattleTest()->type == BATTLE_TEST_AI_SINGLES)
     {
-        target = BATTLE_OPPOSITE(battlerId);
+        target = (battlerId ^ BIT_SIDE);
     }
     else
     {

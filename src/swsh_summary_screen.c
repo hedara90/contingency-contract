@@ -5785,7 +5785,7 @@ static void PrintMoveNameAndPP(u8 slotIndex)
     if (move != MOVE_NONE)
     {
         u8 pp = CalculatePPWithBonus(move, summary->ppBonuses, slotIndex);
-        u8 ppState = GetCurrentPpToMaxPpState(summary->pp[slotIndex], pp);
+        u8 ppState = GetCurrentPPToMaxPPState(summary->pp[slotIndex], pp);
         ConvertIntToDecimalStringN(gStringVar1, summary->pp[slotIndex], STR_CONV_MODE_RIGHT_ALIGN, 2);
         ConvertIntToDecimalStringN(gStringVar2, pp, STR_CONV_MODE_RIGHT_ALIGN, 2);
         DynamicPlaceholderTextUtil_Reset();
