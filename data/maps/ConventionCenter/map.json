@@ -82,7 +82,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_MiFus",
-      "flag": "0"
+      "flag": "FLAG_MIFU_EVENT"
     },
     {
       "local_id": "LOCALID_CC_MIFU2",
@@ -96,7 +96,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_MiFus",
-      "flag": "0"
+      "flag": "FLAG_MIFU_EVENT"
     },
     {
       "local_id": "LOCALID_CC_MIFU3",
@@ -110,7 +110,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_MiFus",
-      "flag": "0"
+      "flag": "FLAG_MIFU_EVENT"
     },
     {
       "local_id": "LOCALID_CC_TANGTANG",
@@ -124,7 +124,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_MiFus",
-      "flag": "0"
+      "flag": "FLAG_MIFU_EVENT"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_BOY_3",
@@ -137,7 +137,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_MiFuSpectator",
-      "flag": "0"
+      "flag": "FLAG_MIFU_EVENT"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_GILBERTA",
@@ -232,7 +232,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_GilbertaBooth",
-      "flag": "0"
+      "flag": "FLAG_TEMP_18"
     },
     {
       "local_id": "LOCALID_CC_GUARD3",
@@ -360,6 +360,7 @@
       "flag": "FLAG_GLADIIA"
     },
     {
+      "local_id": "LOCALID_CC_GAMBLER",
       "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
       "x": 24,
       "y": 18,
@@ -369,7 +370,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "CC_Perlica",
       "flag": "0"
     },
     {
@@ -398,7 +399,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_Endmin",
-      "flag": "0"
+      "flag": "FLAG_JOHNENDFIELD"
     },
     {
       "local_id": "LOCALID_CC_PENANCE",
@@ -412,10 +413,11 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_Penance",
-      "flag": "0"
+      "flag": "FLAG_JOHNENDFIELD"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "local_id": "LOCALID_CC_PERLICA",
+      "graphics_id": "OBJ_EVENT_GFX_PERLICA",
       "x": 25,
       "y": 18,
       "elevation": 0,
@@ -424,10 +426,11 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "CC_Perlica",
       "flag": "0"
     },
     {
+      "local_id": "LOCALID_CC_ITEMGUY",
       "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
       "x": 31,
       "y": 15,
@@ -437,7 +440,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "CC_Itemguy",
       "flag": "0"
     },
     {
@@ -517,6 +520,73 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_OldMan",
       "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_LAEVATAIN",
+      "x": 30,
+      "y": 6,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "CC_Laevatein",
+      "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "x": 34,
+      "y": 33,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "CC_Orignium_Onlooker",
+      "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_CHEN",
+      "x": 45,
+      "y": 14,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "CC_Chen",
+      "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_CC_CARNELIAN",
+      "graphics_id": "OBJ_EVENT_GFX_CARNELIAN",
+      "x": 13,
+      "y": 15,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "CC_Carnelian",
+      "flag": "FLAG_CARNELIAN"
+    },
+    {
+      "local_id": "LOCALID_CC_ELYSIUM",
+      "graphics_id": "OBJ_EVENT_GFX_ELYSIUM",
+      "x": 13,
+      "y": 14,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "CC_Carnelian",
+      "flag": "FLAG_CARNELIAN"
     }
   ],
   "warp_events": [
@@ -1089,6 +1159,22 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "CC_MerchCounter"
+    },
+    {
+      "type": "sign",
+      "x": 18,
+      "y": 15,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Pokemonbanner_Sign"
+    },
+    {
+      "type": "sign",
+      "x": 34,
+      "y": 15,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ItemBanner_Sign"
     }
   ]
 }
