@@ -49,6 +49,8 @@ script CC_GilbertaEvent {
             setflag(Event_GilbertaBooth)
             setflag(Event_GilbertaCafe)
     }
+    random(10)
+    copyvar(VAR_CHISA_PARTY, VAR_RESULT)
 }
 
 script CC_PickRandomEvents {
@@ -636,7 +638,89 @@ script WelcomeCounter {
     end
 }
 
+script CC_Chisa {
+    
+}
 
+script CC_Chisa_LowScore {
+    msgbox("Okay lets see... Who do I try out now...")
+    switch(var(VAR_CHISA_PARTY)){
+        case 0: 
+            msgbox("There's a lot of Double Battles here, so maybe Seismitoad and Altaria? Sounds fun!")
+        case 1:
+            msgbox("I did just get Heatran, so maybe I should use him...")
+        case 2: 
+            msgbox("Oh yeah! I maxed out Sandslash. His signature move sounds good. Can I set snow, somehow?")
+        case 3:
+            msgbox("Is there a berry that would be good for Mamoswine...")
+        case 4:
+            msgbox("I could just bring ol' reliable Corviknight. Can't go wrong with that.")
+        case 5:
+            msgbox("I got a lot of Nidokings, maybe I need to get my hands on a Life Orb")
+        case 6:
+            msgbox("What if I just pair Glaceon with a Webs setter? My options are... Masquerain and Araquanid?")
+        case 7:
+            msgbox("I could use the Burn risk together with Jolteon's Charade. Did just unlock that one...")
+        case 8:
+            msgbox("This Steelix set looks insane. What were they thinking?")
+        case 9:
+            msgbox("Crobat with Contagion seems cool. Just wish I had him at higher Potential...")
+    }
+}
+
+script CC_Chisa_MidScore {
+    msgbox("Okay so, if i pick Area Lockdown and then use Pokemon with pivoting moves, I can mitigate that risk...")
+    msgbox("Just take Formation Breaker and then Disabling, Tormenting and Suppressing risks. Way less restrictive.")
+    msgbox("Hmm, that makes the entry hazards more annoying...")
+    msgbox("Oh, hey Tiana! Here to help me out?")
+    msgbox("Nope, just curious what you're up to")
+    msgbox("She's trying - and failing - to get a score better than 25")
+    msgbox("Hey, shut it! You get to benefit from everything I switch on!")
+    msgbox("Fue, you think I am just here as your opponent? I helped test everything! My record is 53.")
+    msgbox("What?? And you aren't helping me??")
+    msgbox("I thought we were friends...")
+    msgbox("Well, as per the rules, I can't tell you how I did that.")
+
+    msgbox("I already beat 25")
+    msgbox("Oh, good job!")
+    msgbox("What!? Oh man, am I always gonna be a step behind you?")
+    msgbox("How did you do it! No, wait. Don't tell me. I can do it on my own, just you wait.")
+    msgbox("Just gotta figure out which mons to use... There's so many cool ones.")
+    msgbox("")
+}
+
+script CC_Chisa_HighScore {
+    msgbox("Tiana! I did it! I got to 32, even!")
+    msgbox("What are you at right now?")
+    //if statement here
+    msgbox("Goodness, how do you keep doing that!")
+    msgbox("Well, you did tell me she's just better than you")
+    msgbox("She is. Annoyingly so.")
+
+    //otherwise
+    msgbox("Oohh, so I win!")
+    msgbox("Oh I am not done yet, don't worry")
+    msgbox("Well well, aren't you two in a good mood.")
+}
+
+script CC_Chisa_Record {
+    msgbox("You beat WHAT? I didn't think that was possible!")
+    msgbox("Sheesh, you've even got me beat")
+    msgbox("I don't think I'll hit that. 38 was challenging enough for me...")
+    msgbox("Anyway! I think I'll raise a Crobat. Never realized how cool this guy is.")
+}
+
+script CC_Ardelia_ChisaNotHere {
+    msgbox("Oh hey there. Tiana, right? Chisa's told me all about you, we're basically friends now."
+        "She's currently trying her luck again. Maybe this time..."
+        "Anyway, I look forward to facing you!")
+}
+
+script CC_Ardelia_ChisaHere {
+    msgbox("It's kinda fun to see her come up with strategies")
+    msgbox("Even though they aren't very sound most of the time")
+    msgbox("I can hear you, you know!")
+}
 
 script CC_Dragons {
     lock
