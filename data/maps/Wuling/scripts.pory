@@ -115,9 +115,9 @@ script Wuling_MiFu {
 
 text MiFuBeforeBattle {
     "Managed to get through the little\n"
-    "kitty, huh? Heh, sounds about\p"
-    "right. If you're ready to fight,\n"
-    "I'm in. "
+    "kitty, huh? Heh, sounds about\l"
+    "right.\p"
+    "If you're ready to fight, I'm in."
 }
 
 text MiFuAfterBattle {
@@ -126,15 +126,15 @@ text MiFuAfterBattle {
 
 text MiFuAfterBattle_Win {
     "I never concede if I'm still on my\n"
-    "feet, but I know when my team's\p"
-    "had enough. Good luck when you\n"
-    "meet boss later."
+    "feet, but I know when my team's\l"
+    "had enough.\p"
+    "Good luck when you meet boss later."
 }
 
 text MiFuAfterBattle_Lose {
     "I bond with people by fighting them.\n"
-    "Only those who can take a win, a\p"
-    "loss, and a beating are reliable.\n"
+    "Only those who can take a win, a\l"
+    "loss, and a beating are reliable.\p"
     "You? Hmm… I think you're way\l"
     "beyond reliable."
 }
@@ -173,8 +173,8 @@ text ArcaneAfterBattle {
 
 text ArcaneAfterBattle_Win {
     "Thank you for the match… I don't\n"
-    "often get to be in situations like\p"
-    "this as a Task Leader, so it's… kind\n"
+    "often get to be in situations like\l"
+    "this as a Task Leader, so it's… kind\l"
     "of novel."
 }
 
@@ -202,8 +202,8 @@ script Wuling_ZhuangFangyi {
 
 text ZhuangFangyiBeforeBattle {
     "Mi Fu told me about your match. I'm\n"
-    "so excited! I've just finished a\p"
-    "refreshing cup of tea and I'm eager\n"
+    "so excited! I've just finished a\l"
+    "refreshing cup of tea and I'm eager\l"
     "to get started."
 }
 
@@ -214,8 +214,8 @@ text ZhuangFangyiAfterBattle {
 
 text ZhuangFangyiAfterBattle_Win {
     "What d'you think of the Chubby Lungs\n"
-    "around the convention centre? I\p"
-    "designed them you know! Aren't they\n"
+    "around the convention centre? I\l"
+    "designed them you know! Aren't they\l"
     "just the cutest?"
 }
 

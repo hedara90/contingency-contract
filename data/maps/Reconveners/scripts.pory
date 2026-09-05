@@ -80,7 +80,8 @@ script Reconveners_Ardelia {
 text ArdeliaBeforeBattle {
     "Could you stand back a little\n"
     "further? I, uh… I don't want you\l"
-    "to get hurt by accident."
+    "to get hurt by accident.\p"
+    "Let's go, Mr. Dolly!"
 }
 
 text ArdeliaAfterBattle {
@@ -90,8 +91,8 @@ text ArdeliaAfterBattle {
 
 text ArdeliaAfterBattle_Win {
     "My diary is like the rings of an\n"
-    "ancient tree. It keeps a record of\p"
-    "every lesson I learned growing up.\n"
+    "ancient tree. It keeps a record of\l"
+    "every lesson I learned growing up.\p"
     "Time to add a new page!"
 }
 
@@ -130,9 +131,10 @@ text PogranichnikAfterBattle {
 
 text PogranichnikAfterBattle_Win {
     "Every victory bears its price… Hold\n"
-    "dear what you've learned, but don't\p"
-    "forget what we've paid. Also, here,\n"
-    "have a candy. Good for the soul."
+    "dear what you've learned, but don't\l"
+    "forget what we've paid.\p"
+    "Also, here. Have a candy. They're\n"
+    "good for the soul."
 }
 
 text PogranichnikAfterBattle_Lose {
@@ -159,9 +161,10 @@ script Reconveners_Gilberta {
 
 text GilbertaBeforeBattle {
     "Lovely to see so many new faces on\n"
-    "the road! Thought I'd take a break\p"
-    "between deliveries to see what all\n"
-    "the fuss was about. Looks like fun!"
+    "the road! Thought I'd take a break\l"
+    "between deliveries to see what all\l"
+    "the fuss was about.\p"
+    "Looks like fun!"
 }
 
 text GilbertaAfterBattle {
@@ -170,8 +173,8 @@ text GilbertaAfterBattle {
 
 text GilbertaAfterBattle_Win {
     "Got a few tips to help you on the\n"
-    "road ahead. Broaden your horizons,\p"
-    "learn from the experiences… and\n"
+    "road ahead. Broaden your horizons,\l"
+    "learn from the experiences… and\l"
     "add a dash of imagination!"
 }
 
@@ -197,8 +200,8 @@ script Reconveners_Laevatain {
 }
 
 text LaevatainBeforeBattle {
-    "I hate trouble, but boredom's worse.\n"
-    "Whatever comes next better be\l"
+    "I hate trouble, but boredom's worse.\p"
+    "Whatever comes next better be\n"
     "memorable."
 }
 
@@ -209,8 +212,8 @@ text LaevatainAfterBattle {
 
 text LaevatainAfterBattle_Win {
     "Have you seen the ice cream bar\n"
-    "yet? Better get there soon, there\p"
-    "might not be much left after I'm\n"
+    "yet? Better get there soon, there\l"
+    "might not be much left after I'm\l"
     "through with it."
 }
 

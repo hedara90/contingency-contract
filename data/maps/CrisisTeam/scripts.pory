@@ -89,15 +89,15 @@ text XaihiAfterBattle {
 
 text XaihiAfterBattle_Win {
     "I shall return to my work. Chen tells\n"
-    "me the toaster has broken again,\p"
-    "and my prayers are all that will\n"
+    "me the toaster has broken again,\l"
+    "and my prayers are all that will\l"
     "cleanse its codes of malice."
 }
 
 text XaihiAfterBattle_Lose {
     "Behold, the benevolence of the Law\n"
-    "made manifest. I shall pray for\p"
-    "wisdom to bless your terminal and\n"
+    "made manifest. I shall pray for\l"
+    "wisdom to bless your terminal and\l"
     "its boxes."
 }
 
@@ -172,8 +172,8 @@ text PerlicaAfterBattle_Win {
 
 text PerlicaAfterBattle_Lose {
     "Though I am a little too young and\n"
-    "untested, my mind is set. I shall\p"
-    "fulfill my duties as Supervisor of\n"
+    "untested, my mind is set. I shall\l"
+    "fulfill my duties as Supervisor of\l"
     "Endfield Industries."
 }
 

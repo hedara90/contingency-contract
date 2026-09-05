@@ -126,8 +126,8 @@ script AbyssalHunters_Gladiia {
 
 text GladiiaBeforeBattle {
     "Any disruption during my work hours\n"
-    "is not permitted. Should there be\p"
-    "any offense, I appreciate your\n"
+    "is not permitted. Should there be\l"
+    "any offense, I appreciate your\l"
     "understanding."
 }
 
@@ -138,18 +138,19 @@ text GladiiaAfterBattle {
 
 text GladiiaAfterBattle_Win {
     "The language I use is overly\n"
-    "polite…? Hm, I'm still getting\p"
-    "acquainted with the language used\n"
+    "polite…?\p"
+    "Hm, I'm still getting\l"
+    "acquainted with the language used\l"
     "on the land. Besides, it's in my\l"
     "best interest to be seen as polite."
 }
 
 text GladiiaAfterBattle_Lose {
     "Please inform your operators to\n"
-    "avoid any physical contact with me\p"
-    "or my weapon after a battle.\n"
-    "Intense exercise raises my surface\p"
-    "temperature. If someone were to\n"
+    "avoid any physical contact with me\l"
+    "or my weapon after a battle.\p"
+    "Intense exercise raises my surface\n"
+    "temperature. If someone were to\l"
     "complain about being scalded, I\l"
     "would hate to feel guilty."
 }
@@ -173,11 +174,11 @@ script AbyssalHunters_Skadi {
 
 text SkadiBeforeBattle {
     "I advise you to keep at least two\n"
-    "meters away from me, for your own\p"
-    "good. And of course you shouldn't\n"
-    "speak to me either… I don't want\p"
-    "you to be the next victim of what's\l"
-    "after me."
+    "meters away from me, for your own\l"
+    "good. And of course you shouldn't\l"
+    "speak to me either…\p"
+    "I don't want you to be the next\n"
+    "victim of what's after me."
 }
 
 text SkadiAfterBattle {
@@ -215,10 +216,11 @@ script AbyssalHunters_Ulpianus {
 
 text UlpianusBeforeBattle {
     "The Hunters will lose awareness if\n"
-    "deprived of water, but they need\p"
+    "deprived of water, but they need\l"
     "only return to the sea to awaken\n"
-    "their past. How about you? What\l"
-    "opportunity would you need?"
+    "their past.\p"
+    "How about you? What opportunity\n"
+    "would you need?"
 }
 
 text UlpianusAfterBattle {

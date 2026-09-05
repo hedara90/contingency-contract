@@ -79,11 +79,12 @@ script AKYellow_Shu {
 
 text ShuBeforeBattle {
     "Who am I? The answer lies only in\n"
-    "all that I've seen. The same way\p"
-    "seeds are inanimate, and yet they\n"
-    "germinate after you put them in the\p"
-    "ground. You wonder what it's like?\n"
-    "Hehe, take a deep breath and\l"
+    "all that I've seen. The same way\l"
+    "seeds are inanimate, and yet they\l"
+    "germinate after you put them in the\l"
+    "ground.\p"
+    "You wonder what it's like?\p"
+    "Hehe, take a deep breath and\n"
     "you've more or less felt it."
 }
 
@@ -100,8 +101,8 @@ text ShuAfterBattle_Win {
 
 text ShuAfterBattle_Lose {
     "All life requires both sunlight and\n"
-    "water to grow. I don't think\p"
-    "you've had your ten cups of water\n"
+    "water to grow. I don't think\l"
+    "you've had your ten cups of water\l"
     "yet today."
 }
 
@@ -133,11 +134,12 @@ text NianAfterBattle {
 
 text NianAfterBattle_Win {
     "I used to just focus myself on what\n"
-    "I needed for daily life, but I'm\p"
-    "the type to really absorb my\n"
-    "surroundings. And somehow or other\p"
-    "I keep getting into fights. This was\n"
-    "a great one, though!"
+    "I needed for daily life, but I'm\l"
+    "the type to really absorb my\l"
+    "surroundings.\p"
+    "And somehow or other I keep getting\n"
+    "into fights. This was a great one,\l"
+    "though!"
 }
 
 text NianAfterBattle_Lose {
@@ -174,8 +176,8 @@ text ElysiumAfterBattle {
 
 text ElysiumAfterBattle_Win {
     "Why does everyone prefer looking at\n"
-    "a map over asking me for\p"
-    "directions? The captain says my\n"
+    "a map over asking me for\l"
+    "directions? The captain says my\l"
     "glib tone gets on people's nerves.\p"
     "But that can't be, I always treat\n"
     "everyone with perfect kindness!"
@@ -204,9 +206,9 @@ script AKYellow_Irene {
 
 text IreneBeforeBattle {
     "Hm… Are these all your operators? Is\n"
-    "it just me or do some of them seem\p"
-    "like an actual security risk?\n"
-    "Alright, fine. I will try my best to\l"
+    "it just me or do some of them seem\l"
+    "like an actual security risk?\p"
+    "Alright, fine. I will try my best to\n"
     "focus on their combat techniques…"
 }
 
@@ -217,16 +219,17 @@ text IreneAfterBattle {
 
 text IreneAfterBattle_Win {
     "I have to get back to my handcannon\n"
-    "practice once I'm done with my work\p"
-    "here. Good luck in the battles\n"
+    "practice once I'm done with my work\l"
+    "here.\p"
+    "Good luck in the battles\n"
     "ahead!"
 }
 
 text IreneAfterBattle_Lose {
     "The scriptures tell us the light of\n"
-    "an Inquisitor's lantern is the light\p"
-    "of faith within our hearts. When an\n"
-    "Inquisitor lays down judgment, her\p"
-    "ruling should be based not on law,\n"
+    "an Inquisitor's lantern is the light\l"
+    "of faith within our hearts. When an\l"
+    "Inquisitor lays down judgment, her\l"
+    "ruling should be based not on law,\l"
     "but instead her own heart."
 }
