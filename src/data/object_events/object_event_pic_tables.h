@@ -3157,3 +3157,15 @@ static const struct SpriteFrameImage sPicTable_Xaihi[] = {
 static const struct SpriteFrameImage sPicTable_Zhuang[] = {
     overworld_ascending_frames(gObjectEventPic_Zhuang, 4, 4),
 };
+
+static const struct SpriteFrameImage sPicTable_CC_Guy[] = {
+    overworld_ascending_frames(gObjectEventPic_CC_Guy, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_CC_Girl[] = {
+    overworld_ascending_frames(gObjectEventPic_CC_Girl, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_CC_Guard[] = {
+    overworld_ascending_frames(gObjectEventPic_CC_Guard, 2, 4),
+};
