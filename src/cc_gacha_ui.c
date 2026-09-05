@@ -45,6 +45,9 @@
 
 #include "constants/cc_version.h"
 
+#define MON_OFFSET_MOVEMENT 6
+#define COLOR_TO_FILL TEXT_COLOR_TRANSPARENT
+
 struct GachaUiState
 {
     MainCallback savedCallback;
@@ -60,7 +63,7 @@ struct GachaUiState
     u16 offset;
     u16 infoState;
     u8 infoIconIds[23];
-    u32 numItems;
+    u16 monOffset;
 };
 
 enum WindowIds
@@ -99,6 +102,18 @@ static const u32 sIndomitabilityMonTiles[] = INCGFX_U32("graphics/gacha/indomita
 static const u32 sIndomitabilityMonTilemap[] = INCBIN_U32("graphics/gacha/indomitability_Mon_tiles.bin.smolTM");
 static const u16 sIndomitabilityMonPalette[] = INCGFX_U16("graphics/gacha/indomitability_Mon_tiles.png", ".gbapal");
 
+static const u32 sFuryMonTiles[] = INCGFX_U32("graphics/gacha/fury_Mon_tiles.png", ".4bpp.smol");
+static const u32 sFuryMonTilemap[] = INCBIN_U32("graphics/gacha/fury_Mon_tiles.bin.smolTM");
+static const u16 sFuryMonPalette[] = INCGFX_U16("graphics/gacha/fury_Mon_tiles.png", ".gbapal");
+
+static const u32 sMemoriesMonTiles[] = INCGFX_U32("graphics/gacha/memories_Mon_tiles.png", ".4bpp.smol");
+static const u32 sMemoriesMonTilemap[] = INCBIN_U32("graphics/gacha/memories_Mon_tiles.bin.smolTM");
+static const u16 sMemoriesMonPalette[] = INCGFX_U16("graphics/gacha/memories_Mon_tiles.png", ".gbapal");
+
+static const u32 sItemsItemsTiles[] = INCGFX_U32("graphics/gacha/items_items_tiles.png", ".4bpp.smol");
+static const u32 sItemsItemsTilemap[] = INCBIN_U32("graphics/gacha/items_items_tiles.bin.smolTM");
+static const u16 sItemsItemsPalette[] = INCGFX_U16("graphics/gacha/items_items_tiles.png", ".gbapal");
+
 struct GachaGraphics
 {
     const u32 *tiles;
@@ -118,9 +133,9 @@ static const struct GachaGraphics sGachaGraphics[] =
         .tilemap = sItemsTilemap,
         .palette = sItemsPalette,
 
-        .tilesMon = sIndomitabilityMonTiles,
-        .tilemapMon = sIndomitabilityMonTilemap,
-        .paletteMon = sIndomitabilityMonPalette,
+        .tilesMon = sItemsItemsTiles,
+        .tilemapMon = sItemsItemsTilemap,
+        .paletteMon = sItemsItemsPalette,
     },
     [BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT] =
     {
@@ -138,9 +153,9 @@ static const struct GachaGraphics sGachaGraphics[] =
         .tilemap = sFuryTilemap,
         .palette = sFuryPalette,
 
-        .tilesMon = sIndomitabilityMonTiles,
-        .tilemapMon = sIndomitabilityMonTilemap,
-        .paletteMon = sIndomitabilityMonPalette,
+        .tilesMon = sFuryMonTiles,
+        .tilemapMon = sFuryMonTilemap,
+        .paletteMon = sFuryMonPalette,
     },
     [BANNER_MEMORIES_OF_MONTHS_PAST] =
     {
@@ -148,9 +163,9 @@ static const struct GachaGraphics sGachaGraphics[] =
         .tilemap = sMemoriesTilemap,
         .palette = sMemoriesPalette,
 
-        .tilesMon = sIndomitabilityMonTiles,
-        .tilemapMon = sIndomitabilityMonTilemap,
-        .paletteMon = sIndomitabilityMonPalette,
+        .tilesMon = sMemoriesMonTiles,
+        .tilemapMon = sMemoriesMonTilemap,
+        .paletteMon = sMemoriesMonPalette,
     },
 };
 
@@ -190,7 +205,7 @@ static const struct BgTemplate sGachaUiBgTemplates[] =
 #define MONEY_HEIGHT    2
 #define PITY_WIDTH      12
 #define PITY_HEIGHT     4
-#define PULLS_WIDTH     12
+#define PULLS_WIDTH     11
 #define PULLS_HEIGHT    4
 #define ITEM_WIDTH      10
 #define ITEM_HEIGHT     2
@@ -361,6 +376,7 @@ static void GachaUi_SetupCB(void)
         SetGpuReg(REG_OFFSET_BG1VOFS, 160);
         SetGpuReg(REG_OFFSET_BG2VOFS, 160);
         sGachaUiState->offset = 160;
+        sGachaUiState->monOffset = 160;
         CreateTask(Task_GachaUiWaitFadeIn, 0);
         gMain.state++;
         break;
@@ -528,7 +544,7 @@ static void GachaUi_InitWindows(void)
 
     for (u32 i = 0; i < WIN_COUNT; i++)
     {
-        FillWindowPixelBuffer(i, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+        FillWindowPixelBuffer(i, PIXEL_FILL(COLOR_TO_FILL));
         PutWindowTilemap(i);
         CopyWindowToVram(i, COPYWIN_FULL);
     }
@@ -618,7 +634,7 @@ static void DrawMoney(void)
     str[1] = CHAR_SPACE;
     u32 money = GetMoney(&gSaveBlock1Ptr->money);
 
-    FillWindowPixelBuffer(WIN_MONEY, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    FillWindowPixelBuffer(WIN_MONEY, PIXEL_FILL(COLOR_TO_FILL));
     ConvertIntToDecimalStringN(&(str[2]), money, STR_CONV_MODE_LEFT_ALIGN, 8);
     AddTextPrinterParameterized4(WIN_MONEY,
                                  FONT_NORMAL,
@@ -645,7 +661,7 @@ static void DrawPity(void)
     u8 *strPtr = ConvertIntToDecimalStringN(str, toGuaranteed, STR_CONV_MODE_LEFT_ALIGN, 2);
     StringCopy(strPtr, sPityStr1);
 
-    FillWindowPixelBuffer(WIN_PITY, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    FillWindowPixelBuffer(WIN_PITY, PIXEL_FILL(COLOR_TO_FILL));
     AddTextPrinterParameterized4(WIN_PITY,
                                  FONT_NORMAL,
                                  0, 7, 0, 0,
@@ -663,7 +679,7 @@ static void DrawPity(void)
 
 static void DrawPull(void)
 {
-    FillWindowPixelBuffer(WIN_PULLS, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    FillWindowPixelBuffer(WIN_PULLS, PIXEL_FILL(COLOR_TO_FILL));
 
     enum FontColor color = FONT_WHITE;
 
@@ -741,9 +757,10 @@ static void Task_PullAnim(u8 taskId)
         if (sGachaUiState->offset > 0)
         {
             sGachaUiState->offset -= 8;
+            sGachaUiState->monOffset -= MON_OFFSET_MOVEMENT;;
             SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
             SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
-            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->monOffset);
         }
         else
         {
@@ -927,6 +944,7 @@ static void Task_PullAnim(u8 taskId)
         if (sGachaUiState->offset < 160)
         {
             sGachaUiState->offset += 8;
+            sGachaUiState->monOffset += MON_OFFSET_MOVEMENT;
             for (u32 i = 0; i < sGachaUiState->numToPull; i++)
             {
                 if (sGachaUiState->indicatorIds[i] != SPRITE_NONE)
@@ -951,7 +969,7 @@ static void Task_PullAnim(u8 taskId)
             }
             SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
             SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
-            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->monOffset);
         }
         else
         {
@@ -1003,9 +1021,10 @@ static void Task_PullAnimItem(u8 taskId)
         if (sGachaUiState->offset > 0)
         {
             sGachaUiState->offset -= 8;
+            sGachaUiState->monOffset -= MON_OFFSET_MOVEMENT;
             SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
             SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
-            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->monOffset);
         }
         else
         {
@@ -1159,9 +1178,10 @@ static void Task_PullAnimItem(u8 taskId)
         if (sGachaUiState->offset < 160)
         {
             sGachaUiState->offset += 8;
+            sGachaUiState->monOffset += MON_OFFSET_MOVEMENT;
             SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
             SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
-            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->monOffset);
             for (u32 i = 0; i < sGachaUiState->numToPull; i++)
             {
                 if (sGachaUiState->indicatorIds[i] != SPRITE_NONE)
@@ -1243,9 +1263,10 @@ static void Task_InfoTask(u8 taskId)
         if (sGachaUiState->offset < 328)
         {
             sGachaUiState->offset += 8;
+            sGachaUiState->monOffset += MON_OFFSET_MOVEMENT;
             SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
             SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
-            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->monOffset);
             if (sGachaUiState->offset < 328)
             {
                 for (u32 i = 0; i < 23; i++)
@@ -1273,9 +1294,10 @@ static void Task_InfoTask(u8 taskId)
         if (sGachaUiState->offset > 160)
         {
             sGachaUiState->offset -= 8;
+            sGachaUiState->monOffset -= MON_OFFSET_MOVEMENT;
             SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
             SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
-            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->monOffset);
             for (u32 i = 0; i < 23; i++)
             {
                 gSprites[sGachaUiState->infoIconIds[i]].y += 8;
@@ -1341,7 +1363,7 @@ static void Task_InfoTaskItems(u8 taskId)
     case 0:
         //  Create 6-star item icons
         info = GetBannerInfo(BANNER_ITEMS, 6);
-        FillWindowPixelBuffer(WIN_ITEMS, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+        FillWindowPixelBuffer(WIN_ITEMS, PIXEL_FILL(COLOR_TO_FILL));
         AddTextPrinterParameterized4(WIN_ITEMS,
                                      FONT_NORMAL,
                                      3, 0, 0, 0,
@@ -1362,9 +1384,10 @@ static void Task_InfoTaskItems(u8 taskId)
         if (sGachaUiState->offset < 328)
         {
             sGachaUiState->offset += 8;
+            sGachaUiState->monOffset += MON_OFFSET_MOVEMENT;
             SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
             SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
-            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->monOffset);
             if (sGachaUiState->offset < 328)
             {
                 for (u32 i = 0; i < 6; i++)
@@ -1400,7 +1423,7 @@ static void Task_InfoTaskItems(u8 taskId)
         }
 
         info = GetBannerInfo(BANNER_ITEMS, 5);
-        FillWindowPixelBuffer(WIN_ITEMS, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+        FillWindowPixelBuffer(WIN_ITEMS, PIXEL_FILL(COLOR_TO_FILL));
         AddTextPrinterParameterized4(WIN_ITEMS,
                                      FONT_NORMAL,
                                      3, 0, 0, 0,
@@ -1460,7 +1483,7 @@ static void Task_InfoTaskItems(u8 taskId)
         }
 
         info = GetBannerInfo(BANNER_ITEMS, 4);
-        FillWindowPixelBuffer(WIN_ITEMS, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+        FillWindowPixelBuffer(WIN_ITEMS, PIXEL_FILL(COLOR_TO_FILL));
         AddTextPrinterParameterized4(WIN_ITEMS,
                                      FONT_NORMAL,
                                      3, 0, 0, 0,
@@ -1533,9 +1556,10 @@ static void Task_InfoTaskItems(u8 taskId)
         if (sGachaUiState->offset > 160)
         {
             sGachaUiState->offset -= 8;
+            sGachaUiState->monOffset -= MON_OFFSET_MOVEMENT;
             SetGpuReg(REG_OFFSET_BG0VOFS, sGachaUiState->offset);
             SetGpuReg(REG_OFFSET_BG1VOFS, sGachaUiState->offset);
-            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->offset);
+            SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->monOffset);
             for (u32 i = 0; i < 14; i++)
             {
                 gSprites[sGachaUiState->infoIconIds[i]].y += 8;
