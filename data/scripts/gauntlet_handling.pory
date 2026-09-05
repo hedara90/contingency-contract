@@ -56,7 +56,9 @@ script Gauntlet_Attendant {
     applymovement(tiana, moves(walk_left*2, face_up))
     applymovement(player, moves(walk_left*4))
     waitmovement(player)
-    msgbox("Well done! your next opponent will be X")
+    callnative(GetNextBattlerName)
+    //msgbox("Well done! your next opponent will be X")
+    msgbox("Well done! your next opponent will be\n{STR_VAR_1}.")
     goto(Gauntlet_Multichoice)
 }
 

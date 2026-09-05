@@ -3806,6 +3806,46 @@ void SetSpectatorHandlingFlag(void)
     }
 }
 
+const u16 sOpponents[][4] =
+{
+    [GAUNTLET_CRISIS_TEAM] = {TRAINER_XAIHI, TRAINER_CHEN, TRAINER_PERLICA, TRAINER_ENDMIN},
+    [GAUNTLET_WULING] = {TRAINER_TANGTANG, TRAINER_MIFU, TRAINER_ARCANE_SINGLES, TRAINER_FANGYI},
+    [GAUNTLET_RECONVENERS] = {TRAINER_ARDELIA, TRAINER_POG, TRAINER_GILBERTA, TRAINER_LAEVATAIN},
+    [GAUNTLET_ABYSSAL_HUNTERS] = {TRAINER_SPECTER, TRAINER_GLADIIA, TRAINER_SKADI, TRAINER_ULPIANUS},
+    [GAUNTLET_AK_GREEN] = {TRAINER_CARNELIAN, TRAINER_PENANCE, TRAINER_PRAMANIX, TRAINER_FIAMETTA},
+    [GAUNTLET_AK_YELLOW] = {TRAINER_SHU, TRAINER_NIAN, TRAINER_ELYSIUM, TRAINER_IRENE},
+};
+
+void GetNextBattlerName(void)
+{
+    u32 pos = VarGet(VAR_GAUNTLET_POSITION);
+    const u16 *oppPtr = sOpponents[pos];
+    switch (gSaveBlock1Ptr->location.mapNum)
+    {
+    case MAP_NUM(MAP_CRISIS_TEAM):
+        oppPtr = sOpponents[0];
+        break;
+    case MAP_NUM(MAP_WULING):
+        oppPtr = sOpponents[1];
+        break;
+    case MAP_NUM(MAP_RECONVENERS):
+        oppPtr = sOpponents[2];
+        break;
+    }
+    const u8 *str = gTrainers[DIFFICULTY_NORMAL][oppPtr[pos]].trainerName;
+    if (str[0] == CHAR_P && str[1] == CHAR_o && str[2] == CHAR_g && str[3] == EOS)
+    {
+        str = COMPOUND_STRING("Pograf… Pogras… Pogranch…\lYou're facing Pog next.");
+    }
+    u32 index = 0;
+    while (str[index] != EOS)
+    {
+        gStringVar1[index] = str[index];
+        index++;
+    }
+    gStringVar1[index] = EOS;
+}
+
 static u16 GetBoxMonGraphicsId(struct BoxPokemon *boxmon)
 {
     u32 species = GetBoxMonData(boxmon, MON_DATA_SPECIES_OR_EGG);
