@@ -1448,6 +1448,52 @@ script CC_Laevatain_Eating {
     release
 }
 
+const xaihi = LOCALID_CC_XAIHI
+const xaihisrotom = LOCALID_CC_XAIHIS_ROTOM
+
+movement HappyRotom {
+    jump_in_place_up
+    face_right
+    delay_4
+    face_down
+    delay_4
+    face_left
+    delay_4
+    face_up
+    emote_double_exclamation_mark
+}
+
+script CC_Xaihi {
+    lock
+    msgbox("Alright Rotom, we got this! Are you\n"
+            "feeling fired up and ready to go?")
+    closemessage
+    applymovement(xaihisrotom, HappyRotom)
+    waitmovement
+    playmoncry(SPECIES_ROTOM, CRY_MODE_NORMAL)
+    msgbox("That's the spirit!")
+    applymovement(xaihi, moves(face_player))
+    waitmovement
+    msgbox("Rotom loves a good pep talk before\n"
+            "a battle.\p"
+            "Hilariously enough, this is also the\n"
+            "best approach I've found for fixing\l"
+            "my toaster.")
+    closemessage
+    applymovement(xaihi, moves(face_down))
+    waitmovement
+    release
+}
+
+script CC_Xaihis_Rotom {
+    lock
+    faceplayer
+    msgbox("Zzt zzt!")
+    applymovement(xaihisrotom, moves(face_up))
+    waitmovement
+    release
+}
+
 const gambler = LOCALID_CC_GAMBLER
 const perlica = LOCALID_CC_PERLICA
 

@@ -617,6 +617,34 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_Laevatain_Eating",
       "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_CC_XAIHI",
+      "graphics_id": "OBJ_EVENT_GFX_XAIHI",
+      "x": 27,
+      "y": 11,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "CC_Xaihi",
+      "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_CC_XAIHIS_ROTOM",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(ROTOM_HEAT)",
+      "x": 27,
+      "y": 12,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "CC_Xaihis_Rotom",
+      "flag": "0"
     }
   ],
   "warp_events": [
