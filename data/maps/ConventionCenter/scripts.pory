@@ -379,7 +379,6 @@ script ChooseGauntlet {
                     "Band of Misfits",
                     "Not right now")
     getobjectfacingdirection(LOCALID_ATTENDANT_MAIN, VAR_TEMP_1)
-    callnative(SetSpectatorHandlingFlag)
     special(HealPlayerParty)
     setvar(VAR_GAUNTLET_POSITION, 0)
     switch(var(VAR_RESULT)) {
