@@ -1105,6 +1105,33 @@ script CC_Chen {
     release
 }
 
+const laevatainEating = LOCALID_CC_LAEVATAIN_EATING
+
+script CC_Laevatain_Eating {
+    lock
+    msgbox("Man do I love an all you can eat\n"
+            "ice cream bar, but...")
+    faceplayer
+    applymovement(laevatainEating, moves(emote_exclamation_mark))
+    playse(SE_PIN)
+    waitmovement
+    msgbox("Oh!\p"
+            "Hello.\p"
+            "I thought I'd eat a whole tub of\n"
+            "ice cream to help get into\l"
+            "character, but the brain freeze is\l"
+            "SO BAD.\p"
+            "I dunno how she does it.\p"
+            "I guess probably the fire Feranmut\n"
+            "power but like, that doesn't help\l"
+            "me much.\p"
+            "Maybe I should put on a sweater.")
+    closemessage
+    applymovement(laevatainEating, moves(face_left))
+    waitmovement
+    release
+}
+
 const gambler = LOCALID_CC_GAMBLER
 const perlica = LOCALID_CC_PERLICA
 
