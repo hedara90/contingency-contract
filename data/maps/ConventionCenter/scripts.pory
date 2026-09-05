@@ -1558,6 +1558,42 @@ script CC_Pog_Kid3 {
     release
 }
 
+const arcanesister = LOCALID_CC_ARCANE_SISTER
+const pramanixsister = LOCALID_CC_PRAMANIX_SISTER
+
+script CC_Arcane_Sister {
+    lock
+    faceplayer
+    msgbox("I'd never heard of Arknights or\n"
+            "Endfield before, but my sister is a\l"
+            "huge fan of both and she wanted me\l"
+            "to keep her company.\p"
+            "I wasn't sure until she told me I\n"
+            "could dress up as a character who\l"
+            "controls MAGIC RAILGUNS.\p"
+            "Who could resist? And I'm having a\n"
+            "great time!")
+    applymovement(arcanesister, moves(face_right))
+    waitmovement
+    release
+}
+
+script CC_Pramanix_Sister {
+    lock
+    faceplayer
+    msgbox("This convention is incredible! They\n"
+            "really went all out with the\l"
+            "branding, the decor… and the\l"
+            "other cosplayers are all amazing!\p"
+            "I'm so glad I convinced my sister to\n"
+            "come with me, she's not a big fan\l"
+            "of leaving the house but she seems\l"
+            "to be having as much fun as I am.\p"
+            "I'm excited to watch the battles!")
+    applymovement(pramanixsister, moves(face_left))
+    waitmovement
+    release
+}
 
 const gambler = LOCALID_CC_GAMBLER
 const perlica = LOCALID_CC_PERLICA
