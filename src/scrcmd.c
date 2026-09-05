@@ -63,9 +63,12 @@
 #include "list_menu.h"
 #include "malloc.h"
 #include "battle.h"
+#include "constants/comparison_operators.h"
 #include "constants/event_objects.h"
 #include "constants/map_types.h"
 #include "constants/party_menu.h"
+
+#include "field_control_avatar.h"
 
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(struct ScriptContext *ctx);
@@ -88,15 +91,15 @@ extern const u8 *gStdScripts_End[];
 static void CloseBrailleWindow(void);
 static void DynamicMultichoiceSortList(struct ListMenuItem *items, u32 count);
 
-static const u8 sScriptConditionTable[6][3] =
+static const u8 sScriptConditionTable[COMPARISON_OPERATORS_COUNT][3] =
 {
-//  <  =  >
-    {1, 0, 0}, // <
-    {0, 1, 0}, // =
-    {0, 0, 1}, // >
-    {1, 1, 0}, // <=
-    {0, 1, 1}, // >=
-    {1, 0, 1}, // !=
+//                              <  =  >
+    [LESS_THAN] =              {1, 0, 0},
+    [EQUAL] =                  {0, 1, 0},
+    [GREATER_THAN] =           {0, 0, 1},
+    [LESS_THAN_OR_EQUAL] =     {1, 1, 0},
+    [GREATER_THAN_OR_EQUAL] =  {0, 1, 1},
+    [NOT_EQUAL] =              {1, 0, 1},
 };
 
 static u8 *const sScriptStringVars[] =
@@ -215,7 +218,7 @@ bool8 ScrCmd_call(struct ScriptContext *ctx)
 
 bool8 ScrCmd_goto_if(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     const u8 *ptr = (const u8 *)ScriptReadWord(ctx);
 
     Script_RequestEffects(SCREFF_V1);
@@ -227,7 +230,7 @@ bool8 ScrCmd_goto_if(struct ScriptContext *ctx)
 
 bool8 ScrCmd_call_if(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     const u8 *ptr = (const u8 *)ScriptReadWord(ctx);
 
     Script_RequestEffects(SCREFF_V1);
@@ -270,7 +273,7 @@ bool8 ScrCmd_vcall(struct ScriptContext *ctx)
 
 bool8 ScrCmd_vgoto_if(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     const u8 *ptr = (const u8 *)(ScriptReadWord(ctx) - sAddressOffset);
 
     Script_RequestEffects(SCREFF_V1);
@@ -282,7 +285,7 @@ bool8 ScrCmd_vgoto_if(struct ScriptContext *ctx)
 
 bool8 ScrCmd_vcall_if(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     const u8 *ptr = (const u8 *)(ScriptReadWord(ctx) - sAddressOffset);
 
     Script_RequestEffects(SCREFF_V1);
@@ -318,7 +321,7 @@ bool8 ScrCmd_callstd(struct ScriptContext *ctx)
 
 bool8 ScrCmd_gotostd_if(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     u8 index = ScriptReadByte(ctx);
 
     Script_RequestEffects(SCREFF_V1);
@@ -334,7 +337,7 @@ bool8 ScrCmd_gotostd_if(struct ScriptContext *ctx)
 
 bool8 ScrCmd_callstd_if(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     u8 index = ScriptReadByte(ctx);
 
     Script_RequestEffects(SCREFF_V1);
@@ -2000,10 +2003,11 @@ bool8 ScrCmd_showmonpic(struct ScriptContext *ctx)
     enum Species species = VarGet(ScriptReadHalfword(ctx));
     u8 x = ScriptReadByte(ctx);
     u8 y = ScriptReadByte(ctx);
+    bool32 shiny = ScriptReadByte(ctx);
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
-    ScriptMenu_ShowPokemonPic(species, x, y);
+    ScriptMenu_ShowPokemonPic(species, x, y, shiny);
     return FALSE;
 }
 
@@ -2766,7 +2770,7 @@ void NativeFunc_SetMetatileInRange(struct ScriptContext *ctx)
     bool8 hasCollision = ScriptReadByte(ctx);
     u8 elevation = ScriptReadByte(ctx);
     u32 temp;
-    
+
     if (xmin > xmax)
         SWAP(xmin, xmax, temp);
 
@@ -3367,7 +3371,7 @@ void Script_TriggerUniqueEvolution(struct ScriptContext *ctx)
 
 void Script_EndTrainerCanSeeIf(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     if (ctx->breakOnTrainerBattle && sScriptConditionTable[condition][ctx->comparisonResult] == 1)
         StopScript(ctx);
 }
@@ -3420,6 +3424,22 @@ bool8 ScrCmd_getbraillestringwidth(struct ScriptContext * ctx)
         msg = (u8 *)ctx->data[0];
 
     gSpecialVar_0x8004 = GetStringWidth(FONT_BRAILLE, msg, -1);
+    return FALSE;
+}
+
+bool8 ScrCmd_signmsg(struct ScriptContext *ctx)
+{
+    Script_RequestEffects(SCREFF_V1);
+
+    gMsgIsSignPost = TRUE;
+    return FALSE;
+}
+
+bool8 ScrCmd_normalmsg(struct ScriptContext *ctx)
+{
+    Script_RequestEffects(SCREFF_V1);
+
+    gMsgIsSignPost = FALSE;
     return FALSE;
 }
 
@@ -3571,6 +3591,13 @@ static const u8 sQueueCoord[][3] =
     {22, 37, DIR_WEST},
 };
 
+const u16 sQueueClerks[][4] =
+{
+    {OBJ_EVENT_GFX_ACOLYTE_M, 20, 37, DIR_EAST},
+    {OBJ_EVENT_GFX_ACOLYTE_F, 20, 38, DIR_EAST},
+    {OBJ_EVENT_GFX_ACOLYTE_F, 20, 39, DIR_EAST},
+};
+
 STATIC_ASSERT(NELEMS(sQueueObjects) >= (sizeof(sQueueCoord) / 3), ListMustBeAsLarge);
 
 void CreateQueue(void)
@@ -3587,11 +3614,16 @@ void CreateQueue(void)
     {
         CreateVirtualObject(gfxList[i], i, sQueueCoord[i][0], sQueueCoord[i][1], 3, sQueueCoord[i][2]);
     }
+
+    for (u32 i = 0; i < 3; i++)
+    {
+        CreateVirtualObject(sQueueClerks[i][0], sizeof(sQueueCoord) / 3 + i, sQueueClerks[i][1], sQueueClerks[i][2], 3, sQueueClerks[i][3]);
+    }
 }
 
 void DestroyQueue(void)
 {
-    for (u32 i = 0; i < sizeof(sQueueCoord) / 3; i++)
+    for (u32 i = 0; i < sizeof(sQueueCoord) / 3 + 3; i++)
     {
         s32 spriteId = GetVirtualObjectSpriteId(i);
         DestroySprite(&gSprites[spriteId]);
@@ -3610,7 +3642,8 @@ const u16 sNonQueueVObjects[][4] =
 {
     {OBJ_EVENT_GFX_ACOLYTE_M, 20, 13, DIR_SOUTH},
     {OBJ_EVENT_GFX_ACOLYTE_F, 32, 13, DIR_SOUTH},
-    {OBJ_EVENT_GFX_ACOLYTE_F, 9, 19, DIR_SOUTH},
+    {OBJ_EVENT_GFX_ACOLYTE_M, 44, 19, DIR_WEST},
+    {OBJ_EVENT_GFX_ACOLYTE_F, 44, 20, DIR_WEST},
 };
 
 void CreateOtherVObjects(void)
@@ -3654,4 +3687,253 @@ void GetMaxClearedRisk(void)
     }
     gSaveBlock1Ptr->risks = savedRisk;
     gSpecialVar_Result = maxRisks;
+}
+const u16 sSpectatorGfx[] =
+{
+    OBJ_EVENT_GFX_SATSUKI,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+    OBJ_EVENT_GFX_ACOLYTE_F,
+    OBJ_EVENT_GFX_CHISA,
+    OBJ_EVENT_GFX_EMPRESS,
+    OBJ_EVENT_GFX_KAITO,
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_ACOLYTE_M,
+};
+
+struct SpectatorCoord
+{
+    s8 x;
+    s8 y;
+    u16 facing;
+};
+
+const struct SpectatorCoord sSpectatorCoords[] =
+{
+    {10, 16, DIR_NORTH},
+    {11, 16, DIR_NORTH},
+    {12, 16, DIR_NORTH},
+    {13, 16, DIR_NORTH},
+    {14, 16, DIR_NORTH},
+    {15, 16, DIR_NORTH},
+    {16, 16, DIR_NORTH},
+    {17, 16, DIR_NORTH},
+    {18, 16, DIR_NORTH},
+    {19, 16, DIR_NORTH},
+    {20, 16, DIR_NORTH},
+    {21, 16, DIR_NORTH},
+    {22, 16, DIR_NORTH},
+    {10, 6, DIR_SOUTH},
+    {11, 6, DIR_SOUTH},
+    {12, 6, DIR_SOUTH},
+    {13, 6, DIR_SOUTH},
+    {14, 6, DIR_SOUTH},
+    {15, 6, DIR_SOUTH},
+    {16, 6, DIR_SOUTH},
+    {17, 6, DIR_SOUTH},
+    {18, 6, DIR_SOUTH},
+    {19, 6, DIR_SOUTH},
+    {20, 6, DIR_SOUTH},
+    {21, 6, DIR_SOUTH},
+    {22, 6, DIR_SOUTH},
+};
+
+void Task_WaitAndLoadObjects(u8 taskId)
+{
+    if (gTasks[taskId].data[0] < 5)
+    {
+        gTasks[taskId].data[0]++;
+    }
+    else
+    {
+        u32 objectCount = 6 + (Random32() % 16);
+
+        u16 gfxList[NELEMS(sSpectatorGfx)];
+        for (u32 i = 0; i < NELEMS(sSpectatorGfx); i++)
+        {
+            gfxList[i] = sSpectatorGfx[i];
+        }
+        Shuffle16(gfxList, NELEMS(sSpectatorGfx));
+
+        struct SpectatorCoord coordList[NELEMS(sSpectatorCoords)];
+        for (u32 i = 0; i < NELEMS(sSpectatorCoords); i++)
+        {
+            coordList[i] = sSpectatorCoords[i];
+        }
+        Shuffle32(coordList, NELEMS(sSpectatorCoords));
+
+        for (u32 i = 0; i < objectCount; i++)
+        {
+            CreateVirtualObject(gfxList[i], i, coordList[i].x, coordList[i].y, 3, coordList[i].facing);
+        }
+        DestroyTask(taskId);
+    }
+}
+
+void SpectatorVObjects(void)
+{
+    u32 taskId = CreateTask(Task_WaitAndLoadObjects, 0);
+    gTasks[taskId].data[0] = 0;
+}
+
+const u16 sOpponents[][4] =
+{
+    [GAUNTLET_CRISIS_TEAM] = {TRAINER_XAIHI, TRAINER_CHEN, TRAINER_PERLICA, TRAINER_ENDMIN},
+    [GAUNTLET_WULING] = {TRAINER_TANGTANG, TRAINER_MIFU, TRAINER_ARCANE_SINGLES, TRAINER_FANGYI},
+    [GAUNTLET_RECONVENERS] = {TRAINER_ARDELIA, TRAINER_POG, TRAINER_GILBERTA, TRAINER_LAEVATAIN},
+    [GAUNTLET_ABYSSAL_HUNTERS] = {TRAINER_SPECTER, TRAINER_GLADIIA, TRAINER_SKADI, TRAINER_ULPIANUS},
+    [GAUNTLET_AK_GREEN] = {TRAINER_CARNELIAN, TRAINER_PENANCE, TRAINER_PRAMANIX, TRAINER_FIAMETTA},
+    [GAUNTLET_AK_YELLOW] = {TRAINER_SHU, TRAINER_NIAN, TRAINER_ELYSIUM, TRAINER_IRENE},
+};
+
+void GetNextBattlerName(void)
+{
+    u32 pos = VarGet(VAR_GAUNTLET_POSITION);
+    const u16 *oppPtr = sOpponents[pos];
+    switch (gSaveBlock1Ptr->location.mapNum)
+    {
+    case MAP_NUM(MAP_CRISIS_TEAM):
+        oppPtr = sOpponents[0];
+        break;
+    case MAP_NUM(MAP_WULING):
+        oppPtr = sOpponents[1];
+        break;
+    case MAP_NUM(MAP_RECONVENERS):
+        oppPtr = sOpponents[2];
+        break;
+    }
+    const u8 *str = gTrainers[DIFFICULTY_NORMAL][oppPtr[pos]].trainerName;
+    if (str[0] == CHAR_P && str[1] == CHAR_o && str[2] == CHAR_g && str[3] == EOS)
+    {
+        str = COMPOUND_STRING("Pograf… Pogras… Pogranch…\lYou're facing Pog next.");
+    }
+    u32 index = 0;
+    while (str[index] != EOS)
+    {
+        gStringVar1[index] = str[index];
+        index++;
+    }
+    gStringVar1[index] = EOS;
+}
+
+static u16 GetBoxMonGraphicsId(struct BoxPokemon *boxmon)
+{
+    u32 species = GetBoxMonData(boxmon, MON_DATA_SPECIES_OR_EGG);
+    if (species == SPECIES_NONE || species == SPECIES_EGG)
+        return OBJ_EVENT_MON;
+    u16 graphicsId = species | OBJ_EVENT_MON;
+    if (GetBoxMonData(boxmon, MON_DATA_IS_SHINY))
+        graphicsId |= OBJ_EVENT_MON_SHINY;
+    if (GetBoxMonGender(boxmon))
+        graphicsId |= OBJ_EVENT_MON_FEMALE;
+    return graphicsId;
+}
+
+void Script_SetVar_MonCanLearnMoveGfx(struct ScriptContext *ctx)
+{
+    u16 var = ScriptReadHalfword(ctx);
+    u16 move = ScriptReadHalfword(ctx);
+
+    u16 graphicsId = OBJ_EVENT_MON;
+    for (u32 i = 0; i < gPartiesCount[B_TRAINER_PLAYER]; i++)
+    {
+        u32 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES_OR_EGG);
+        if (CanLearnTeachableMove(species, move))
+        {
+            graphicsId = GetBoxMonGraphicsId(&gParties[B_TRAINER_PLAYER][i].box);
+            break;
+        }
+    }
+    VarSet(var, graphicsId);
+}
+
+void Script_SetVar_MonKnowsMoveGfx(struct ScriptContext *ctx)
+{
+    u16 var = ScriptReadHalfword(ctx);
+    u16 move = ScriptReadHalfword(ctx);
+
+    u16 graphicsId = OBJ_EVENT_MON;
+    for (u32 i = 0; i < gPartiesCount[B_TRAINER_PLAYER]; i++)
+    {
+        u32 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES_OR_EGG);
+        if (species == SPECIES_NONE || species == SPECIES_EGG)
+            continue;
+        if (MonKnowsMove(&gParties[B_TRAINER_PLAYER][i], move))
+        {
+            graphicsId = GetBoxMonGraphicsId(&gParties[B_TRAINER_PLAYER][i].box);
+            break;
+        }
+    }
+    VarSet(var, graphicsId);
+}
+
+void Script_SetVar_ChooseMonGfx(struct ScriptContext *ctx)
+{
+    u16 var = ScriptReadHalfword(ctx);
+
+    struct BoxPokemon *boxmon = GetSelectedBoxMonFromPcOrParty();
+    u32 graphicsId = GetBoxMonGraphicsId(boxmon);
+
+    VarSet(var, graphicsId);
+}
+
+void Script_SetVar_RandomPartyMonGfx(struct ScriptContext *ctx)
+{
+    u16 var = ScriptReadHalfword(ctx);
+    u32 graphicsId = OBJ_EVENT_MON;
+
+    u32 tmpGfxIds[PARTY_SIZE];
+    u32 validMonsCount = 0;
+    for (u32 i = 0; i < gPartiesCount[B_TRAINER_PLAYER]; i++)
+    {
+        u32 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES_OR_EGG);
+        if (species == SPECIES_NONE || species == SPECIES_EGG)
+            continue;
+        tmpGfxIds[validMonsCount++] = GetBoxMonGraphicsId(&gParties[B_TRAINER_PLAYER][i].box);
+    }
+    if (validMonsCount > 0)
+        graphicsId = tmpGfxIds[RandomUniform(RNG_NONE, 0, validMonsCount - 1)];
+
+    VarSet(var, graphicsId);
 }

@@ -393,7 +393,6 @@ enum Species RollGachaMon(enum Banner banner, u32 *star)
     u32 rnd = 0;
     switch (banner)
     {
-    case BANNER_COUNT:
     case BANNER_ITEMS:
     case BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT:
         rnd = LocalRandom32(&gSaveBlock1Ptr->bannerRng[BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT]);
@@ -464,7 +463,6 @@ static enum Item RollGachaItem(enum Banner banner, u32 *star)
     u32 rnd = 0;
     switch (banner)
     {
-    case BANNER_COUNT:
     case BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT:
     case BANNER_FURY_OF_THE_EARTHEN_CORE:
     case BANNER_MEMORIES_OF_MONTHS_PAST:
@@ -947,4 +945,81 @@ void GiveItemFromPointShop(void)
     {
         VarSet(VAR_RESULT, 0);
     }
+}
+
+struct BannerInfo GetBannerInfo(enum Banner banner, u32 rarity)
+{
+    struct BannerInfo info;
+    switch (banner)
+    {
+    case BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT:
+        switch (rarity)
+        {
+        case 4:
+            info.species = sIndomitability4Stars;
+            info.count = NELEMS(sIndomitability4Stars);
+            break;
+        case 5:
+            info.species = sIndomitability5Stars;
+            info.count = NELEMS(sIndomitability5Stars);
+            break;
+        case 6:
+            info.species = sIndomitability6Stars;
+            info.count = NELEMS(sIndomitability6Stars);
+            break;
+        }
+        break;
+    case BANNER_FURY_OF_THE_EARTHEN_CORE:
+        switch (rarity)
+        {
+        case 4:
+            info.species = sFury4Stars;
+            info.count = NELEMS(sFury4Stars);
+            break;
+        case 5:
+            info.species = sFury5Stars;
+            info.count = NELEMS(sFury5Stars);
+            break;
+        case 6:
+            info.species = sFury6Stars;
+            info.count = NELEMS(sFury6Stars);
+            break;
+        }
+        break;
+    case BANNER_MEMORIES_OF_MONTHS_PAST:
+        switch (rarity)
+        {
+        case 4:
+            info.species = sMemories4Stars;
+            info.count = NELEMS(sMemories4Stars);
+            break;
+        case 5:
+            info.species = sMemories5Stars;
+            info.count = NELEMS(sMemories5Stars);
+            break;
+        case 6:
+            info.species = sMemories6Stars;
+            info.count = NELEMS(sMemories6Stars);
+            break;
+        }
+        break;
+    case BANNER_ITEMS:
+        switch (rarity)
+        {
+        case 4:
+            info.items = sItems4Stars;
+            info.count = NELEMS(sItems4Stars);
+            break;
+        case 5:
+            info.items = sItems5Stars;
+            info.count = NELEMS(sItems5Stars);
+            break;
+        case 6:
+            info.items = sItems6Stars;
+            info.count = NELEMS(sItems6Stars);
+            break;
+        }
+        break;
+    }
+    return info;
 }

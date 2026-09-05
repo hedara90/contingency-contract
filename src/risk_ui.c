@@ -174,7 +174,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_PARTY_MINUS_1] =
     {
         .linkedRisks = sLinkedTeamRisks,
-        .tiles = { COORD_TO_TILE(16, 4), COORD_TO_TILE(16, 5), COORD_TO_TILE(17, 4), COORD_TO_TILE(17, 5) },
+        .tiles = { COORD_TO_TILE(33, 25), COORD_TO_TILE(34, 25), COORD_TO_TILE(33, 26), COORD_TO_TILE(34, 26) },
         .linkedCount = 3,
         .name = COMPOUND_STRING("Covert Operation I"),
         .description = COMPOUND_STRING("Player can only have 5 mons."),
@@ -182,7 +182,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_PARTY_MINUS_2] =
     {
         .linkedRisks = sLinkedTeamRisks,
-        .tiles = { COORD_TO_TILE(16, 6), COORD_TO_TILE(16, 7), COORD_TO_TILE(17, 6), COORD_TO_TILE(17, 7) },
+        .tiles = { COORD_TO_TILE(33, 27), COORD_TO_TILE(34, 27), COORD_TO_TILE(33, 28), COORD_TO_TILE(34, 28) },
         .linkedCount = 3,
         .name = COMPOUND_STRING("Covert Operation II"),
         .description = COMPOUND_STRING("Player can only have 4 mons."),
@@ -190,7 +190,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_PARTY_MINUS_3] =
     {
         .linkedRisks = sLinkedTeamRisks,
-        .tiles = { COORD_TO_TILE(16, 8), COORD_TO_TILE(16, 9), COORD_TO_TILE(17, 8), COORD_TO_TILE(17, 9) },
+        .tiles = { COORD_TO_TILE(33, 29), COORD_TO_TILE(34, 29), COORD_TO_TILE(33, 30), COORD_TO_TILE(34, 30) },
         .linkedCount = 3,
         .name = COMPOUND_STRING("Covert Operation III"),
         .description = COMPOUND_STRING("Player can only have 3 mons."),
@@ -198,7 +198,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_MUST_SWITCH_1] =
     {
         .linkedRisks = sLinkedSwitchRisks,
-        .tiles = { COORD_TO_TILE(20, 4), COORD_TO_TILE(20, 5), COORD_TO_TILE(21, 4), COORD_TO_TILE(21, 5) },
+        .tiles = { COORD_TO_TILE(18, 4), COORD_TO_TILE(18, 5), COORD_TO_TILE(19, 4), COORD_TO_TILE(19, 5) },
         .linkedCount = 4,
         .name = COMPOUND_STRING("Fatigue I"),
         .description = COMPOUND_STRING("Player must switch a mon every 4 turns."),
@@ -206,7 +206,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_MUST_SWITCH_2] =
     {
         .linkedRisks = sLinkedSwitchRisks,
-        .tiles = { COORD_TO_TILE(20, 6), COORD_TO_TILE(21, 7), COORD_TO_TILE(21, 6), COORD_TO_TILE(20, 7) },
+        .tiles = { COORD_TO_TILE(18, 6), COORD_TO_TILE(19, 7), COORD_TO_TILE(19, 6), COORD_TO_TILE(19, 7) },
         .linkedCount = 4,
         .name = COMPOUND_STRING("Fatigue II"),
         .description = COMPOUND_STRING("Player must switch a mon every 3 turns."),
@@ -214,7 +214,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_MUST_SWITCH_3] =
     {
         .linkedRisks = sLinkedSwitchRisks,
-        .tiles = { COORD_TO_TILE(20, 8), COORD_TO_TILE(20, 9), COORD_TO_TILE(21, 8), COORD_TO_TILE(21, 9) },
+        .tiles = { COORD_TO_TILE(18, 8), COORD_TO_TILE(18, 9), COORD_TO_TILE(19, 8), COORD_TO_TILE(19, 9) },
         .linkedCount = 4,
         .name = COMPOUND_STRING("Fatigue III"),
         .description = COMPOUND_STRING("Player must switch a mon every 2 turns."),
@@ -222,7 +222,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_CANT_SWITCH] =
     {
         .linkedRisks = sLinkedSwitchRisks,
-        .tiles = { COORD_TO_TILE(22, 6), COORD_TO_TILE(22, 7), COORD_TO_TILE(23, 6), COORD_TO_TILE(23, 7) },
+        .tiles = { COORD_TO_TILE(20, 6), COORD_TO_TILE(20, 7), COORD_TO_TILE(21, 6), COORD_TO_TILE(21, 7) },
         .linkedCount = 4,
         .name = COMPOUND_STRING("Lockdown"),
         .description = COMPOUND_STRING("Player can't switch."),
@@ -230,7 +230,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_PLAYER_STARTS_WITH_BURN] =
     {
         .linkedRisks = sLinkedStartStatusRisks,
-        .tiles = { COORD_TO_TILE(28, 6), COORD_TO_TILE(28, 7), COORD_TO_TILE(29, 6), COORD_TO_TILE(29, 7) },
+        .tiles = { COORD_TO_TILE(26, 8), COORD_TO_TILE(26, 9), COORD_TO_TILE(27, 8), COORD_TO_TILE(27, 9) },
         .linkedCount = 3,
         .name = COMPOUND_STRING("Debilitation: BRN"),
         .description = COMPOUND_STRING("Player mons start battles burned."),
@@ -238,7 +238,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_PLAYER_STARTS_WITH_FROSTBITE] =
     {
         .linkedRisks = sLinkedStartStatusRisks,
-        .tiles = { COORD_TO_TILE(30, 6), COORD_TO_TILE(30, 7), COORD_TO_TILE(31, 6), COORD_TO_TILE(31, 7) },
+        .tiles = { COORD_TO_TILE(30, 8), COORD_TO_TILE(30, 9), COORD_TO_TILE(31, 8), COORD_TO_TILE(31, 9) },
         .linkedCount = 3,
         .name = COMPOUND_STRING("Debilitation: FRB"),
         .description = COMPOUND_STRING("Player mons start battles frostbitten."),
@@ -246,7 +246,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_PLAYER_STARTS_WITH_PARALYSIS] =
     {
         .linkedRisks = sLinkedStartStatusRisks,
-        .tiles = { COORD_TO_TILE(32, 6), COORD_TO_TILE(32, 7), COORD_TO_TILE(33, 6), COORD_TO_TILE(33, 7) },
+        .tiles = { COORD_TO_TILE(28, 8), COORD_TO_TILE(28, 9), COORD_TO_TILE(29, 8), COORD_TO_TILE(29, 9) },
         .linkedCount = 3,
         .name = COMPOUND_STRING("Debilitation: PRZ"),
         .description = COMPOUND_STRING("Player mons start battles paralyzed."),
@@ -254,7 +254,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_OPPONENT_MORE_MONS_1] =
     {
         .linkedRisks = sLinkedOppMoreMons,
-        .tiles = { COORD_TO_TILE(12, 12), COORD_TO_TILE(12, 13), COORD_TO_TILE(13, 12), COORD_TO_TILE(13, 13) },
+        .tiles = { COORD_TO_TILE(31, 25), COORD_TO_TILE(31, 26), COORD_TO_TILE(32, 25), COORD_TO_TILE(32, 26) },
         .linkedCount = 2,
         .name = COMPOUND_STRING("Target: Battleplan I"),
         .description = COMPOUND_STRING("Opponent has 1 more mon in their party."),
@@ -262,7 +262,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_OPPONENT_MORE_MONS_2] =
     {
         .linkedRisks = sLinkedOppMoreMons,
-        .tiles = { COORD_TO_TILE(12, 14), COORD_TO_TILE(12, 15), COORD_TO_TILE(13, 14), COORD_TO_TILE(13, 15) },
+        .tiles = { COORD_TO_TILE(31, 27), COORD_TO_TILE(31, 28), COORD_TO_TILE(32, 27), COORD_TO_TILE(32, 28) },
         .linkedCount = 2,
         .name = COMPOUND_STRING("Target: Battleplan II"),
         .description = COMPOUND_STRING("Opponent has 2 more mon in their party."),
@@ -270,7 +270,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_HAS_OMNISCIENT_AI] =
     {
         .linkedRisks = sLinkedAi,
-        .tiles = { COORD_TO_TILE(14, 14), COORD_TO_TILE(14, 15), COORD_TO_TILE(15, 14), COORD_TO_TILE(15, 15) },
+        .tiles = { COORD_TO_TILE(27, 23), COORD_TO_TILE(27, 24), COORD_TO_TILE(28, 23), COORD_TO_TILE(28, 24) },
         .linkedCount = 2,
         .name = COMPOUND_STRING("Scout Deployment"),
         .description = COMPOUND_STRING("AI knows the players party, moves and\nabilities."),
@@ -278,7 +278,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_HAS_PREDICTION_AI] =
     {
         .linkedRisks = sLinkedAi,
-        .tiles = { COORD_TO_TILE(14, 16), COORD_TO_TILE(14, 17), COORD_TO_TILE(15, 16), COORD_TO_TILE(15, 17) },
+        .tiles = { COORD_TO_TILE(27, 25), COORD_TO_TILE(27, 26), COORD_TO_TILE(28, 25), COORD_TO_TILE(28, 26) },
         .linkedCount = 2,
         .name = COMPOUND_STRING("Strategize"),
         .description = COMPOUND_STRING("AI knows the players party, moves and\nabilities.\nAI predicts the player's action."),
@@ -286,7 +286,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_RANDOM_LEAD] =
     {
         .linkedRisks = sLinkedPool,
-        .tiles = { COORD_TO_TILE(16, 12), COORD_TO_TILE(16, 13), COORD_TO_TILE(17, 12), COORD_TO_TILE(17, 13) },
+        .tiles = { COORD_TO_TILE(29, 21), COORD_TO_TILE(29, 22), COORD_TO_TILE(30, 21), COORD_TO_TILE(30, 22) },
         .linkedCount = 2,
         .name = COMPOUND_STRING("Target: Uncertain"),
         .description = COMPOUND_STRING("Opponent has random lead."),
@@ -294,128 +294,128 @@ const struct RiskIcon sRiskData[] =
     [RISK_USES_POOLS] =
     {
         .linkedRisks = sLinkedPool,
-        .tiles = { COORD_TO_TILE(16, 14), COORD_TO_TILE(16, 15), COORD_TO_TILE(17, 14), COORD_TO_TILE(17, 15) },
+        .tiles = { COORD_TO_TILE(29, 27), COORD_TO_TILE(29, 28), COORD_TO_TILE(30, 27), COORD_TO_TILE(30, 28) },
         .linkedCount = 2,
         .name = COMPOUND_STRING("Target: Unknown"),
         .description = COMPOUND_STRING("Opponent's party is picked from a pool of\nmons, creating a semi-random team."),
     },
     [RISK_PLAYER_JUST_BERRIES] =
     {
-        .tiles = { COORD_TO_TILE(18, 22), COORD_TO_TILE(18, 23), COORD_TO_TILE(19, 22), COORD_TO_TILE(19, 23) },
+        .tiles = { COORD_TO_TILE(25, 6), COORD_TO_TILE(25, 7), COORD_TO_TILE(26, 6), COORD_TO_TILE(26, 7) },
         .name = COMPOUND_STRING("Natural"),
         .description = COMPOUND_STRING("Player can only use berries as held items."),
     },
     [RISK_NO_PP_RESTORE] =
     {
-        .tiles = { COORD_TO_TILE(22, 22), COORD_TO_TILE(22, 23), COORD_TO_TILE(23, 22), COORD_TO_TILE(23, 23) },
+        .tiles = { COORD_TO_TILE(27, 6), COORD_TO_TILE(27, 7), COORD_TO_TILE(28, 6), COORD_TO_TILE(28, 7) },
         .name = COMPOUND_STRING("Resource Depletion"),
         .description = COMPOUND_STRING("Move PP doesn't restore between battles."),
     },
     [RISK_OPPONENT_HAS_ITEMS] =
     {
-        .tiles = { COORD_TO_TILE(20, 22), COORD_TO_TILE(20, 23), COORD_TO_TILE(21, 22), COORD_TO_TILE(21, 23) },
+        .tiles = { COORD_TO_TILE(29, 29), COORD_TO_TILE(29, 30), COORD_TO_TILE(30, 29), COORD_TO_TILE(30, 30) },
         .name = COMPOUND_STRING("Target: Well Equipped"),
         .description = COMPOUND_STRING("Opponent mons have items."),
     },
     [RISK_NO_ORDER_CHANGE] =
     {
-        .tiles = { COORD_TO_TILE(20, 20), COORD_TO_TILE(20, 21), COORD_TO_TILE(21, 20), COORD_TO_TILE(21, 21) },
+        .tiles = { COORD_TO_TILE(28, 4), COORD_TO_TILE(20, 5), COORD_TO_TILE(29, 4), COORD_TO_TILE(29, 5) },
         .name = COMPOUND_STRING("Locked in"),
         .description = COMPOUND_STRING("Player can't change party or move order\nbetween battles."),
     },
     [RISK_FLIP_TYPE_CHART] =
     {
-        .tiles = { COORD_TO_TILE(20, 12), COORD_TO_TILE(20, 13), COORD_TO_TILE(21, 12), COORD_TO_TILE(21, 13) },
+        .tiles = { COORD_TO_TILE(12, 12), COORD_TO_TILE(12, 13), COORD_TO_TILE(13, 12), COORD_TO_TILE(13, 13) },
         .name = COMPOUND_STRING("Ambient: Inversion"),
         .description = COMPOUND_STRING("The type chart is flipped."),
     },
     [RISK_ATTACK_GETS_DROWSY] =
     {
-        .tiles = { COORD_TO_TILE(12, 22), COORD_TO_TILE(12, 23), COORD_TO_TILE(13, 22), COORD_TO_TILE(13, 23) },
+        .tiles = { COORD_TO_TILE(29, 6), COORD_TO_TILE(29, 7), COORD_TO_TILE(30, 6), COORD_TO_TILE(30, 7) },
         .name = COMPOUND_STRING("Ambient Exhaustion"),
         .description = COMPOUND_STRING("Using and attack makes player mons drowsy."),
     },
     [RISK_HAS_GEN_1_CRIT_CHANCE] =
     {
-        .tiles = { COORD_TO_TILE(20, 14), COORD_TO_TILE(20, 15), COORD_TO_TILE(21, 14), COORD_TO_TILE(21, 15) },
+        .tiles = { COORD_TO_TILE(12, 14), COORD_TO_TILE(12, 15), COORD_TO_TILE(13, 14), COORD_TO_TILE(13, 15) },
         .name = COMPOUND_STRING("Ambient: Ancient Crits"),
         .description = COMPOUND_STRING("Crit rate is calculated using Gen 1 formulas.\nFaster mons have a higher chance of\ncritting."),
     },
     [RISK_STATUS_GETS_PARA] =
     {
-        .tiles = { COORD_TO_TILE(14, 22), COORD_TO_TILE(14, 23), COORD_TO_TILE(15, 22), COORD_TO_TILE(15, 23) },
+        .tiles = { COORD_TO_TILE(31, 6), COORD_TO_TILE(31, 7), COORD_TO_TILE(32, 6), COORD_TO_TILE(32, 7) },
         .name = COMPOUND_STRING("Ambient Inhibition"),
         .description = COMPOUND_STRING("Using a status move paralyzes player mons."),
     },
     [RISK_PLAYER_LOWER_DAMAGE_ROLLS] =
     {
-        .tiles = { COORD_TO_TILE(26, 20), COORD_TO_TILE(26, 21), COORD_TO_TILE(27, 20), COORD_TO_TILE(27, 21) },
+        .tiles = { COORD_TO_TILE(16, 20), COORD_TO_TILE(16, 21), COORD_TO_TILE(17, 20), COORD_TO_TILE(17, 21) },
         .name = COMPOUND_STRING("Below Average"),
         .description = COMPOUND_STRING("Player attack rolls use only the lower\nhalf of results."),
     },
     [RISK_OPPONENT_HIGHER_DAMAGE_ROLLS] =
     {
-        .tiles = { COORD_TO_TILE(28, 20), COORD_TO_TILE(28, 21), COORD_TO_TILE(29, 20), COORD_TO_TILE(29, 21) },
+        .tiles = { COORD_TO_TILE(18, 20), COORD_TO_TILE(18, 21), COORD_TO_TILE(19, 20), COORD_TO_TILE(19, 21) },
         .name = COMPOUND_STRING("Above Average"),
         .description = COMPOUND_STRING("Opponent attack rolls use only the upper\nhalf of the results."),
     },
     [RISK_PLAYER_HAS_NEGATIVE_METRONOME] =
     {
-        .tiles = { COORD_TO_TILE(30, 20), COORD_TO_TILE(30, 21), COORD_TO_TILE(31, 20), COORD_TO_TILE(31, 21) },
+        .tiles = { COORD_TO_TILE(20, 20), COORD_TO_TILE(20, 21), COORD_TO_TILE(21, 20), COORD_TO_TILE(21, 21) },
         .name = COMPOUND_STRING("Damping"),
         .description = COMPOUND_STRING("Player has a negative Metronome item\neffect of them.\nConsecutive attacking moves does less\ndamage."),
     },
     [RISK_FOE_HAS_METRONOME] =
     {
-        .tiles = { COORD_TO_TILE(32, 20), COORD_TO_TILE(32, 21), COORD_TO_TILE(33, 20), COORD_TO_TILE(33, 21) },
+        .tiles = { COORD_TO_TILE(22, 20), COORD_TO_TILE(22, 21), COORD_TO_TILE(23, 20), COORD_TO_TILE(23, 21) },
         .name = COMPOUND_STRING("Ramping"),
         .description = COMPOUND_STRING("Opponent has a positive Metronome item\neffect on them.\nConsecutive attacking moves does more\ndamage."),
     },
     [RISK_PLAYER_HAS_RECOIL] =
     {
-        .tiles = { COORD_TO_TILE(30, 22), COORD_TO_TILE(30, 23), COORD_TO_TILE(31, 22), COORD_TO_TILE(31, 23) },
+        .tiles = { COORD_TO_TILE(19, 22), COORD_TO_TILE(19, 23), COORD_TO_TILE(20, 22), COORD_TO_TILE(20, 23) },
         .name = COMPOUND_STRING("Shattering Blade"),
         .description = COMPOUND_STRING("All player moves have recoil equal to 25%\nof damage dealt."),
     },
     [RISK_HAS_GUARANTEED_ACCURACY] =
     {
-        .tiles = { COORD_TO_TILE(34, 20), COORD_TO_TILE(34, 21), COORD_TO_TILE(35, 20), COORD_TO_TILE(35, 21) },
+        .tiles = { COORD_TO_TILE(20, 14), COORD_TO_TILE(20, 15), COORD_TO_TILE(21, 14), COORD_TO_TILE(21, 15) },
         .name = COMPOUND_STRING("Deadeye Bolts"),
         .description = COMPOUND_STRING("Opponent can't miss moves."),
     },
     [RISK_OPPONENT_MOVES_FIRST] =
     {
-        .tiles = { COORD_TO_TILE(26, 28), COORD_TO_TILE(26, 29), COORD_TO_TILE(27, 28), COORD_TO_TILE(27, 29) },
+        .tiles = { COORD_TO_TILE(18, 16), COORD_TO_TILE(18, 17), COORD_TO_TILE(19, 16), COORD_TO_TILE(19, 17) },
         .name = COMPOUND_STRING("Initiative Priority"),
         .description = COMPOUND_STRING("Opponents moves first in their priority\nbracket."),
     },
     [RISK_OPPONENT_ATTACKS_SWITCHES] =
     {
-        .tiles = { COORD_TO_TILE(26, 30), COORD_TO_TILE(26, 31), COORD_TO_TILE(27, 30), COORD_TO_TILE(27, 31) },
+        .tiles = { COORD_TO_TILE(18, 14), COORD_TO_TILE(18, 15), COORD_TO_TILE(19, 14), COORD_TO_TILE(19, 15) },
         .name = COMPOUND_STRING("Formation Breaker"),
         .description = COMPOUND_STRING("Opponent attacks foribly switches the\nplayer at end of turn."),
     },
     [RISK_HAS_GUARANTEED_EFFECTS] =
     {
-        .tiles = { COORD_TO_TILE(32, 28), COORD_TO_TILE(32, 29), COORD_TO_TILE(33, 28), COORD_TO_TILE(33, 29) },
-        .name = COMPOUND_STRING("Target: Windfall"),
+        .tiles = { COORD_TO_TILE(16, 14), COORD_TO_TILE(16, 15), COORD_TO_TILE(17, 14), COORD_TO_TILE(17, 15) },
+        .name = COMPOUND_STRING("Special Execution"),
         .description = COMPOUND_STRING("Opponent's moves with secondary effects\nare guaranteed to proc those effects."),
     },
     [RISK_OPPONENT_ATTACKS_DISABLE] =
     {
-        .tiles = { COORD_TO_TILE(30, 26), COORD_TO_TILE(30, 27), COORD_TO_TILE(31, 26), COORD_TO_TILE(31, 27) },
+        .tiles = { COORD_TO_TILE(16, 12), COORD_TO_TILE(16, 13), COORD_TO_TILE(17, 12), COORD_TO_TILE(17, 13) },
         .name = COMPOUND_STRING("Disabling"),
         .description = COMPOUND_STRING("Opponents attacks apply the Disable\neffect."),
     },
     [RISK_OPPONENT_INFLICTS_GASTRO_ACID] =
     {
-        .tiles = { COORD_TO_TILE(34, 26), COORD_TO_TILE(34, 27), COORD_TO_TILE(35, 26), COORD_TO_TILE(35, 27) },
+        .tiles = { COORD_TO_TILE(20, 12), COORD_TO_TILE(20, 13), COORD_TO_TILE(21, 12), COORD_TO_TILE(21, 13) },
         .name = COMPOUND_STRING("Suppressing"),
         .description = COMPOUND_STRING("Opponents attacks apply Gastro Acid\nwhich suppresses abilities."),
     },
     [RISK_OPPONENT_ATTACKS_TORMENT] =
     {
-        .tiles = { COORD_TO_TILE(32, 26), COORD_TO_TILE(32, 27), COORD_TO_TILE(33, 26), COORD_TO_TILE(33, 27) },
+        .tiles = { COORD_TO_TILE(18, 12), COORD_TO_TILE(18, 13), COORD_TO_TILE(19, 12), COORD_TO_TILE(19, 13) },
         .name = COMPOUND_STRING("Tormenting"),
         .description = COMPOUND_STRING("Opponents attacks apply the Torment\neffect, preventing mons from repeating\nattacks."),
     },
@@ -582,7 +582,7 @@ const struct RiskIcon sRiskData[] =
     {
         .tiles = { COORD_TO_TILE(20, 26), COORD_TO_TILE(20, 27), COORD_TO_TILE(21, 26), COORD_TO_TILE(21, 27) },
         .lockRisk = RISK_MINUS_1_MOVE,
-        .name = COMPOUND_STRING("Target: Metabolism Boost"),
+        .name = COMPOUND_STRING("Target: Second Wind"),
         .description = COMPOUND_STRING("Opponent mons have Regenerator."),
     },
     [RISK_HAS_BATTLE_ARMOR] =
@@ -652,185 +652,185 @@ const enum Risk sRiskMap[64][64] =
     [15][8] = RISK_TURN_LIMIT_3,
     [15][9] = RISK_TURN_LIMIT_3,
 
-    [16][4] = RISK_PARTY_MINUS_1,
-    [16][5] = RISK_PARTY_MINUS_1,
-    [17][4] = RISK_PARTY_MINUS_1,
-    [17][5] = RISK_PARTY_MINUS_1,
+    [33][25] = RISK_PARTY_MINUS_1,
+    [33][26] = RISK_PARTY_MINUS_1,
+    [34][25] = RISK_PARTY_MINUS_1,
+    [34][26] = RISK_PARTY_MINUS_1,
 
-    [16][6] = RISK_PARTY_MINUS_2,
-    [16][7] = RISK_PARTY_MINUS_2,
-    [17][6] = RISK_PARTY_MINUS_2,
-    [17][7] = RISK_PARTY_MINUS_2,
+    [33][27] = RISK_PARTY_MINUS_2,
+    [33][28] = RISK_PARTY_MINUS_2,
+    [34][27] = RISK_PARTY_MINUS_2,
+    [34][28] = RISK_PARTY_MINUS_2,
 
-    [16][8] = RISK_PARTY_MINUS_3,
-    [16][9] = RISK_PARTY_MINUS_3,
-    [17][8] = RISK_PARTY_MINUS_3,
-    [17][9] = RISK_PARTY_MINUS_3,
+    [33][29] = RISK_PARTY_MINUS_3,
+    [33][30] = RISK_PARTY_MINUS_3,
+    [34][29] = RISK_PARTY_MINUS_3,
+    [34][30] = RISK_PARTY_MINUS_3,
 
-    [20][4] = RISK_MUST_SWITCH_1,
-    [20][5] = RISK_MUST_SWITCH_1,
-    [21][4] = RISK_MUST_SWITCH_1,
-    [21][5] = RISK_MUST_SWITCH_1,
+    [18][4] = RISK_MUST_SWITCH_1,
+    [18][5] = RISK_MUST_SWITCH_1,
+    [19][4] = RISK_MUST_SWITCH_1,
+    [19][5] = RISK_MUST_SWITCH_1,
 
-    [20][6] = RISK_MUST_SWITCH_2,
-    [20][7] = RISK_MUST_SWITCH_2,
-    [21][6] = RISK_MUST_SWITCH_2,
-    [21][7] = RISK_MUST_SWITCH_2,
+    [18][6] = RISK_MUST_SWITCH_2,
+    [18][7] = RISK_MUST_SWITCH_2,
+    [19][6] = RISK_MUST_SWITCH_2,
+    [19][7] = RISK_MUST_SWITCH_2,
 
-    [20][8] = RISK_MUST_SWITCH_3,
-    [20][9] = RISK_MUST_SWITCH_3,
-    [21][8] = RISK_MUST_SWITCH_3,
-    [21][9] = RISK_MUST_SWITCH_3,
+    [18][8] = RISK_MUST_SWITCH_3,
+    [18][9] = RISK_MUST_SWITCH_3,
+    [19][8] = RISK_MUST_SWITCH_3,
+    [19][9] = RISK_MUST_SWITCH_3,
 
-    [22][6] = RISK_CANT_SWITCH,
-    [22][7] = RISK_CANT_SWITCH,
-    [23][6] = RISK_CANT_SWITCH,
-    [23][7] = RISK_CANT_SWITCH,
+    [20][6] = RISK_CANT_SWITCH,
+    [20][7] = RISK_CANT_SWITCH,
+    [21][6] = RISK_CANT_SWITCH,
+    [21][7] = RISK_CANT_SWITCH,
 
-    [28][6] = RISK_PLAYER_STARTS_WITH_BURN,
-    [28][7] = RISK_PLAYER_STARTS_WITH_BURN,
-    [29][6] = RISK_PLAYER_STARTS_WITH_BURN,
-    [29][7] = RISK_PLAYER_STARTS_WITH_BURN,
+    [26][8] = RISK_PLAYER_STARTS_WITH_BURN,
+    [26][9] = RISK_PLAYER_STARTS_WITH_BURN,
+    [27][8] = RISK_PLAYER_STARTS_WITH_BURN,
+    [27][9] = RISK_PLAYER_STARTS_WITH_BURN,
 
-    [30][6] = RISK_PLAYER_STARTS_WITH_FROSTBITE,
-    [30][7] = RISK_PLAYER_STARTS_WITH_FROSTBITE,
-    [31][6] = RISK_PLAYER_STARTS_WITH_FROSTBITE,
-    [31][7] = RISK_PLAYER_STARTS_WITH_FROSTBITE,
+    [30][8] = RISK_PLAYER_STARTS_WITH_FROSTBITE,
+    [30][9] = RISK_PLAYER_STARTS_WITH_FROSTBITE,
+    [31][8] = RISK_PLAYER_STARTS_WITH_FROSTBITE,
+    [31][9] = RISK_PLAYER_STARTS_WITH_FROSTBITE,
 
-    [32][6] = RISK_PLAYER_STARTS_WITH_PARALYSIS,
-    [32][7] = RISK_PLAYER_STARTS_WITH_PARALYSIS,
-    [33][6] = RISK_PLAYER_STARTS_WITH_PARALYSIS,
-    [33][7] = RISK_PLAYER_STARTS_WITH_PARALYSIS,
+    [28][8] = RISK_PLAYER_STARTS_WITH_PARALYSIS,
+    [28][9] = RISK_PLAYER_STARTS_WITH_PARALYSIS,
+    [29][8] = RISK_PLAYER_STARTS_WITH_PARALYSIS,
+    [29][9] = RISK_PLAYER_STARTS_WITH_PARALYSIS,
 
-    [12][12] = RISK_OPPONENT_MORE_MONS_1,
-    [12][13] = RISK_OPPONENT_MORE_MONS_1,
-    [13][12] = RISK_OPPONENT_MORE_MONS_1,
-    [13][13] = RISK_OPPONENT_MORE_MONS_1,
+    [31][25] = RISK_OPPONENT_MORE_MONS_1,
+    [31][26] = RISK_OPPONENT_MORE_MONS_1,
+    [32][25] = RISK_OPPONENT_MORE_MONS_1,
+    [32][26] = RISK_OPPONENT_MORE_MONS_1,
 
-    [12][14] = RISK_OPPONENT_MORE_MONS_2,
-    [12][15] = RISK_OPPONENT_MORE_MONS_2,
-    [13][14] = RISK_OPPONENT_MORE_MONS_2,
-    [13][15] = RISK_OPPONENT_MORE_MONS_2,
+    [31][27] = RISK_OPPONENT_MORE_MONS_2,
+    [31][28] = RISK_OPPONENT_MORE_MONS_2,
+    [32][27] = RISK_OPPONENT_MORE_MONS_2,
+    [32][28] = RISK_OPPONENT_MORE_MONS_2,
 
-    [14][14] = RISK_HAS_OMNISCIENT_AI,
-    [14][15] = RISK_HAS_OMNISCIENT_AI,
-    [15][14] = RISK_HAS_OMNISCIENT_AI,
-    [15][15] = RISK_HAS_OMNISCIENT_AI,
+    [27][23] = RISK_HAS_OMNISCIENT_AI,
+    [27][24] = RISK_HAS_OMNISCIENT_AI,
+    [28][23] = RISK_HAS_OMNISCIENT_AI,
+    [28][24] = RISK_HAS_OMNISCIENT_AI,
 
-    [14][16] = RISK_HAS_PREDICTION_AI,
-    [14][17] = RISK_HAS_PREDICTION_AI,
-    [15][16] = RISK_HAS_PREDICTION_AI,
-    [15][17] = RISK_HAS_PREDICTION_AI,
+    [27][25] = RISK_HAS_PREDICTION_AI,
+    [27][26] = RISK_HAS_PREDICTION_AI,
+    [28][25] = RISK_HAS_PREDICTION_AI,
+    [28][26] = RISK_HAS_PREDICTION_AI,
 
-    [16][12] = RISK_RANDOM_LEAD,
-    [16][13] = RISK_RANDOM_LEAD,
-    [17][12] = RISK_RANDOM_LEAD,
-    [17][13] = RISK_RANDOM_LEAD,
+    [29][21] = RISK_RANDOM_LEAD,
+    [29][22] = RISK_RANDOM_LEAD,
+    [30][21] = RISK_RANDOM_LEAD,
+    [30][22] = RISK_RANDOM_LEAD,
 
-    [16][14] = RISK_USES_POOLS,
-    [16][15] = RISK_USES_POOLS,
-    [17][14] = RISK_USES_POOLS,
-    [17][15] = RISK_USES_POOLS,
+    [29][27] = RISK_USES_POOLS,
+    [29][28] = RISK_USES_POOLS,
+    [30][27] = RISK_USES_POOLS,
+    [30][28] = RISK_USES_POOLS,
 
-    [18][22] = RISK_PLAYER_JUST_BERRIES,
-    [18][23] = RISK_PLAYER_JUST_BERRIES,
-    [19][22] = RISK_PLAYER_JUST_BERRIES,
-    [19][23] = RISK_PLAYER_JUST_BERRIES,
+    [25][6] = RISK_PLAYER_JUST_BERRIES,
+    [25][7] = RISK_PLAYER_JUST_BERRIES,
+    [26][6] = RISK_PLAYER_JUST_BERRIES,
+    [26][7] = RISK_PLAYER_JUST_BERRIES,
 
-    [22][22] = RISK_NO_PP_RESTORE,
-    [22][23] = RISK_NO_PP_RESTORE,
-    [23][22] = RISK_NO_PP_RESTORE,
-    [23][23] = RISK_NO_PP_RESTORE,
+    [27][6] = RISK_NO_PP_RESTORE,
+    [27][7] = RISK_NO_PP_RESTORE,
+    [28][6] = RISK_NO_PP_RESTORE,
+    [28][7] = RISK_NO_PP_RESTORE,
 
-    [20][22] = RISK_OPPONENT_HAS_ITEMS,
-    [20][23] = RISK_OPPONENT_HAS_ITEMS,
-    [21][22] = RISK_OPPONENT_HAS_ITEMS,
-    [21][23] = RISK_OPPONENT_HAS_ITEMS,
+    [29][29] = RISK_OPPONENT_HAS_ITEMS,
+    [29][30] = RISK_OPPONENT_HAS_ITEMS,
+    [30][29] = RISK_OPPONENT_HAS_ITEMS,
+    [30][30] = RISK_OPPONENT_HAS_ITEMS,
 
-    [20][20] = RISK_NO_ORDER_CHANGE,
-    [20][21] = RISK_NO_ORDER_CHANGE,
-    [21][20] = RISK_NO_ORDER_CHANGE,
-    [21][21] = RISK_NO_ORDER_CHANGE,
+    [28][4] = RISK_NO_ORDER_CHANGE,
+    [28][5] = RISK_NO_ORDER_CHANGE,
+    [29][4] = RISK_NO_ORDER_CHANGE,
+    [29][5] = RISK_NO_ORDER_CHANGE,
 
-    [20][12] = RISK_FLIP_TYPE_CHART,
-    [20][13] = RISK_FLIP_TYPE_CHART,
-    [21][12] = RISK_FLIP_TYPE_CHART,
-    [21][13] = RISK_FLIP_TYPE_CHART,
+    [12][12] = RISK_FLIP_TYPE_CHART,
+    [12][13] = RISK_FLIP_TYPE_CHART,
+    [13][12] = RISK_FLIP_TYPE_CHART,
+    [13][13] = RISK_FLIP_TYPE_CHART,
 
-    [12][22] = RISK_ATTACK_GETS_DROWSY,
-    [12][23] = RISK_ATTACK_GETS_DROWSY,
-    [13][22] = RISK_ATTACK_GETS_DROWSY,
-    [13][23] = RISK_ATTACK_GETS_DROWSY,
+    [29][6] = RISK_ATTACK_GETS_DROWSY,
+    [29][7] = RISK_ATTACK_GETS_DROWSY,
+    [30][6] = RISK_ATTACK_GETS_DROWSY,
+    [30][7] = RISK_ATTACK_GETS_DROWSY,
 
-    [20][14] = RISK_HAS_GEN_1_CRIT_CHANCE,
-    [20][15] = RISK_HAS_GEN_1_CRIT_CHANCE,
-    [21][14] = RISK_HAS_GEN_1_CRIT_CHANCE,
-    [21][15] = RISK_HAS_GEN_1_CRIT_CHANCE,
+    [12][14] = RISK_HAS_GEN_1_CRIT_CHANCE,
+    [12][15] = RISK_HAS_GEN_1_CRIT_CHANCE,
+    [13][14] = RISK_HAS_GEN_1_CRIT_CHANCE,
+    [13][15] = RISK_HAS_GEN_1_CRIT_CHANCE,
 
-    [14][22] = RISK_STATUS_GETS_PARA,
-    [14][23] = RISK_STATUS_GETS_PARA,
-    [15][22] = RISK_STATUS_GETS_PARA,
-    [15][23] = RISK_STATUS_GETS_PARA,
+    [31][6] = RISK_STATUS_GETS_PARA,
+    [31][7] = RISK_STATUS_GETS_PARA,
+    [32][6] = RISK_STATUS_GETS_PARA,
+    [32][7] = RISK_STATUS_GETS_PARA,
 
-    [26][20] = RISK_PLAYER_LOWER_DAMAGE_ROLLS,
-    [26][21] = RISK_PLAYER_LOWER_DAMAGE_ROLLS,
-    [27][20] = RISK_PLAYER_LOWER_DAMAGE_ROLLS,
-    [27][21] = RISK_PLAYER_LOWER_DAMAGE_ROLLS,
+    [16][20] = RISK_PLAYER_LOWER_DAMAGE_ROLLS,
+    [16][21] = RISK_PLAYER_LOWER_DAMAGE_ROLLS,
+    [17][20] = RISK_PLAYER_LOWER_DAMAGE_ROLLS,
+    [17][21] = RISK_PLAYER_LOWER_DAMAGE_ROLLS,
 
-    [28][20] = RISK_OPPONENT_HIGHER_DAMAGE_ROLLS,
-    [28][21] = RISK_OPPONENT_HIGHER_DAMAGE_ROLLS,
-    [29][20] = RISK_OPPONENT_HIGHER_DAMAGE_ROLLS,
-    [29][21] = RISK_OPPONENT_HIGHER_DAMAGE_ROLLS,
+    [18][20] = RISK_OPPONENT_HIGHER_DAMAGE_ROLLS,
+    [18][21] = RISK_OPPONENT_HIGHER_DAMAGE_ROLLS,
+    [19][20] = RISK_OPPONENT_HIGHER_DAMAGE_ROLLS,
+    [19][21] = RISK_OPPONENT_HIGHER_DAMAGE_ROLLS,
 
-    [30][20] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
-    [30][21] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
-    [31][20] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
-    [31][21] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
+    [20][20] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
+    [20][21] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
+    [21][20] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
+    [21][21] = RISK_PLAYER_HAS_NEGATIVE_METRONOME,
 
-    [32][20] = RISK_FOE_HAS_METRONOME,
-    [32][21] = RISK_FOE_HAS_METRONOME,
-    [33][20] = RISK_FOE_HAS_METRONOME,
-    [33][21] = RISK_FOE_HAS_METRONOME,
+    [22][20] = RISK_FOE_HAS_METRONOME,
+    [22][21] = RISK_FOE_HAS_METRONOME,
+    [23][20] = RISK_FOE_HAS_METRONOME,
+    [23][21] = RISK_FOE_HAS_METRONOME,
 
-    [30][22] = RISK_PLAYER_HAS_RECOIL,
-    [30][23] = RISK_PLAYER_HAS_RECOIL,
-    [31][22] = RISK_PLAYER_HAS_RECOIL,
-    [31][23] = RISK_PLAYER_HAS_RECOIL,
+    [19][22] = RISK_PLAYER_HAS_RECOIL,
+    [19][23] = RISK_PLAYER_HAS_RECOIL,
+    [20][22] = RISK_PLAYER_HAS_RECOIL,
+    [20][23] = RISK_PLAYER_HAS_RECOIL,
 
-    [34][20] = RISK_HAS_GUARANTEED_ACCURACY,
-    [34][21] = RISK_HAS_GUARANTEED_ACCURACY,
-    [35][20] = RISK_HAS_GUARANTEED_ACCURACY,
-    [35][21] = RISK_HAS_GUARANTEED_ACCURACY,
+    [20][14] = RISK_HAS_GUARANTEED_ACCURACY,
+    [20][15] = RISK_HAS_GUARANTEED_ACCURACY,
+    [21][14] = RISK_HAS_GUARANTEED_ACCURACY,
+    [21][15] = RISK_HAS_GUARANTEED_ACCURACY,
 
-    [26][28] = RISK_OPPONENT_MOVES_FIRST,
-    [26][29] = RISK_OPPONENT_MOVES_FIRST,
-    [27][28] = RISK_OPPONENT_MOVES_FIRST,
-    [27][29] = RISK_OPPONENT_MOVES_FIRST,
+    [18][16] = RISK_OPPONENT_MOVES_FIRST,
+    [18][17] = RISK_OPPONENT_MOVES_FIRST,
+    [19][16] = RISK_OPPONENT_MOVES_FIRST,
+    [19][17] = RISK_OPPONENT_MOVES_FIRST,
 
-    [26][30] = RISK_OPPONENT_ATTACKS_SWITCHES,
-    [26][31] = RISK_OPPONENT_ATTACKS_SWITCHES,
-    [27][30] = RISK_OPPONENT_ATTACKS_SWITCHES,
-    [27][31] = RISK_OPPONENT_ATTACKS_SWITCHES,
+    [18][14] = RISK_OPPONENT_ATTACKS_SWITCHES,
+    [18][15] = RISK_OPPONENT_ATTACKS_SWITCHES,
+    [19][14] = RISK_OPPONENT_ATTACKS_SWITCHES,
+    [19][15] = RISK_OPPONENT_ATTACKS_SWITCHES,
 
-    [32][28] = RISK_HAS_GUARANTEED_EFFECTS,
-    [32][29] = RISK_HAS_GUARANTEED_EFFECTS,
-    [33][28] = RISK_HAS_GUARANTEED_EFFECTS,
-    [33][29] = RISK_HAS_GUARANTEED_EFFECTS,
+    [16][14] = RISK_HAS_GUARANTEED_EFFECTS,
+    [16][15] = RISK_HAS_GUARANTEED_EFFECTS,
+    [17][14] = RISK_HAS_GUARANTEED_EFFECTS,
+    [17][15] = RISK_HAS_GUARANTEED_EFFECTS,
 
-    [30][26] = RISK_OPPONENT_ATTACKS_DISABLE,
-    [30][27] = RISK_OPPONENT_ATTACKS_DISABLE,
-    [31][26] = RISK_OPPONENT_ATTACKS_DISABLE,
-    [31][27] = RISK_OPPONENT_ATTACKS_DISABLE,
+    [16][12] = RISK_OPPONENT_ATTACKS_DISABLE,
+    [16][13] = RISK_OPPONENT_ATTACKS_DISABLE,
+    [17][12] = RISK_OPPONENT_ATTACKS_DISABLE,
+    [17][13] = RISK_OPPONENT_ATTACKS_DISABLE,
 
-    [34][26] = RISK_OPPONENT_INFLICTS_GASTRO_ACID,
-    [34][27] = RISK_OPPONENT_INFLICTS_GASTRO_ACID,
-    [35][26] = RISK_OPPONENT_INFLICTS_GASTRO_ACID,
-    [35][27] = RISK_OPPONENT_INFLICTS_GASTRO_ACID,
+    [20][12] = RISK_OPPONENT_INFLICTS_GASTRO_ACID,
+    [20][13] = RISK_OPPONENT_INFLICTS_GASTRO_ACID,
+    [21][12] = RISK_OPPONENT_INFLICTS_GASTRO_ACID,
+    [21][13] = RISK_OPPONENT_INFLICTS_GASTRO_ACID,
 
-    [32][26] = RISK_OPPONENT_ATTACKS_TORMENT,
-    [32][27] = RISK_OPPONENT_ATTACKS_TORMENT,
-    [33][26] = RISK_OPPONENT_ATTACKS_TORMENT,
-    [33][27] = RISK_OPPONENT_ATTACKS_TORMENT,
+    [18][12] = RISK_OPPONENT_ATTACKS_TORMENT,
+    [18][13] = RISK_OPPONENT_ATTACKS_TORMENT,
+    [19][12] = RISK_OPPONENT_ATTACKS_TORMENT,
+    [19][13] = RISK_OPPONENT_ATTACKS_TORMENT,
 
     [24][12] = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,
     [24][13] = RISK_PLAYER_HAZARDS_NOT_REMOVABLE,

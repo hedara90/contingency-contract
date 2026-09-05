@@ -3448,4 +3448,7 @@ extern const u32 gCCStart_Bag[];
 extern const u32 gCCStart_Save[];
 extern const u32 gCCStart_Options[];
 
+//  CC title screen
+extern const u32 gCCDevsGfx[];
+
 #endif //GUARD_GRAPHICS_H

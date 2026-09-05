@@ -399,6 +399,60 @@ AI_DOUBLE_BATTLE_TEST("AI will not choose Earthquake if it damages the partner w
     }
 }
 
+AI_DOUBLE_BATTLE_TEST("AI will not choose Earthquake if its ally has Levitate but both foes are immune to Ground")
+{
+    GIVEN {
+        ASSUME(IsSpeciesOfType(SPECIES_CHARIZARD, TYPE_FLYING));
+        ASSUME(IsSpeciesOfType(SPECIES_ZAPDOS, TYPE_FLYING));
+        ASSUME(GetMoveTarget(MOVE_EARTHQUAKE) == TARGET_FOES_AND_ALLY);
+        ASSUME(GetMoveType(MOVE_EARTHQUAKE) == TYPE_GROUND);
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+        PLAYER(SPECIES_CHARIZARD);
+        PLAYER(SPECIES_ZAPDOS);
+        OPPONENT(SPECIES_WOBBUFFET) { Moves(MOVE_EARTHQUAKE, MOVE_SCRATCH); }
+        OPPONENT(SPECIES_KOFFING) { Ability(ABILITY_LEVITATE); Moves(MOVE_CELEBRATE); }
+    } WHEN {
+        TURN { NOT_EXPECT_MOVE(opponentLeft, MOVE_EARTHQUAKE); }
+    }
+}
+
+AI_DOUBLE_BATTLE_TEST("AI only rewards spread moves when an ally's absorbing ability provides a useful benefit")
+{
+    enum Ability ability;
+    enum Move move, partnerMove;
+    u32 partnerHP;
+    bool32 shouldReward;
+
+    PARAMETRIZE { ability = ABILITY_LEVITATE;      move = MOVE_EARTHQUAKE; partnerMove = MOVE_CELEBRATE; partnerHP = 100; shouldReward = FALSE; }
+    PARAMETRIZE { ability = ABILITY_EARTH_EATER;   move = MOVE_EARTHQUAKE; partnerMove = MOVE_CELEBRATE; partnerHP = 100; shouldReward = FALSE; }
+    PARAMETRIZE { ability = ABILITY_EARTH_EATER;   move = MOVE_EARTHQUAKE; partnerMove = MOVE_CELEBRATE; partnerHP = 20;  shouldReward = TRUE; }
+    PARAMETRIZE { ability = ABILITY_VOLT_ABSORB;   move = MOVE_DISCHARGE;  partnerMove = MOVE_CELEBRATE; partnerHP = 100; shouldReward = FALSE; }
+    PARAMETRIZE { ability = ABILITY_VOLT_ABSORB;   move = MOVE_DISCHARGE;  partnerMove = MOVE_CELEBRATE; partnerHP = 20;  shouldReward = TRUE; }
+    PARAMETRIZE { ability = ABILITY_WATER_ABSORB;  move = MOVE_SURF;       partnerMove = MOVE_CELEBRATE; partnerHP = 100; shouldReward = FALSE; }
+    PARAMETRIZE { ability = ABILITY_WATER_ABSORB;  move = MOVE_SURF;       partnerMove = MOVE_CELEBRATE; partnerHP = 20;  shouldReward = TRUE; }
+    PARAMETRIZE { ability = ABILITY_FLASH_FIRE;    move = MOVE_LAVA_PLUME; partnerMove = MOVE_CELEBRATE; partnerHP = 100; shouldReward = FALSE; }
+    PARAMETRIZE { ability = ABILITY_FLASH_FIRE;    move = MOVE_LAVA_PLUME; partnerMove = MOVE_EMBER;     partnerHP = 100; shouldReward = TRUE; }
+    PARAMETRIZE { ability = ABILITY_LIGHTNING_ROD; move = MOVE_DISCHARGE;  partnerMove = MOVE_CELEBRATE; partnerHP = 100; shouldReward = FALSE; }
+    PARAMETRIZE { ability = ABILITY_LIGHTNING_ROD; move = MOVE_DISCHARGE;  partnerMove = MOVE_EMBER;     partnerHP = 100; shouldReward = TRUE; }
+    PARAMETRIZE { ability = ABILITY_STORM_DRAIN;   move = MOVE_SURF;       partnerMove = MOVE_CELEBRATE; partnerHP = 100; shouldReward = FALSE; }
+    PARAMETRIZE { ability = ABILITY_STORM_DRAIN;   move = MOVE_SURF;       partnerMove = MOVE_EMBER;     partnerHP = 100; shouldReward = TRUE; }
+
+    GIVEN {
+        ASSUME(GetMoveTarget(move) == TARGET_FOES_AND_ALLY);
+        ASSUME(GetMoveEffect(MOVE_DRAGON_RAGE) == EFFECT_FIXED_HP_DAMAGE);
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+        PLAYER(SPECIES_WOBBUFFET) { Speed(50); Moves(MOVE_DRAGON_RAGE); }
+        PLAYER(SPECIES_WOBBUFFET) { Speed(50); Moves(MOVE_DRAGON_RAGE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(90); Moves(move, MOVE_SCRATCH); }
+        OPPONENT(SPECIES_WOBBUFFET) { Ability(ability); HP(partnerHP); MaxHP(100); Speed(100); Moves(partnerMove); }
+    } WHEN {
+        if (shouldReward)
+            TURN { SCORE_GT_VAL(opponentLeft, move, AI_SCORE_DEFAULT, target: opponentRight); }
+        else
+            TURN { SCORE_LT_VAL(opponentLeft, move, AI_SCORE_DEFAULT, target: opponentRight); }
+    }
+}
+
 AI_DOUBLE_BATTLE_TEST("AI recognizes its ally's Telepathy")
 {
     ASSUME(GetMoveTarget(MOVE_EARTHQUAKE) == TARGET_FOES_AND_ALLY);
@@ -444,6 +498,50 @@ AI_DOUBLE_BATTLE_TEST("AI will choose Bulldoze if it triggers its ally's ability
     }
 }
 
+AI_DOUBLE_BATTLE_TEST("AI uses Spicy Extract if its ally holds Clear Amulet and has a physical move")
+{
+    enum Move move;
+
+    PARAMETRIZE { move = MOVE_SCRATCH; }
+    PARAMETRIZE { move = MOVE_SWIFT; }
+
+    GIVEN {
+        ASSUME_STAT_CHANGE(MOVE_SPICY_EXTRACT, attack: +2, defense: -2);
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_OMNISCIENT);
+        PLAYER(SPECIES_WOBBUFFET) { Speed(10); Moves(MOVE_SCRATCH); }
+        PLAYER(SPECIES_WOBBUFFET) { Speed(10); Moves(MOVE_SCRATCH); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(20); Item(ITEM_CLEAR_AMULET); Moves(move); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(40); Moves(MOVE_SCRATCH, MOVE_SPICY_EXTRACT); }
+    } WHEN {
+        TURN {
+            if (move == MOVE_SCRATCH)
+                EXPECT_MOVE(opponentRight, MOVE_SPICY_EXTRACT, target: opponentLeft);
+            else
+                EXPECT_MOVE(opponentRight, MOVE_SCRATCH);
+        }
+    }
+}
+
+AI_DOUBLE_BATTLE_TEST("AI does not use Spicy Extract if its ally would not benefit")
+{
+    u32 species;
+    enum Ability ability;
+
+    PARAMETRIZE { species = SPECIES_GHOLDENGO; ability = ABILITY_GOOD_AS_GOLD; }
+    PARAMETRIZE { species = SPECIES_SNIVY;     ability = ABILITY_CONTRARY; }
+
+    GIVEN {
+        ASSUME_STAT_CHANGE(MOVE_SPICY_EXTRACT, attack: +2, defense: -2);
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_OMNISCIENT);
+        PLAYER(SPECIES_WOBBUFFET) { Speed(10); Moves(MOVE_SCRATCH); }
+        PLAYER(SPECIES_WOBBUFFET) { Speed(10); Moves(MOVE_SCRATCH); }
+        OPPONENT(species) { Speed(20); Ability(ability); Moves(MOVE_SCRATCH); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(40); Moves(MOVE_SCRATCH, MOVE_SPICY_EXTRACT); }
+    } WHEN {
+        TURN { EXPECT_MOVE(opponentRight, MOVE_SCRATCH); }
+    }
+}
+
 AI_DOUBLE_BATTLE_TEST("AI will choose Beat Up on an ally with Justified if it will benefit the ally")
 {
     ASSUME(GetMoveEffect(MOVE_BEAT_UP) == EFFECT_BEAT_UP);
@@ -467,6 +565,77 @@ AI_DOUBLE_BATTLE_TEST("AI will choose Beat Up on an ally with Justified if it wi
             TURN { EXPECT_MOVE(opponentLeft, MOVE_BEAT_UP, target: opponentRight); }
         else
             TURN { EXPECT_MOVE(opponentLeft, MOVE_BEAT_UP, target: playerLeft); }
+    }
+}
+
+AI_DOUBLE_BATTLE_TEST("AI will not use Protect if its left ally is about to trigger Justified with Beat Up")
+{
+    ASSUME(GetMoveEffect(MOVE_BEAT_UP) == EFFECT_BEAT_UP);
+    ASSUME(GetMoveType(MOVE_BEAT_UP) == TYPE_DARK);
+
+    GIVEN {
+        WITH_CONFIG(AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE, 0);
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+        PLAYER(SPECIES_WOBBUFFET) { Moves(MOVE_SCRATCH); }
+        PLAYER(SPECIES_CLEFABLE) { Moves(MOVE_SCRATCH); }
+        OPPONENT(SPECIES_PANGORO)   { Ability(ABILITY_SCRAPPY); Moves(MOVE_BEAT_UP); }
+        OPPONENT(SPECIES_GROWLITHE) { Ability(ABILITY_JUSTIFIED); Moves(MOVE_PROTECT, MOVE_TACKLE); }
+    } WHEN {
+        TURN {
+            MOVE(playerLeft, MOVE_SCRATCH, target: opponentLeft);
+            MOVE(playerRight, MOVE_SCRATCH, target: opponentRight);
+            EXPECT_MOVE(opponentLeft, MOVE_BEAT_UP, target: opponentRight);
+            NOT_EXPECT_MOVE(opponentRight, MOVE_PROTECT);
+        }
+    }
+}
+
+AI_DOUBLE_BATTLE_TEST("AI will not use Protect if its right ally is about to trigger Justified with Beat Up")
+{
+    ASSUME(GetMoveEffect(MOVE_BEAT_UP) == EFFECT_BEAT_UP);
+    ASSUME(GetMoveType(MOVE_BEAT_UP) == TYPE_DARK);
+
+    GIVEN {
+        WITH_CONFIG(AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE, 100);
+        TIE_BREAK_SCORE(RNG_AI_SCORE_TIE_DOUBLES_MOVE, SCORE_TIE_LO, 0);
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+        PLAYER(SPECIES_WOBBUFFET) { Moves(MOVE_SCRATCH); }
+        PLAYER(SPECIES_CLEFABLE) { Moves(MOVE_SCRATCH); }
+        OPPONENT(SPECIES_GROWLITHE) { Ability(ABILITY_JUSTIFIED); Moves(MOVE_TACKLE, MOVE_PROTECT); }
+        OPPONENT(SPECIES_PANGORO)   { Ability(ABILITY_SCRAPPY); Moves(MOVE_BEAT_UP); }
+    } WHEN {
+        TURN {
+            MOVE(playerLeft, MOVE_SCRATCH, target: opponentLeft);
+            MOVE(playerRight, MOVE_SCRATCH, target: opponentRight);
+            EXPECT_MOVE(opponentRight, MOVE_BEAT_UP, target: opponentLeft);
+            NOT_EXPECT_MOVE(opponentLeft, MOVE_PROTECT);
+            SCORE_LT_VAL(opponentLeft, MOVE_PROTECT, AI_SCORE_DEFAULT, target: playerLeft);
+        }
+    }
+}
+
+AI_DOUBLE_BATTLE_TEST("AI does not penalize Protect if its ally switches instead of triggering Weakness Policy")
+{
+    ASSUME(GetMoveTarget(MOVE_EARTHQUAKE) == TARGET_FOES_AND_ALLY);
+    ASSUME(GetMoveType(MOVE_EARTHQUAKE) == TYPE_GROUND);
+    ASSUME(GetItemHoldEffect(ITEM_WEAKNESS_POLICY) == HOLD_EFFECT_WEAKNESS_POLICY);
+
+    GIVEN {
+        WITH_CONFIG(AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE, 0);
+        WITH_CONFIG(SHOULD_SWITCH_ALL_MOVES_BAD_PERCENTAGE, 100);
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+        PLAYER(SPECIES_CHARIZARD) { Moves(MOVE_SCRATCH); }
+        PLAYER(SPECIES_CHARIZARD) { Moves(MOVE_SCRATCH); }
+        OPPONENT(SPECIES_GIBLE)   { Level(1); Attack(1); Moves(MOVE_EARTHQUAKE); }
+        OPPONENT(SPECIES_PIKACHU) { Level(100); HP(400); Defense(400); Item(ITEM_WEAKNESS_POLICY); Moves(MOVE_PROTECT, MOVE_TACKLE); }
+        OPPONENT(SPECIES_RAMPARDOS) { Level(100); Moves(MOVE_ROCK_SLIDE); }
+    } WHEN {
+        TURN {
+            MOVE(playerLeft, MOVE_SCRATCH, target: opponentLeft);
+            MOVE(playerRight, MOVE_SCRATCH, target: opponentRight);
+            EXPECT_SWITCH(opponentLeft, 2);
+            SCORE_GT_VAL(opponentRight, MOVE_PROTECT, AI_SCORE_DEFAULT + WORST_EFFECT, target: playerRight);
+        }
     }
 }
 

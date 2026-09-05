@@ -2116,7 +2116,7 @@ const u32 gTitleScreenCloudsTilemap[]      = INCGFX_U32("graphics/title_screen/c
 const u32 gTitleScreenPokemonLogoGfx[]     = INCGFX_U32("graphics/title_screen/pokemon_logo.png", ".8bpp.smol");
 const u32 gTitleScreenEmeraldVersionGfx[]  = INCGFX_U32("graphics/title_screen/emerald_version.png", ".8bpp.smol", "-mwidth 8 -mheight 4");
 const u16 gTitleScreenPressStartPal[]      = INCGFX_U16("graphics/title_screen/press_start.png", ".gbapal");
-const u32 gTitleScreenPressStartGfx[]      = INCGFX_U32("graphics/title_screen/press_start.png", ".4bpp.smol");
+const u32 gTitleScreenPressStartGfx[]      = INCGFX_U32("graphics/title_screen/press_start.png", ".4bpp.smol", "-mwidth 4 -mheight 1");
 const u32 gTitleScreenPokemonLogoTilemap[] = INCGFX_U32("graphics/title_screen/pokemon_logo.bin", ".smolTM");
 
 const u16 gFrontierPassBg_Pal[][16]                      = INCGFX_U16("graphics/frontier_pass/bg.png", ".gbapal"); // 8 x 16
@@ -2125,6 +2125,8 @@ const u32 gFrontierPassMapAndCard_Gfx[]                  = INCGFX_U32("graphics/
 const u32 gFrontierPassBg_Tilemap[]                      = INCGFX_U32("graphics/frontier_pass/bg.bin", ".smolTM");
 const u32 gFrontierPassCancelButton_Tilemap[]            = INCBIN_U32("graphics/frontier_pass/cancel.bin");
 const u32 gFrontierPassCancelButtonHighlighted_Tilemap[] = INCBIN_U32("graphics/frontier_pass/cancel_highlighted.bin");
+
+const u32 gCCDevsGfx[] = INCGFX_U32("graphics/title_screen/devs.png", ".4bpp", "-mwidth 4 -mheight 2");
 
 // Berry Crush
 const u16 gBerryCrush_Crusher_Pal[] = INCGFX_U16("graphics/berry_crush/crusher.png", ".gbapal");

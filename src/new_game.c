@@ -100,7 +100,7 @@ static void InitPlayerTrainerId(void)
 // L=A isnt set here for some reason.
 static void SetDefaultOptions(void)
 {
-    gSaveBlock2Ptr->optionsTextSpeed = OPTIONS_TEXT_SPEED_MID;
+    gSaveBlock2Ptr->optionsTextSpeed = OPTIONS_TEXT_SPEED_FAST;
     gSaveBlock2Ptr->optionsWindowFrameType = 0;
     gSaveBlock2Ptr->optionsSound = OPTIONS_SOUND_MONO;
     gSaveBlock2Ptr->optionsBattleStyle = OPTIONS_BATTLE_STYLE_SET;
@@ -139,7 +139,7 @@ static void WarpToTruck(void)
     if (IS_FRLG)
         SetWarpDestination(MAP_GROUP(MAP_PALLET_TOWN_PLAYERS_HOUSE_2F), MAP_NUM(MAP_PALLET_TOWN_PLAYERS_HOUSE_2F), WARP_ID_NONE, 6, 6);
     else
-        SetWarpDestination(MAP_GROUP(MAP_CONVENTION_CENTER), MAP_NUM(MAP_CONVENTION_CENTER), WARP_ID_NONE, 7, 21);
+        SetWarpDestination(MAP_GROUP(MAP_LIBRARY), MAP_NUM(MAP_LIBRARY), WARP_ID_NONE, 13, 12);
     WarpIntoMap();
 }
 
