@@ -22095,6 +22095,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
         .ignoresSubstitute = TRUE,
+        .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_DragonCheer,
     },
 
