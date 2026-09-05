@@ -80,20 +80,25 @@ script AbyssalHunters_Specter {
 }
 
 text SpecterBeforeBattle {
-    "Miss, please, stop getting up on things.\p"
-    "It's dangerous for everyone here."
+    "Ehehehe…\n"
+    "Hahahah…\l"
+    "AHHAHAHAHAH!"
 }
 
 text SpecterAfterBattle {
-    ""
+    "O benevolent Herald, hear my prayer:\n"
+    "watch over my dreams and my soul…"
 }
 
 text SpecterAfterBattle_Win {
-    "Win"
+    "Good day. Please allow me a moment\n"
+    "of prayer… before I resume my work\l"
+    "for the day…"
 }
 
 text SpecterAfterBattle_Lose {
-    "Lose"
+    "Hehehe… Cutting things… cutting\n"
+    "things is such fun…"
 }
 
 script AbyssalHunters_Gladiia {
@@ -120,19 +125,33 @@ script AbyssalHunters_Gladiia {
 }
 
 text GladiiaBeforeBattle {
-    "Hello"
+    "Any disruption during my work hours\n"
+    "is not permitted. Should there be\p"
+    "any offense, I appreciate your\n"
+    "understanding."
 }
 
 text GladiiaAfterBattle {
-    ""
+    "The air here is dry. Fighting on land\n"
+    "sometimes feels sweltering."
 }
 
 text GladiiaAfterBattle_Win {
-    "Win"
+    "The language I use is overly\n"
+    "polite…? Hm, I'm still getting\p"
+    "acquainted with the language used\n"
+    "on the land. Besides, it's in my\l"
+    "best interest to be seen as polite."
 }
 
 text GladiiaAfterBattle_Lose {
-    "Lose"
+    "Please inform your operators to\n"
+    "avoid any physical contact with me\p"
+    "or my weapon after a battle.\n"
+    "Intense exercise raises my surface\p"
+    "temperature. If someone were to\n"
+    "complain about being scalded, I\l"
+    "would hate to feel guilty."
 }
 
 script AbyssalHunters_Skadi {
@@ -153,19 +172,28 @@ script AbyssalHunters_Skadi {
 }
 
 text SkadiBeforeBattle {
-    "Hello"
+    "I advise you to keep at least two\n"
+    "meters away from me, for your own\p"
+    "good. And of course you shouldn't\n"
+    "speak to me either… I don't want\p"
+    "you to be the next victim of what's\l"
+    "after me."
 }
 
 text SkadiAfterBattle {
-    ""
+    "So this is how you fight.\n"
+    "Very good, I'll keep it in mind."
 }
 
 text SkadiAfterBattle_Win {
-    "Win"
+    "You just don't know when to give up,\n"
+    "do you? Alright, so be it. Good\l"
+    "luck in the trials ahead."
 }
 
 text SkadiAfterBattle_Lose {
-    "Lose"
+    "Compared to the calamities I fought\n"
+    "against, you are barely a threat."
 }
 
 script AbyssalHunters_Ulpianus {
@@ -186,17 +214,24 @@ script AbyssalHunters_Ulpianus {
 }
 
 text UlpianusBeforeBattle {
-    "Hello"
+    "The Hunters will lose awareness if\n"
+    "deprived of water, but they need\p"
+    "only return to the sea to awaken\n"
+    "their past. How about you? What\l"
+    "opportunity would you need?"
 }
 
 text UlpianusAfterBattle {
-    ""
+    "You are dreaming. Which part of\n"
+    "yourself do you speak to?"
 }
 
 text UlpianusAfterBattle_Win {
-    "Win"
+    "You will obtain the result that you\n"
+    "seek. I have faith."
 }
 
 text UlpianusAfterBattle_Lose {
-    "Lose"
+    "You must think carefully on what you\n"
+    "base your battle plans upon."
 }
