@@ -289,7 +289,7 @@ script ItemBanner {
             release
             end
         case 2:
-            callnative(BuildListOf5StarItems)
+            callnative(BuildListOf6StarItems)
             setvar(VAR_RESULT, 0)
             dynmultistack(0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
             switch(var(VAR_RESULT)) {
