@@ -230,7 +230,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_PLAYER_STARTS_WITH_BURN] =
     {
         .linkedRisks = sLinkedStartStatusRisks,
-        .tiles = { COORD_TO_TILE(28, 8), COORD_TO_TILE(28, 9), COORD_TO_TILE(29, 8), COORD_TO_TILE(29, 9) },
+        .tiles = { COORD_TO_TILE(26, 8), COORD_TO_TILE(26, 9), COORD_TO_TILE(27, 8), COORD_TO_TILE(27, 9) },
         .linkedCount = 3,
         .name = COMPOUND_STRING("Debilitation: BRN"),
         .description = COMPOUND_STRING("Player mons start battles burned."),
@@ -238,7 +238,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_PLAYER_STARTS_WITH_FROSTBITE] =
     {
         .linkedRisks = sLinkedStartStatusRisks,
-        .tiles = { COORD_TO_TILE(26, 8), COORD_TO_TILE(26, 9), COORD_TO_TILE(27, 8), COORD_TO_TILE(27, 9) },
+        .tiles = { COORD_TO_TILE(30, 8), COORD_TO_TILE(30, 9), COORD_TO_TILE(31, 8), COORD_TO_TILE(31, 9) },
         .linkedCount = 3,
         .name = COMPOUND_STRING("Debilitation: FRB"),
         .description = COMPOUND_STRING("Player mons start battles frostbitten."),
@@ -246,7 +246,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_PLAYER_STARTS_WITH_PARALYSIS] =
     {
         .linkedRisks = sLinkedStartStatusRisks,
-        .tiles = { COORD_TO_TILE(30, 8), COORD_TO_TILE(30, 9), COORD_TO_TILE(31, 8), COORD_TO_TILE(31, 9) },
+        .tiles = { COORD_TO_TILE(28, 8), COORD_TO_TILE(28, 9), COORD_TO_TILE(29, 8), COORD_TO_TILE(29, 9) },
         .linkedCount = 3,
         .name = COMPOUND_STRING("Debilitation: PRZ"),
         .description = COMPOUND_STRING("Player mons start battles paralyzed."),
@@ -270,7 +270,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_HAS_OMNISCIENT_AI] =
     {
         .linkedRisks = sLinkedAi,
-        .tiles = { COORD_TO_TILE(27, 23), COORD_TO_TILE(27, 24), COORD_TO_TILE(28, 23), COORD_TO_TILE(15, 24) },
+        .tiles = { COORD_TO_TILE(27, 23), COORD_TO_TILE(27, 24), COORD_TO_TILE(28, 23), COORD_TO_TILE(28, 24) },
         .linkedCount = 2,
         .name = COMPOUND_STRING("Scout Deployment"),
         .description = COMPOUND_STRING("AI knows the players party, moves and\nabilities."),
@@ -294,26 +294,26 @@ const struct RiskIcon sRiskData[] =
     [RISK_USES_POOLS] =
     {
         .linkedRisks = sLinkedPool,
-        .tiles = { COORD_TO_TILE(29, 23), COORD_TO_TILE(29, 24), COORD_TO_TILE(30, 23), COORD_TO_TILE(30, 24) },
+        .tiles = { COORD_TO_TILE(29, 27), COORD_TO_TILE(29, 28), COORD_TO_TILE(30, 27), COORD_TO_TILE(30, 28) },
         .linkedCount = 2,
         .name = COMPOUND_STRING("Target: Unknown"),
         .description = COMPOUND_STRING("Opponent's party is picked from a pool of\nmons, creating a semi-random team."),
     },
     [RISK_PLAYER_JUST_BERRIES] =
     {
-        .tiles = { COORD_TO_TILE(24, 6), COORD_TO_TILE(24, 7), COORD_TO_TILE(25, 6), COORD_TO_TILE(25, 7) },
+        .tiles = { COORD_TO_TILE(25, 6), COORD_TO_TILE(25, 7), COORD_TO_TILE(26, 6), COORD_TO_TILE(26, 7) },
         .name = COMPOUND_STRING("Natural"),
         .description = COMPOUND_STRING("Player can only use berries as held items."),
     },
     [RISK_NO_PP_RESTORE] =
     {
-        .tiles = { COORD_TO_TILE(28, 6), COORD_TO_TILE(28, 7), COORD_TO_TILE(29, 6), COORD_TO_TILE(29, 7) },
+        .tiles = { COORD_TO_TILE(27, 6), COORD_TO_TILE(27, 7), COORD_TO_TILE(28, 6), COORD_TO_TILE(28, 7) },
         .name = COMPOUND_STRING("Resource Depletion"),
         .description = COMPOUND_STRING("Move PP doesn't restore between battles."),
     },
     [RISK_OPPONENT_HAS_ITEMS] =
     {
-        .tiles = { COORD_TO_TILE(26, 6), COORD_TO_TILE(26, 7), COORD_TO_TILE(27, 6), COORD_TO_TILE(27, 7) },
+        .tiles = { COORD_TO_TILE(29, 29), COORD_TO_TILE(29, 30), COORD_TO_TILE(30, 29), COORD_TO_TILE(30, 30) },
         .name = COMPOUND_STRING("Target: Well Equipped"),
         .description = COMPOUND_STRING("Opponent mons have items."),
     },
@@ -331,7 +331,7 @@ const struct RiskIcon sRiskData[] =
     },
     [RISK_ATTACK_GETS_DROWSY] =
     {
-        .tiles = { COORD_TO_TILE(30, 6), COORD_TO_TILE(30, 7), COORD_TO_TILE(31, 6), COORD_TO_TILE(31, 7) },
+        .tiles = { COORD_TO_TILE(29, 6), COORD_TO_TILE(29, 7), COORD_TO_TILE(30, 6), COORD_TO_TILE(30, 7) },
         .name = COMPOUND_STRING("Ambient Exhaustion"),
         .description = COMPOUND_STRING("Using and attack makes player mons drowsy."),
     },
@@ -343,7 +343,7 @@ const struct RiskIcon sRiskData[] =
     },
     [RISK_STATUS_GETS_PARA] =
     {
-        .tiles = { COORD_TO_TILE(32, 6), COORD_TO_TILE(32, 7), COORD_TO_TILE(33, 6), COORD_TO_TILE(33, 7) },
+        .tiles = { COORD_TO_TILE(31, 6), COORD_TO_TILE(31, 7), COORD_TO_TILE(32, 6), COORD_TO_TILE(32, 7) },
         .name = COMPOUND_STRING("Ambient Inhibition"),
         .description = COMPOUND_STRING("Using a status move paralyzes player mons."),
     },
@@ -385,13 +385,13 @@ const struct RiskIcon sRiskData[] =
     },
     [RISK_OPPONENT_MOVES_FIRST] =
     {
-        .tiles = { COORD_TO_TILE(18, 14), COORD_TO_TILE(18, 15), COORD_TO_TILE(19, 14), COORD_TO_TILE(19, 15) },
+        .tiles = { COORD_TO_TILE(18, 16), COORD_TO_TILE(18, 17), COORD_TO_TILE(19, 16), COORD_TO_TILE(19, 17) },
         .name = COMPOUND_STRING("Initiative Priority"),
         .description = COMPOUND_STRING("Opponents moves first in their priority\nbracket."),
     },
     [RISK_OPPONENT_ATTACKS_SWITCHES] =
     {
-        .tiles = { COORD_TO_TILE(18, 16), COORD_TO_TILE(18, 17), COORD_TO_TILE(19, 16), COORD_TO_TILE(19, 17) },
+        .tiles = { COORD_TO_TILE(18, 14), COORD_TO_TILE(18, 15), COORD_TO_TILE(19, 14), COORD_TO_TILE(19, 15) },
         .name = COMPOUND_STRING("Formation Breaker"),
         .description = COMPOUND_STRING("Opponent attacks foribly switches the\nplayer at end of turn."),
     },
@@ -727,25 +727,25 @@ const enum Risk sRiskMap[64][64] =
     [30][21] = RISK_RANDOM_LEAD,
     [30][22] = RISK_RANDOM_LEAD,
 
-    [29][23] = RISK_USES_POOLS,
-    [29][24] = RISK_USES_POOLS,
-    [30][23] = RISK_USES_POOLS,
-    [30][24] = RISK_USES_POOLS,
+    [29][27] = RISK_USES_POOLS,
+    [29][28] = RISK_USES_POOLS,
+    [30][27] = RISK_USES_POOLS,
+    [30][28] = RISK_USES_POOLS,
 
-    [24][6] = RISK_PLAYER_JUST_BERRIES,
-    [24][7] = RISK_PLAYER_JUST_BERRIES,
     [25][6] = RISK_PLAYER_JUST_BERRIES,
     [25][7] = RISK_PLAYER_JUST_BERRIES,
+    [26][6] = RISK_PLAYER_JUST_BERRIES,
+    [26][7] = RISK_PLAYER_JUST_BERRIES,
 
+    [27][6] = RISK_NO_PP_RESTORE,
+    [27][7] = RISK_NO_PP_RESTORE,
     [28][6] = RISK_NO_PP_RESTORE,
     [28][7] = RISK_NO_PP_RESTORE,
-    [29][6] = RISK_NO_PP_RESTORE,
-    [29][7] = RISK_NO_PP_RESTORE,
 
-    [26][6] = RISK_OPPONENT_HAS_ITEMS,
-    [26][7] = RISK_OPPONENT_HAS_ITEMS,
-    [27][6] = RISK_OPPONENT_HAS_ITEMS,
-    [27][7] = RISK_OPPONENT_HAS_ITEMS,
+    [29][29] = RISK_OPPONENT_HAS_ITEMS,
+    [29][30] = RISK_OPPONENT_HAS_ITEMS,
+    [30][29] = RISK_OPPONENT_HAS_ITEMS,
+    [30][30] = RISK_OPPONENT_HAS_ITEMS,
 
     [28][4] = RISK_NO_ORDER_CHANGE,
     [28][5] = RISK_NO_ORDER_CHANGE,
@@ -757,20 +757,20 @@ const enum Risk sRiskMap[64][64] =
     [13][12] = RISK_FLIP_TYPE_CHART,
     [13][13] = RISK_FLIP_TYPE_CHART,
 
+    [29][6] = RISK_ATTACK_GETS_DROWSY,
+    [29][7] = RISK_ATTACK_GETS_DROWSY,
     [30][6] = RISK_ATTACK_GETS_DROWSY,
     [30][7] = RISK_ATTACK_GETS_DROWSY,
-    [31][6] = RISK_ATTACK_GETS_DROWSY,
-    [31][7] = RISK_ATTACK_GETS_DROWSY,
 
     [12][14] = RISK_HAS_GEN_1_CRIT_CHANCE,
     [12][15] = RISK_HAS_GEN_1_CRIT_CHANCE,
     [13][14] = RISK_HAS_GEN_1_CRIT_CHANCE,
     [13][15] = RISK_HAS_GEN_1_CRIT_CHANCE,
 
+    [31][6] = RISK_STATUS_GETS_PARA,
+    [31][7] = RISK_STATUS_GETS_PARA,
     [32][6] = RISK_STATUS_GETS_PARA,
     [32][7] = RISK_STATUS_GETS_PARA,
-    [33][6] = RISK_STATUS_GETS_PARA,
-    [33][7] = RISK_STATUS_GETS_PARA,
 
     [16][20] = RISK_PLAYER_LOWER_DAMAGE_ROLLS,
     [16][21] = RISK_PLAYER_LOWER_DAMAGE_ROLLS,
@@ -802,15 +802,15 @@ const enum Risk sRiskMap[64][64] =
     [21][14] = RISK_HAS_GUARANTEED_ACCURACY,
     [21][15] = RISK_HAS_GUARANTEED_ACCURACY,
 
-    [18][14] = RISK_OPPONENT_MOVES_FIRST,
-    [18][15] = RISK_OPPONENT_MOVES_FIRST,
-    [19][14] = RISK_OPPONENT_MOVES_FIRST,
-    [19][15] = RISK_OPPONENT_MOVES_FIRST,
+    [18][16] = RISK_OPPONENT_MOVES_FIRST,
+    [18][17] = RISK_OPPONENT_MOVES_FIRST,
+    [19][16] = RISK_OPPONENT_MOVES_FIRST,
+    [19][17] = RISK_OPPONENT_MOVES_FIRST,
 
-    [18][16] = RISK_OPPONENT_ATTACKS_SWITCHES,
-    [18][17] = RISK_OPPONENT_ATTACKS_SWITCHES,
-    [19][16] = RISK_OPPONENT_ATTACKS_SWITCHES,
-    [19][17] = RISK_OPPONENT_ATTACKS_SWITCHES,
+    [18][14] = RISK_OPPONENT_ATTACKS_SWITCHES,
+    [18][15] = RISK_OPPONENT_ATTACKS_SWITCHES,
+    [19][14] = RISK_OPPONENT_ATTACKS_SWITCHES,
+    [19][15] = RISK_OPPONENT_ATTACKS_SWITCHES,
 
     [16][14] = RISK_HAS_GUARANTEED_EFFECTS,
     [16][15] = RISK_HAS_GUARANTEED_EFFECTS,
