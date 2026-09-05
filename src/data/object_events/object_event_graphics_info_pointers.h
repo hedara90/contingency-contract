@@ -436,6 +436,10 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Ulpianus;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Xaihi;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Zhuang;
 
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CC_Guy;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CC_Girl;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CC_Guard;
+
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
     [OBJ_EVENT_GFX_BRENDAN_NORMAL] =           &gObjectEventGraphicsInfo_BrendanNormal,
     [OBJ_EVENT_GFX_BRENDAN_MACH_BIKE] =        &gObjectEventGraphicsInfo_BrendanMachBike,
@@ -858,6 +862,9 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_ULPIANUS]                 = &gObjectEventGraphicsInfo_Ulpianus,
     [OBJ_EVENT_GFX_XAIHI]                    = &gObjectEventGraphicsInfo_Xaihi,
     [OBJ_EVENT_GFX_ZHUANG]                   = &gObjectEventGraphicsInfo_Zhuang,
+    [OBJ_EVENT_GFX_CC_GIRL]                  = &gObjectEventGraphicsInfo_CC_Girl,
+    [OBJ_EVENT_GFX_CC_GUY]                   = &gObjectEventGraphicsInfo_CC_Guy,
+    [OBJ_EVENT_GFX_CC_GUARD]                 = &gObjectEventGraphicsInfo_CC_Guard,
 };
 
 const struct ObjectEventGraphicsInfo *const gMauvilleOldManGraphicsInfoPointers[] = {
