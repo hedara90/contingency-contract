@@ -1494,6 +1494,71 @@ script CC_Xaihis_Rotom {
     release
 }
 
+const pogcandies = LOCALID_CC_POG_CANDIES
+const pogkid1 = LOCALID_CC_POG_KID_1
+const pogkid2 = LOCALID_CC_POG_KID_2
+const pogkid3 = LOCALID_CC_POG_KID_3
+
+script CC_Pog_Candies {
+    lock
+    applymovement(pogkid1, moves(walk_in_place_down))
+    msgbox("I wanna sour one Mr. Poggers!")
+    closemessage
+    applymovement(pogkid2, moves(walk_in_place_left))
+    msgbox("And I wanna sweet one!")
+    closemessage
+    applymovement(pogkid3, moves(walk_in_place_down))
+    msgbox("Then… then I wanna spicy one!")
+    closemessage
+    faceplayer
+    msgbox("I thought it'd be fun to bring\n"
+            "candies for the kiddos, but…\l"
+            "oh my goodness.\p"
+            "I got mobbed by the little munchkins\n"
+            "as soon as they saw me eat a\l"
+            "gummy worm and they haven't\l"
+            "left me alone since.\p"
+            "This is so much better than battling.\n"
+            "I feel like some kind of hero.")
+    closemessage
+    applymovement(pogcandies, moves(
+        face_up
+        walk_in_place_up))
+    waitmovement
+    msgbox("Never fear, small friends! I have\n"
+            "plenty of options.")
+    release
+}
+
+script CC_Pog_Kid1 {
+    lock
+    faceplayer
+    msgbox("Mr. Poggers is the best.")
+    applymovement(pogkid1, moves(face_down))
+    waitmovement
+    release
+}
+
+script CC_Pog_Kid2 {
+    lock
+    faceplayer
+    msgbox("This man is so nice!")
+    applymovement(pogkid2, moves(face_left))
+    waitmovement
+    release
+}
+
+script CC_Pog_Kid3 {
+    lock
+    faceplayer
+    msgbox("I had broccoli for breakfast, I\n"
+            "definitely deserve some candy!")
+    applymovement(pogkid3, moves(face_down))
+    waitmovement
+    release
+}
+
+
 const gambler = LOCALID_CC_GAMBLER
 const perlica = LOCALID_CC_PERLICA
 
