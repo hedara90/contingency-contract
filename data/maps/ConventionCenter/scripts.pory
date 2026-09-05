@@ -22,6 +22,7 @@ const Event_GilbertaEntrance = FLAG_TEMP_19
 const Event_GilbertaBooth = FLAG_TEMP_18
 const Event_GilbertaCafe = FLAG_TEMP_17
 const chisa = LOCALID_CC_CHISA
+const ardelia = LOCALID_CC_ARDELIA
 const receptionist = LOCALID_CC_RECEPTIONIST
 
 script CC_OnTransition {
@@ -639,87 +640,298 @@ script WelcomeCounter {
 }
 
 script CC_Chisa {
-    
+    lock
+    getobjectcurrentxy(player, CURRENT_POSITION, VAR_TEMP_7, VAR_TEMP_8)
+    callnative(GetMaxClearedRisk)
+    if(var(VAR_RESULT) < 25){
+        goto(CC_Chisa_LowScore)
+    }
+    elif(var(VAR_RESULT) < 32){
+        goto(CC_Chisa_MidScore)
+    }
+    elif (var(VAR_RESULT) < 53){
+        goto(CC_Chisa_HighScore)
+    }
+    else {
+        goto(CC_Chisa_Record)
+    }
 }
 
 script CC_Chisa_LowScore {
     msgbox("Okay lets see... Who do I try out now...")
     switch(var(VAR_CHISA_PARTY)){
         case 0: 
-            msgbox("There's a lot of Double Battles here, so maybe Seismitoad and Altaria? Sounds fun!")
+            msgbox("There's a lot of Double Battles here,\nso maybe Seismitoad and Altaria?\pSounds fun!")
         case 1:
-            msgbox("I did just get Heatran, so maybe I should use him...")
+            msgbox("I did just get Heatran, so maybe I\nshould use him...")
         case 2: 
-            msgbox("Oh yeah! I maxed out Sandslash. His signature move sounds good. Can I set snow, somehow?")
+            msgbox("Oh yeah! I maxed out Sandslash.\pHis signature move sounds good.\nSlush rush... Can I set snow, somehow?")
         case 3:
-            msgbox("Is there a berry that would be good for Mamoswine...")
+            msgbox("Is there a berry that would be good\nfor Mamoswine...")
         case 4:
-            msgbox("I could just bring ol' reliable Corviknight. Can't go wrong with that.")
+            msgbox("I could just bring ol' reliable\nCorviknight.\pCan't go wrong with that.")
         case 5:
-            msgbox("I got a lot of Nidokings, maybe I need to get my hands on a Life Orb")
+            msgbox("I got a lot of Nidokings, huh?\nMaybe I need to get my hands on a\lLife Orb")
         case 6:
-            msgbox("What if I just pair Glaceon with a Webs setter? My options are... Masquerain and Araquanid?")
+            msgbox("What if I just pair Glaceon with\na Webs setter?\pMy options are... Masquerain\nand Araquanid?\lI'm still missing Galvantula.")
         case 7:
-            msgbox("I could use the Burn risk together with Jolteon's Charade. Did just unlock that one...")
+            msgbox("I could use the Burn risk together\nwith Jolteon's Charade.\pDid just unlock that one...")
         case 8:
-            msgbox("This Steelix set looks insane. What were they thinking?")
+            msgbox("This Steelix set looks insane.\nWhat were they thinking?")
         case 9:
-            msgbox("Crobat with Contagion seems cool. Just wish I had him at higher Potential...")
+            msgbox("Crobat with Contagion seems cool.\nJust wish I had him at higher Potential.")
     }
+    if(flag(FLAG_TEMP_2)==TRUE){
+        closemessage
+        release
+        end
+    }
+    closemessage
+    msgbox("You look focused.")
+    closemessage
+    applymovement(chisa, moves(emote_double_exclamation_mark, delay_16*4, face_player))
+    playse(SE_PIN)
+    waitmovement
+    msgbox("Wha- Oh, Tiana!")
+    closemessage
+    applymovement(ardelia, moves(walk_in_place_left))
+    msgbox("She's trying her best.")
+    closemessage
+    applymovement(player, moves(face_right))
+    msgbox("Sounds like it, yes.")
+    closemessage
+    applymovement(chisa, moves(jump_in_place_right))
+    playse(SE_LEDGE)
+    waitmovement
+    msgbox("Hey hey! I got this!")
+    waitmovement
+    if(var(VAR_TEMP_8)==14){
+        applymovement(player, moves(walk_in_place_down))
+    }
+    else {
+        applymovement(player, moves(walk_in_place_up))
+    }
+    msgbox("Deciding on your team?")
+    closemessage
+    applymovement(chisa, moves(face_player))
+    waitmovement
+    msgbox("Yea, there's so many options... ugh...\p"
+            "And I STILL don't have my Garchomp!")
+    closemessage
+    setflag(FLAG_TEMP_2)
+    release
 }
 
 script CC_Chisa_MidScore {
     msgbox("Okay so, if i pick Area Lockdown and then use Pokemon with pivoting moves, I can mitigate that risk...")
+    closemessage
+    applymovement(ardelia, moves(walk_in_place_left))
+    waitmovement
     msgbox("Just take Formation Breaker and then Disabling, Tormenting and Suppressing risks. Way less restrictive.")
+    closemessage
+    applymovement(chisa, moves(walk_in_place_left))
     msgbox("Hmm, that makes the entry hazards more annoying...")
+    waitmessage
+    applymovement(chisa, moves(emote_exclamation_mark, delay_16*2, face_player))
+    playse(SE_PIN)
+    waitmovement
     msgbox("Oh, hey Tiana! Here to help me out?")
+    closemessage
+    if(var(VAR_TEMP_8)==14){
+        applymovement(player, moves(walk_in_place_down))
+    }
+    else {
+        applymovement(player, moves(walk_in_place_up))
+    }
+    waitmovement
     msgbox("Nope, just curious what you're up to")
-    msgbox("She's trying - and failing - to get a score better than 25")
-    msgbox("Hey, shut it! You get to benefit from everything I switch on!")
+    closemessage
+    applymovement(ardelia, moves(walk_in_place_left))
+    msgbox("She's trying - unsuccesfully - to get a score better than 25")
+    closemessage
+    applymovement(chisa, moves(jump_in_place_left))
+    playse(SE_LEDGE)
+    waitmovement
+    msgbox("Hey, that's no fair! You get to benefit from everything I switch on! Why don't you try it then?")
+    closemessage
+    applymovement(ardelia, moves(emote_heart))
+    waitmovement
     msgbox("Fue, you think I am just here as your opponent? I helped test everything! My record is 53.")
-    msgbox("What?? And you aren't helping me??")
-    msgbox("I thought we were friends...")
+    closemessage
+    applymovement(chisa, moves(jump_in_place_left*2))
+    playse(SE_LEDGE)
+    waitse
+    playse(SE_LEDGE)
+    waitmovement
+    msgbox("What?? And you aren't helping me??"
+            "I thought we were friends...")
+    closemessage
+    applymovement(ardelia, moevs(walk_in_place_left))
     msgbox("Well, as per the rules, I can't tell you how I did that.")
-
+    closemessage
+    closemessage
+    if(var(VAR_TEMP_8)==14){
+        applymovement(player, moves(walk_in_place_down))
+    }
+    else {
+        applymovement(player, moves(walk_in_place_up))
+    }
     msgbox("I already beat 25")
+    closemessage
+    applymovement(ardelia, moves(walk_in_place_left))
     msgbox("Oh, good job!")
+    applymovement(chisa, moves(emote_exclamation_mark, delay_16*2, face_player))
+    waitmovement
     msgbox("What!? Oh man, am I always gonna be a step behind you?")
+    waitmessage
+    if(var(VAR_TEMP_8)==14){
+        applymovement(chisa, moves(jump_in_place_up))
+    }
+    else {
+        applymovement(player, moves(jump_in_place_down))
+    }
+    playse(SE_LEDGE)
+    waitmovement
     msgbox("How did you do it! No, wait. Don't tell me. I can do it on my own, just you wait.")
+    waitmessage
+    applymovement(chisa, moves(face_right))
     msgbox("Just gotta figure out which mons to use... There's so many cool ones.")
-    msgbox("")
+    closemessage
+    release
 }
 
 script CC_Chisa_HighScore {
-    msgbox("Tiana! I did it! I got to 32, even!")
+    if(var(VAR_TEMP_8)==14){
+        applymovement(chisa, moves(jump_in_place_up))
+    }
+    else {
+        applymovement(chisa, moves(jump_in_place_down))
+    }
+    playse(SE_LEDGE)
+    waitmovement
+    msgbox("Tiana! I did it! I got to 36, even!")
+    closemessage
+    applymovement(player, moves(emote_heart))
+    waitmovement
+    msgbox("Heh, that's more like you.")
+    closemessage
+    applymovement(chisa, moves(emote_question_mark))
     msgbox("What are you at right now?")
     //if statement here
-    msgbox("Goodness, how do you keep doing that!")
-    msgbox("Well, you did tell me she's just better than you")
-    msgbox("She is. Annoyingly so.")
-
-    //otherwise
-    msgbox("Oohh, so I win!")
-    msgbox("Oh I am not done yet, don't worry")
-    msgbox("Well well, aren't you two in a good mood.")
+    callnative(GetMaxClearedRisk)
+    if(var(VAR_RESULT) < 36){
+        msgbox("Less than that")
+        applymovement(chisa, moves(emote_exclamation_mark))
+        playse(SE_PIN)
+        msgbox("Oohh, so I win!")
+        closemessage
+        if(var(VAR_TEMP_8)==14){
+            applymovement(player, moves(walk_in_place_down))
+        }
+        else {
+            applymovement(player, moves(walk_in_place_up))
+        }
+        msgbox("Oh I am not done yet, don't worry")
+        applymovement(ardelia, moves(walk_in_place_left))
+        msgbox("Well well, aren't you two fired up.")
+        closemessage
+    }
+    else {
+        msgbox("Higher than that!")
+        closemessage
+        applymovement(chisa, moves(emote_exclamation_mark))
+        playse(SE_PIN)
+        waitmovement
+        msgbox("Goodness, how do you keep doing that!")
+        closemessage
+        applymovement(ardelia, moves(walk_in_place_left))
+        applymovement(chisa, moves(face_right))
+        applymovement(player, moves(face_right))
+        msgbox("Well, you did tell me she's just better than you")
+        closemessage
+        applymovement(chisa, moves(walk_in_place_right))
+        msgbox("She is. Annoyingly so.")
+        closemessage
+        applymovement(chisa, moves(jump_in_place_right))
+        playse(SE_LEDGE)
+        waitmovement
+        msgbox("Ohwell, I think I can push it some more!")
+        closemessage
+    }
+    release
+    end
+        
 }
 
 script CC_Chisa_Record {
+    msgbox("Hey Chisa! I beat Ardelia's record!(total risk number here)")
+    closemessage
+    applymovement(chisa, moves(face_player, emote_exclamation_mark))
+    applymovement(ardelia, moves(emote_exclamation_mark))
     msgbox("You beat WHAT? I didn't think that was possible!")
-    msgbox("Sheesh, you've even got me beat")
+    applymovement(ardelia, moves(walk_in_place_left))
+    applymovement(player, moves(face_right))
+    msgbox("Sheesh, I didn't think anyone would be able to do that. That's incredibly impressive.")
+    closemessage
+    if(var(VAR_TEMP_8)==14){
+            applymovement(player, moves(face_down))
+            applymovement(chisa, moves(walk_in_place_up))
+        }
+        else {
+            applymovement(player, moves(face_up))
+            applymovement(player, moves(walk_in_place_down))
+        }
+        waitmovement
     msgbox("I don't think I'll hit that. 38 was challenging enough for me...")
+    closemessage
+        if(var(VAR_TEMP_8)==14){
+            applymovement(player, moves(walk_in_place_down))
+        }
+        else {
+            applymovement(player, moves(walk_in_place_up))
+        }
+        waitmovement
+    msgbox("Hey, that's still really good!")
+    closemessage
+    applymovement(ardelia, moves(walk_in_place_left))
+    waitmovement
+    msgbox("Yeah, you should be proud of that.")
+    closemessage
+    applymovement(chisa, moves(faceplayer))
     msgbox("Anyway! I think I'll raise a Crobat. Never realized how cool this guy is.")
+    closemessage
+}
+
+script CC_Ardelia {
+    lock
+    //if statement
+    goto(CC_Ardelia_ChisaNotHere)
+    //else
+    goto(CC_Ardelia_ChisaHere)
 }
 
 script CC_Ardelia_ChisaNotHere {
+    faceplayer
     msgbox("Oh hey there. Tiana, right? Chisa's told me all about you, we're basically friends now."
         "She's currently trying her luck again. Maybe this time..."
         "Anyway, I look forward to facing you!")
+    closemessage
+    release
+
 }
 
 script CC_Ardelia_ChisaHere {
+    faceplayer
     msgbox("It's kinda fun to see her come up with strategies")
+    waitmessage
+    applymovement(ardelia, moves(face_left))
     msgbox("Even though they aren't very sound most of the time")
+    closemessage
+    applymovement(chisa, moves(emote_exclamation_mark))
+    playse(SE_PIN)
     msgbox("I can hear you, you know!")
+    closemessage
+    release
 }
 
 script CC_Dragons {
