@@ -1,6 +1,7 @@
 mapscripts ConventionCenter_MapScripts {
     MAP_SCRIPT_ON_TRANSITION: CC_OnTransition
     MAP_SCRIPT_ON_RESUME {
+        callnative(GenerateRandomDancers)
         if (flag(FLAG_QUEUE_LOADED) == TRUE) {
             callnative(CreateQueue)
         }
@@ -819,21 +820,27 @@ script ChooseGauntlet {
         release
         end
     case 1:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_CRISIS_TEAM, 14, 11)
         waitstate
     case 2:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_WULING, 14, 11)
         waitstate
     case 3:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_RECONVENERS, 14, 11)
         waitstate
     case 4:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_ABYSSAL_HUNTERS, 14, 11)
         waitstate
     case 5:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_AK_YELLOW, 14, 11)
         waitstate
     case 6:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_AK_GREEN, 14, 11)
         waitstate
     default:

@@ -81,7 +81,8 @@ static EWRAM_DATA u16 sMovingNpcMapGroup = 0;
 static EWRAM_DATA u16 sMovingNpcMapNum = 0;
 static EWRAM_DATA u16 sFieldEffectScriptId = 0;
 
-static EWRAM_DATA u8 sQueueTurnTask = 0;
+static EWRAM_DATA u8 sQueueTurnTaskId = 0;
+static EWRAM_DATA u8 sDancerTurnTaskId = 0;
 
 static u8 sBrailleWindowId;
 static bool8 sIsScriptedWildDouble;
@@ -3700,13 +3701,13 @@ void CreateQueue(void)
     {
         CreateVirtualObject(sQueueClerks[i][0], sizeof(sQueueCoord) / 3 + i, sQueueClerks[i][1], sQueueClerks[i][2], 3, sQueueClerks[i][3]);
     }
-    sQueueTurnTask = CreateTask(Task_TurnQueuers, 1);
-    gTasks[sQueueTurnTask].data[0] = 15;
+    sQueueTurnTaskId = CreateTask(Task_TurnQueuers, 1);
+    gTasks[sQueueTurnTaskId].data[0] = 15;
 }
 
 void DestroyQueue(void)
 {
-    DestroyTask(sQueueTurnTask);
+    DestroyTask(sQueueTurnTaskId);
     for (u32 i = 0; i < sizeof(sQueueCoord) / 3 + 3; i++)
     {
         s32 spriteId = GetVirtualObjectSpriteId(i);
@@ -3730,20 +3731,122 @@ const u16 sNonQueueVObjects[][4] =
     {OBJ_EVENT_GFX_ACOLYTE_F, 44, 20, DIR_WEST},
 };
 
+const u16 sDanceFloorDancers[] =
+{
+    OBJ_EVENT_GFX_MONK,
+    OBJ_EVENT_GFX_PRAYERGIRL,
+    OBJ_EVENT_GFX_ARCANE,
+    OBJ_EVENT_GFX_ARDELIA,
+    OBJ_EVENT_GFX_CARNELIAN,
+    OBJ_EVENT_GFX_CHEN,
+    OBJ_EVENT_GFX_ELYSIUM,
+    OBJ_EVENT_GFX_ENDMIN,
+    OBJ_EVENT_GFX_FIAMETTA,
+    OBJ_EVENT_GFX_GILBERTA,
+    OBJ_EVENT_GFX_GLADIIA,
+    OBJ_EVENT_GFX_IRENE,
+    OBJ_EVENT_GFX_LAEVATAIN,
+    OBJ_EVENT_GFX_MIFU,
+    OBJ_EVENT_GFX_NIAN,
+    OBJ_EVENT_GFX_PENANCE,
+    OBJ_EVENT_GFX_PERLICA,
+    OBJ_EVENT_GFX_POG,
+    OBJ_EVENT_GFX_PRAMANIX,
+    OBJ_EVENT_GFX_SHU,
+    OBJ_EVENT_GFX_SKADI,
+    OBJ_EVENT_GFX_SPECTER,
+    OBJ_EVENT_GFX_TANGTANG,
+    OBJ_EVENT_GFX_ULPIANUS,
+    OBJ_EVENT_GFX_XAIHI,
+    OBJ_EVENT_GFX_ZHUANG,
+    OBJ_EVENT_GFX_CC_GUY,
+    OBJ_EVENT_GFX_CC_GIRL,
+    OBJ_EVENT_GFX_CC_GUY,
+    OBJ_EVENT_GFX_CC_GIRL,
+    OBJ_EVENT_GFX_CC_GUY,
+    OBJ_EVENT_GFX_CC_GIRL,
+    OBJ_EVENT_GFX_CC_GUY,
+    OBJ_EVENT_GFX_CC_GIRL,
+    OBJ_EVENT_GFX_CC_GUY,
+    OBJ_EVENT_GFX_CC_GIRL,
+    OBJ_EVENT_GFX_CC_GUY,
+    OBJ_EVENT_GFX_CC_GIRL,
+};
+
+const u8 sDanceFloorPositions[][3] =
+{
+    {18, 5, DIR_SOUTH},
+    {14, 7, DIR_NORTH},
+    {13, 9, DIR_WEST},
+    {12, 10, DIR_EAST},
+    {10, 6, DIR_SOUTH},
+};
+
+EWRAM_DATA u16 sRandomDancers[sizeof(sDanceFloorPositions) / 3] = {0};
+
+void Task_TurnDancers(u8 taskId)
+{
+    for (u32 i = 0; i < NELEMS(sRandomDancers); i++)
+    {
+        if (gTasks[taskId].data[i] > 0)
+        {
+            gTasks[taskId].data[i]--;
+        }
+        else
+        {
+            TurnVirtualObject((sizeof(sNonQueueVObjects) / 8) + i, 1 + (Random32() % 4));
+            gTasks[taskId].data[i] = 30 + (Random32() % 60);
+        }
+    }
+}
+
 void CreateOtherVObjects(void)
 {
     for (u32 i = 0; i < sizeof(sNonQueueVObjects) / 8; i++)
     {
         CreateVirtualObject(sNonQueueVObjects[i][0], i, sNonQueueVObjects[i][1], sNonQueueVObjects[i][2], 3, sNonQueueVObjects[i][3]);
     }
+
+    for (u32 i = 0; i < sizeof(sDanceFloorPositions) / 3; i++)
+    {
+        CreateVirtualObject(sRandomDancers[i], (sizeof(sNonQueueVObjects) / 8) + i, sDanceFloorPositions[i][0], sDanceFloorPositions[i][1], 5, sDanceFloorPositions[i][2]);
+    }
+
+    sDancerTurnTaskId = CreateTask(Task_TurnDancers, 1);
+    for (u32 i = 0; i < NELEMS(sRandomDancers); i++)
+    {
+        gTasks[sDancerTurnTaskId].data[i] = 30 + (Random32() % 60);
+    }
 }
 
 void DestroyOther(void)
 {
-    for (u32 i = 0; i < sizeof(sNonQueueVObjects) / 8; i++)
+    DestroyTask(sDancerTurnTaskId);
+    for (u32 i = 0; i < sizeof(sNonQueueVObjects) / 8 + sizeof(sDanceFloorPositions) / 3; i++)
     {
         s32 spriteId = GetVirtualObjectSpriteId(i);
         DestroySprite(&gSprites[spriteId]);
+    }
+}
+
+void GenerateRandomDancers(void)
+{
+    if (sRandomDancers[0] != 0)
+    {
+        return;
+    }
+
+    for (u32 i = 0; i < NELEMS(sRandomDancers); i++)
+    {
+        sRandomDancers[i] = sDanceFloorDancers[Random32() % (NELEMS(sDanceFloorDancers))];
+    }
+}
+
+void RegenerateRandomDancers(void)
+{
+    for (u32 i = 0; i < NELEMS(sRandomDancers); i++)
+    {
+        sRandomDancers[i] = sDanceFloorDancers[Random32() % (NELEMS(sDanceFloorDancers))];
     }
 }
 
