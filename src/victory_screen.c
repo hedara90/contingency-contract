@@ -253,6 +253,22 @@ void VictoryScreen_Init(MainCallback callback, enum Gauntlet gauntlet, bool32 fr
                 }
             }
         }
+        if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM)
+         || gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_SINGLES)
+         || gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_DOUBLES))
+        {
+            for (u32 i = 0; i < 4; i++)
+            {
+                sVictoryScreenState->trainerIds[i] = i + 1;
+            }
+        }
+        else
+        {
+            for (u32 i = 0; i < 4; i++)
+            {
+                sVictoryScreenState->trainerIds[i] = TRAINER_NONE;
+            }
+        }
     }
 
     SetMainCallback2(VictoryScreen_SetupCB);
@@ -442,11 +458,23 @@ static void VictoryScreen_FreeResources(void)
                     win->species[i] = sVictoryScreenState->species[i];
                     win->numDupes[i] = sVictoryScreenState->numDupes[i];
                 }
-                u8 arr[4];
-                BuildRandomTrainerArray(arr, sVictoryScreenState->gauntlet);
-                for (u32 i = 0; i < 4; i++)
+                if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM)
+                 || gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_SINGLES)
+                 || gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_DOUBLES))
                 {
-                    win->foes[i] = arr[i];
+                    u8 arr[4];
+                    BuildRandomTrainerArray(arr, sVictoryScreenState->gauntlet);
+                    for (u32 i = 0; i < 4; i++)
+                    {
+                        win->foes[i] = arr[i];
+                    }
+                }
+                else
+                {
+                    for (u32 i = 0; i < 4; i++)
+                    {
+                        win->foes[i] = TRAINER_NONE;
+                    }
                 }
             }
         }
@@ -882,10 +910,13 @@ const u16 sTrainerToGfxMap[] =
     [TRAINER_IRENE] = OBJ_EVENT_GFX_IRENE,
 };
 
-static void VictoryScreen_ShowTrainers()
+static void VictoryScreen_ShowTrainers(void)
 {
     for (u32 i = 0; i < 4; i++)
     {
-        const struct ObjectEventGraphicsInfo *info = GetObjectEventGraphicsInfo(sTrainerToGfxMap[sVictoryScreenState->trainerIds[i]]);
+        if (sVictoryScreenState->trainerIds[i] != TRAINER_NONE)
+        {
+            CreateObjectGraphicsSprite(sTrainerToGfxMap[sVictoryScreenState->trainerIds[i]], SpriteCB_Dummy, 120 + 16 * i, 20, 0);
+        }
     }
 }
