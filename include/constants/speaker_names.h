@@ -22,7 +22,7 @@ enum SpeakerNames {
     SP_NAME_NIAN,
     SP_NAME_PENANCE,
     SP_NAME_PERLICA,
-    SP_NAME_POGRANICHNIK,
+    SP_NAME_POG,
     SP_NAME_PRAMANIX,
     SP_NAME_SHU,
     SP_NAME_SKADI,
@@ -32,6 +32,7 @@ enum SpeakerNames {
     SP_NAME_XAIHI,
     SP_NAME_ZHUANG,
     SP_NAME_TIANA,
+    SP_NAME_GUARD,
     SP_NAME_COUNT,
 };
 

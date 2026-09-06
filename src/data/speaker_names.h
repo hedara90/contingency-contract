@@ -19,7 +19,7 @@ const u8 *const gSpeakerNamesTable[SP_NAME_COUNT] =
     [SP_NAME_NIAN] = COMPOUND_STRING("Nian"),
     [SP_NAME_PENANCE] = COMPOUND_STRING("Penance"),
     [SP_NAME_PERLICA] = COMPOUND_STRING("Perlica"),
-    [SP_NAME_POGRANICHNIK] = COMPOUND_STRING("Pogranichnik"),
+    [SP_NAME_POG] = COMPOUND_STRING("Pogranichnik"),
     [SP_NAME_PRAMANIX] = COMPOUND_STRING("Pramanix"),
     [SP_NAME_SHU] = COMPOUND_STRING("Shu"),
     [SP_NAME_SKADI] = COMPOUND_STRING("Skadi"),
@@ -29,4 +29,5 @@ const u8 *const gSpeakerNamesTable[SP_NAME_COUNT] =
     [SP_NAME_XAIHI] = COMPOUND_STRING("Xaihi"),
     [SP_NAME_ZHUANG] = COMPOUND_STRING("Zhuang Fangyi"),
     [SP_NAME_TIANA] = COMPOUND_STRING("Tiana"),
+    [SP_NAME_GUARD] = COMPOUND_STRING("Security")
 };
