@@ -435,6 +435,9 @@ const u32 gObjectEventPic_TangTang[]      = INCGFX_U32("graphics/object_events/p
 const u32 gObjectEventPic_Xaihi[]         = INCGFX_U32("graphics/object_events/pics/people/arknights/Xaihi.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u32 gObjectEventPic_Zhuang[]        = INCGFX_U32("graphics/object_events/pics/people/arknights/Zhuang.png", ".4bpp", "-mwidth 4 -mheight 4");
 
+const u32 gObjectEventPic_Nian_NoTail[]          = INCGFX_U32("graphics/object_events/pics/people/arknights/nian_notail.png", ".4bpp", "-mwidth 4 -mheight 4");
+const u32 gObjectEventPic_Tail_Nian[]          = INCGFX_U32("graphics/object_events/pics/people/arknights/tail_nian.png", ".4bpp", "-mwidth 2 -mheight 4");
+
 const u16 gObjectEventPal_CC_Girl[] = INCGFX_U16("graphics/object_events/palettes/cc_girl.pal", ".gbapal");
 
 const u32 gObjectEventPic_CC_Guy[]        = INCGFX_U32("graphics/object_events/pics/people/arknights/guy.png", ".4bpp", "-mwidth 2 -mheight 4");
