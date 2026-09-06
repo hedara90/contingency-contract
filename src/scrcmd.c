@@ -3684,6 +3684,22 @@ bool8 OpenPartyGauntlet(struct ScriptContext *ctx)
     return TRUE;
 }
 
+void GetMaxClearedRisk(void)
+{
+    u32 maxRisks = 0;
+    struct Risks savedRisk = gSaveBlock1Ptr->risks;
+    for (enum Gauntlet gauntlet = 0; gauntlet < GAUNTLET_COUNT; gauntlet++)
+    {
+        gSaveBlock1Ptr->risks = gSaveBlock1Ptr->wins[gauntlet].risks;
+        u32 currValue = GetTotalTiskValue();
+        if (currValue > maxRisks)
+        {
+            maxRisks = currValue;
+        }
+    }
+    gSaveBlock1Ptr->risks = savedRisk;
+    gSpecialVar_Result = maxRisks;
+}
 const u16 sSpectatorGfx[] =
 {
     OBJ_EVENT_GFX_SATSUKI,

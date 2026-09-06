@@ -81,19 +81,32 @@ script AKYellow_Shu {
 }
 
 text ShuBeforeBattle {
-    "Hello"
+    "Who am I? The answer lies only in\n"
+    "all that I've seen. The same way\l"
+    "seeds are inanimate, and yet they\l"
+    "germinate after you put them in the\l"
+    "ground.\p"
+    "You wonder what it's like?\p"
+    "Hehe, take a deep breath and\n"
+    "you've more or less felt it."
 }
 
 text ShuAfterBattle {
-    ""
+    "Spring breeze, timely rain; now we\n"
+    "sow the grain."
 }
 
 text ShuAfterBattle_Win {
-    ""
+    "A day of fine sun and gentle breeze.\n"
+    "I hope everyone makes it home\l"
+    "safe."
 }
 
 text ShuAfterBattle_Lose {
-    ""
+    "All life requires both sunlight and\n"
+    "water to grow. I don't think\l"
+    "you've had your ten cups of water\l"
+    "yet today."
 }
 
 script AKYellow_Nian {
@@ -113,19 +126,29 @@ script AKYellow_Nian {
 }
 
 text NianBeforeBattle {
-    "Hello"
+    "That lame look of yours is grinding\n"
+    "my gears… Here, have a battle\l"
+    "to lighten up!"
 }
 
 text NianAfterBattle {
-    ""
+    "Maaan, I'm so hungry…"
 }
 
 text NianAfterBattle_Win {
-    ""
+    "I used to just focus myself on what\n"
+    "I needed for daily life, but I'm\l"
+    "the type to really absorb my\l"
+    "surroundings.\p"
+    "And somehow or other I keep getting\n"
+    "into fights. This was a great one,\l"
+    "though!"
 }
 
 text NianAfterBattle_Lose {
-    ""
+    "If you're out of touch with reality,\n"
+    "you'll end up crushed beneath its\l"
+    "boot, sooner or later."
 }
 
 script AKYellow_Elysium {
@@ -145,19 +168,27 @@ script AKYellow_Elysium {
 }
 
 text ElysiumBeforeBattle {
-    "Hello"
+    "Lost? No worries, tell me where you\n"
+    "wanna go."
 }
 
 text ElysiumAfterBattle {
-    ""
+    "There's no overstating the importance\n"
+    "of communication when battling."
 }
 
 text ElysiumAfterBattle_Win {
-    ""
+    "Why does everyone prefer looking at\n"
+    "a map over asking me for\l"
+    "directions? The captain says my\l"
+    "glib tone gets on people's nerves.\p"
+    "But that can't be, I always treat\n"
+    "everyone with perfect kindness!"
 }
 
 text ElysiumAfterBattle_Lose {
-    ""
+    "On the battlefield, few things are\n"
+    "more important than morale."
 }
 
 script AKYellow_Irene {
@@ -177,23 +208,31 @@ script AKYellow_Irene {
 }
 
 text IreneBeforeBattle {
-    "Hello"
+    "Hm… Are these all your operators? Is\n"
+    "it just me or do some of them seem\l"
+    "like an actual security risk?\p"
+    "Alright, fine. I will try my best to\n"
+    "focus on their combat techniques…"
 }
 
 text IreneAfterBattle {
-    ""
+    "Keep an eye out for the\n"
+    "tides and mist."
 }
 
 text IreneAfterBattle_Win {
-    ""
+    "I have to get back to my handcannon\n"
+    "practice once I'm done with my work\l"
+    "here.\p"
+    "Good luck in the battles\n"
+    "ahead!"
 }
 
 text IreneAfterBattle_Lose {
-    ""
+    "The scriptures tell us the light of\n"
+    "an Inquisitor's lantern is the light\l"
+    "of faith within our hearts. When an\l"
+    "Inquisitor lays down judgment, her\l"
+    "ruling should be based not on law,\l"
+    "but instead her own heart."
 }
-
-
-text AKYellowAfter {
-    "After battle."
-}
-

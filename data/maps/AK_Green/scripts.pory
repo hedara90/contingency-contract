@@ -81,19 +81,28 @@ script AKGreen_Carnelian {
 }
 
 text CarnelianBeforeBattle {
-    "Hello"
+    "Greetings… Let's forgo the bothersome\n"
+    "formalities and get this thing\l"
+    "started."
 }
 
 text CarnelianAfterBattle {
-    ""
+    "I see. These are tactics worth\n"
+    "studying."
 }
 
 text CarnelianAfterBattle_Win {
-    ""
+    "My little sister sometimes talks in\n"
+    "her sleep. This one time, I even\l"
+    "caught her talking bad about me.\p"
+    "Makes me wonder what others might\n"
+    "be talking about while snoozing."
 }
 
 text CarnelianAfterBattle_Lose {
-    ""
+    "It's been a long time since my blood\n"
+    "boiled like this. Thank you for the\l"
+    "battle."
 }
 
 script AKGreen_Penance {
@@ -113,19 +122,28 @@ script AKGreen_Penance {
 }
 
 text PenanceBeforeBattle {
-    "Hello"
+    "Whether or not you are burdened by\n"
+    "a criminal record is unimportant to\l"
+    "me. All I ask is that in this coming\l"
+    "battle, our goals might be aligned."
 }
 
 text PenanceAfterBattle {
-    ""
+    "What the law does not specify, I\n"
+    "will reveal through practice."
 }
 
 text PenanceAfterBattle_Win {
-    ""
+    "I am fighting for more than just the\n"
+    "law. Also the justice and virtue\l"
+    "that extend beyond it. The law is\l"
+    "a means, not an end."
 }
 
 text PenanceAfterBattle_Lose {
-    ""
+    "Even a crime-ridden swamp is not\n"
+    "beyond salvation. Thank you\l"
+    "for reminding me of this fact."
 }
 
 script AKGreen_Pramanix {
@@ -145,19 +163,26 @@ script AKGreen_Pramanix {
 }
 
 text PramanixBeforeBattle {
-    "Hello"
+    "Wasting time on trivial affairs is\n"
+    "what I call slacking off. What I'm\l"
+    "doing right now is…\p"
+    "Taking the opportunity to recharge."
 }
 
 text PramanixAfterBattle {
-    ""
+    "Work hard, play hard, right? Don't\n"
+    "force all those rigid rules on me."
 }
 
 text PramanixAfterBattle_Win {
-    ""
+    "You have my blessings on the path\n"
+    "ahead."
 }
 
 text PramanixAfterBattle_Lose {
-    ""
+    "These powers are a gift from the\n"
+    "Holy Mountain. It was simple,\l"
+    "thanks to the Spirits' power."
 }
 
 script AKGreen_Fiametta {
@@ -177,22 +202,27 @@ script AKGreen_Fiametta {
 }
 
 text FiamettaBeforeBattle {
-    "Hello"
+    "I tried using guns before, but it\n"
+    "didn't pan out, so I gave up.\p"
+    "What, are you surprised? Guns aren't\n"
+    "some huge mystery, but they need\l"
+    "practice."
 }
 
 text FiamettaAfterBattle {
-    ""
+    "There's no fluking between success\n"
+    "and failure."
 }
 
 text FiamettaAfterBattle_Win {
-    ""
+    "Can people really cut everything\n"
+    "loose without looking back, even\l"
+    "shatter the order that was there,\l"
+    "all to chase ideals?\p"
+    "Y'know what… maybe they can."
 }
 
 text FiamettaAfterBattle_Lose {
-    ""
-}
-
-
-text AKGreenAfter {
-    "After battle."
+    "Sorry, forgot to hold back. Better\n"
+    "luck next time."
 }

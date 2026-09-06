@@ -53,12 +53,12 @@
 
 #define FLAG_QUEUE_LOADED    0x20
 #define FLAG_OTHER_LOADED    0x21
-#define FLAG_UNUSED_0x022    0x22 // Unused Flag
-#define FLAG_UNUSED_0x023    0x23 // Unused Flag
-#define FLAG_UNUSED_0x024    0x24 // Unused Flag
-#define FLAG_UNUSED_0x025    0x25 // Unused Flag
-#define FLAG_UNUSED_0x026    0x26 // Unused Flag
-#define FLAG_UNUSED_0x027    0x27 // Unused Flag
+#define FLAG_GLADIIA    0x22 // Unused Flag
+#define FLAG_MIFU_EVENT    0x23 // Unused Flag
+#define FLAG_CARNELIAN    0x24 // Unused Flag
+#define FLAG_JOHNENDFIELD    0x25 // Unused Flag
+#define FLAG_INTRO    0x26 // Unused Flag
+#define FLAG_CHISA_CC    0x27 // Unused Flag
 #define FLAG_UNUSED_0x028    0x28 // Unused Flag
 #define FLAG_UNUSED_0x029    0x29 // Unused Flag
 #define FLAG_UNUSED_0x02A    0x2A // Unused Flag
