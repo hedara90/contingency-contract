@@ -1325,14 +1325,6 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "NULL"
-    },
-    {
-      "type": "hidden_item",
-      "x": 32,
-      "y": 9,
-      "elevation": 0,
-      "item": "ITEM_NONE",
-      "flag": "FLAG_HIDDEN_ITEM_49_CURRENCY"
     }
   ]
 }
