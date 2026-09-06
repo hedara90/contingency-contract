@@ -115,7 +115,9 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
             if (newKeys & START_BUTTON)
                 input->pressedStartButton = TRUE;
             if (newKeys & SELECT_BUTTON)
-                input->pressedSelectButton = TRUE;
+            {
+                ScriptContext_SetupScript(TianaHappy);
+            }
             if (newKeys & A_BUTTON)
                 input->pressedAButton = TRUE;
             if (newKeys & B_BUTTON)
@@ -298,19 +300,6 @@ static bool8 TryStartInteractionScript(struct MapPosition *position, u16 metatil
      && script != SecretBase_EventScript_RecordMixingPC
      && script != SecretBase_EventScript_DollInteract
      && script != SecretBase_EventScript_CushionInteract
-     && script != LastQueuer
-     && script != EightToLastQueuer
-     && script != SixteenToLastQueuer
-     && script != EighteenToLastQueuer
-     && script != PayingQueuer
-     && script != MonBanners
-     && script != ItemBanner
-     && script != EventScript_PC
-     && script != ChubbyLung1
-     && script != ChubbyLung2
-     && script != ChubbyLung3
-     && script != ChubbyLung4
-     && script != ChubbyLung5
      && script != Library_PC)
         PlaySE(SE_SELECT);
 

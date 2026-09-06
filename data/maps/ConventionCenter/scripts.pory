@@ -1,6 +1,7 @@
 mapscripts ConventionCenter_MapScripts {
     MAP_SCRIPT_ON_TRANSITION: CC_OnTransition
     MAP_SCRIPT_ON_RESUME {
+        callnative(GenerateRandomDancers)
         if (flag(FLAG_QUEUE_LOADED) == TRUE) {
             callnative(CreateQueue)
         }
@@ -320,7 +321,12 @@ script ChubbyLung1 {
     lock
     applymovement(player, ContestHall_Movement_Heart)
     waitmovement
-    msgbox("It's a big Chubby Lung!")
+    setspeaker(SP_NAME_PLAYER)
+    if (flag(Event_GilbertaEntrance)) {
+        msgbox("(It's a big Chubby Lung!)\p(But why does it look a bit deflated?)")
+    } else {
+        msgbox("(It's a big Chubby Lung!)\p(But it's not looking too good with\nsomeone standing on it.)")
+    }
     waitmessage
     release
     end
@@ -328,7 +334,10 @@ script ChubbyLung1 {
 
 script ChubbyLung2 {
     lock
-    msgbox("It's a big Chubby Lung!")
+    applymovement(player, ContestHall_Movement_Heart)
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("(It's a big Chubby Lung!)\p(It's sooo grumpy and cute!)")
     waitmessage
     release
     end
@@ -336,23 +345,72 @@ script ChubbyLung2 {
 
 script ChubbyLung3 {
     lock
-    msgbox("It's a big Chubby Lung!")
+    applymovement(player, ContestHall_Movement_Heart)
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("(It's a big Chubby Lung!)\p(I wonder if I could fit one of these in\nmy room…)")
     waitmessage
     release
     end
 }
 
+//  I'm doing scripts here to no conflicts with others
+script TianaHappy {
+    getobjectfacingdirection(player, VAR_RESULT)
+    switch(var(VAR_RESULT)) {
+    case DIR_NORTH:
+        applymovement(player, moves(emote_heart, jump_in_place_up))
+    case DIR_SOUTH:
+        applymovement(player, moves(emote_heart, jump_in_place_down))
+    case DIR_EAST:
+        applymovement(player, moves(emote_heart, jump_in_place_right))
+    case DIR_WEST:
+        applymovement(player, moves(emote_heart, jump_in_place_left))
+    }
+    waitmovement
+    msgbox("(This is so exciting!)")
+    closemessage
+}
+
 script ChubbyLung4 {
     lock
-    msgbox("It's a big Chubby Lung!")
-    waitmessage
+    applymovement(player, ContestHall_Movement_Heart)
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("(It's a big Chubby Lung!)\p(The side of it looks a bit charred…)")
+    getobjectfacingdirection(player, VAR_RESULT)
+    switch(var(VAR_RESULT)) {
+    default:
+        closemessage
+    case DIR_EAST:
+        closemessage
+        applymovement(player, moves(face_up, delay_16 * 2, face_right))
+        waitmovement
+        setspeaker(SP_NAME_PLAYER)
+        msgbox("(Best not to think about it too hard…)")
+        closemessage
+    }
     release
     end
 }
 
 script ChubbyLung5 {
     lock
-    msgbox("It's a big Chubby Lung!")
+    applymovement(player, ContestHall_Movement_Heart)
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("(It's a big Chubby Lung!)")
+    getobjectfacingdirection(player, VAR_RESULT)
+    switch(var(VAR_RESULT)) {
+    case DIR_SOUTH:
+        applymovement(player, moves(face_left, delay_16 * 2, face_up, delay_16 * 2, face_right, delay_16 * 2, face_down))
+        waitmovement
+    default:
+        applymovement(player, moves(face_down, delay_16 * 2, face_left, delay_16 * 2, face_up, delay_16 * 2, face_right))
+        waitmovement
+    }
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("The adult Chubby Lung watches as the\ntiny Chubby Lungs are taking their\lfirst steps into the greater world.\pIt's proud of them and hope that they\nwill get good homes.")
     waitmessage
     release
     end
@@ -401,7 +459,7 @@ script CC_Credits {
 }
 
 script PlayStageMusic {
-    playbgm(MUS_CREDITS, FALSE)
+    playbgm(MUS_ART_OF_BLADE, FALSE)
     setvar(VAR_MUSIC_CHECKER, 1)
 }
 
@@ -526,6 +584,20 @@ script SatsukiPaying {
     return
 }
 
+script ChisaQueueTalk {
+    setspeaker(SP_NAME_CHISA)
+    msgbox("Tiana… This queue is sooooo sloooow!\pI'm missing out on sooooo many battles.")
+    closemessage
+    applymovement(player, moves(face_left, delay_16 * 3, face_right, delay_16 *2, face_down))
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Maybe it'll speed up soon?")
+    setspeaker(SP_NAME_CHISA)
+    msgbox("Yea…  I hope so… ")
+    waitmessage
+    return
+}
+
 script LastQueuer {
     lock
     getvobjectgfxtag(0)
@@ -554,6 +626,11 @@ script EightToLastQueuer {
         msgbox("Satsuki? Why are you here?")
         turnvobject(7, DIR_NORTH)
         call(SatsukiTalk)
+    case OBJ_EVENT_GFX_CHISA:
+        setspeaker(SP_NAME_PLAYER)
+        msgbox("Chisa! How goes the queuing?")
+        turnvobject(7, DIR_NORTH)
+        call(ChisaQueueTalk)
     default:
         turnvobject(7, DIR_NORTH)
         msgbox("I hope this queue goes fast…")
@@ -777,21 +854,27 @@ script ChooseGauntlet {
         release
         end
     case 1:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_CRISIS_TEAM, 14, 11)
         waitstate
     case 2:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_WULING, 14, 11)
         waitstate
     case 3:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_RECONVENERS, 14, 11)
         waitstate
     case 4:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_ABYSSAL_HUNTERS, 14, 11)
         waitstate
     case 5:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_AK_YELLOW, 14, 11)
         waitstate
     case 6:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_AK_GREEN, 14, 11)
         waitstate
     default:
