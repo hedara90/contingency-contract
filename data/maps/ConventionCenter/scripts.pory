@@ -34,6 +34,8 @@ script CC_OnTransition {
     if(flag(FLAG_SATSUKI_QUEUED)== FALSE){
         setflag(FLAG_SATSUKI)
     }
+    // hideobjectat(LOCALID_CC_TAIL, MAP_CONVENTION_CENTER)
+    setflag(FLAG_TAIL)
 }
 
 script CC_GilbertaEvent {
@@ -95,13 +97,13 @@ script CC_PickRandomEvents {
             setflag(FLAG_LAEVATAIN_SHOOT)
             clearflag(FLAG_LAEVATAIN_EATING)
     }
-    random(3)
-    switch(var(VAR_RESULT)){
-        case 0:
-            setflag(FLAG_DRAGONS)
-        default:
-            clearflag(FLAG_DRAGONS)
-    }
+    // random(3)
+    // switch(var(VAR_RESULT)){
+    //     case 0:
+    //         setflag(FLAG_DRAGONS)
+    //     default:
+    //         clearflag(FLAG_DRAGONS)
+    // }
     random(2)
     switch(var(VAR_RESULT)){
         case 0:
@@ -1165,6 +1167,14 @@ script CC_Ardelia_ChisaHere {
     release
 }
 
+script CC_Test {
+    lock
+    spinmorph(LOCALID_CC_NIAN, OBJ_EVENT_GFX_NIAN_TAILLESS)
+    addobject(LOCALID_CC_TAIL)
+    clearflag(FLAG_TAIL)
+    release
+}
+
 script CC_Dragons {
     lock
     if(flag(FLAG_DRAGON_TALK)==TRUE){
@@ -1190,7 +1200,7 @@ script CC_Dragons {
     waitmovement
     setspeaker(SP_NAME_SHU)
     msgbox("Yeah! Normally it's the same color\nas yours.\p"
-            "We even had to dye the hair to match\nShu's pattern")
+            "We even had to dye the hair to match\nShu's pattern.")
     closemessage
     applymovement(zhuang, moves(emote_exclamation_mark))
     waitmovement
@@ -1219,10 +1229,15 @@ script CC_Dragons {
     setspeaker(SP_NAME_NIAN)
     msgbox("Mine? Yeah, technically I suppose.")
     closemessage
-    fadescreen(FADE_TO_BLACK)
-    msgbox("Nian takes off her tail")
-    closemessage
-    fadescreen(FADE_FROM_BLACK)
+    // fadescreen(FADE_TO_BLACK)
+    // msgbox("Nian takes off her tail")
+    // closemessage
+    // fadescreen(FADE_FROM_BLACK)
+
+    spinmorph(LOCALID_CC_NIAN, OBJ_EVENT_GFX_NIAN_TAILLESS)
+    delay(30)
+    addobject(LOCALID_CC_TAIL)
+    clearflag(FLAG_TAIL)
     setspeaker(SP_NAME_NIAN)
     msgbox("But it's also made of foam.\nI'm just a regular ol' human after all.\p"
             "I just pop it on my back with\nsome magnets, and there's a harness\lunder my outfit it attaches to.")
@@ -1235,6 +1250,10 @@ script CC_Dragons {
     setspeaker(SP_NAME_ZHUANG)
     msgbox("You can say that, yeah.")
     waitmessage
+    spinmorph(LOCALID_CC_NIAN, OBJ_EVENT_GFX_NIAN)
+    delay(30)
+    removeobject(LOCALID_CC_TAIL)
+    setflag(FLAG_TAIL)
     applymovement(zhuang, moves(face_right))
     msgbox("It never occured to me that it wasn't\nactually moving.")
     waitmessage
