@@ -3953,6 +3953,15 @@ void GetNextBattlerName(void)
     case MAP_NUM(MAP_RECONVENERS):
         oppPtr = sOpponents[2];
         break;
+    case MAP_NUM(MAP_ABYSSAL_HUNTERS):
+        oppPtr = sOpponents[3];
+        break;
+    case MAP_NUM(MAP_AK_GREEN):
+        oppPtr = sOpponents[4];
+        break;
+    case MAP_NUM(MAP_AK_YELLOW):
+        oppPtr = sOpponents[5];
+        break;
     }
     const u8 *str = gTrainers[DIFFICULTY_NORMAL][oppPtr[pos]].trainerName;
     if (str[0] == CHAR_P && str[1] == CHAR_o && str[2] == CHAR_g && str[3] == EOS)
