@@ -329,6 +329,24 @@ script ChubbyLung3 {
     end
 }
 
+//  I'm doing scripts here to no conflicts with others
+script TianaHappy {
+    getobjectfacingdirection(player, VAR_RESULT)
+    switch(var(VAR_RESULT)) {
+    case DIR_NORTH:
+        applymovement(player, moves(emote_heart, jump_in_place_up))
+    case DIR_SOUTH:
+        applymovement(player, moves(emote_heart, jump_in_place_down))
+    case DIR_EAST:
+        applymovement(player, moves(emote_heart, jump_in_place_right))
+    case DIR_WEST:
+        applymovement(player, moves(emote_heart, jump_in_place_left))
+    }
+    waitmovement
+    msgbox("(This is so exciting!)")
+    closemessage
+}
+
 script ChubbyLung4 {
     lock
     msgbox("It's a big Chubby Lung!")
