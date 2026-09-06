@@ -127,7 +127,7 @@
       "flag": "FLAG_MIFU_EVENT"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_BOY_3",
+      "graphics_id": "OBJ_EVENT_GFX_CC_GIRL",
       "x": 10,
       "y": 13,
       "elevation": 0,
@@ -182,7 +182,7 @@
     },
     {
       "local_id": "LOCALID_CC_GUARD1",
-      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "graphics_id": "OBJ_EVENT_GFX_CC_GUARD",
       "x": 16,
       "y": 25,
       "elevation": 0,
@@ -205,7 +205,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "CC_Ardelia",
       "flag": "0"
     },
     {
@@ -224,7 +224,7 @@
     },
     {
       "local_id": "LOCALID_CC_GUARD2",
-      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "graphics_id": "OBJ_EVENT_GFX_CC_GUARD",
       "x": 23,
       "y": 8,
       "elevation": 0,
@@ -238,7 +238,7 @@
     },
     {
       "local_id": "LOCALID_CC_GUARD3",
-      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "graphics_id": "OBJ_EVENT_GFX_CC_GUARD",
       "x": 44,
       "y": 23,
       "elevation": 0,
@@ -252,7 +252,7 @@
     },
     {
       "local_id": "LOCALID_CC_MERCHCLERK",
-      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "graphics_id": "OBJ_EVENT_GFX_ACOLYTE_F",
       "x": 39,
       "y": 30,
       "elevation": 0,
@@ -363,7 +363,7 @@
     },
     {
       "local_id": "LOCALID_CC_GAMBLER",
-      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "graphics_id": "OBJ_EVENT_GFX_CC_GIRL",
       "x": 24,
       "y": 18,
       "elevation": 0,

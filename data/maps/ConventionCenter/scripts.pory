@@ -57,17 +57,17 @@ script CC_GilbertaEvent {
 script CC_PickRandomEvents {
     //Abyssal Hunters group
     //Gladiia in lounge
-    random(1)
+    random(2)
     switch(var(VAR_RESULT)){
         case 0: setflag(FLAG_GLADIIA)
         default: clearflag(FLAG_GLADIIA)
     }
-    random(1)
+    random(2)
     switch(var(VAR_RESULT)){
         case 0: setflag(FLAG_JOHNENDFIELD)
         default: clearflag(FLAG_JOHNENDFIELD)
     }
-    random(1)
+    random(2)
     switch(var(VAR_RESULT)){
         case 0: setflag(FLAG_JOHNENDFIELD)
         default: clearflag(FLAG_JOHNENDFIELD)
@@ -81,7 +81,7 @@ script CC_PickRandomEvents {
             setflag(FLAG_MIFU_EVENT)
             clearflag(FLAG_CARNELIAN)
     }
-    random(1)
+    random(2)
     switch(var(VAR_RESULT)){
         case 0:
             setflag(FLAG_CHISA_CC)
