@@ -81,6 +81,8 @@ static EWRAM_DATA u16 sMovingNpcMapGroup = 0;
 static EWRAM_DATA u16 sMovingNpcMapNum = 0;
 static EWRAM_DATA u16 sFieldEffectScriptId = 0;
 
+static EWRAM_DATA u8 sQueueTurnTask = 0;
+
 static u8 sBrailleWindowId;
 static bool8 sIsScriptedWildDouble;
 
@@ -3641,6 +3643,26 @@ const u16 sQueueClerks[][4] =
 
 STATIC_ASSERT(NELEMS(sQueueObjects) >= (sizeof(sQueueCoord) / 3), ListMustBeAsLarge);
 
+void Task_TurnQueuers(u8 taskId)
+{
+    if (gTasks[taskId].data[0] > 0)
+    {
+        gTasks[taskId].data[0]--;
+    }
+    else
+    {
+        u32 obj1;
+        do
+        {
+            obj1 = 1 + (Random32() % ((sizeof(sQueueCoord) / 3) - 4));
+        } while (obj1 == 7 || obj1 == 15 || obj1 == 17);
+
+        u32 rnd = Random32();
+        TurnVirtualObject(obj1, (rnd % 4) + 1);
+        gTasks[taskId].data[0] = 15;
+    }
+}
+
 void CreateQueue(void)
 {
     u16 gfxList[NELEMS(sQueueObjects)];
@@ -3678,10 +3700,13 @@ void CreateQueue(void)
     {
         CreateVirtualObject(sQueueClerks[i][0], sizeof(sQueueCoord) / 3 + i, sQueueClerks[i][1], sQueueClerks[i][2], 3, sQueueClerks[i][3]);
     }
+    sQueueTurnTask = CreateTask(Task_TurnQueuers, 1);
+    gTasks[sQueueTurnTask].data[0] = 15;
 }
 
 void DestroyQueue(void)
 {
+    DestroyTask(sQueueTurnTask);
     for (u32 i = 0; i < sizeof(sQueueCoord) / 3 + 3; i++)
     {
         s32 spriteId = GetVirtualObjectSpriteId(i);
