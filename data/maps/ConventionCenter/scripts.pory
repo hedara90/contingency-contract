@@ -144,8 +144,10 @@ script CC_Intro {
     applymovement(player, moves(face_right))
     playse(SE_LEDGE)
     setspeaker(SP_NAME_CHISA)
+    callnative(DestroyOther)
     msgbox("Yep, we did!")
     closemessage
+    callnative(CreateOtherVObjects)
     applymovement(player, moves(face_up))
     applymovement(receptionist, moves(walk_in_place_down))
     msgbox("Would you like me to explain how\neverything's set up?")
