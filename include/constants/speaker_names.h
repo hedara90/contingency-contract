@@ -31,6 +31,7 @@ enum SpeakerNames {
     SP_NAME_ULPIANUS,
     SP_NAME_XAIHI,
     SP_NAME_ZHUANG,
+    SP_NAME_TIANA,
     SP_NAME_COUNT,
 };
 

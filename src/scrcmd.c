@@ -3496,7 +3496,6 @@ void GetRandomArcane(void)
 
 static const u16 sQueueObjects[] =
 {
-    OBJ_EVENT_GFX_SATSUKI,
     OBJ_EVENT_GFX_ACOLYTE_M,
     OBJ_EVENT_GFX_ACOLYTE_F,
     OBJ_EVENT_GFX_CHISA,
@@ -3609,6 +3608,19 @@ void CreateQueue(void)
     }
 
     Shuffle16(gfxList, NELEMS(sQueueObjects));
+
+    if (!FlagGet(FLAG_TALKED_SATSUKI))
+    {
+        gfxList[0] = OBJ_EVENT_GFX_SATSUKI;
+    }
+    else if (!FlagGet(FLAG_SATSUKI_QUEUED))
+    {
+        gfxList[17] = OBJ_EVENT_GFX_SATSUKI;
+    }
+    else if (!FlagGet(FLAG_SATSUKI_PAID))
+    {
+        gfxList[33] = OBJ_EVENT_GFX_SATSUKI;
+    }
 
     for (u32 i = 0; i < sizeof(sQueueCoord) / 3; i++)
     {
