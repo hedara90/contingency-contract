@@ -1221,6 +1221,7 @@ struct SaveBlock1
     u32 gameVersion;
     rng_value_t bannerRng[20];
     struct SavedGauntletWin wins[20];
+    u32 randomSeed;
 };
 
 extern struct SaveBlock1 *gSaveBlock1Ptr;

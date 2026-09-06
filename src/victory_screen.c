@@ -32,11 +32,13 @@
 #include "constants/species.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "constants/event_objects.h"
 
 #include "palette.h"
 #include "risk.h"
 #include "even_sprite.h"
 #include "pokemon_icon.h"
+#include "event_object_movement.h"
 
 
 struct VictoryScreenState
@@ -51,6 +53,8 @@ struct VictoryScreenState
     u8 numDupes[6];
     enum Species species[6];
     struct Risks savedRisks;
+    u8 trainerIds[4];
+    u8 trainerSpriteIds[4];
 };
 
 enum WindowIds
@@ -168,6 +172,7 @@ static void Task_VictoryScreenMainInput(u8 taskId);
 
 static void VictoryScreen_PrintText(void);
 static void VictoryScreen_ShowMons(void);
+static void VictoryScreen_ShowTrainers();
 static void VictoryScreen_LoadRisks(void);
 
 static void Task_VictoryScreenWaitFadeAndExitGracefully(u8 taskId);
@@ -192,6 +197,11 @@ void VictoryScreen_Init(MainCallback callback, enum Gauntlet gauntlet, bool32 fr
         sVictoryScreenState->riskSpriteIds[i] = SPRITE_NONE;
     }
 
+    for (u32 i = 0; i < 4; i++)
+    {
+        sVictoryScreenState->trainerSpriteIds[i] = SPRITE_NONE;
+    }
+
     sVictoryScreenState->savedCallback = callback;
     sVictoryScreenState->loadState = 0;
     sVictoryScreenState->gauntlet = gauntlet;
@@ -205,6 +215,10 @@ void VictoryScreen_Init(MainCallback callback, enum Gauntlet gauntlet, bool32 fr
         {
             sVictoryScreenState->species[i] = gSaveBlock1Ptr->wins[gauntlet].species[i];
             sVictoryScreenState->numDupes[i] = gSaveBlock1Ptr->wins[gauntlet].numDupes[i];
+        }
+        for (u32 i = 0; i < 4; i++)
+        {
+            sVictoryScreenState->trainerIds[i] = gSaveBlock1Ptr->wins[gauntlet].foes[i];
         }
     }
     else
@@ -297,6 +311,8 @@ static void VictoryScreen_SetupCB(void)
     case 6:
         //  Load mon sprites and potentials
         VictoryScreen_ShowMons();
+        //  Load trainer sprites if random gauntlet
+        VictoryScreen_ShowTrainers();
         gMain.state++;
         break;
     case 7:
@@ -426,6 +442,12 @@ static void VictoryScreen_FreeResources(void)
                     win->species[i] = sVictoryScreenState->species[i];
                     win->numDupes[i] = sVictoryScreenState->numDupes[i];
                 }
+                u8 arr[4];
+                BuildRandomTrainerArray(arr, sVictoryScreenState->gauntlet);
+                for (u32 i = 0; i < 4; i++)
+                {
+                    win->foes[i] = arr[i];
+                }
             }
         }
         Free(sVictoryScreenState);
@@ -457,6 +479,16 @@ static void VictoryScreen_FreeResources(void)
         {
             DestroySprite(&gSprites[sVictoryScreenState->riskSpriteIds[i]]);
             FreeSpriteTilesByTag(12 + i);
+        }
+    }
+
+    for (u32 i = 0; i < 4; i++)
+    {
+        if (sVictoryScreenState->trainerSpriteIds[i] != SPRITE_NONE)
+        {
+            DestroySprite(&gSprites[sVictoryScreenState->trainerSpriteIds[i]]);
+            FreeSpriteTilesByTag(0xDEDE + i);
+            FreeSpritePaletteByTag(0xDEDE + i);
         }
     }
 
@@ -564,6 +596,15 @@ static void VictoryScreen_PrintText(void)
     case GAUNTLET_AK_YELLOW:
         str = COMPOUND_STRING("Confluence of East and West");
         break;
+    case GAUNTLET_RANDOM:
+        str = COMPOUND_STRING("Random");
+         break;
+    case GAUNTLET_RANDOM_SINGLES:
+        str = COMPOUND_STRING("Singles");
+         break;
+    case GAUNTLET_RANDOM_DOUBLES:
+        str = COMPOUND_STRING("Doubles");
+         break;
     }
     u32 width = GetStringWidth(FONT_NORMAL, str, 0);
     AddTextPrinterParameterized4(WIN_TITLE, FONT_NORMAL, 0, 4, 0, 0, sVictoryScreenWindowFontColors[FONT_BLACK], 0, str);
@@ -719,5 +760,132 @@ static void VictoryScreen_LoadRisks(void)
             sVictoryScreenState->riskSpriteIds[numRisks] = Even_CreateSprite(&cs);
             numRisks++;
         }
+    }
+}
+
+const u8 sSinglesTrainers[] =
+{
+    TRAINER_ENDMIN,
+    TRAINER_PERLICA,
+    TRAINER_CHEN,
+    TRAINER_FANGYI,
+    TRAINER_TANGTANG,
+    TRAINER_MIFU,
+    TRAINER_ARCANE_SINGLES,
+    TRAINER_LAEVATAIN,
+    TRAINER_ARDELIA,
+    TRAINER_NIAN,
+    TRAINER_CARNELIAN,
+    TRAINER_PENANCE,
+    TRAINER_PRAMANIX,
+    TRAINER_SPECTER,
+    TRAINER_GLADIIA,
+    TRAINER_ULPIANUS,
+};
+
+const u8 sDoublesTrainers[] =
+{
+    TRAINER_XAIHI,
+    TRAINER_ARCANE_DOUBLES,
+    TRAINER_GILBERTA,
+    TRAINER_POG,
+    TRAINER_SHU,
+    TRAINER_FIAMETTA,
+    TRAINER_SKADI,
+    TRAINER_ELYSIUM,
+    TRAINER_IRENE,
+};
+
+void BuildRandomTrainerArray(u8 *resArr, enum Gauntlet gauntlet)
+{
+    u8 *fullArray;
+    u32 numTrainers;
+
+    if (gauntlet == GAUNTLET_RANDOM)
+    {
+        numTrainers = NELEMS(sSinglesTrainers) + NELEMS(sDoublesTrainers);
+        fullArray = Alloc(numTrainers);
+        for (u32 i = 0; i < NELEMS(sSinglesTrainers); i++)
+        {
+            fullArray[i] = sSinglesTrainers[i];
+        }
+        for (u32 i = 0; i < NELEMS(sDoublesTrainers); i++)
+        {
+            fullArray[NELEMS(sSinglesTrainers) + i] = sDoublesTrainers[i];
+        }
+    }
+    else if (gauntlet == GAUNTLET_RANDOM_SINGLES)
+    {
+        numTrainers = NELEMS(sSinglesTrainers);
+        fullArray = Alloc(numTrainers);
+        for (u32 i = 0; i < numTrainers; i++)
+        {
+            fullArray[i] = sSinglesTrainers[i];
+        }
+    }
+    else
+    {
+        numTrainers = NELEMS(sDoublesTrainers);
+        fullArray = Alloc(numTrainers);
+        for (u32 i = 0; i < numTrainers; i++)
+        {
+            fullArray[i] = sDoublesTrainers[i];
+        }
+    }
+
+    //  Fisher-Yates Shuffle
+    rng_value_t localRngState;
+    localRngState = LocalRandomSeed(gSaveBlock1Ptr->randomSeed);
+    //  Probably don't have to shuffle entire array, last 4 values is enough
+    for (u32 i = 0; i < numTrainers; i++)
+    {
+        u32 rnd = LocalRandom32(&localRngState);
+        u32 indexToUse = rnd % (numTrainers - i);
+        u32 tempVal = fullArray[numTrainers - 1 - i];
+        fullArray[numTrainers - 1 - i] = fullArray[indexToUse];
+        fullArray[indexToUse] = tempVal;
+    }
+
+    for (u32 i = 0; i < 4; i++)
+    {
+        resArr[i] = fullArray[i];
+    }
+    Free(fullArray);
+}
+
+const u16 sTrainerToGfxMap[] =
+{
+    [TRAINER_ENDMIN] = OBJ_EVENT_GFX_ENDMIN,
+    [TRAINER_PERLICA] = OBJ_EVENT_GFX_PERLICA,
+    [TRAINER_CHEN] = OBJ_EVENT_GFX_CHEN,
+    [TRAINER_FANGYI] = OBJ_EVENT_GFX_ZHUANG,
+    [TRAINER_TANGTANG] = OBJ_EVENT_GFX_TANGTANG,
+    [TRAINER_MIFU] = OBJ_EVENT_GFX_MIFU,
+    [TRAINER_ARCANE_SINGLES] = OBJ_EVENT_GFX_ARCANE,
+    [TRAINER_LAEVATAIN] = OBJ_EVENT_GFX_LAEVATAIN,
+    [TRAINER_ARDELIA] = OBJ_EVENT_GFX_ARDELIA,
+    [TRAINER_NIAN] = OBJ_EVENT_GFX_NIAN,
+    [TRAINER_CARNELIAN] = OBJ_EVENT_GFX_CARNELIAN,
+    [TRAINER_PENANCE] = OBJ_EVENT_GFX_PENANCE,
+    [TRAINER_PRAMANIX] = OBJ_EVENT_GFX_PRAMANIX,
+    [TRAINER_SPECTER] = OBJ_EVENT_GFX_SPECTER,
+    [TRAINER_GLADIIA] = OBJ_EVENT_GFX_GLADIIA,
+    [TRAINER_ULPIANUS] = OBJ_EVENT_GFX_ULPIANUS,
+    [TRAINER_XAIHI] = OBJ_EVENT_GFX_XAIHI,
+    [TRAINER_ARCANE_DOUBLES] = OBJ_EVENT_GFX_ARCANE,
+    [TRAINER_GILBERTA] = OBJ_EVENT_GFX_GILBERTA,
+    [TRAINER_POG] = OBJ_EVENT_GFX_POG,
+    [TRAINER_SHU] = OBJ_EVENT_GFX_SHU,
+    [TRAINER_FIAMETTA] = OBJ_EVENT_GFX_FIAMETTA,
+    [TRAINER_SKADI] = OBJ_EVENT_GFX_SKADI,
+    [TRAINER_ELYSIUM] = OBJ_EVENT_GFX_ELYSIUM,
+    [TRAINER_IRENE] = OBJ_EVENT_GFX_IRENE,
+};
+
+static void VictoryScreen_ShowTrainers()
+{
+    for (u32 i = 0; i < 4; i++)
+    {
+        const struct ObjectEventGraphicsInfo *info = GetObjectEventGraphicsInfo(sTrainerToGfxMap[sVictoryScreenState->trainerIds[i]]);
     }
 }

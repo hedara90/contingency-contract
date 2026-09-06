@@ -1056,6 +1056,19 @@ void TrainerBattleLoadArgs(const u8 *data)
     InitTrainerBattleParameter();
     memcpy(gTrainerBattleParameter.data, data, sizeof(TrainerBattleParameter));
     sTrainerBattleEndScript = (u8*)data + sizeof(TrainerBattleParameter);
+    switch (gTrainerBattleParameter.params.opponentA)
+    {
+    case VARS_START ... VARS_END:
+    case SPECIAL_VARS_START ... SPECIAL_VARS_END:
+        gTrainerBattleParameter.params.opponentA = VarGet(gTrainerBattleParameter.params.opponentA);
+        break;
+    }
+    switch (gTrainerBattleParameter.params.opponentB)
+    {
+    case VARS_START ... VARS_END:
+    case SPECIAL_VARS_START ... SPECIAL_VARS_END:
+        gTrainerBattleParameter.params.opponentB = VarGet(gTrainerBattleParameter.params.opponentB);
+    }
 }
 
 void TrainerBattleLoadArgsTrainerA(const u8 *data)

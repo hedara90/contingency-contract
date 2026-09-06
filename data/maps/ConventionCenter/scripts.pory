@@ -733,6 +733,9 @@ script ChooseGauntlet {
                     "Abyssal Hunters",
                     "Confluence of East and West",
                     "Band of Misfits",
+                    "Random",
+                    "Random Singles",
+                    "Random Doubles",
                     "Not right now")
     getobjectfacingdirection(LOCALID_ATTENDANT_MAIN, VAR_TEMP_1)
     special(HealPlayerParty)

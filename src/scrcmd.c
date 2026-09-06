@@ -69,6 +69,7 @@
 #include "constants/party_menu.h"
 
 #include "field_control_avatar.h"
+#include "victory_screen.h"
 
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(struct ScriptContext *ctx);
@@ -4047,4 +4048,28 @@ void Script_SetVar_RandomPartyMonGfx(struct ScriptContext *ctx)
         graphicsId = tmpGfxIds[RandomUniform(RNG_NONE, 0, validMonsCount - 1)];
 
     VarSet(var, graphicsId);
+}
+
+void RandomSeedForRandomGauntlet(void)
+{
+    gSaveBlock1Ptr->randomSeed = Random32();
+}
+
+void GetNextRandomGauntletTrainer(void)
+{
+    u32 pos = VarGet(VAR_GAUNTLET_POSITION);
+    //  Build previous trainers
+    u8 arr[4];
+    enum Gauntlet gauntlet = GAUNTLET_RANDOM;
+    if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_SINGLES))
+    {
+        gauntlet = GAUNTLET_RANDOM_SINGLES;
+    }
+    else if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_SINGLES))
+    {
+        gauntlet = GAUNTLET_RANDOM_DOUBLES;
+    }
+
+    BuildRandomTrainerArray(arr, gauntlet);
+    VarSet(VAR_RESULT, arr[pos]);
 }
