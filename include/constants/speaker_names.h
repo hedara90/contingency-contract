@@ -33,6 +33,7 @@ enum SpeakerNames {
     SP_NAME_ZHUANG,
     SP_NAME_TIANA,
     SP_NAME_GUARD,
+    SP_NAME_KENICHI,
     SP_NAME_COUNT,
 };
 

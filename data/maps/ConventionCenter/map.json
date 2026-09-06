@@ -220,7 +220,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_Chisa",
-      "flag": "0"
+      "flag": "FLAG_CHISA_CC"
     },
     {
       "local_id": "LOCALID_CC_GUARD2",
@@ -433,7 +433,7 @@
     },
     {
       "local_id": "LOCALID_CC_ITEMGUY",
-      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "graphics_id": "OBJ_EVENT_GFX_CC_GUY",
       "x": 31,
       "y": 15,
       "elevation": 0,
@@ -539,7 +539,7 @@
       "flag": "FLAG_LAEVATAIN_SHOOT"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "graphics_id": "OBJ_EVENT_GFX_MONK",
       "x": 34,
       "y": 33,
       "elevation": 0,
@@ -640,7 +640,7 @@
       "x": 27,
       "y": 12,
       "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_type": "MOVEMENT_TYPE_WALK_IN_PLACE_UP",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -744,6 +744,20 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_Satsuki",
+      "flag": "FLAG_SATSUKI"
+    },
+    {
+      "local_id": "LOCALID_CC_KENICHI",
+      "graphics_id": "OBJ_EVENT_GFX_KAITO",
+      "x": 15,
+      "y": 4,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "CC_Kenichi",
       "flag": "0"
     }
   ],
@@ -1340,7 +1354,7 @@
       "y": 28,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "NULL"
+      "script": "MerchBanner_Sign"
     },
     {
       "type": "sign",
