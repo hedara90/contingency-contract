@@ -120,7 +120,7 @@ script CC_Intro {
     msgbox("Obtained a CC pass!")
     waitse
     applymovement(player, moves(emote_heart))
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("Thanks!")
     closemessage
     applymovement(receptionist, moves(walk_in_place_down))
@@ -128,7 +128,7 @@ script CC_Intro {
     closemessage
     applymovement(player, moves(emote_question_mark))
     waitmovement
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("Huh? But I didn't-")
     applymovement(chisa, moves(jump_in_place_up))
     applymovement(player, moves(face_right))
@@ -192,13 +192,13 @@ script CC_Intro_Explanation {
     closemessage
     applymovement(player, moves(walk_in_place_up))
     waitmovement
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("Thanks, miss!")
     closemessage
     applymovement(player, moves(walk_right*3, face_down))
     applymovement(chisa, moves(delay_16, walk_right*2, face_up))
     waitmovement
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("Another take on battling, huh?")
     closemessage
     applymovement(chisa, moves(jump_in_place_up))
@@ -208,7 +208,7 @@ script CC_Intro_Explanation {
     msgbox("Hehe, yep! I figured you'd enjoy this.")
     closemessage
     applymovement(player, moves(walk_in_place_down))
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("It definitely sounds interesting, but\nI was planning on just winding down\la bit from work.")
     closemessage
     applymovement(chisa, moves(face_right, delay_16*5, face_up))
@@ -216,7 +216,7 @@ script CC_Intro_Explanation {
     setspeaker(SP_NAME_CHISA)
     msgbox("You say that, but you'll be in that\narena in no time.")
     closemessage
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("...")
     closemessage
     applymovement(player, moves(delay_16*2, face_right))
@@ -229,7 +229,7 @@ script CC_Intro_Explanation {
     waitmovement
     setobjectxy(chisa, 38, 15)
     setobjectxyperm(chisa, 38, 15)
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("Well, she's not off the mark there...")
     closemessage
     release
@@ -711,7 +711,7 @@ script CC_Chisa_LowScore {
         end
     }
     closemessage
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("You look focused.")
     closemessage
     applymovement(chisa, moves(emote_double_exclamation_mark, delay_16*4, face_player))
@@ -725,7 +725,7 @@ script CC_Chisa_LowScore {
     msgbox("She's trying her best.")
     closemessage
     applymovement(player, moves(face_right))
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("Sounds like it, yes.")
     closemessage
     applymovement(chisa, moves(jump_in_place_right))
@@ -740,7 +740,7 @@ script CC_Chisa_LowScore {
     else {
         applymovement(player, moves(walk_in_place_up))
     }
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("Deciding on your team?")
     closemessage
     applymovement(chisa, moves(face_player))
@@ -780,7 +780,7 @@ script CC_Chisa_MidScore {
         applymovement(player, moves(walk_in_place_up))
     }
     waitmovement
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("Nope, just curious what you're up to.")
     closemessage
     applymovement(ardelia, moves(walk_in_place_left))
@@ -823,7 +823,7 @@ script CC_Chisa_MidScore {
     else {
         applymovement(player, moves(walk_in_place_up))
     }
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("I already beat 25!")
     closemessage
     applymovement(ardelia, moves(walk_in_place_left))
@@ -868,7 +868,7 @@ script CC_Chisa_HighScore {
     closemessage
     applymovement(player, moves(emote_heart))
     waitmovement
-    setspeaker(SP_NAME_TIANA)
+    setspeaker(SP_NAME_PLAYER)
     msgbox("Heh, that's more like you.")
     closemessage
     applymovement(chisa, moves(emote_question_mark))
@@ -876,7 +876,7 @@ script CC_Chisa_HighScore {
     msgbox("What are you at right now?")
     callnative(GetMaxClearedRisk)
     if(var(VAR_RESULT) < 36){
-        setspeaker(SP_NAME_TIANA)
+        setspeaker(SP_NAME_PLAYER)
         msgbox("Less than that...")
         applymovement(chisa, moves(emote_exclamation_mark))
         playse(SE_PIN)
@@ -889,7 +889,7 @@ script CC_Chisa_HighScore {
         else {
             applymovement(player, moves(walk_in_place_up))
         }
-        setspeaker(SP_NAME_TIANA)
+        setspeaker(SP_NAME_PLAYER)
         msgbox("Oh I am not done yet, don't worry.")
         closemessage
         applymovement(ardelia, moves(walk_in_place_left))
@@ -899,7 +899,7 @@ script CC_Chisa_HighScore {
         closemessage
     }
     else {
-        setspeaker(SP_NAME_TIANA)
+        setspeaker(SP_NAME_PLAYER)
         msgbox("Higher than that!")
         closemessage
         applymovement(chisa, moves(emote_exclamation_mark))
@@ -932,14 +932,17 @@ script CC_Chisa_HighScore {
 }
 
 script CC_Chisa_Record {
+    setspeaker(SP_NAME_PLAYER)
     msgbox("Hey Chisa! I beat Ardelia's record!")
     closemessage
     applymovement(chisa, moves(face_player, emote_exclamation_mark))
     applymovement(ardelia, moves(emote_exclamation_mark))
+    setspeaker(SP_NAME_CHISA)
     msgbox("You beat WHAT?\p"
             "I didn't think that was possible!")
     applymovement(ardelia, moves(walk_in_place_left))
     applymovement(player, moves(face_right))
+    setspeaker(SP_NAME_ARDELIA)
     msgbox("Sheesh, I didn't expect anyone to\ndo that.\p"
             "That's incredibly impressive.\p"
             "Chisa really undersold you, even.")
@@ -953,6 +956,7 @@ script CC_Chisa_Record {
             applymovement(player, moves(walk_in_place_down))
         }
         waitmovement
+    setspeaker(SP_NAME_CHISA)
     msgbox("I don't think I'll hit that.\n38 was challenging enough for me...")
     closemessage
         if(var(VAR_TEMP_8)==14){
@@ -962,13 +966,16 @@ script CC_Chisa_Record {
             applymovement(player, moves(walk_in_place_up))
         }
         waitmovement
+    setspeaker(SP_NAME_PLAYER)
     msgbox("Hey, that's still really good!")
     closemessage
     applymovement(ardelia, moves(walk_in_place_left))
     waitmovement
+    setspeaker(SP_NAME_ARDELIA)
     msgbox("Yeah, you should be proud of that.")
     closemessage
     applymovement(chisa, moves(face_player))
+    setspeaker(SP_NAME_CHISA)
     msgbox("Anyway! I think I'll raise a Crobat.\nNever realized how cool this guy is.")
     closemessage
 }
@@ -985,6 +992,7 @@ script CC_Ardelia {
 
 script CC_Ardelia_ChisaNotHere {
     faceplayer
+    setspeaker(SP_NAME_ARDELIA)
     msgbox("Oh hey there. Tiana, right?\p"
         "Chisa's told me all about you, we're\nbasically friends now."
         "She's currently trying her luck again.\nMaybe this time..."
@@ -996,6 +1004,7 @@ script CC_Ardelia_ChisaNotHere {
 
 script CC_Ardelia_ChisaHere {
     faceplayer
+    setspeaker(SP_NAME_ARDELIA)
     msgbox("It's kinda fun to see her come\nup with strategies")
     waitmessage
     applymovement(ardelia, moves(face_left))
@@ -1003,6 +1012,7 @@ script CC_Ardelia_ChisaHere {
     closemessage
     applymovement(chisa, moves(emote_exclamation_mark))
     playse(SE_PIN)
+    setspeaker(SP_NAME_CHISA)
     msgbox("I can hear you, you know!")
     closemessage
     release
@@ -1012,72 +1022,87 @@ script CC_Dragons {
     lock
     applymovement(shu, moves(walk_in_place_up))
     waitmovement
+    setspeaker(SP_NAME_SHU)
     msgbox("I do hope washing my tail's not going\nto be too messy with the new paint.")
     closemessage
     applymovement(nian, moves(face_down))
     waitmovement
+    setspeaker(SP_NAME_NIAN)
     msgbox("Yeah, it has always been a pain for you,\nhasn't it?")
     closemessage
     applymovement(zhuang, moves(walk_in_place_right))
     waitmovement
+    setspeaker(SP_NAME_ZHUANG)
     msgbox("Huh? Wait, you painted it?")
     closemessage
     applymovement(shu, moves(walk_in_place_up))
     applymovement(zhuang, moves(face_down))
     waitmovement
+    setspeaker(SP_NAME_SHU)
     msgbox("Yeah! Normally it's the same color\nas yours.\p"
             "We even had to dye the hair to match\nShu's pattern")
     closemessage
     applymovement(zhuang, moves(emote_exclamation_mark))
     waitmovement
+    setspeaker(SP_NAME_ZHUANG)
     msgbox("Wow, I didn't even notice it wasn't\nnatural.\pThat's amazing!")
     closemessage
     applymovement(nian, moves(jump_in_place_left))
     playse(SE_LEDGE)
     waitmovement
+    setspeaker(SP_NAME_NIAN)
     msgbox("Yeah, she's really good at that.\nYou should see her Mym cosplay!")
     waitmessage
     applymovement(nian, moves(face_down))
-    msgbox("She created a whole armor to\nput on her tail for that one,\lsince it's so much bigger")
+    msgbox("She created a whole armor to\nput on her tail for that one,\lsince Mym's tail so much bulkier.")
     closemessage
     applymovement(shu, moves(walk_in_place_up))
+    setspeaker(SP_NAME_SHU)
     msgbox("Yeah that... took some time to\nfigure out.\pVery happy with the result, though.")
     closemessage
     applymovement(zhuang, moves(face_right))
     waitmovement
+    setspeaker(SP_NAME_ZHUANG)
     msgbox("So is yours also painted then?")
     closemessage
     applymovement(nian, moves(face_left))
+    setspeaker(SP_NAME_NIAN)
     msgbox("Mine? Yeah, technically I suppose.")
     closemessage
     fadescreen(FADE_TO_BLACK)
     msgbox("Nian takes off her tail")
     closemessage
     fadescreen(FADE_FROM_BLACK)
+    setspeaker(SP_NAME_NIAN)
     msgbox("But it's also made of foam.\nI'm just a regular ol' human after all.\p"
             "I just pop it on my back with\nsome magnets, and there's a harness\lunder my outfit it attaches to.")
     closemessage
     applymovement(shu, moves(face_left))
+    setspeaker(SP_NAME_SHU)
     msgbox("It's pretty convincing, right?")
     closemessage
     applymovement(zhuang, moves(face_down))
+    setspeaker(SP_NAME_ZHUANG)
     msgbox("You can say that, yeah.")
     waitmessage
     applymovement(zhuang, moves(face_right))
     msgbox("It never occured to me that it wasn't\nactually moving.")
     waitmessage
     applymovement(zhuang, moves(walk_in_place_right))
-    msgbox("So what sorta paint do you use for\nyour tail?")
+    msgbox("So what sorta paint do you use for\nyour tails?")
     closemessage
     applymovement(shu, moves(face_up))
+    setspeaker(SP_NAME_SHU)
     msgbox("We custom order it so it does what\nwe want.\lTo... mixed results.\p"
             "Turns out scales are pretty hard\nto keep dye on.")
     closemessage
     applymovement(nian, moves(walk_in_place_left))
+    setspeaker(SP_NAME_NIAN)
     msgbox("Say, if you ever want to do something\nthat needs tail mods,\lyou can shoot us a message!")
     closemessage
     applymovement(shu, moves(face_up))
-    applymovement(zhuang, moves(face_right))
+    applymovement(zhuang, moves(walk_in_place_right))
+    setspeaker(SP_NAME_ZHUANG)
     msgbox("Ohhh I'll take you up on that!")
     closemessage
     release
