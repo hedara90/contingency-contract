@@ -206,7 +206,7 @@ const struct RiskIcon sRiskData[] =
     [RISK_MUST_SWITCH_2] =
     {
         .linkedRisks = sLinkedSwitchRisks,
-        .tiles = { COORD_TO_TILE(18, 6), COORD_TO_TILE(19, 7), COORD_TO_TILE(19, 6), COORD_TO_TILE(19, 7) },
+        .tiles = { COORD_TO_TILE(18, 6), COORD_TO_TILE(18, 7), COORD_TO_TILE(19, 6), COORD_TO_TILE(19, 7) },
         .linkedCount = 4,
         .name = COMPOUND_STRING("Fatigue II"),
         .description = COMPOUND_STRING("Player must switch a mon every 3 turns."),
@@ -319,7 +319,7 @@ const struct RiskIcon sRiskData[] =
     },
     [RISK_NO_ORDER_CHANGE] =
     {
-        .tiles = { COORD_TO_TILE(28, 4), COORD_TO_TILE(20, 5), COORD_TO_TILE(29, 4), COORD_TO_TILE(29, 5) },
+        .tiles = { COORD_TO_TILE(28, 4), COORD_TO_TILE(28, 5), COORD_TO_TILE(29, 4), COORD_TO_TILE(29, 5) },
         .name = COMPOUND_STRING("Locked in"),
         .description = COMPOUND_STRING("Player can't change party or move order\nbetween battles."),
     },

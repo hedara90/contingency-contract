@@ -105,6 +105,7 @@ const enum Item sItems6Stars[] =
     ITEM_EJECT_BUTTON,
     ITEM_EJECT_PACK,
     ITEM_ASSAULT_VEST,
+    ITEM_LIFE_ORB,
 };
 
 const enum Species sIndomitability4Stars[] =

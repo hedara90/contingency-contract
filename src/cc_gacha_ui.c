@@ -1372,9 +1372,9 @@ static void Task_InfoTaskItems(u8 taskId)
                                      COMPOUND_STRING("6-star items"));
         CopyWindowToVram(WIN_ITEMS, COPYWIN_GFX);
 
-        for (u32 i = 0; i < 6; i++)
+        for (u32 i = 0; i < 7; i++)
         {
-            sGachaUiState->infoIconIds[i] = ShowItem(info.items[i], 40 + 32 * i, 80 + 160, i);
+            sGachaUiState->infoIconIds[i] = ShowItem(info.items[i], 24 + 32 * i, 80 + 160, i);
             gSprites[sGachaUiState->infoIconIds[i]].invisible = TRUE;
         }
         sGachaUiState->infoState++;
@@ -1390,7 +1390,7 @@ static void Task_InfoTaskItems(u8 taskId)
             SetGpuReg(REG_OFFSET_BG2VOFS, sGachaUiState->monOffset);
             if (sGachaUiState->offset < 328)
             {
-                for (u32 i = 0; i < 6; i++)
+                for (u32 i = 0; i < 7; i++)
                 {
                     gSprites[sGachaUiState->infoIconIds[i]].y -= 8;
                     if (gSprites[sGachaUiState->infoIconIds[i]].y < 184)
