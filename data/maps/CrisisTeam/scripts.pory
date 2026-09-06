@@ -1,10 +1,11 @@
 mapscripts CrisisTeam_MapScripts {
     MAP_SCRIPT_ON_TRANSITION: CrisisTeam_OnTransition
     MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
-        VAR_TEMP_5, 0: CrisisTeam_Setup
+        VAR_GAUNTLETHANDLING, 0: CrisisTeam_Setup
     ]
     MAP_SCRIPT_ON_FRAME_TABLE [
-        VAR_TEMP_5, 0: CrisisTeam_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 0: CrisisTeam_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 1: CrisisTeam_OnSaveResume
     ]
     MAP_SCRIPT_ON_RESUME {
         callnative(SpectatorVObjects)
@@ -25,8 +26,13 @@ script CrisisTeam_Setup {
 }
 
 script CrisisTeam_OnGauntletStart {
-    setvar(VAR_TEMP_5, 1)
+    setvar(VAR_GAUNTLETHANDLING, 1)
     call(Gauntlet_SetupCamera)
+    goto(CrisisTeam_StartBattle)
+}
+
+script CrisisTeam_OnSaveResume {
+    call(Gauntlet_ResumeSave)
     goto(CrisisTeam_StartBattle)
 }
 

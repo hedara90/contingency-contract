@@ -1,10 +1,11 @@
 mapscripts Wuling_MapScripts {
     MAP_SCRIPT_ON_TRANSITION: Wuling_OnTransition
     MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
-        VAR_TEMP_5, 0: Wuling_Setup
+        VAR_GAUNTLETHANDLING, 0: Wuling_Setup
     ]
     MAP_SCRIPT_ON_FRAME_TABLE [
-        VAR_TEMP_5, 0: Wuling_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 0: Wuling_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 1: Wuling_OnSaveResume
     ]
     MAP_SCRIPT_ON_RESUME {
         callnative(SpectatorVObjects)
@@ -25,8 +26,13 @@ script Wuling_Setup {
 }
 
 script Wuling_OnGauntletStart {
-    setvar(VAR_TEMP_5, 1)
+    setvar(VAR_GAUNTLETHANDLING, 1)
     call(Gauntlet_SetupCamera)
+    goto(Wuling_StartBattle)
+}
+
+script Wuling_OnSaveResume {
+    call(Gauntlet_ResumeSave)
     goto(Wuling_StartBattle)
 }
 

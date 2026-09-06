@@ -1,10 +1,11 @@
 mapscripts Reconveners_MapScripts {
     MAP_SCRIPT_ON_TRANSITION: Reconveners_OnTransition
     MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
-        VAR_TEMP_5, 0: Reconveners_Setup
+        VAR_GAUNTLETHANDLING, 0: Reconveners_Setup
     ]
     MAP_SCRIPT_ON_FRAME_TABLE [
-        VAR_TEMP_5, 0: Reconveners_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 0: Reconveners_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 1: Reconveners_OnSaveResume
     ]
     MAP_SCRIPT_ON_RESUME {
         callnative(SpectatorVObjects)
@@ -25,8 +26,13 @@ script Reconveners_Setup {
 }
 
 script Reconveners_OnGauntletStart {
-    setvar(VAR_TEMP_5, 1)
+    setvar(VAR_GAUNTLETHANDLING, 1)
     call(Gauntlet_SetupCamera)
+    goto(Reconveners_StartBattle)
+}
+
+script Reconveners_OnSaveResume {
+    call(Gauntlet_ResumeSave)
     goto(Reconveners_StartBattle)
 }
 

@@ -58,7 +58,7 @@ script Gauntlet_Attendant {
     waitmovement(player)
     callnative(GetNextBattlerName)
     //msgbox("Well done! your next opponent will be X")
-    msgbox("Well done! your next opponent will be\n{STR_VAR_1}.")
+    msgbox("Well done! Your next opponent will be\n{STR_VAR_1}.")
     goto(Gauntlet_Multichoice)
 }
 
@@ -72,16 +72,17 @@ script Gauntlet_Multichoice {
         case 0:
             goto(Gauntlet_Confirmation)
         case 1: 
-            msgbox("Save game")
+            autosave
+            delay(30)
+            msgbox("Progress saved!")
+            setvar(VAR_GAUNTLETHANDLING, 1)
             goto(Gauntlet_Multichoice_Loop)
         case 2:
             callnative(OpenPartyGauntlet)
             waitstate
             goto(Gauntlet_Multichoice_Loop)
         case 3:
-            special(HealPlayerParty)
-            warpsilent(MAP_CONVENTION_CENTER, 21, 24)
-            waitstate
+            goto(Gauntlet_QuitConfirmation)
     }
 }
 
@@ -97,10 +98,26 @@ script Gauntlet_Confirmation {
     switch(var(VAR_RESULT))    {
         case 0:
             closemessage
+            setvar(VAR_GAUNTLETHANDLING, 1)
             return
         case 1:
             closemessage
             goto(Gauntlet_Multichoice_Loop)
+    }
+}
+
+script Gauntlet_QuitConfirmation {
+    msgbox("Are you sure you want to quit?")
+    callnative(PopulateRandomYesNoChoice)
+    dynmultistack(0, 0, TRUE, 2, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
+    switch(var(VAR_RESULT)){
+        case 0:
+            special(HealPlayerParty)
+            setvar(VAR_GAUNTLETHANDLING, 0)
+            warpsilent(MAP_CONVENTION_CENTER, 19, 24)
+            waitstate
+        case 1:
+            goto(Gauntlet_Multichoice)
     }
 }
 
@@ -114,6 +131,7 @@ script Gauntlet_BattleLost {
     special(HealPlayerParty)
     msgbox("wat")
     waitmessage
+    setvar(VAR_GAUNTLETHANDLING, 0)
     warpsilent(MAP_CONVENTION_CENTER, 21, 24)
     waitstate
 }
@@ -128,6 +146,13 @@ script Gauntlet_AfterGauntletWin {
 }
 
 script Gauntlet_WarpOutAfterWin {
+    setvar(VAR_GAUNTLETHANDLING, 0)
     warpsilent(MAP_CONVENTION_CENTER, 21, 24)
     waitstate
+}
+
+script Gauntlet_ResumeSave {
+    callnative(GetNextBattlerName)
+    msgbox("Welcome back! Your next opponent will be\n{STR_VAR_1}.")
+    goto(Gauntlet_Multichoice)
 }

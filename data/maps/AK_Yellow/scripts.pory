@@ -1,10 +1,11 @@
 mapscripts AK_Yellow_MapScripts {
     MAP_SCRIPT_ON_TRANSITION: AKYellow_OnTransition
     MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
-        VAR_TEMP_5, 0: AKYellow_Setup
+        VAR_GAUNTLETHANDLING, 0: AKYellow_Setup
     ]
     MAP_SCRIPT_ON_FRAME_TABLE [
-        VAR_TEMP_5, 0: AKYellow_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 0: AKYellow_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 1: AKYellow_OnSaveResume
     ]
     MAP_SCRIPT_ON_RESUME {
         callnative(SpectatorVObjects)
@@ -25,8 +26,13 @@ script AKYellow_Setup {
 }
 
 script AKYellow_OnGauntletStart {
-    setvar(VAR_TEMP_5, 1)
+    setvar(VAR_GAUNTLETHANDLING, 1)
     call(Gauntlet_SetupCamera)
+    goto(AKYellow_StartBattle)
+}
+
+script AKYellow_OnSaveResume {
+    call(Gauntlet_ResumeSave)
     goto(AKYellow_StartBattle)
 }
 

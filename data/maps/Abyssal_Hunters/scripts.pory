@@ -1,10 +1,11 @@
 mapscripts Abyssal_Hunters_MapScripts {
     MAP_SCRIPT_ON_TRANSITION: AbyssalHunters_OnTransition
     MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
-        VAR_TEMP_5, 0: AbyssalHunters_Setup
+        VAR_GAUNTLETHANDLING, 0: AbyssalHunters_Setup
     ]
     MAP_SCRIPT_ON_FRAME_TABLE [
-        VAR_TEMP_5, 0: AbyssalHunters_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 0: AbyssalHunters_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 1: AbyssalHunters_OnSaveResume
     ]
     MAP_SCRIPT_ON_RESUME {
         callnative(SpectatorVObjects)
@@ -25,8 +26,13 @@ script AbyssalHunters_Setup {
 }
 
 script AbyssalHunters_OnGauntletStart {
-    setvar(VAR_TEMP_5, 1)
+    setvar(VAR_GAUNTLETHANDLING, 1)
     call(Gauntlet_SetupCamera)
+    goto(AbyssalHunters_StartBattle)
+}
+
+script AbyssalHunters_OnSaveResume {
+    call(Gauntlet_ResumeSave)
     goto(AbyssalHunters_StartBattle)
 }
 

@@ -1,10 +1,11 @@
 mapscripts AK_Green_MapScripts {
     MAP_SCRIPT_ON_TRANSITION: AKGreen_OnTransition
     MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
-        VAR_TEMP_5, 0: AKGreen_Setup
+        VAR_GAUNTLETHANDLING, 0: AKGreen_Setup
     ]
     MAP_SCRIPT_ON_FRAME_TABLE [
-        VAR_TEMP_5, 0: AKGreen_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 0: AKGreen_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 1: AKGreen_OnSaveResume
     ]
     MAP_SCRIPT_ON_RESUME {
         callnative(SpectatorVObjects)
@@ -25,8 +26,13 @@ script AKGreen_Setup {
 }
 
 script AKGreen_OnGauntletStart {
-    setvar(VAR_TEMP_5, 1)
+    setvar(VAR_GAUNTLETHANDLING, 1)
     call(Gauntlet_SetupCamera)
+    goto(AKGreen_StartBattle)
+}
+
+script AKGreen_OnSaveResume {
+    call(Gauntlet_ResumeSave)
     goto(AKGreen_StartBattle)
 }
 
