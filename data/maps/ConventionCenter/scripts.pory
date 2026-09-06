@@ -88,10 +88,20 @@ script CC_PickRandomEvents {
         default:
             clearflag(FLAG_CHISA_CC)
     }
+    random(2)
+    switch(var(VAR_RESULT)){
+        case 0:
+            setflag(FLAG_LAEVATAIN_EATING)
+            clearflag(FLAG_LAEVATAIN_SHOOT)
+        default:
+            setflag(FLAG_LAEVATAIN_SHOOT)
+            clearflag(FLAG_LAEVATAIN_EATING)
+    }
     //some other people in lounge (excl. with Gladiia)
     //Endmin & Penance
     //Various people at the photobooth
     //TangTang + MiFu
+    //Laevatain position
 }
 
 script CC_Intro {
@@ -139,7 +149,7 @@ script CC_Intro {
     applymovement(player, moves(face_up))
     applymovement(receptionist, moves(walk_in_place_down))
     msgbox("Would you like me to explain how\neverything's set up?")
-    dynmultichoice(0, 0, FALSE, 4, TRUE, DYN_MULTICHOICE_CB_NONE,
+    dynmultichoice(0, 0, TRUE, 4, TRUE, DYN_MULTICHOICE_CB_NONE,
             "Yeah sure, give me the brief.",
             "I can figure it out myself!")
     switch(var(VAR_RESULT)){
@@ -1552,8 +1562,8 @@ script CC_Penance {
 script CC_Laevatein {
     lock
     faceplayer
-    msgbox("I brought some ice pops for the\nphotoshoot.\p"
-            "However, they're all melted now...")
+    msgbox("I brought a big sword for the\nphotoshoot.\p"
+            "I'm honestly surprised they\nlet me in with it.")
     closemessage
     release
 }
@@ -1657,13 +1667,13 @@ const pogkid3 = LOCALID_CC_POG_KID_3
 
 script CC_Pog_Candies {
     lock
-    applymovement(pogkid1, moves(walk_in_place_down))
+    applymovement(pogkid1, moves(walk_in_place_up))
     msgbox("I wanna sour one Mr. Poggers!")
     closemessage
     applymovement(pogkid2, moves(walk_in_place_left))
     msgbox("And I wanna sweet one!")
     closemessage
-    applymovement(pogkid3, moves(walk_in_place_down))
+    applymovement(pogkid3, moves(walk_in_place_up))
     msgbox("Then… then I wanna spicy one!")
     closemessage
     faceplayer
@@ -1678,8 +1688,8 @@ script CC_Pog_Candies {
             "I feel like some kind of hero.")
     closemessage
     applymovement(pogcandies, moves(
-        face_up
-        walk_in_place_up))
+        face_down
+        walk_in_place_down))
     waitmovement
     msgbox("Never fear, small friends! I have\n"
             "plenty of options.")
@@ -1690,7 +1700,7 @@ script CC_Pog_Kid1 {
     lock
     faceplayer
     msgbox("Mr. Poggers is the best.")
-    applymovement(pogkid1, moves(face_down))
+    applymovement(pogkid1, moves(face_up))
     waitmovement
     release
 }
@@ -1709,11 +1719,47 @@ script CC_Pog_Kid3 {
     faceplayer
     msgbox("I had broccoli for breakfast, I\n"
             "definitely deserve some candy!")
-    applymovement(pogkid3, moves(face_down))
+    applymovement(pogkid3, moves(face_up))
     waitmovement
     release
 }
 
+const arcanesister = LOCALID_CC_ARCANE_SISTER
+const pramanixsister = LOCALID_CC_PRAMANIX_SISTER
+
+script CC_Arcane_Sister {
+    lock
+    faceplayer
+    msgbox("I'd never heard of Arknights or\n"
+            "Endfield before, but my sister is a\l"
+            "huge fan of both and she wanted me\l"
+            "to keep her company.\p"
+            "I wasn't sure until she told me I\n"
+            "could dress up as a character who\l"
+            "controls MAGIC RAILGUNS.\p"
+            "Who could resist? And I'm having a\n"
+            "great time!")
+    applymovement(arcanesister, moves(face_right))
+    waitmovement
+    release
+}
+
+script CC_Pramanix_Sister {
+    lock
+    faceplayer
+    msgbox("This convention is incredible! They\n"
+            "really went all out with the\l"
+            "branding, the decor… and the\l"
+            "other cosplayers are all amazing!\p"
+            "I'm so glad I convinced my sister to\n"
+            "come with me, she's not a big fan\l"
+            "of leaving the house but she seems\l"
+            "to be having as much fun as I am.\p"
+            "I'm excited to watch the battles!")
+    applymovement(pramanixsister, moves(face_left))
+    waitmovement
+    release
+}
 
 const gambler = LOCALID_CC_GAMBLER
 const perlica = LOCALID_CC_PERLICA
