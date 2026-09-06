@@ -425,7 +425,7 @@ script Pokemonbanner_Sign {
 }
 
 script PlayStageMusic {
-    playbgm(MUS_CREDITS, FALSE)
+    playbgm(MUS_SPEED_OF_LIGHT, FALSE)
     setvar(VAR_MUSIC_CHECKER, 1)
 }
 
