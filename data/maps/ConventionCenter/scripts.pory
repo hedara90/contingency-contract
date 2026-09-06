@@ -31,6 +31,9 @@ script CC_OnTransition {
     if(var(VAR_INTRO)==0){
         setobjectxyperm(chisa, 7, 22)
     }
+    if(flag(FLAG_SATSUKI_QUEUED)== FALSE){
+        setflag(FLAG_SATSUKI)
+    }
 }
 
 script CC_GilbertaEvent {
@@ -69,11 +72,6 @@ script CC_PickRandomEvents {
     }
     random(2)
     switch(var(VAR_RESULT)){
-        case 0: setflag(FLAG_JOHNENDFIELD)
-        default: clearflag(FLAG_JOHNENDFIELD)
-    }
-    random(2)
-    switch(var(VAR_RESULT)){
         case 0: 
             setflag(FLAG_CARNELIAN)
             clearflag(FLAG_MIFU_EVENT)
@@ -96,6 +94,20 @@ script CC_PickRandomEvents {
         default:
             setflag(FLAG_LAEVATAIN_SHOOT)
             clearflag(FLAG_LAEVATAIN_EATING)
+    }
+    random(3)
+    switch(var(VAR_RESULT)){
+        case 0:
+            setflag(FLAG_DRAGONS)
+        default:
+            clearflag(FLAG_DRAGONS)
+    }
+    random(2)
+    switch(var(VAR_RESULT)){
+        case 0:
+            setflag(FLAG_WEIQI)
+        default:
+            clearflag(FLAG_WEIQI)
     }
     //some other people in lounge (excl. with Gladiia)
     //Endmin & Penance
@@ -124,7 +136,7 @@ script CC_Intro {
     msgbox("Let me check...")
     waitmessage
     applymovement(receptionist, moves(walk_left, delay_16*6, walk_right, face_down))
-    msgbox("...Looks like everything's in order.\nHere you go")
+    msgbox("...Looks like everything's in order.\nHere you go.")
     closemessage
     playse(MUS_OBTAIN_ITEM)
     msgbox("Obtained a CC pass!")
@@ -360,6 +372,23 @@ script Pokemonbanner_Sign {
     lock
     msgbox("The Pokemon Storage\nGet your rental pokemon here!\p"
         "Do not run away with them.\nWe will find you.")
+    closemessage
+    release
+}
+
+script MerchBanner_Sign {
+
+}
+
+script CC_Credits {
+    lock
+    msgbox("Credits:\n"
+            "Main devs: Pawkkie, Hedara, Turtleye\l"
+            "Playtesting: Skarbok\l"
+            "ROM base: PRET & EmeraldExpansion\l"
+            "Party & Box menu base: Montblanc\l"
+            "Jamie's Transformation pack\l"
+            "Archie's Fastsave script")
     closemessage
     release
 }
@@ -1954,6 +1983,70 @@ script CC_Carnelian {
     waitmovement
     setspeaker(SP_NAME_ELYSIUM)
     msgbox("Oh it's Alleikhreos's intro theme.\nAll 4 of them are great!")
+    closemessage
+    release
+}
+
+const satsuki = LOCALID_CC_SATSUKI
+
+script CC_Satsuki {
+    lock
+    faceplayer
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Hey Tiana. Enjoying yourself?")
+    dynmultichoice(0, 0, TRUE, 4, TRUE, DYN_MULTICHOICE_CB_NONE,
+            "Yep!")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("That's nice.")
+    waitmessage
+    applymovement(satsuki, moves(face_down))
+    msgbox("I've been observing the battles here.\n"
+            "Some interesting strategies I've seen,\lthat's for sure.")
+    closemessage
+    applymovement(satsuki, moves(face_player))
+    waitmovement
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Also, your friend seems to be having\na good time.")
+    applymovement(satsuki, moves(face_player))
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Yeah, she's not too shabby at battling.")
+    closemessage
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Mmhm. Perhaps in a different timeline\nshe could've been your colleague.")
+    applymovement(player, moves(emote_exclamation_mark))
+    playse(SE_PIN)
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Satsuki please, don't mention different\ntimelines on my day off.")
+    closemessage
+    applymovement(satsuki, moves(emote_heart))
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Fufufu, alright.\p"
+            "When it's time to leave, could you\ncarry some of my Chubby Lungs?\lI'd rather not make two trips.")
+    closemessage
+    applymovement(satsuki, moves(face_down))
+    setspeaker(SP_NAME_PLAYER)
+    delay(60)
+    msgbox("...")
+    closemessage
+    release
+}
+
+const weiqiGuy = LOCALID_CC_WEIQIGUY
+const weiqiGirl = LOCALID_CC_WEIQIGIRL
+
+script CC_Weiqi {
+    lock
+    applymovement(weiqiGuy, moves(walk_in_place_right))
+    msgbox("They put this weiqi board here, but...\n{PAUSE_UNTIL_PRESS}do you know how to play the game?")
+    applymovement(weiqiGirl, moves(emote_question_mark))
+    waitmovement
+    msgbox("Oh I sure don't, and they didn't provide\nany instructions either.")
+    closemessage
+    delay(45)
+    applymovement(weiqiGuy, moves(walk_in_place_right))
+    msgbox("Hmm...\p"
+            "There's black and white stones,\nhow about we just play checkers?")
     closemessage
     release
 }

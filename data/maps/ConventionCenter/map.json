@@ -40,7 +40,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "NULL",
-      "flag": "0"
+      "flag": "FLAG_DRAGONS"
     },
     {
       "local_id": "LOCALID_CC_SHU",
@@ -54,7 +54,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_Dragons",
-      "flag": "0"
+      "flag": "FLAG_DRAGONS"
     },
     {
       "local_id": "LOCALID_CC_NIAN",
@@ -68,7 +68,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_Dragons",
-      "flag": "0"
+      "flag": "FLAG_DRAGONS"
     },
     {
       "local_id": "LOCALID_CC_MIFU1",
@@ -485,7 +485,8 @@
       "flag": "0"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "local_id": "LOCALID_CC_WEIQIGUY",
+      "graphics_id": "OBJ_EVENT_GFX_MONK",
       "x": 8,
       "y": 34,
       "elevation": 0,
@@ -494,11 +495,12 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
-      "flag": "0"
+      "script": "CC_Weiqi",
+      "flag": "FLAG_WEIQI"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "local_id": "LOCALID_CC_WEIQIGIRL",
+      "graphics_id": "OBJ_EVENT_GFX_CC_GIRL",
       "x": 10,
       "y": 34,
       "elevation": 0,
@@ -507,8 +509,8 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
-      "flag": "0"
+      "script": "CC_Weiqi",
+      "flag": "FLAG_WEIQI"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_OLD_MAN",
@@ -729,6 +731,20 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CC_Pramanix_Sister",
       "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_CC_SATSUKI",
+      "graphics_id": "OBJ_EVENT_GFX_SATSUKI",
+      "x": 30,
+      "y": 18,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "CC_Satsuki",
+      "flag": "0"
     }
   ],
   "warp_events": [
@@ -743,7 +759,7 @@
   "coord_events": [
     {
       "type": "trigger",
-      "x": 13,
+      "x": 11,
       "y": 32,
       "elevation": 0,
       "var": "VAR_VOBJECT_CHECKER",
@@ -752,7 +768,7 @@
     },
     {
       "type": "trigger",
-      "x": 13,
+      "x": 11,
       "y": 31,
       "elevation": 0,
       "var": "VAR_VOBJECT_CHECKER",
@@ -824,7 +840,7 @@
     },
     {
       "type": "trigger",
-      "x": 12,
+      "x": 10,
       "y": 32,
       "elevation": 0,
       "var": "VAR_VOBJECT_CHECKER",
@@ -833,7 +849,7 @@
     },
     {
       "type": "trigger",
-      "x": 12,
+      "x": 10,
       "y": 31,
       "elevation": 0,
       "var": "VAR_VOBJECT_CHECKER",
@@ -1325,6 +1341,14 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "NULL"
+    },
+    {
+      "type": "sign",
+      "x": 13,
+      "y": 20,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "CC_Credits"
     }
   ]
 }
