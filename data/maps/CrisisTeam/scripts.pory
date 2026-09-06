@@ -65,10 +65,12 @@ script CrisisTeam_WonGauntlet {
 }
 
 script CrisisTeam_Xaihi {
+    setspeaker(SP_NAME_XAIHI)
     msgbox(XaihiBeforeBattle)
     trainerbattle_no_intro(TRAINER_XAIHI, XaihiAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_XAIHI)
     switch(var(VAR_RESULT)){
         default:
             msgbox(XaihiAfterBattle_Lose)
@@ -105,10 +107,12 @@ text XaihiAfterBattle_Lose {
 }
 
 script CrisisTeam_Chen {
+    setspeaker(SP_NAME_CHEN)
     msgbox(ChenBeforeBattle)
     trainerbattle_no_intro(TRAINER_CHEN, ChenAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_CHEN)
     switch(var(VAR_RESULT)){
         default:
             msgbox(ChenAfterBattle_Lose)
@@ -144,10 +148,12 @@ text ChenAfterBattle_Lose {
 }
 
 script CrisisTeam_Perlica {
+    setspeaker(SP_NAME_PERLICA)
     msgbox(PerlicaBeforeBattle)
     trainerbattle_no_intro(TRAINER_PERLICA, PerlicaAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_PERLICA)
     switch(var(VAR_RESULT)){
         default:
             msgbox(PerlicaAfterBattle_Lose)
@@ -181,10 +187,12 @@ text PerlicaAfterBattle_Lose {
 }
 
 script CrisisTeam_Endmin {
+    setspeaker(SP_NAME_ENDMIN)
     msgbox(EndminBeforeBattle)
     trainerbattle_no_intro(TRAINER_ENDMIN, EndminAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_ENDMIN)
     switch(var(VAR_RESULT)){
         default:
             msgbox(EndminAfterBattle_Lose)

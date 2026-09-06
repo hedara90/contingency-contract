@@ -65,10 +65,12 @@ script Reconveners_WonGauntlet {
 }
 
 script Reconveners_Ardelia {
+    setspeaker(SP_NAME_ARDELIA)
     msgbox(ArdeliaBeforeBattle)
     trainerbattle_no_intro(TRAINER_ARDELIA, ArdeliaAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_ARDELIA)
     switch(var(VAR_RESULT)){
         default:
             msgbox(ArdeliaAfterBattle_Lose)
@@ -106,10 +108,12 @@ text ArdeliaAfterBattle_Lose {
 }
 
 script Reconveners_Pogranichnik {
+    setspeaker(SP_NAME_POG)
     msgbox(PogranichnikBeforeBattle)
     trainerbattle_no_intro(TRAINER_POG, PogranichnikAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_POG)
     switch(var(VAR_RESULT)){
         default:
             msgbox(PogranichnikAfterBattle_Lose)
@@ -147,10 +151,12 @@ text PogranichnikAfterBattle_Lose {
 }
 
 script Reconveners_Gilberta {
+    setspeaker(SP_NAME_GILBERTA)
     msgbox(GilbertaBeforeBattle)
     trainerbattle_no_intro(TRAINER_GILBERTA, GilbertaAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_GILBERTA)
     switch(var(VAR_RESULT)){
         default:
             msgbox(GilbertaAfterBattle_Lose)
@@ -188,9 +194,11 @@ text GilbertaAfterBattle_Lose {
 
 script Reconveners_Laevatain {
     msgbox(LaevatainBeforeBattle)
+    setspeaker(SP_NAME_LAEVATAIN)
     trainerbattle_no_intro(TRAINER_LAEVATAIN, LaevatainAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_LAEVATAIN)
     switch(var(VAR_RESULT)){
         default:
             msgbox(LaevatainAfterBattle_Lose)

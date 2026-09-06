@@ -65,10 +65,12 @@ script Wuling_WonGauntlet {
 }
 
 script Wuling_TangTang {
+    setspeaker(SP_NAME_TANGTANG)
     msgbox(TangTangBeforeBattle)
     trainerbattle_no_intro(TRAINER_TANGTANG, TangTangAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_TANGTANG)
     switch(var(VAR_RESULT)){
         default:
             msgbox(TangTangAfterBattle_Lose)
@@ -101,10 +103,12 @@ text TangTangAfterBattle_Lose {
 }
 
 script Wuling_MiFu {
+    setspeaker(SP_NAME_MIFU)
     msgbox(MiFuBeforeBattle)
     trainerbattle_no_intro(TRAINER_MIFU, MiFuAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_MIFU)
     switch(var(VAR_RESULT)){
         default:
             msgbox(MiFuAfterBattle_Lose)
@@ -143,6 +147,7 @@ text MiFuAfterBattle_Lose {
 }
 
 script Wuling_Arcane {
+    setspeaker(SP_NAME_ARCANE)
     msgbox(ArcaneBeforeBattle)
     callnative(GetRandomArcane)
     switch (var(VAR_RESULT)) {
@@ -153,6 +158,7 @@ script Wuling_Arcane {
     }
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_ARCANE)
     switch (var(VAR_RESULT)){
         default:
             msgbox(ArcaneAfterBattle_Lose)
@@ -188,10 +194,12 @@ text ArcaneAfterBattle_Lose {
 }
 
 script Wuling_ZhuangFangyi {
+    setspeaker(SP_NAME_ZHUANG)
     msgbox(ZhuangFangyiBeforeBattle)
     trainerbattle_no_intro(TRAINER_FANGYI, ZhuangFangyiAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_ZHUANG)
     switch(var(VAR_RESULT)){
         default:
             msgbox(ZhuangFangyiAfterBattle_Lose)

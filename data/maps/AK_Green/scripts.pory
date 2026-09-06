@@ -65,10 +65,12 @@ script AKGeen_WonGauntlet {
 }
 
 script AKGreen_Carnelian {
+    setspeaker(SP_NAME_CARNELIAN)
     msgbox(CarnelianBeforeBattle)
     trainerbattle_no_intro(TRAINER_CARNELIAN, CarnelianAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_CARNELIAN)
     switch(var(VAR_RESULT)){
         default:
             msgbox(CarnelianAfterBattle_Lose)
@@ -106,10 +108,12 @@ text CarnelianAfterBattle_Lose {
 }
 
 script AKGreen_Penance {
+    setspeaker(SP_NAME_PENANCE)
     msgbox(PenanceBeforeBattle)
     trainerbattle_no_intro(TRAINER_PENANCE, PenanceAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_PENANCE)
     switch(var(VAR_RESULT)){
         default:
             msgbox(PenanceAfterBattle_Lose)
@@ -147,10 +151,12 @@ text PenanceAfterBattle_Lose {
 }
 
 script AKGreen_Pramanix {
+    setspeaker(SP_NAME_PRAMANIX)
     msgbox(PramanixBeforeBattle)
     trainerbattle_no_intro(TRAINER_PRAMANIX, PramanixAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_PRAMANIX)
     switch(var(VAR_RESULT)){
         default:
             msgbox(PramanixAfterBattle_Lose)
@@ -186,10 +192,12 @@ text PramanixAfterBattle_Lose {
 }
 
 script AKGreen_Fiametta {
+    setspeaker(SP_NAME_FIAMETTA)
     msgbox(FiamettaBeforeBattle)
     trainerbattle_no_intro(TRAINER_FIAMETTA, FiamettaAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_FIAMETTA)
     switch(var(VAR_RESULT)){
         default:
             msgbox(FiamettaAfterBattle_Lose)

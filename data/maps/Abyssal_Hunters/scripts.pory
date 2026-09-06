@@ -66,10 +66,12 @@ script AbyssalHunters_WonGauntlet {
 
 
 script AbyssalHunters_Specter {
+    setspeaker(SP_NAME_SPECTER)
     msgbox(SpecterBeforeBattle)
     trainerbattle_no_intro(TRAINER_SPECTER, SpecterAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_SPECTER)
     switch(var(VAR_RESULT)){
         default:
             msgbox(SpecterAfterBattle_Lose)
@@ -105,10 +107,12 @@ text SpecterAfterBattle_Lose {
 }
 
 script AbyssalHunters_Gladiia {
+    setspeaker(SP_NAME_GLADIIA)
     msgbox(GladiiaBeforeBattle)
     trainerbattle_no_intro(TRAINER_GLADIIA, GladiiaAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_GLADIIA)
     switch(var(VAR_RESULT)){
         default:
         if(var(VAR_GLADIIA) < 2){
@@ -160,9 +164,11 @@ text GladiiaAfterBattle_Lose {
 
 script AbyssalHunters_Skadi {
     msgbox(SkadiBeforeBattle)
+    setspeaker(SP_NAME_SKADI)
     trainerbattle_no_intro(TRAINER_SKADI, SkadiAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_SKADI)
     switch(var(VAR_RESULT)){
         default:
             msgbox(SkadiAfterBattle_Lose)
@@ -201,10 +207,12 @@ text SkadiAfterBattle_Lose {
 }
 
 script AbyssalHunters_Ulpianus {
+    setspeaker(SP_NAME_ULPIANUS)
     msgbox(UlpianusBeforeBattle)
     trainerbattle_no_intro(TRAINER_ULPIANUS, UlpianusAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_ULPIANUS)
     switch(var(VAR_RESULT)){
         default:
             msgbox(UlpianusAfterBattle_Lose)
