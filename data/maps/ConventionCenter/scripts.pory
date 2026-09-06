@@ -510,6 +510,20 @@ script SatsukiPaying {
     return
 }
 
+script ChisaQueueTalk {
+    setspeaker(SP_NAME_CHISA)
+    msgbox("Tiana… This queue is sooooo sloooow!\pI'm missing out on sooooo many battles.")
+    closemessage
+    applymovement(player, moves(face_left, delay_16 * 3, face_right, delay_16 *2, face_down))
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Maybe it'll speed up soon?")
+    setspeaker(SP_NAME_CHISA)
+    msgbox("Yea…  I hope so… ")
+    waitmessage
+    return
+}
+
 script LastQueuer {
     lock
     getvobjectgfxtag(0)
@@ -538,6 +552,11 @@ script EightToLastQueuer {
         msgbox("Satsuki? Why are you here?")
         turnvobject(7, DIR_NORTH)
         call(SatsukiTalk)
+    case OBJ_EVENT_GFX_CHISA:
+        setspeaker(SP_NAME_PLAYER)
+        msgbox("Chisa! How goes the queuing?")
+        turnvobject(7, DIR_NORTH)
+        call(ChisaQueueTalk)
     default:
         turnvobject(7, DIR_NORTH)
         msgbox("I hope this queue goes fast…")
