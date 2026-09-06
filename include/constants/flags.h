@@ -59,8 +59,8 @@
 #define FLAG_JOHNENDFIELD    0x25 // Unused Flag
 #define FLAG_INTRO    0x26 // Unused Flag
 #define FLAG_CHISA_CC    0x27 // Unused Flag
-#define FLAG_UNUSED_0x028    0x28 // Unused Flag
-#define FLAG_UNUSED_0x029    0x29 // Unused Flag
+#define FLAG_LAEVATAIN_SHOOT    0x28 // Unused Flag
+#define FLAG_LAEVATAIN_EATING    0x29 // Unused Flag
 #define FLAG_UNUSED_0x02A    0x2A // Unused Flag
 #define FLAG_UNUSED_0x02B    0x2B // Unused Flag
 #define FLAG_UNUSED_0x02C    0x2C // Unused Flag
@@ -96,9 +96,9 @@
 #define FLAG_UNUSED_0x04A    0x4A // Unused Flag
 #define FLAG_UNUSED_0x04B    0x4B // Unused Flag
 #define FLAG_UNUSED_0x04C    0x4C // Unused Flag
-#define FLAG_UNUSED_0x04D    0x4D // Unused Flag
-#define FLAG_UNUSED_0x04E    0x4E // Unused Flag
-#define FLAG_SPECTATOR_POS   0x4F
+#define FLAG_SATSUKI_QUEUED  0x4D
+#define FLAG_SATSUKI_PAID    0x4E
+#define FLAG_TALKED_SATSUKI  0x4F
 
 // Scripts
 #define FLAG_HIDE_SKY_PILLAR_TOP_RAYQUAZA_STILL  0x50

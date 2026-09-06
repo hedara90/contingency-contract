@@ -88,10 +88,20 @@ script CC_PickRandomEvents {
         default:
             clearflag(FLAG_CHISA_CC)
     }
+    random(2)
+    switch(var(VAR_RESULT)){
+        case 0:
+            setflag(FLAG_LAEVATAIN_EATING)
+            clearflag(FLAG_LAEVATAIN_SHOOT)
+        default:
+            setflag(FLAG_LAEVATAIN_SHOOT)
+            clearflag(FLAG_LAEVATAIN_EATING)
+    }
     //some other people in lounge (excl. with Gladiia)
     //Endmin & Penance
     //Various people at the photobooth
     //TangTang + MiFu
+    //Laevatain position
 }
 
 script CC_Intro {
@@ -139,7 +149,7 @@ script CC_Intro {
     applymovement(player, moves(face_up))
     applymovement(receptionist, moves(walk_in_place_down))
     msgbox("Would you like me to explain how\neverything's set up?")
-    dynmultichoice(0, 0, FALSE, 4, TRUE, DYN_MULTICHOICE_CB_NONE,
+    dynmultichoice(0, 0, TRUE, 4, TRUE, DYN_MULTICHOICE_CB_NONE,
             "Yeah sure, give me the brief.",
             "I can figure it out myself!")
     switch(var(VAR_RESULT)){
@@ -365,16 +375,118 @@ script PlayNormalMusic {
 }
 
 script SatsukiTalk {
+    if (flag(FLAG_TALKED_SATSUKI)) {
+        setspeaker(SP_NAME_SATSUKI)
+        msgbox("Queuing for my Chubby Lungs.\pWhat else would I do here?")
+        setspeaker(SP_NAME_PLAYER)
+        msgbox("Still?\pI would've thought you'd be done by now.")
+        setspeaker(SP_NAME_SATSUKI)
+        msgbox("So did I, but here we are.")
+        setflag(FLAG_SATSUKI_QUEUED)
+        waitmessage
+        return
+    }
     setspeaker(SP_NAME_SATSUKI)
-    msgbox("Oh, Tiana")
+    msgbox("Oh, Tiana. You've finally made your way\nhere.")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Yes, but I play this game, while I don't\nthink you even own a smartphone.\pSo why would you even be here?")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("I don't own one of those devices, no.\pAnd this convention is for a game\nyou say?\pAnyway, I'm here to ensure the integrity\nof the battle arena.")
+    applymovement(player, moves(emote_question_mark, delay_16 * 2))
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("The battle arena, why?")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Well, it's a semi-virtual battling system\noperating under different rules than\lusual battles that nevertheless can\laffect the real world.\pSounds familiar, hmm?")
+    applymovement(player, moves(face_up, delay_16, emote_exclamation_mark, delay_16 * 3, face_down))
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("It's a Bodhai system!\nOr at least something similar!")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Yes, the setup here uses a derivation\nof the Bodhai system with a strictly\llocal causal interference.")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("So I won't wake up tomorrow to a set\nof earthshattering revelations?")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("No, this system is as mentioned strictly\nlocal.")
+    applymovement(player, moves(emote_exclamation_mark))
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Enough of that!\pThat explains why you're here, but\nwhy are you in this queue?")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("The… what were they called?\pChubby Lungs I think.\pThey are quite cute. So I ordered\na few ahead of time to pick up today.\pI saw the big ones when inspecting\nthe initial setup of the arena.")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Wait, are you the reason Chisa and I\ngot CC Passes?")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Yes, I got them for helping with the\nsetup, but I had no use for them.\pSo I transferred them to you.")
+    applymovement(player, moves(emote_heart))
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Have I said that you're the best\nboss ever?")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("I could stand to hear it more.\pBut you should probably go take\nadvantage of it instead of socializing\lwith me.")
+    applymovement(player, moves(emote_heart))
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("I will!\pThank you again!")
+    setflag(FLAG_TALKED_SATSUKI)
     waitmessage
     return
 }
 
 script SatsukiPaying {
+    if (flag(FLAG_TALKED_SATSUKI)) {
+        setspeaker(SP_NAME_SATSUKI)
+        msgbox("Paying for my Chubby Lungs.\pWhat else would I do here?")
+        setspeaker(SP_NAME_PLAYER)
+        msgbox("Any chance that you could pick something\nup for me too?")
+        setspeaker(SP_NAME_NONE)
+        msgbox("Miss, here is your order.")
+        turnvobject(33, DIR_WEST)
+        setspeaker(SP_NAME_SATSUKI)
+        msgbox("Thank you.")
+        turnvobject(33, DIR_NORTH)
+        msgbox("Alas, it seems that you'll have to\nqueue yourself.")
+        setflag(FLAG_SATSUKI_PAID)
+        waitmessage
+        return
+    }
     setspeaker(SP_NAME_SATSUKI)
-    msgbox("Oh, Tiana")
-    waitmessage
+    msgbox("Oh, Tiana. You've finally made your way\nhere.")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Yes, but I play this game, while I don't\nthink you even own a smartphone.\pSo why would you even be here?")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("I don't own one of those devices, no.\pAnd this convention is for a game\nyou say?\pAnyway, I'm here to ensure the integrity\nof the battle arena.")
+    applymovement(player, moves(emote_question_mark, delay_16 * 2))
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("The battle arena, why?")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Well, it's a semi-virtual battling system\noperating under different rules than\lusual battles that nevertheless can\laffect the real world.\pSounds familiar, hmm?")
+    applymovement(player, moves(face_up, delay_16, emote_exclamation_mark, delay_16 * 3, face_down))
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("It's a Bodhai system!\nOr at least something similar!")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Yes, the setup here uses a derivation\nof the Bodhai system with a strictly\llocal causal interference.")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("So I won't wake up tomorrow to a set\nof earthshattering revelations?")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("No, this system is as mentioned strictly\nlocal.")
+    applymovement(player, moves(emote_exclamation_mark))
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Enough of that!\pThat explains why you're here, but\nwhy are you in this queue?")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("The… what were they called?\pChubby Lungs I think.\pThey are quite cute. So I ordered\na few ahead of time to pick up today.\pI saw the big ones when inspecting\nthe initial setup of the arena.")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Wait, are you the reason Chisa and I\ngot CC Passes?")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Yes, I got them for helping with the\nsetup, but I had no use for them.\pSo I transferred them to you.")
+    applymovement(player, moves(emote_heart))
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Have I said that you're the best\nboss ever?")
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("I could stand to hear it more.\pBut you should probably go take\nadvantage of it instead of socializing\lwith me.")
+    applymovement(player, moves(emote_heart))
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("I will!\pThank you again!")
+    setflag(FLAG_TALKED_SATSUKI)
     return
 }
 
@@ -1475,8 +1587,8 @@ script CC_Penance {
 script CC_Laevatein {
     lock
     faceplayer
-    msgbox("I brought some ice pops for the\nphotoshoot.\p"
-            "However, they're all melted now...")
+    msgbox("I brought a big sword for the\nphotoshoot.\p"
+            "I'm honestly surprised they\nlet me in with it.")
     closemessage
     release
 }
@@ -1580,13 +1692,13 @@ const pogkid3 = LOCALID_CC_POG_KID_3
 
 script CC_Pog_Candies {
     lock
-    applymovement(pogkid1, moves(walk_in_place_down))
+    applymovement(pogkid1, moves(walk_in_place_up))
     msgbox("I wanna sour one Mr. Poggers!")
     closemessage
     applymovement(pogkid2, moves(walk_in_place_left))
     msgbox("And I wanna sweet one!")
     closemessage
-    applymovement(pogkid3, moves(walk_in_place_down))
+    applymovement(pogkid3, moves(walk_in_place_up))
     msgbox("Then… then I wanna spicy one!")
     closemessage
     faceplayer
@@ -1601,8 +1713,8 @@ script CC_Pog_Candies {
             "I feel like some kind of hero.")
     closemessage
     applymovement(pogcandies, moves(
-        face_up
-        walk_in_place_up))
+        face_down
+        walk_in_place_down))
     waitmovement
     msgbox("Never fear, small friends! I have\n"
             "plenty of options.")
@@ -1613,7 +1725,7 @@ script CC_Pog_Kid1 {
     lock
     faceplayer
     msgbox("Mr. Poggers is the best.")
-    applymovement(pogkid1, moves(face_down))
+    applymovement(pogkid1, moves(face_up))
     waitmovement
     release
 }
@@ -1632,11 +1744,47 @@ script CC_Pog_Kid3 {
     faceplayer
     msgbox("I had broccoli for breakfast, I\n"
             "definitely deserve some candy!")
-    applymovement(pogkid3, moves(face_down))
+    applymovement(pogkid3, moves(face_up))
     waitmovement
     release
 }
 
+const arcanesister = LOCALID_CC_ARCANE_SISTER
+const pramanixsister = LOCALID_CC_PRAMANIX_SISTER
+
+script CC_Arcane_Sister {
+    lock
+    faceplayer
+    msgbox("I'd never heard of Arknights or\n"
+            "Endfield before, but my sister is a\l"
+            "huge fan of both and she wanted me\l"
+            "to keep her company.\p"
+            "I wasn't sure until she told me I\n"
+            "could dress up as a character who\l"
+            "controls MAGIC RAILGUNS.\p"
+            "Who could resist? And I'm having a\n"
+            "great time!")
+    applymovement(arcanesister, moves(face_right))
+    waitmovement
+    release
+}
+
+script CC_Pramanix_Sister {
+    lock
+    faceplayer
+    msgbox("This convention is incredible! They\n"
+            "really went all out with the\l"
+            "branding, the decor… and the\l"
+            "other cosplayers are all amazing!\p"
+            "I'm so glad I convinced my sister to\n"
+            "come with me, she's not a big fan\l"
+            "of leaving the house but she seems\l"
+            "to be having as much fun as I am.\p"
+            "I'm excited to watch the battles!")
+    applymovement(pramanixsister, moves(face_left))
+    waitmovement
+    release
+}
 
 const gambler = LOCALID_CC_GAMBLER
 const perlica = LOCALID_CC_PERLICA

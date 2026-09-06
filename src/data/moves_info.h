@@ -15119,7 +15119,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .accuracy = 0,
         .pp = 10,
         .target = TARGET_ALL_BATTLERS,
-        .priority = 0,
+        .priority = 3,
         .category = DAMAGE_CATEGORY_STATUS,
         .zMove = { .effect = Z_EFFECT_ATK_UP_1 },
         .ignoresProtect = TRUE,
@@ -20945,7 +20945,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
             "Hits target with splashes\n"
             "of water 3 times in a row."),
         .effect = EFFECT_HIT,
-        .power = 30,
+        .power = 20,
         .type = TYPE_WATER,
         .accuracy = 95,
         .pp = 10,
