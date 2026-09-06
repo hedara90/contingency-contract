@@ -197,7 +197,7 @@ script CC_Intro_Explanation {
     delay(30)
     applymovement(player, moves(face_up))
     applymovement(chisa, moves(face_up))
-    msgbox("To start you off, we have provided\n500 credits that you can spend at\lthe booths.\p"
+    msgbox("To start you off, we have provided\n3000 credits that you can spend at\lthe booths.\p"
             "That should cover it.")
     closemessage
     applymovement(player, moves(walk_in_place_up))
@@ -258,7 +258,7 @@ script CC_Intro_NoExplanation {
     applymovement(player, moves(face_up))
     applymovement(chisa, moves(face_up))
     waitmovement
-    msgbox("Before you two head off, I need\nto mention you've got 500 credits\lto start with.\pHave fun battling!")
+    msgbox("Before you two head off, I need\nto mention you've got 3000 credits\lto start with.\pHave fun battling!")
     applymovement(chisa, moves(emote_heart))
     waitmovement
     setspeaker(SP_NAME_CHISA)
@@ -1603,7 +1603,6 @@ script CC_CameraBooth_TurnBack {
 script CC_Pog {
     lock
     faceplayer
-    setspeaker(SP_NAME_POG)
     msgbox("Sigh... I get that she wants\nto portray Fiametta properly.\p"
             "But did she really have to say\nthat line?")
     setspeaker(SP_NAME_NONE)
