@@ -133,23 +133,22 @@ script CC_Intro {
     waitmovement
     setspeaker(SP_NAME_CHISA)
     msgbox("Not yet! Here are our tickets.")
-    closemessage
     applymovement(receptionist, moves(walk_in_place_down))
     msgbox("Let me check...")
     waitmessage
     applymovement(receptionist, moves(walk_left, delay_16*6, walk_right, face_down))
     msgbox("...Looks like everything's in order.\nHere you go.")
-    closemessage
+    waitmessage
     playse(MUS_OBTAIN_ITEM)
     msgbox("Obtained a CC pass!")
     waitse
     applymovement(player, moves(emote_heart))
     setspeaker(SP_NAME_PLAYER)
     msgbox("Thanks!")
-    closemessage
+    waitmessage
     applymovement(receptionist, moves(walk_in_place_down))
     msgbox("I see here that you both signed\nup for the CC simulation battles?")
-    closemessage
+    waitmessage
     applymovement(player, moves(emote_question_mark))
     waitmovement
     setspeaker(SP_NAME_PLAYER)
@@ -160,7 +159,7 @@ script CC_Intro {
     setspeaker(SP_NAME_CHISA)
     callnative(DestroyOther)
     msgbox("Yep, we did!")
-    closemessage
+    waitmessage
     callnative(CreateOtherVObjects)
     applymovement(player, moves(face_up))
     applymovement(receptionist, moves(walk_in_place_down))
@@ -194,7 +193,7 @@ script CC_Intro_Explanation {
             "Winning battles gives you some credit,\nwhich can be spent...")
     closemessage
     applymovement(camera, moves(walk_up*6, walk_diag_northeast))
-    waitmessage
+    waitmovement
     msgbox("...Here. This is the Pokemon booth.\p"
             "Here, you can spend your credit to\nobtain pokemon for use in battle.\p"
             "Each pokemon will come out of the\nbox with 4 moves and 1 ability.\p"
@@ -232,7 +231,7 @@ script CC_Intro_Explanation {
     waitmovement
     setspeaker(SP_NAME_CHISA)
     msgbox("Hehe, yep! I figured you'd enjoy this.")
-    closemessage
+    waitmessage
     applymovement(player, moves(walk_in_place_down))
     setspeaker(SP_NAME_PLAYER)
     msgbox("It definitely sounds interesting, but\nI was planning on just winding down\la bit from work.")
@@ -279,7 +278,7 @@ script CC_Intro_NoExplanation {
     waitmovement
     setspeaker(SP_NAME_CHISA)
     msgbox("Thank you, miss.")
-    closemessage
+    waitmessage
     applymovement(chisa, moves(face_left))
     applymovement(player, moves(face_right))
     setspeaker(SP_NAME_CHISA)
@@ -859,7 +858,7 @@ script CC_Chisa_LowScore {
         release
         end
     }
-    closemessage
+    waitmessage
     setspeaker(SP_NAME_PLAYER)
     msgbox("You look focused.")
     closemessage
@@ -868,15 +867,15 @@ script CC_Chisa_LowScore {
     waitmovement
     setspeaker(SP_NAME_CHISA)
     msgbox("Wha- Oh, Tiana!")
-    closemessage
+    waitmessage
     applymovement(ardelia, moves(walk_in_place_left))
     setspeaker(SP_NAME_ARDELIA)
     msgbox("She's trying her best.")
-    closemessage
+    waitmessage
     applymovement(player, moves(face_right))
     setspeaker(SP_NAME_PLAYER)
     msgbox("Sounds like it, yes.")
-    closemessage
+    waitmessage
     applymovement(chisa, moves(jump_in_place_right))
     playse(SE_LEDGE)
     waitmovement
@@ -891,7 +890,7 @@ script CC_Chisa_LowScore {
     }
     setspeaker(SP_NAME_PLAYER)
     msgbox("Deciding on your team?")
-    closemessage
+    waitmessage
     applymovement(chisa, moves(face_player))
     waitmovement
     setspeaker(SP_NAME_CHISA)
@@ -905,13 +904,13 @@ script CC_Chisa_LowScore {
 script CC_Chisa_MidScore {
     setspeaker(SP_NAME_CHISA)
     msgbox("Okay so, if i pick Area Lockdown and\nthen use Pokemon with pivoting moves,\lI can mitigate that risk...")
-    closemessage
+    waitmessage
     applymovement(ardelia, moves(walk_in_place_left))
     waitmovement
     setspeaker(SP_NAME_ARDELIA)
     msgbox("Just take Formation Breaker. Then you\ncan pick the Disabling, Tormenting and\lSuppressing risks for free.\p"
             "Way less restrictive.")
-    closemessage
+    waitmessage
     applymovement(chisa, moves(walk_in_place_right))
     setspeaker(SP_NAME_CHISA)
     msgbox("Hmm, that makes the entry hazards more\nannoying though...")
@@ -921,7 +920,7 @@ script CC_Chisa_MidScore {
     waitmovement
     setspeaker(SP_NAME_CHISA)
     msgbox("Oh, hey Tiana! Here to help me out?")
-    closemessage
+    waitmessage
     if(var(VAR_TEMP_8)==14){
         applymovement(player, moves(walk_in_place_down))
     }
@@ -931,13 +930,13 @@ script CC_Chisa_MidScore {
     waitmovement
     setspeaker(SP_NAME_PLAYER)
     msgbox("Nope, just curious what you're up to.")
-    closemessage
+    waitmessage
     applymovement(ardelia, moves(walk_in_place_left))
     applymovement(player, moves(face_right))
     applymovement(chisa, moves(face_right))
     setspeaker(SP_NAME_ARDELIA)
     msgbox("She's trying - unsuccesfully - to get a\nscore better than 25.")
-    closemessage
+    waitmessage
     applymovement(chisa, moves(jump_in_place_right))
     playse(SE_LEDGE)
     waitmovement
@@ -945,13 +944,13 @@ script CC_Chisa_MidScore {
     msgbox("Hey, that's no fair!\p"
             "You get to benefit from everything\nI switch on!\p"
             "Why don't you try it then?")
-    closemessage
+    waitmessage
     applymovement(ardelia, moves(emote_heart))
     waitmovement
     setspeaker(SP_NAME_ARDELIA)
     msgbox("Fue, you think I am just here as\nyour opponent?\p"
             "I helped test everything!\nMy record is 53.")
-    closemessage
+    waitmessage
     applymovement(chisa, moves(jump_in_place_right*2))
     playse(SE_LEDGE)
     waitse
@@ -960,12 +959,11 @@ script CC_Chisa_MidScore {
     setspeaker(SP_NAME_CHISA)
     msgbox("What?? And you aren't helping me??\p"
             "I thought we were friends...")
-    closemessage
+    waitmessage
     applymovement(ardelia, moves(walk_in_place_left))
     setspeaker(SP_NAME_ARDELIA)
     msgbox("Well, as per the rules,\nI can't tell you how I did that.")
-    closemessage
-    closemessage
+    waitmessage
     if(var(VAR_TEMP_8)==14){
         applymovement(player, moves(walk_in_place_down))
     }
@@ -974,7 +972,7 @@ script CC_Chisa_MidScore {
     }
     setspeaker(SP_NAME_PLAYER)
     msgbox("I already beat 25!")
-    closemessage
+    waitmessage
     applymovement(ardelia, moves(walk_in_place_left))
     setspeaker(SP_NAME_ARDELIA)
     msgbox("Oh, good job!")
@@ -1014,12 +1012,12 @@ script CC_Chisa_HighScore {
     waitmovement
     setspeaker(SP_NAME_CHISA)
     msgbox("Tiana! I did it! I got to 36, even!")
-    closemessage
+    waitmessage
     applymovement(player, moves(emote_heart))
     waitmovement
     setspeaker(SP_NAME_PLAYER)
     msgbox("Heh, that's more like you.")
-    closemessage
+    waitmessage
     applymovement(chisa, moves(emote_question_mark))
     setspeaker(SP_NAME_CHISA)
     msgbox("What are you at right now?")
@@ -1031,7 +1029,7 @@ script CC_Chisa_HighScore {
         playse(SE_PIN)
         setspeaker(SP_NAME_CHISA)
         msgbox("Oohh, so I win!")
-        closemessage
+        waitmessage
         if(var(VAR_TEMP_8)==14){
             applymovement(player, moves(walk_in_place_down))
         }
@@ -1040,7 +1038,7 @@ script CC_Chisa_HighScore {
         }
         setspeaker(SP_NAME_PLAYER)
         msgbox("Oh I am not done yet, don't worry.")
-        closemessage
+        waitmessage
         applymovement(ardelia, moves(walk_in_place_left))
         waitmovement
         setspeaker(SP_NAME_ARDELIA)
@@ -1050,24 +1048,24 @@ script CC_Chisa_HighScore {
     else {
         setspeaker(SP_NAME_PLAYER)
         msgbox("Higher than that!")
-        closemessage
+        waitmessage
         applymovement(chisa, moves(emote_exclamation_mark))
         playse(SE_PIN)
         waitmovement
         setspeaker(SP_NAME_CHISA)
         msgbox("Goodness, how do you keep doing that!")
-        closemessage
+        waitmessage
         applymovement(ardelia, moves(walk_in_place_left))
         applymovement(chisa, moves(face_right))
         applymovement(player, moves(face_right))
         setspeaker(SP_NAME_ARDELIA)
         msgbox("Well, you did tell me she's just better\nthan you.")
-        closemessage
+        waitmessage
         applymovement(chisa, moves(walk_in_place_right))
         waitmovement
         setspeaker(SP_NAME_CHISA)
         msgbox("She is. Annoyingly so.")
-        closemessage
+        waitmessage
         applymovement(chisa, moves(jump_in_place_right))
         playse(SE_LEDGE)
         waitmovement
@@ -1083,7 +1081,7 @@ script CC_Chisa_HighScore {
 script CC_Chisa_Record {
     setspeaker(SP_NAME_PLAYER)
     msgbox("Hey Chisa! I beat Ardelia's record!")
-    closemessage
+    waitmessage
     applymovement(chisa, moves(face_player, emote_exclamation_mark))
     applymovement(ardelia, moves(emote_exclamation_mark))
     setspeaker(SP_NAME_CHISA)
@@ -1095,7 +1093,7 @@ script CC_Chisa_Record {
     msgbox("Sheesh, I didn't expect anyone to\ndo that.\p"
             "That's incredibly impressive.\p"
             "Chisa really undersold you, even.")
-    closemessage
+    waitmessage
     if(var(VAR_TEMP_8)==14){
             applymovement(player, moves(face_down))
             applymovement(chisa, moves(walk_in_place_up))
@@ -1107,7 +1105,7 @@ script CC_Chisa_Record {
         waitmovement
     setspeaker(SP_NAME_CHISA)
     msgbox("I don't think I'll hit that.\n38 was challenging enough for me...")
-    closemessage
+    waitmessage
         if(var(VAR_TEMP_8)==14){
             applymovement(player, moves(walk_in_place_down))
         }
@@ -1117,12 +1115,12 @@ script CC_Chisa_Record {
         waitmovement
     setspeaker(SP_NAME_PLAYER)
     msgbox("Hey, that's still really good!")
-    closemessage
+    waitmessage
     applymovement(ardelia, moves(walk_in_place_left))
     waitmovement
     setspeaker(SP_NAME_ARDELIA)
     msgbox("Yeah, you should be proud of that.")
-    closemessage
+    waitmessage
     applymovement(chisa, moves(face_player))
     setspeaker(SP_NAME_CHISA)
     msgbox("Anyway! I think I'll raise a Crobat.\nNever realized how cool this guy is.")
@@ -1158,7 +1156,7 @@ script CC_Ardelia_ChisaHere {
     waitmessage
     applymovement(ardelia, moves(face_left))
     msgbox("Even though they aren't very sound\nmost of the time")
-    closemessage
+    waitmessage
     applymovement(chisa, moves(emote_exclamation_mark))
     playse(SE_PIN)
     setspeaker(SP_NAME_CHISA)
@@ -1184,29 +1182,29 @@ script CC_Dragons {
     waitmovement
     setspeaker(SP_NAME_SHU)
     msgbox("I do hope washing my tail's not going\nto be too messy with the new paint.")
-    closemessage
+    waitmessage
     applymovement(nian, moves(face_down))
     waitmovement
     setspeaker(SP_NAME_NIAN)
     msgbox("Yeah, it has always been a pain for you,\nhasn't it?")
-    closemessage
+    waitmessage
     applymovement(zhuang, moves(walk_in_place_right))
     waitmovement
     setspeaker(SP_NAME_ZHUANG)
     msgbox("Huh? Wait, you painted it?")
-    closemessage
+    waitmessage
     applymovement(shu, moves(walk_in_place_up))
     applymovement(zhuang, moves(face_down))
     waitmovement
     setspeaker(SP_NAME_SHU)
     msgbox("Yeah! Normally it's the same color\nas yours.\p"
             "We even had to dye the hair to match\nShu's pattern.")
-    closemessage
+    waitmessage
     applymovement(zhuang, moves(emote_exclamation_mark))
     waitmovement
     setspeaker(SP_NAME_ZHUANG)
     msgbox("Wow, I didn't even notice it wasn't\nnatural.\pThat's amazing!")
-    closemessage
+    waitmessage
     applymovement(nian, moves(jump_in_place_left))
     playse(SE_LEDGE)
     waitmovement
@@ -1215,25 +1213,20 @@ script CC_Dragons {
     waitmessage
     applymovement(nian, moves(face_down))
     msgbox("She created a whole armor to\nput on her tail for that one,\lsince Mym's tail so much bulkier.")
-    closemessage
+    waitmessage
     applymovement(shu, moves(walk_in_place_up))
     setspeaker(SP_NAME_SHU)
     msgbox("Yeah that... took some time to\nfigure out.\pVery happy with the result, though.")
-    closemessage
+    waitmessage
     applymovement(zhuang, moves(face_right))
     waitmovement
     setspeaker(SP_NAME_ZHUANG)
     msgbox("So is yours also painted then?")
-    closemessage
+    waitmessage
     applymovement(nian, moves(face_left))
     setspeaker(SP_NAME_NIAN)
     msgbox("Mine? Yeah, technically I suppose.")
     closemessage
-    // fadescreen(FADE_TO_BLACK)
-    // msgbox("Nian takes off her tail")
-    // closemessage
-    // fadescreen(FADE_FROM_BLACK)
-
     spinmorph(LOCALID_CC_NIAN, OBJ_EVENT_GFX_NIAN_TAILLESS)
     delay(30)
     addobject(LOCALID_CC_TAIL)
@@ -1241,15 +1234,15 @@ script CC_Dragons {
     setspeaker(SP_NAME_NIAN)
     msgbox("But it's also made of foam.\nI'm just a regular ol' human after all.\p"
             "I just pop it on my back with\nsome magnets, and there's a harness\lunder my outfit it attaches to.")
-    closemessage
+    waitmessage
     applymovement(shu, moves(face_left))
     setspeaker(SP_NAME_SHU)
     msgbox("It's pretty convincing, right?")
-    closemessage
+    waitmessage
     applymovement(zhuang, moves(face_down))
     setspeaker(SP_NAME_ZHUANG)
     msgbox("You can say that, yeah.")
-    waitmessage
+    closemessage
     spinmorph(LOCALID_CC_NIAN, OBJ_EVENT_GFX_NIAN)
     delay(30)
     removeobject(LOCALID_CC_TAIL)
@@ -1259,16 +1252,16 @@ script CC_Dragons {
     waitmessage
     applymovement(zhuang, moves(walk_in_place_right))
     msgbox("So what sorta paint do you use for\nyour tails?")
-    closemessage
+    waitmessage
     applymovement(shu, moves(face_up))
     setspeaker(SP_NAME_SHU)
     msgbox("We custom order it so it does what\nwe want.\lTo... mixed results.\p"
             "Turns out scales are pretty hard\nto keep dye on.")
-    closemessage
+    waitmessage
     applymovement(nian, moves(walk_in_place_left))
     setspeaker(SP_NAME_NIAN)
     msgbox("Say, if you ever want to do something\nthat needs tail mods,\lyou can shoot us a message!")
-    closemessage
+    waitmessage
     applymovement(shu, moves(face_up))
     applymovement(zhuang, moves(walk_in_place_right))
     setspeaker(SP_NAME_ZHUANG)
@@ -1282,18 +1275,18 @@ script CC_Dragons_Followup {
     applymovement(zhuang, moves(walk_in_place_right))
     setspeaker(SP_NAME_ZHUANG)
     msgbox("Oh, can I add you guys ingame?")
-    closemessage
+    waitmessage
     applymovement(nian, moves(jump_in_place_left))
     playse(SE_LEDGE)
     setspeaker(SP_NAME_NIAN)
     msgbox("Yep, sure thing!\p"
             "We can add you on PMChat as well if\nyou want.")
-    closemessage
+    waitmessage
     applymovement(shu, moves(walk_in_place_up))
     setspeaker(SP_NAME_SHU)
     msgbox("You can also come grab a bite with\nus tonight.\p"
             "There's a pretty bangin' noodle shop\ndown the road.")
-    closemessage
+    waitmessage
     setspeaker(SP_NAME_ZHUANG)
     applymovement(zhuang, moves(face_down))
     waitmovement
@@ -1315,18 +1308,18 @@ script CC_AbyssalHunters {
     applymovement(irene, moves(walk_in_place_left))
     setspeaker(SP_NAME_IRENE)
     msgbox("Hey... where's your Gladiia?\nEveryone else is here.")//irene
-    closemessage
+    waitmessage
     applymovement(skadi, moves(face_up))
     waitmovement
     setspeaker(SP_NAME_SKADI)
     msgbox("Dunno. I only met her today,\njust like you.")
-    closemessage
+    waitmessage
     applymovement(specter, moves(walk_in_place_right))
     applymovement(skadi, moves(face_left))
     setspeaker(SP_NAME_SPECTER)
     msgbox("Oh, Sylva? She's not great at dealing\nwith crowds.\p"
             "She's probably somewhere less crowded.")
-    closemessage
+    waitmessage
     applymovement(irene, moves(emote_question_mark))
     setspeaker(SP_NAME_IRENE)
     msgbox("You've met her before the con?")
@@ -1334,21 +1327,21 @@ script CC_AbyssalHunters {
     setspeaker(SP_NAME_ULPIANUS)
     msgbox("Yeah, we're friends. We've been hired\nfor smaller cons before as a group.\p"
             "But usually those don't require us to\ndo battles.")
-    closemessage
+    waitmessage
     applymovement(skadi, moves(walk_in_place_left))
     applymovement(irene, moves(face_down))
     setspeaker(SP_NAME_SKADI)
     msgbox("This her first time on a big stage?")
-    closemessage
+    waitmessage
     applymovement(irene, moves(face_left))
     applymovement(specter, moves(jump_in_place_right))
     setspeaker(SP_NAME_SPECTER)
     msgbox("Yes! She definitely deserves it.")
-    closemessage
+    waitmessage
     applymovement(ulpianus, moves(walk_in_place_right))
     setspeaker(SP_NAME_ULPIANUS)
     msgbox("She made her costume herself! It\nis incredibly well put together.\lShe just needs to get over the jitters.")
-    closemessage
+    waitmessage
     applymovement(skadi, moves(walk_in_place_left))
     applymovement(irene, moves(face_down))
     setspeaker(SP_NAME_SKADI)
@@ -1361,12 +1354,12 @@ script CC_AbyssalHunters {
     setspeaker(SP_NAME_ULPIANUS)
     msgbox("Fortunately, they gave me something\nmuch more straightforward.\p"
             "I'm not a great battler, so mons that\njust hit moves and hit hard is a\lbetter fit for me...")
-    closemessage
+    waitmessage
     applymovement(specter, moves(walk_in_place_right))
     applymovement(ulpianus, moves(face_up))
     setspeaker(SP_NAME_SPECTER)
     msgbox("At least you guys get to stay dry\nduring your fights.")
-    closemessage
+    waitmessage
     applymovement(irene, moves(walk_in_place_left))
     setspeaker(SP_NAME_IRENE)
     msgbox("They gave you a rain team?\pThat's rough...")
@@ -1412,29 +1405,28 @@ script CC_FoughtGladiia {
     waitmovement
     setspeaker(SP_NAME_GLADIIA)
     msgbox("I really like cosplaying, but maybe\nI'll pass on this con next year")
-    closemessage
+    waitmessage
     applymovement(player, moves(jump_in_place_up))
     waitmovement
     playse(SE_LEDGE)
     setspeaker(SP_NAME_PLAYER)
     msgbox("But you looked like you had fun!")
-    closemessage
+    waitmessage
     applymovement(gladiia, moves(emote_question_mark))
     waitmovement
     waitmessage
     setspeaker(SP_NAME_GLADIIA)
     msgbox("Did I?\pI just felt nervous, being on such a\nstage with pokemon I'm not familiar with")
-    closemessage
     dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
             "Are they unruly?")
     waitmessage
     setspeaker(SP_NAME_GLADIIA)
     msgbox("No they're absolute sweethearts.\nIt's just... weird, y'know?")
-    closemessage
+    waitmessage
     applymovement(player, moves(walk_in_place_up))
     setspeaker(SP_NAME_PLAYER)
     msgbox("Fair enough.\nHey, maybe it'll click later on!")
-    closemessage
+    waitmessage
     applymovement(gladiia, moves(face_right, delay_16*3, face_down))
     waitmovement
     setspeaker(SP_NAME_GLADIIA)
@@ -1449,51 +1441,51 @@ script CC_FoughtGladiia4times {
     faceplayer
     setspeaker(SP_NAME_GLADIIA)
     msgbox("Hey there!\nI think I finally caught my\lstride with the team")
-    closemessage
+    waitmessage
     applymovement(player, moves(emote_exclamation_mark))
     waitmovement
     setspeaker(SP_NAME_PLAYER)
-    msgbox("Nice! Just needed some\nmore practcie, huh?")
-    closemessage
+    msgbox("Nice! Just needed some\nmore practice, huh?")
+    waitmessage
     applymovement(gladiia, moves(walk_in_place_down))
     setspeaker(SP_NAME_GLADIIA)
     msgbox("Yeah, I guess so.\p"
             "But you were pretty good too!\p"
             "Even with all the things thrown\nyour way.\p"
             "Do you practice often?")
-    closemessage
+    waitmessage
     applymovement(player, moves(jump_in_place_up))
     setspeaker(SP_NAME_PLAYER)
     msgbox("Yeah! Quite a lot at my job.\nThough usually it's a bit... different.")
-    closemessage
+    waitmessage
     applymovement(gladiia, moves(emote_question_mark))
     waitmovement
     setspeaker(SP_NAME_GLADIIA)
     msgbox("Oh, how so?")
-    closemessage
+    waitmessage
     applymovement(player, moves(walk_in_place_up))
     setspeaker(SP_NAME_PLAYER)
     msgbox("I work at the Library, one of my tasks\nis deciphering & categorizing myths.\p"
             "My boss Satsuki has set up a\nwhole battle system for that.\p" 
             "Basically a juiced up rotation battle\nsystem")
-    closemessage
+    waitmessage
     applymovement(gladiia, moves(walk_in_place_down))
     setspeaker(SP_NAME_GLADIIA)
     msgbox("Is that where you can swap your\npokemon in and out quickly?")
-    closemessage
+    waitmessage
     applymovement(player, moves(jump_in_place_up))
     setspeaker(SP_NAME_PLAYER)
     msgbox("Yes! And there's a bunch of other\nthings too!")
-    closemessage
+    waitmessage
     applymovement(gladiia, moves(walk_in_place_down))
     setspeaker(SP_NAME_GLADIIA)
     msgbox("Sounds... rather odd, but you sound\nlike you enjoy it.\p"
             "I'll stick with what I'm doing\nright now, haha.")
-    closemessage
+    waitmessage
     applymovement(player, moves(walk_in_place_up))
     setspeaker(SP_NAME_PLAYER)
     msgbox("Alright, Good luck with that!\nLooking forward to facing you again.")
-    closemessage
+    waitmessage
     applymovement(gladiia, moves(emote_heart))
     setspeaker(SP_NAME_GLADIIA)
     msgbox("Yeah, for sure.")
@@ -1506,7 +1498,7 @@ script CC_GladiiaEnd {
     setspeaker(SP_NAME_GLADIIA)
     msgbox("So, if I use Dugtrio to deal with\nsomething, they'll probably send in\la flying type after...\p"
             "Then I can use Memento and swap in\nJolteon... Hey, that may work!")
-    closemessage
+    waitmessage
     applymovement(gladiia, moves(emote_exclamation_mark, delay_16*3, face_down))
     playse(SE_PIN)
     waitmovement
@@ -1536,22 +1528,22 @@ script CC_MiFus {
     applymovement(mifuSide, moves(walk_in_place_left))
     setspeaker(SP_NAME_MIFU)
     msgbox("Girls, I think we gotta lock her up.")
-    closemessage
+    waitmessage
     applymovement(mifuBottom, moves(jump_in_place_up))
     playse(SE_LEDGE)
     setspeaker(SP_NAME_MIFU)
     msgbox("Yeah, she's been a bad kitty.")
-    closemessage
+    waitmessage
     applymovement(mifuTop, moves(walk_in_place_down))
     setspeaker(SP_NAME_MIFU)
     msgbox("Sounds good")
-    closemessage
+    waitmessage
     applymovement(tangtang, moves(emote_exclamation_mark))
     playse(SE_PIN)
     waitse
     setspeaker(SP_NAME_TANGTANG)
     msgbox("Wait wait wait a second.\nI haven't done anything wrong!")
-    closemessage
+    waitmessage
     applymovement(mifuTop, moves(walk_in_place_down))
     applymovement(tangtang, moves(face_up))
     setspeaker(SP_NAME_MIFU)
@@ -1610,7 +1602,7 @@ script CC_GilbertaEntrance_After {
     waitmovement
     setspeaker(SP_NAME_GILBERTA)
     msgbox("I won't go up there anymore, okay?")
-    closemessage
+    waitmessage
     applymovement(guard1, moves(walk_in_place_left))
     waitmovement
     setspeaker(SP_NAME_GUARD)
@@ -1636,7 +1628,7 @@ script CC_GilbertaCafe {
     setspeaker(SP_NAME_GUARD)
     msgbox("Miss, please, stop getting up on things.\p"
             "It's dangerous for everyone here.")
-    closemessage
+    waitmessage
     applymovement(gilberta3, moves(emote_exclamation_mark))
     setspeaker(SP_NAME_GILBERTA)
     msgbox("I can't help it!\nThey asked me to be in character!")
@@ -1704,7 +1696,7 @@ script CC_Endmin {
     applymovement(endmin, moves(walk_in_place_up))
     setspeaker(SP_NAME_ENDMIN)
     msgbox("Look at that arena.\nI'm gonna be endfielding all over it.")
-    closemessage
+    waitmessage
     applymovement(penance, moves(walk_in_place_right))
     setspeaker(SP_NAME_PENANCE)
     msgbox("Please behave yourself.\pThis gavel might be a prop, but it'll\nstill hurt when I hit you with it.")
@@ -1825,6 +1817,7 @@ script CC_Xaihis_Rotom {
     lock
     faceplayer
     msgbox("Zzt zzt!")
+    closemessage
     applymovement(xaihisrotom, moves(face_up))
     waitmovement
     release
@@ -1946,31 +1939,33 @@ script CC_Perlica {
     playse(SE_LEDGE)
     waitmovement
     msgbox("I've sank so many pulls into the banner,\nyet I still don't have Altaria!")
-    closemessage
+    waitmessage
     applymovement(perlica, moves(walk_in_place_left))
     setspeaker(SP_NAME_PERLICA)
     msgbox("That unlucky, huh?")
-    closemessage
+    waitmessage
     applymovement(gambler, moves(walk_in_place_right))
     msgbox("Yeah!\p")
-    closemessage
+    waitmessage
     applymovement(gambler, moves(emote_exclamation_mark))
     playse(SE_PIN)
     waitmovement
     msgbox("Hey, since you're one of the battlers,\ndo you know if they're duping me??\p"
             "I mean, I've gotten 4 Slowkings and\n2 Mola's, but I've yet to see the\lcloudbird.")
-    closemessage
+    waitmessage
     applymovement(perlica, moves(face_down))
     setspeaker(SP_NAME_PERLICA)
     msgbox("...")
-    closemessage
+    waitmessage
     applymovement(perlica, moves(face_left))
     setspeaker(SP_NAME_PERLICA)
     msgbox("Just keep at it.\nYou'll get one eventually.")
-    closemessage
+    waitmessage
     applymovement(perlica, moves(face_down))
     setspeaker(SP_NAME_PERLICA)
     msgbox("And maybe read the banner details.")
+    applymovement(perlica, moves(face_left))
+    waitmovement
     closemessage
     release
 }
@@ -1995,32 +1990,32 @@ script CC_Carnelian {
     setspeaker(SP_NAME_CARNELIAN)
     msgbox("What's your favourite Arknights song?\p"
             "I'm a big fan of the Operation Pyrite\ntheme, but the new IS7 boss theme \lis great too.")
-    closemessage
+    waitmessage
     applymovement(elysium, moves(walk_in_place_down))
     setspeaker(SP_NAME_ELYSIUM)
     msgbox("I want you on your knees...")
     delay(60)
-    closemessage
+    waitmessage
     applymovement(carnelian, moves(emote_question_mark))
     waitmovement
     setspeaker(SP_NAME_CARNELIAN)
     msgbox("...sorry?")
-    closemessage
+    waitmessage
     applymovement(elysium, moves(walk_in_place_down))
     setspeaker(SP_NAME_ELYSIUM)
     msgbox("This buried love grows teeth...")
-    closemessage
+    waitmessage
     setspeaker(SP_NAME_CARNELIAN)
     msgbox("Are these like, some lyrics?")
-    closemessage
+    waitmessage
     applymovement(elysium, moves(walk_in_place_down))
     setspeaker(SP_NAME_ELYSIUM)
     msgbox("A thousand stars weeping...")
-    closemessage
+    waitmessage
     delay(60)
     msgbox("Dang, you don't know it?\p"
         "Well, now I look silly, don't I?")
-    closemessage
+    waitmessage
     applymovement(carnelian, moves(walk_in_place_up))
     setspeaker(SP_NAME_CARNELIAN)
     msgbox("You could've just told me the song name\ninstead of telling me to get on my\lknees!\p"
@@ -2029,11 +2024,11 @@ script CC_Carnelian {
     applymovement(elysium, moves(face_left, delay_16*5, face_down))
     setspeaker(SP_NAME_ELYSIUM)
     msgbox("Yeah... I can't disagree with that...")
-    closemessage
+    waitmessage
     applymovement(carnelian, moves(walk_in_place_up))
     setspeaker(SP_NAME_CARNELIAN)
     msgbox("So what is the song name then?")
-    closemessage
+    waitmessage
     applymovement(elysium, moves(emote_exclamation_mark))
     waitmovement
     setspeaker(SP_NAME_ELYSIUM)
@@ -2057,7 +2052,7 @@ script CC_Satsuki {
     applymovement(satsuki, moves(face_down))
     msgbox("I've been observing the battles here.\n"
             "Some interesting strategies I've seen,\lthat's for sure.")
-    closemessage
+    waitmessage
     applymovement(satsuki, moves(face_player))
     waitmovement
     setspeaker(SP_NAME_SATSUKI)
@@ -2065,7 +2060,7 @@ script CC_Satsuki {
     applymovement(satsuki, moves(face_player))
     setspeaker(SP_NAME_PLAYER)
     msgbox("Yeah, she's not too shabby at battling.")
-    closemessage
+    waitmessage
     setspeaker(SP_NAME_SATSUKI)
     msgbox("Mmhm. Perhaps in a different timeline\nshe could've been your colleague.")
     applymovement(player, moves(emote_exclamation_mark))
@@ -2073,12 +2068,12 @@ script CC_Satsuki {
     waitmovement
     setspeaker(SP_NAME_PLAYER)
     msgbox("Satsuki please, don't mention different\ntimelines on my day off.")
-    closemessage
+    waitmessage
     applymovement(satsuki, moves(emote_heart))
     setspeaker(SP_NAME_SATSUKI)
     msgbox("Fufufu, alright.\p"
             "When it's time to leave, could you\ncarry some of my Chubby Lungs?\lI'd rather not make two trips.")
-    closemessage
+    waitmessage
     applymovement(satsuki, moves(face_down))
     setspeaker(SP_NAME_PLAYER)
     delay(60)
@@ -2097,7 +2092,7 @@ script CC_Weiqi {
     applymovement(weiqiGirl, moves(emote_question_mark))
     waitmovement
     msgbox("Oh I sure don't, and they didn't provide\nany instructions either.")
-    closemessage
+    waitmessage
     delay(45)
     applymovement(weiqiGuy, moves(walk_in_place_right))
     msgbox("Hmm...\p"
@@ -2113,7 +2108,7 @@ script CC_Kenichi {
     getobjectcurrentxy(player, CURRENT_POSITION, VAR_TEMP_7, VAR_TEMP_8)
     setspeaker(SP_NAME_PLAYER)
     msgbox("Kenichi? How did you end up here?!")
-    closemessage
+    waitmessage
     applymovement(kenichi, moves(face_player))
     setspeaker(SP_NAME_KENICHI)
     msgbox("Oh, miss Tiana!\n{PAUSE_UNTIL_PRESS}Fancy seeing you here!")
@@ -2126,14 +2121,14 @@ script CC_Kenichi {
     playse(SE_PIN)
     waitmovement
     msgbox("Ohhh, that's so cool!\nSo you make songs together?")
-    closemessage
+    waitmessage
     setspeaker(SP_NAME_KENICHI)
     msgbox("Nah, we don't produce any songs.\p"
             "it's mostly just remixin' songs\nand making 'em flow together")
     waitmessage
     applymovement(kenichi, moves(face_down))
     msgbox("It's our way of doing things together\neven when we're far apart.")
-    closemessage
+    waitmessage
     applymovement(kenichi, moves(face_player))
     if(var(VAR_TEMP_7)==14){
         applymovement(player, moves(walk_in_place_right))
@@ -2148,18 +2143,18 @@ script CC_Kenichi {
     setspeaker(SP_NAME_KENICHI)
     msgbox("Nah, she's at home right now.\p"
             "I took the kid with me so she\ncan have some peace and quiet.")
-    closemessage
+    waitmessage
     applymovement(kenichi, moves(face_down, delay_16*4, face_player))
     waitmovement
     setspeaker(SP_NAME_KENICHI)
     msgbox("Not often that she gets to have some\nalone time.\p"
             "I'm usually out at sea, so she's\ngotta keep Akuwa in check most days.")
-    closemessage
+    waitmessage
     applymovement(player, moves(emote_heart))
     waitmovement
     setspeaker(SP_NAME_PLAYER)
     msgbox("Aw, that's cute.")
-    closemessage
+    waitmessage
     applymovement(kenichi, moves(emote_exclamation_mark, face_down, delay_16*4, face_player))
     setspeaker(SP_NAME_KENICHI)
     msgbox("I gotta handle this transition.\nEnjoy the con!")
