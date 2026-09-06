@@ -415,6 +415,13 @@ static void OpponentHandleDrawTrainerPic(enum BattlerId battler)
 
 void OpponentHandleTrainerSlide(enum BattlerId battler)
 {
+    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
+    {
+        if (IsBattlerAlive(battler))
+        {
+            SetHealthboxSpriteInvisible(gHealthboxSpriteIds[battler]);
+        }
+    }
     enum TrainerPicID trainerPicId = OpponentGetTrainerPicId(battler);
     BtlController_HandleTrainerSlide(battler, trainerPicId);
 }
