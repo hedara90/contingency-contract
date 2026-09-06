@@ -382,7 +382,7 @@ script Pokemonbanner_Sign {
 script MerchBanner_Sign {
     lock
     msgbox("A banner with all the merchandise\nsold at the booth.\p"
-            "a giant 'SOLD OUT' sticker is covering\nall the prices...")
+            "A giant 'SOLD OUT' sticker is covering\nall the prices...")
     closemessage
     release
 }
@@ -1618,6 +1618,7 @@ script CC_GilbertaBooth {
     msgbox("How in the world did she even get\nup there...")
     closemessage
     applymovement(guard2, moves(face_down))
+    waitmovement
     release
 }
 
@@ -2161,3 +2162,12 @@ script CC_Kenichi {
     applymovement(kenichi, moves(face_down))
     release
 }
+
+//MUS_ENCOUNTER_MALE
+//MUS-HELP
+//MUS ENCOUNTER_COOL
+//MUS ENCOUNTER_AQUA
+//MUS MT_PYRE_EXTERIOR
+//MUS ENCOUNTER_ELITE_FOUR
+//MUS B_DOME
+//MUS B-Factory
