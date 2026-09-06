@@ -85,7 +85,7 @@ Double Battle: No
 
 === TRAINER_ENDMIN ===
 Name: Endmin
-Class: Hiker
+Class: Team Aqua
 Pic: Endmin
 Gender: Male
 Music: Hiker
@@ -840,7 +840,7 @@ Level: 50
 
 === TRAINER_ARCANE_DOUBLES ===
 Name: Arcane
-Class: Pkmn Breeder
+Class: Team Aqua
 Pic: Arcane
 Gender: Female
 Music: Female
@@ -1030,7 +1030,7 @@ Tags: Weather Setter
 
 === TRAINER_POG ===
 Name: Pog
-Class: Cooltrainer
+Class: Team Aqua
 Pic: Pog
 Gender: Male
 Double Battle: Yes
@@ -1116,7 +1116,7 @@ Level: 50
 
 === TRAINER_LAEVATAIN ===
 Name: Laevatain
-Class: Collector
+Class: Team Aqua
 Pic: Laevatain
 Gender: Male
 Music: Suspicious
@@ -1214,7 +1214,7 @@ Tags: Weather Setter
 
 === TRAINER_ARDELIA ===
 Name: Ardelia
-Class: Bird Keeper
+Class: Team Aqua
 Pic: Ardelia
 Gender: Male
 Music: Cool
@@ -1300,7 +1300,7 @@ Level: 50
 
 === TRAINER_SHU ===
 Name: Shu
-Class: Team Aqua
+Class: Team Magma
 Pic: Shu
 Gender: Female
 Music: Aqua
@@ -1408,7 +1408,7 @@ Tags: Weather Setter
 
 === TRAINER_NIAN ===
 Name: Nian
-Class: Swimmer M
+Class: Team Magma
 Pic: Nian
 Gender: Male
 Music: Swimmer
@@ -1498,7 +1498,7 @@ Tags: Weather Abuser
 
 === TRAINER_CARNELIAN ===
 Name: Carnelian
-Class: Team Aqua
+Class: Team Magma
 Pic: Carnelian
 Gender: Male
 Music: Aqua
@@ -1601,7 +1601,7 @@ Tags: Weather Setter
 
 === TRAINER_PENANCE ===
 Name: Penance
-Class: Team Aqua
+Class: Team Magma
 Pic: Penance
 Gender: Male
 Music: Aqua
@@ -1686,7 +1686,7 @@ Level: 50
 
 === TRAINER_PRAMANIX ===
 Name: Pramanix
-Class: Team Aqua
+Class: Team Magma
 Pic: Pramanix
 Gender: Male
 Music: Aqua
@@ -1793,7 +1793,7 @@ Tags: Weather Setter
 
 === TRAINER_FIAMETTA ===
 Name: Fiametta
-Class: Team Aqua
+Class: Team Magma
 Pic: Fiametta
 Gender: Male
 Music: Aqua
@@ -1918,7 +1918,7 @@ Tags: Weather Setter
 
 === TRAINER_SPECTER ===
 Name: Specter
-Class: Team Aqua
+Class: Team Magma
 Pic: Specter
 Gender: Male
 Music: Aqua
@@ -2025,7 +2025,7 @@ Tags: Weather Setter
 
 === TRAINER_GLADIIA ===
 Name: Gladiia
-Class: Team Aqua
+Class: Team Magma
 Pic: Gladiia
 Gender: Male
 Music: Aqua
@@ -2264,7 +2264,7 @@ Tags: Weather Setter
 
 === TRAINER_ULPIANUS ===
 Name: Ulpianus
-Class: Team Aqua
+Class: Team Magma
 Pic: Ulpianus
 Gender: Male
 Music: Aqua
@@ -2375,7 +2375,7 @@ Level: 50
 
 === TRAINER_ELYSIUM ===
 Name: Elysium
-Class: Team Aqua
+Class: Team Magma
 Pic: Elysium
 Gender: Male
 Music: Aqua
@@ -2500,7 +2500,7 @@ Tags: Weather Abuser
 
 === TRAINER_IRENE ===
 Name: Irene
-Class: Team Aqua
+Class: Team Magma
 Pic: Irene
 Gender: Male
 Music: Aqua
