@@ -190,6 +190,7 @@ script CC_Intro {
 
 script CC_Intro_Explanation {
     special(SpawnCameraObject)
+    setspeaker(SP_NAME_NONE)
     msgbox("Gotcha.\p"
             "So, let's start with the basics.\p"
             "We have set up various different\ntrainer gauntlets where you fight\lcharacters from the games.\p"
@@ -622,6 +623,7 @@ script ChubbyLung5 {
 
 script CC_ViewRecords {
     lock
+    msgbox("View your gauntlet records here!")
     dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
                     "Crisis Team",
                     "Wuling",
@@ -699,6 +701,7 @@ script CC_ViewRecords {
     default:
         playse(SE_PC_OFF)
         release
+        end
     }
     msgbox("No record found for specified gauntlet.")
     closemessage
@@ -751,7 +754,7 @@ script CC_Credits {
             "Party & Box menu base: Montblanc\l"
             "Jamie's Transformation pack\l"
             "Archie's Fastsave script\l"
-            "Speed of Light & Art of Blade\l MIDI's by 1230james")
+            "Speed of Light & Art of Blade MIDI's\lby 1230james")
     closemessage
     release
 }
@@ -2095,7 +2098,7 @@ script CC_Endmin {
     lock
     applymovement(endmin, moves(walk_in_place_up))
     setspeaker(SP_NAME_ENDMIN)
-    msgbox("Look at that arena.\nI'm gonna be endfielding all over it.")
+    msgbox("Look at that arena.\nI'm gonna be Endfielding all over it.")
     waitmessage
     applymovement(penance, moves(walk_in_place_right))
     setspeaker(SP_NAME_PENANCE)
@@ -2216,8 +2219,10 @@ script CC_Xaihi {
 script CC_Xaihis_Rotom {
     lock
     faceplayer
+    playmoncry(SPECIES_ROTOM, CRY_MODE_NORMAL)
     msgbox("Zzt zzt!")
     closemessage
+    waitmoncry
     applymovement(xaihisrotom, moves(face_up))
     waitmovement
     release
@@ -2345,7 +2350,7 @@ script CC_Perlica {
     msgbox("That unlucky, huh?")
     waitmessage
     applymovement(gambler, moves(walk_in_place_right))
-    msgbox("Yeah!\p")
+    msgbox("Yeah!")
     waitmessage
     applymovement(gambler, moves(emote_exclamation_mark))
     playse(SE_PIN)
@@ -2729,10 +2734,10 @@ script CC_SetRightBattlers{
         setvar(VAR_BATTLERS_RIGHT, 5) // tangtang
     }
     elif(flag(FLAG_JOHNENDFIELD)){
-        setvar(VAR_BATTLERS_RIGHT, 7) // Penance
+        setvar(VAR_BATTLERS_RIGHT, 6) // Penance
     }
     elif(flag(FLAG_CARNELIAN)){
-            setvar(VAR_BATTLERS_RIGHT, 9) // elysium
+        setvar(VAR_BATTLERS_RIGHT, 7) // elysium
     }
     else{
         setflag(FLAG_RANDOMBATTLERS)
