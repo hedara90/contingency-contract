@@ -2796,6 +2796,8 @@ script CC_SetLeftBattlers{
             clearflag(FLAG_RANDOMBATTLERS)
             setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_MONK)
             setvar(VAR_OBJ_GFX_ID_1, MON_MEDICHAM)
+        default:
+            setvar(VAR_TEMP_4, 2)
     }
 }
 
@@ -2852,6 +2854,7 @@ script CC_SetRightBattlers{
             setvar(VAR_OBJ_GFX_ID_3, MON_NOIVERN)
         default:
             setflag(FLAG_RANDOMBATTLERS)
+            setvar(VAR_TEMP_4, 2)
     }
 }
 
