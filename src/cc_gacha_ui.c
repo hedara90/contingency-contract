@@ -45,7 +45,7 @@
 
 #include "constants/cc_version.h"
 
-#define MON_OFFSET_MOVEMENT 6
+#define MON_OFFSET_MOVEMENT 7
 #define COLOR_TO_FILL TEXT_COLOR_TRANSPARENT
 
 struct GachaUiState
@@ -1415,7 +1415,7 @@ static void Task_InfoTaskItems(u8 taskId)
         }
         break;
     case 3:
-        for (u32 i = 0; i < 6; i++)
+        for (u32 i = 0; i < 7; i++)
         {
             DestroySprite(&gSprites[sGachaUiState->infoIconIds[i]]);
             FreeSpriteTilesByTag(i);
