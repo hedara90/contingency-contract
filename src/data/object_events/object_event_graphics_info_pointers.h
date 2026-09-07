@@ -436,6 +436,9 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Ulpianus;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Xaihi;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Zhuang;
 
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Nian_NoTail;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Tail_Nian;
+
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CC_Guy;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CC_Girl;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CC_Guard;
@@ -865,6 +868,8 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_CC_GIRL]                  = &gObjectEventGraphicsInfo_CC_Girl,
     [OBJ_EVENT_GFX_CC_GUY]                   = &gObjectEventGraphicsInfo_CC_Guy,
     [OBJ_EVENT_GFX_CC_GUARD]                 = &gObjectEventGraphicsInfo_CC_Guard,
+    [OBJ_EVENT_GFX_NIAN_TAILLESS]            = &gObjectEventGraphicsInfo_Nian_NoTail,
+    [OBJ_EVENT_GFX_TAIL_NIAN]                = &gObjectEventGraphicsInfo_Tail_Nian,
 };
 
 const struct ObjectEventGraphicsInfo *const gMauvilleOldManGraphicsInfoPointers[] = {

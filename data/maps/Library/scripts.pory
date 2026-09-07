@@ -38,10 +38,10 @@ script Library_MainScript {
     applymovement(LOCALID_SATSUKI_LIBRARY, moves(face_left))
     waitmovement
     setspeaker(SP_NAME_PLAYER)
-    msgbox("Morning miss Satsuki.")
+    msgbox("Morning, miss Satsuki.")
     waitmessage
     setspeaker(SP_NAME_SATSUKI)
-    msgbox("Good morning {PLAYER}.\pUp earlier than usual today, hmm?\pAnd on a day you've taken off even.")
+    msgbox("Good morning {PLAYER}.\pUp earlier than usual today, hmm?\nAnd on a day you've taken off even.")
     setspeaker(SP_NAME_PLAYER)
     msgbox("Well, yes, but…")
     closemessage
@@ -52,23 +52,43 @@ script Library_MainScript {
     setspeaker(SP_NAME_SATSUKI)
     msgbox("It was good timing on your part.\pI also have some tasks taking me out\nof the Library today.")
     closemessage
+    applymovement(player, moves(emote_exclamation_mark))
+    playse(SE_PIN)
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Wait, that's a good thing?\p"
+            "But then there's not a single\nRecordkeeper here today!")
+    closemessage
+    applymovement(LOCALID_SATSUKI_LIBRARY, moves(walk_in_place_left))
+    waitmovement
+    setspeaker(SP_NAME_SATSUKI)
+    msgbox("Don't worry, Naoto's very reliable.\nHe'll handle things today.")
     applymovement(LOCALID_SATSUKI_LIBRARY, moves(face_up, delay_16 * 2, face_left))
     waitmovement
     setspeaker(SP_NAME_SATSUKI)
     msgbox("By the way, I think your friend is\nwaiting for you in the public area.")
     setspeaker(SP_NAME_PLAYER)
-    msgbox("Chisa is here already!?")
+    msgbox("Chisa is here already!?\nSince when is she on time!")
     closemessage
-    applymovement(player, moves(player_run_left, player_run_down * 4, player_run_right * 2, player_run_down * 10))
+    applymovement(player, moves(player_run_left, player_run_down * 4, player_run_right * 2, player_run_down * 9, walk_down))
     waitmovement
     setspeaker(SP_NAME_PLAYER)
-    msgbox("Chisa! You're here already!\pWhy didn't you message me?")
+    msgbox("Chisa!{PAUSE_UNTIL_PRESS} You're here already!\pWhy didn't you message me?")
     setspeaker(SP_NAME_CHISA)
-    msgbox("Hi Tiana!\pWell, Satsuki said you'd be up soon\nI only waited a few minutes.\pI had time for some 2-8 runs.")
+    applymovement(LOCALID_CHISA_LIBRARY, moves(jump_in_place_up))
+    playse(SE_LEDGE)
+    waitmovement
+    msgbox("Hi Tiana!\pWell, Satsuki said you'd be up soon.\nI only waited a few minutes.\pI had time for some 2-8 runs.")
     setspeaker(SP_NAME_PLAYER)
-    msgbox("How could she possibly know that…\pAnyway! Ready to head out?")
+    applymovement(player, moves(face_up))
+    waitmovement
+    msgbox("How could she possibly know that…")
+    applymovement(player, moves(face_down))
+    msgbox("Anyway! Ready to head out?")
     setspeaker(SP_NAME_CHISA)
-    msgbox("Yup! Bag is empty, camera is charged\nshoes are comfy and friend is awake!")
+    applymovement(LOCALID_CHISA_LIBRARY, moves(walk_in_place_up))
+    waitmovement
+    msgbox("Yup! Bag is empty, camera is charged,\nshoes are comfy and friend is awake!")
     setspeaker(SP_NAME_PLAYER)
     msgbox("Let's go then!")
     closemessage
@@ -76,8 +96,8 @@ script Library_MainScript {
     applymovement(LOCALID_CHISA_LIBRARY, moves(walk_down))
     waitmovement
     fadescreen(FADE_TO_BLACK)
-    applymovement(player, moves(walk_down * 2))
-    applymovement(LOCALID_CHISA_LIBRARY, moves(walk_down * 2))
+    applymovement(player, moves(walk_down * 4))
+    applymovement(LOCALID_CHISA_LIBRARY, moves(walk_down * 4))
     waitmovement
     warpsilent(MAP_CONVENTION_CENTER, 7, 21)
     waitstate

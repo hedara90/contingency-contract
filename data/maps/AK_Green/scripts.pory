@@ -1,10 +1,11 @@
 mapscripts AK_Green_MapScripts {
     MAP_SCRIPT_ON_TRANSITION: AKGreen_OnTransition
     MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
-        VAR_TEMP_5, 0: AKGreen_Setup
+        VAR_GAUNTLETHANDLING, 0: AKGreen_Setup
     ]
     MAP_SCRIPT_ON_FRAME_TABLE [
-        VAR_TEMP_5, 0: AKGreen_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 0: AKGreen_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 1: AKGreen_OnSaveResume
     ]
     MAP_SCRIPT_ON_RESUME {
         callnative(SpectatorVObjects)
@@ -25,8 +26,13 @@ script AKGreen_Setup {
 }
 
 script AKGreen_OnGauntletStart {
-    setvar(VAR_TEMP_5, 1)
+    setvar(VAR_GAUNTLETHANDLING, 1)
     call(Gauntlet_SetupCamera)
+    goto(AKGreen_StartBattle)
+}
+
+script AKGreen_OnSaveResume {
+    call(Gauntlet_ResumeSave)
     goto(AKGreen_StartBattle)
 }
 
@@ -65,10 +71,12 @@ script AKGeen_WonGauntlet {
 }
 
 script AKGreen_Carnelian {
+    setspeaker(SP_NAME_CARNELIAN)
     msgbox(CarnelianBeforeBattle)
     trainerbattle_no_intro(TRAINER_CARNELIAN, CarnelianAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_CARNELIAN)
     switch(var(VAR_RESULT)){
         default:
             msgbox(CarnelianAfterBattle_Lose)
@@ -106,10 +114,12 @@ text CarnelianAfterBattle_Lose {
 }
 
 script AKGreen_Penance {
+    setspeaker(SP_NAME_PENANCE)
     msgbox(PenanceBeforeBattle)
     trainerbattle_no_intro(TRAINER_PENANCE, PenanceAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_PENANCE)
     switch(var(VAR_RESULT)){
         default:
             msgbox(PenanceAfterBattle_Lose)
@@ -147,10 +157,12 @@ text PenanceAfterBattle_Lose {
 }
 
 script AKGreen_Pramanix {
+    setspeaker(SP_NAME_PRAMANIX)
     msgbox(PramanixBeforeBattle)
     trainerbattle_no_intro(TRAINER_PRAMANIX, PramanixAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_PRAMANIX)
     switch(var(VAR_RESULT)){
         default:
             msgbox(PramanixAfterBattle_Lose)
@@ -186,10 +198,12 @@ text PramanixAfterBattle_Lose {
 }
 
 script AKGreen_Fiametta {
+    setspeaker(SP_NAME_FIAMETTA)
     msgbox(FiamettaBeforeBattle)
     trainerbattle_no_intro(TRAINER_FIAMETTA, FiamettaAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_FIAMETTA)
     switch(var(VAR_RESULT)){
         default:
             msgbox(FiamettaAfterBattle_Lose)

@@ -3169,3 +3169,11 @@ static const struct SpriteFrameImage sPicTable_CC_Girl[] = {
 static const struct SpriteFrameImage sPicTable_CC_Guard[] = {
     overworld_ascending_frames(gObjectEventPic_CC_Guard, 2, 4),
 };
+
+static const struct SpriteFrameImage sPicTable_Nian_NoTail[] = {
+    overworld_ascending_frames(gObjectEventPic_Nian_NoTail, 4, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_Tail_Nian[] = {
+    overworld_ascending_frames(gObjectEventPic_Tail_Nian, 2, 4),
+};

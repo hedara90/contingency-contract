@@ -1,10 +1,11 @@
 mapscripts AK_Yellow_MapScripts {
     MAP_SCRIPT_ON_TRANSITION: AKYellow_OnTransition
     MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
-        VAR_TEMP_5, 0: AKYellow_Setup
+        VAR_GAUNTLETHANDLING, 0: AKYellow_Setup
     ]
     MAP_SCRIPT_ON_FRAME_TABLE [
-        VAR_TEMP_5, 0: AKYellow_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 0: AKYellow_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 1: AKYellow_OnSaveResume
     ]
     MAP_SCRIPT_ON_RESUME {
         callnative(SpectatorVObjects)
@@ -25,8 +26,13 @@ script AKYellow_Setup {
 }
 
 script AKYellow_OnGauntletStart {
-    setvar(VAR_TEMP_5, 1)
+    setvar(VAR_GAUNTLETHANDLING, 1)
     call(Gauntlet_SetupCamera)
+    goto(AKYellow_StartBattle)
+}
+
+script AKYellow_OnSaveResume {
+    call(Gauntlet_ResumeSave)
     goto(AKYellow_StartBattle)
 }
 
@@ -65,10 +71,12 @@ script AKYellow_WonGauntlet {
 }
 
 script AKYellow_Shu {
+    setspeaker(SP_NAME_SHU)
     msgbox(ShuBeforeBattle)
     trainerbattle_no_intro(TRAINER_SHU, ShuAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_SHU)
     switch(var(VAR_RESULT)){
         default:
             msgbox(ShuAfterBattle_Lose)
@@ -110,10 +118,12 @@ text ShuAfterBattle_Lose {
 }
 
 script AKYellow_Nian {
+    setspeaker(SP_NAME_NIAN)
     msgbox(NianBeforeBattle)
     trainerbattle_no_intro(TRAINER_NIAN, NianAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_NIAN)
     switch(var(VAR_RESULT)){
         default:
             msgbox(NianAfterBattle_Lose)
@@ -152,10 +162,12 @@ text NianAfterBattle_Lose {
 }
 
 script AKYellow_Elysium {
+    setspeaker(SP_NAME_ELYSIUM)
     msgbox(ElysiumBeforeBattle)
     trainerbattle_no_intro(TRAINER_ELYSIUM, ElysiumAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_ELYSIUM)
     switch(var(VAR_RESULT)){
         default:
             msgbox(ElysiumAfterBattle_Lose)
@@ -192,10 +204,12 @@ text ElysiumAfterBattle_Lose {
 }
 
 script AKYellow_Irene {
+    setspeaker(SP_NAME_IRENE)
     msgbox(IreneBeforeBattle)
     trainerbattle_no_intro(TRAINER_IRENE, IreneAfterBattle)
     // msgbox("Good battle!")
     closemessage
+    setspeaker(SP_NAME_IRENE)
     switch(var(VAR_RESULT)){
         default:
             msgbox(IreneAfterBattle_Lose)
