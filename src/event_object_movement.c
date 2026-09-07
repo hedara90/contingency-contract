@@ -1616,6 +1616,10 @@ static u8 InitObjectEventStateFromTemplate(const struct ObjectEventTemplate *tem
     {
         objectEvent->graphicsId = OBJ_EVENT_GFX_SPECIES(MUNNA);
     }
+    else if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_CONVENTION_CENTER) && template->localId == LOCALID_CC_RANDOMMON2)
+    {
+        objectEvent->graphicsId = OBJ_EVENT_GFX_SPECIES(INCINEROAR);
+    }
     SetObjectEventDynamicGraphicsId(objectEvent);
     if (IS_OW_MON_OBJ(objectEvent))
     {

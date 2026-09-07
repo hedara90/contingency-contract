@@ -2612,7 +2612,6 @@ script CC_SetLeftBattlers{
 script CC_ChisaBattle {
     if(flag(FLAG_CHISA_CC)==TRUE){
         setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CHISA)
-        setvar(VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_SPECIES(CROBAT))
     }
 }
 
@@ -2622,6 +2621,7 @@ script CC_DontInterruptBattleRight {
     msgbox("(Better not interrupt them!)")
     closemessage
     applymovement(player, moves(walk_right))
+    release
 }
 
 script CC_DontInterruptBattleLeft {

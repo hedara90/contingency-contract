@@ -805,7 +805,7 @@
     },
     {
       "local_id": "LOCALID_CC_RANDOMMON2",
-      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(ODDISH)",
       "x": 28,
       "y": 24,
       "elevation": 0,
