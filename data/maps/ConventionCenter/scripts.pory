@@ -419,7 +419,6 @@ script CC_TianaFood {
     closemessage
     applymovement(player, moves(walk_down * 5, walk_right, face_up))
     waitmovement
-    clearflag(FLAG_CHISA_CC)
     if (flag(FLAG_CHISA_CC)) {
         clearflag(FLAG_CHISA_CC)
         setobjectxyperm(chisa, 36, 31)
@@ -2500,4 +2499,43 @@ script CC_MusicList{
         case 8:
             playbgm(MUS_ART_OF_BLADE, FALSE)
     }
+}
+
+script CC_Dancer1 {
+    lock
+    faceplayer
+    msgbox("There's not enough Arknights music\nin the playlist!")
+    closemessage
+    release
+    end
+}
+
+script CC_Dancer2 {
+    lock
+    faceplayer
+    msgbox("I like this music!")
+    closemessage
+    release
+    end
+}
+
+script CC_Dancer3 {
+    lock
+    faceplayer
+    msgbox("Hell yeah!")
+    closemessage
+    getobjectfacingdirection(LOCALID_CHEN_DANCER, VAR_RESULT)
+    switch(var(VAR_RESULT)) {
+    case DIR_NORTH:
+        applymovement(LOCALID_CHEN_DANCER, moves(emote_heart, jump_in_place_up))
+    case DIR_SOUTH:
+        applymovement(LOCALID_CHEN_DANCER, moves(emote_heart, jump_in_place_down))
+    case DIR_EAST:
+        applymovement(LOCALID_CHEN_DANCER, moves(emote_heart, jump_in_place_right))
+    case DIR_WEST:
+        applymovement(LOCALID_CHEN_DANCER, moves(emote_heart, jump_in_place_left))
+    }
+    waitmovement
+    release
+    end
 }
