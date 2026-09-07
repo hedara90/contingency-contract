@@ -26,12 +26,14 @@ script AKYellow_Setup {
 }
 
 script AKYellow_OnGauntletStart {
+    lock
     setvar(VAR_GAUNTLETHANDLING, 1)
     call(Gauntlet_SetupCamera)
     goto(AKYellow_StartBattle)
 }
 
 script AKYellow_OnSaveResume {
+    lock
     call(Gauntlet_ResumeSave)
     goto(AKYellow_StartBattle)
 }

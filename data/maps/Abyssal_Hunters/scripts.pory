@@ -26,12 +26,14 @@ script AbyssalHunters_Setup {
 }
 
 script AbyssalHunters_OnGauntletStart {
+    lock
     setvar(VAR_GAUNTLETHANDLING, 1)
     call(Gauntlet_SetupCamera)
     goto(AbyssalHunters_StartBattle)
 }
 
 script AbyssalHunters_OnSaveResume {
+    lock
     call(Gauntlet_ResumeSave)
     goto(AbyssalHunters_StartBattle)
 }

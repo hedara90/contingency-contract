@@ -26,12 +26,14 @@ script Wuling_Setup {
 }
 
 script Wuling_OnGauntletStart {
+    lock
     setvar(VAR_GAUNTLETHANDLING, 1)
     call(Gauntlet_SetupCamera)
     goto(Wuling_StartBattle)
 }
 
 script Wuling_OnSaveResume {
+    lock
     call(Gauntlet_ResumeSave)
     goto(Wuling_StartBattle)
 }

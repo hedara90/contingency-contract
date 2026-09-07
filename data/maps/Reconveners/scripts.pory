@@ -26,12 +26,14 @@ script Reconveners_Setup {
 }
 
 script Reconveners_OnGauntletStart {
+    lock
     setvar(VAR_GAUNTLETHANDLING, 1)
     call(Gauntlet_SetupCamera)
     goto(Reconveners_StartBattle)
 }
 
 script Reconveners_OnSaveResume {
+    lock
     call(Gauntlet_ResumeSave)
     goto(Reconveners_StartBattle)
 }
