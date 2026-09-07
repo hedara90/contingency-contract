@@ -2986,3 +2986,9 @@
 	waitfieldeffect(FLDEFF_SAVING)
 	callnative AutoSave
 	.endm
+
+	@ Checks if the specified gauntlet has been defeated
+	.macro hasdefeatedgauntlet gauntlet:req
+	callnative HasDefeatedGauntlet
+	.byte \gauntlet
+	.endm

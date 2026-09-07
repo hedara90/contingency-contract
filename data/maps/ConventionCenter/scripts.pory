@@ -609,6 +609,72 @@ script ChubbyLung5 {
     end
 }
 
+script CC_ViewRecords {
+    dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
+                    "Crisis Team",
+                    "Wuling",
+                    "Reconveners",
+                    "Abyssal Hunters",
+                    "Confluence of East and West",
+                    "Band of Misfits",
+                    "Random",
+                    "Random Singles",
+                    "Random Doubles",
+                    "Quit")
+    switch(var(VAR_RESULT)) {
+    case 0:
+        hasdefeatedgauntlet(GAUNTLET_CRISIS_TEAM)
+        if (var(VAR_RESULT) == TRUE) {
+            victoryscreen(GAUNTLET_CRISIS_TEAM, TRUE)
+        }
+    case 1:
+        hasdefeatedgauntlet(GAUNTLET_WULING)
+        if (var(VAR_RESULT) == TRUE) {
+            victoryscreen(GAUNTLET_WULING, TRUE)
+        }
+    case 2:
+        hasdefeatedgauntlet(GAUNTLET_RECONVENERS)
+        if (var(VAR_RESULT) == TRUE) {
+            victoryscreen(GAUNTLET_RECONVENERS, TRUE)
+        }
+    case 3:
+        hasdefeatedgauntlet(GAUNTLET_ABYSSAL_HUNTERS)
+        if (var(VAR_RESULT) == TRUE) {
+            victoryscreen(GAUNTLET_ABYSSAL_HUNTERS, TRUE)
+        }
+    case 4:
+        hasdefeatedgauntlet(GAUNTLET_AK_YELLOW)
+        if (var(VAR_RESULT) == TRUE) {
+            victoryscreen(GAUNTLET_AK_YELLOW, TRUE)
+        }
+    case 5:
+        hasdefeatedgauntlet(GAUNTLET_AK_GREEN)
+        if (var(VAR_RESULT) == TRUE) {
+            victoryscreen(GAUNTLET_AK_GREEN, TRUE)
+        }
+    case 6:
+        hasdefeatedgauntlet(GAUNTLET_RANDOM)
+        if (var(VAR_RESULT) == TRUE) {
+            victoryscreen(GAUNTLET_RANDOM, TRUE)
+        }
+    case 7:
+        hasdefeatedgauntlet(GAUNTLET_RANDOM_SINGLES)
+        if (var(VAR_RESULT) == TRUE) {
+            victoryscreen(GAUNTLET_RANDOM_SINGLES, TRUE)
+        }
+    case 8:
+        hasdefeatedgauntlet(GAUNTLET_RANDOM_DOUBLES)
+        if (var(VAR_RESULT) == TRUE) {
+            victoryscreen(GAUNTLET_RANDOM_DOUBLES, TRUE)
+        }
+    default:
+        playse(SE_PC_OFF)
+    }
+    msgbox("No record found for specified gauntlet.")
+    closemessage
+    playse(SE_PC_OFF)
+}
+
 script Originium {
     lock
     msgbox("A dark orange crystal resembling\nOriginium")
