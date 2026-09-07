@@ -5535,7 +5535,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .name = COMPOUND_STRING("Sandstorm"),
         .description = COMPOUND_STRING(
             "Causes a sandstorm that\n"
-            "rages for several turns."),
+            "rages for 8 turns."),
         .effect = EFFECT_WEATHER,
         .power = 0,
         .type = TYPE_ROCK,
@@ -6613,7 +6613,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .name = COMPOUND_STRING("Rain Dance"),
         .description = COMPOUND_STRING(
             "Boosts the power of Water-\n"
-            "type moves for 5 turns."),
+            "type moves for 8 turns."),
         .effect = EFFECT_WEATHER,
         .power = 0,
         .type = TYPE_WATER,
@@ -6639,7 +6639,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .name = COMPOUND_STRING("Sunny Day"),
         .description = COMPOUND_STRING(
             "Boosts the power of Fire-\n"
-            "type moves for 5 turns."),
+            "type moves for 8 turns."),
         .effect = EFFECT_WEATHER,
         .power = 0,
         .type = TYPE_FIRE,
@@ -15110,8 +15110,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
     {
         .name = COMPOUND_STRING("Rototiller"),
         .description = COMPOUND_STRING(
-            "Ups the Attack and Sp. Atk\n"
-            "of Grass-type Pokémon."),
+            "Boost Ground-type defenses\n"
+            "and Grass-type offenses."),
         .effect = EFFECT_ROTOTILLER,
         .power = 0,
         .type = TYPE_GROUND,
@@ -15553,7 +15553,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .name = COMPOUND_STRING("Grassy Terrain"),
         .description = COMPOUND_STRING(
             "The ground turns to grass\n"
-            "for 5 turns. Restores HP."),
+            "for 8 turns. Restores HP."),
         .effect = EFFECT_GRASSY_TERRAIN,
         .power = 0,
         .type = TYPE_GRASS,
@@ -15597,7 +15597,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .name = COMPOUND_STRING("Misty Terrain"),
         .description = COMPOUND_STRING(
             "Covers the ground with mist\n"
-            "for 5 turns. Blocks status."),
+            "for 8 turns. Blocks status."),
         .effect = EFFECT_MISTY_TERRAIN,
         .power = 0,
         .type = TYPE_FAIRY,
@@ -16219,7 +16219,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .name = COMPOUND_STRING("Electric Terrain"),
         .description = COMPOUND_STRING(
             "Electrifies the ground for\n"
-            "5 turns. Prevents sleep."),
+            "8 turns. Prevents sleep."),
         .effect = EFFECT_ELECTRIC_TERRAIN,
         .power = 0,
         .type = TYPE_ELECTRIC,
@@ -17170,7 +17170,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .name = COMPOUND_STRING("Psychic Terrain"),
         .description = COMPOUND_STRING(
             "The ground turns weird for\n"
-            "5 turns. Blocks priority."),
+            "8 turns. Blocks priority."),
         .effect = EFFECT_PSYCHIC_TERRAIN,
         .power = 0,
         .type = TYPE_PSYCHIC,
@@ -21307,7 +21307,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         #else
             .description = COMPOUND_STRING(
                 "Summons a snowstorm that\n"
-                "lasts for five turns."),
+                "lasts for 8 turns."),
         #endif
         .effect = EFFECT_WEATHER,
         .power = 0,

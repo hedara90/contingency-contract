@@ -1591,7 +1591,6 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
         }
         break;
     case EFFECT_ROTOTILLER:
-    case EFFECT_FLOWER_SHIELD:
     {
         bool32 decreaseScore = TRUE;
         for (enum BattlerId battler = B_BATTLER_0; battler < gBattlersCount; battler++)
@@ -1599,8 +1598,24 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
             if (!IsBattlerAlly(battlerAtk, battler) || !IsBattlerAlive(battler))
                 continue; // ignore foes for score decrease
 
-            if (moveEffect == EFFECT_ROTOTILLER && !AI_IsBattlerGrounded(battler))
+            if (!IS_BATTLER_OF_TYPE(battler, TYPE_GRASS) && !IS_BATTLER_OF_TYPE(battler, TYPE_GROUND))
                 continue;
+
+            if (AI_CanAnyStatChange(battlerAtk, battler, move))
+                decreaseScore = FALSE;
+        }
+
+        if (decreaseScore)
+            ADJUST_SCORE(-10);
+    }
+        break;
+    case EFFECT_FLOWER_SHIELD:
+    {
+        bool32 decreaseScore = TRUE;
+        for (enum BattlerId battler = B_BATTLER_0; battler < gBattlersCount; battler++)
+        {
+            if (!IsBattlerAlly(battlerAtk, battler) || !IsBattlerAlive(battler))
+                continue; // ignore foes for score decrease
 
             if (!IS_BATTLER_OF_TYPE(battler, TYPE_GRASS))
                 continue;
@@ -4398,6 +4413,16 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
         ADJUST_SCORE(GetStatChangeScore(battlerAtk, battlerDef, move));
         break;
     case EFFECT_ROTOTILLER:
+    {
+        s32 totalScore = 0;
+        s32 allyScore = GetRototillerScore(battlerAtk, TRUE) + GetRototillerScore(GetPartnerBattler(battlerAtk), FALSE);
+        s32 opposingScore = -1 * (GetRototillerScore(GetOppositeBattler(battlerAtk), FALSE) + GetRototillerScore(GetPartnerBattler(GetOppositeBattler(battlerAtk)), FALSE)); // Decrease score for opposing mons
+        totalScore = allyScore - opposingScore;
+        if (totalScore > BEST_EFFECT)
+            totalScore = BEST_EFFECT;
+        ADJUST_SCORE(totalScore);
+        break;
+    }
     case EFFECT_FLOWER_SHIELD:
     {
         s32 totalScore = 0;
@@ -4806,7 +4831,7 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
         if (AI_ShouldSetUpHazards(battlerAtk, battlerDef, move, aiData))
         {
             if (IsBattlersFirstTurn(battlerAtk))
-                ADJUST_SCORE(BEST_EFFECT);
+                ADJUST_SCORE(GOOD_EFFECT);
             else
                 ADJUST_SCORE(DECENT_EFFECT);
         }

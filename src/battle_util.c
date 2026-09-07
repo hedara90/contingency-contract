@@ -2083,7 +2083,7 @@ bool32 TryChangeBattleTerrain(enum BattlerId battler, u32 statusFlag, bool32 use
         if (GetBattlerHoldEffect(battler) == HOLD_EFFECT_TERRAIN_EXTENDER || usedMove)
             gFieldTimers.terrainTimer = 8;
         else
-            gFieldTimers.terrainTimer = 5;
+            gFieldTimers.terrainTimer = 8;
         gBattleScripting.battler = battler;
         return TRUE;
     }
