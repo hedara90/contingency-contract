@@ -35760,6 +35760,24 @@ gBattleAnimMove_Charade::
 	end
 
 gBattleAnimMove_SacredIce::
+	playsewithpan SE_M_HAIL, SOUND_PAN_TARGET
+	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 4, 0, 13, 1
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 0
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 42
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 84
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 126
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 168
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 210
+	waitforvisualfinish
+	playsewithpan SE_M_HAIL, SOUND_PAN_TARGET
+	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 4, 0, 13, 1
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 0
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 42
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 84
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 126
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 168
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 210
+	waitforvisualfinish
 	end
 
 gBattleAnimMove_AlgaeBloom::
