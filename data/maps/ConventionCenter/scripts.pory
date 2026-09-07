@@ -85,12 +85,14 @@ script CC_PickRandomEvents {
             setflag(FLAG_MIFU_EVENT)
             clearflag(FLAG_CARNELIAN)
     }
-    random(2)
-    switch(var(VAR_RESULT)){
-        case 0:
-            setflag(FLAG_CHISA_CC)
-        default:
-            clearflag(FLAG_CHISA_CC)
+    if (var(VAR_INTRO) == 1) {
+        random(2)
+        switch(var(VAR_RESULT)){
+            case 0:
+                setflag(FLAG_CHISA_CC)
+            default:
+                clearflag(FLAG_CHISA_CC)
+        }
     }
     random(2)
     switch(var(VAR_RESULT)){
