@@ -791,7 +791,7 @@
     },
     {
       "local_id": "LOCALID_CC_RANDOMBATTLER_2",
-      "graphics_id": "OBJ_EVENT_GFX_BRENDAN_NORMAL",
+      "graphics_id": "OBJ_EVENT_GFX_VAR_2",
       "x": 31,
       "y": 24,
       "elevation": 0,
@@ -805,7 +805,7 @@
     },
     {
       "local_id": "LOCALID_CC_RANDOMMON2",
-      "graphics_id": "OBJ_EVENT_GFX_VAR_2",
+      "graphics_id": "OBJ_EVENT_GFX_VAR_3",
       "x": 28,
       "y": 24,
       "elevation": 0,

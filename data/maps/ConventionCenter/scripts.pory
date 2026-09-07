@@ -2654,17 +2654,12 @@ script CC_Dancer3 {
 script CC_LoadRandomBattlers {
     random(4)
     copyvar(VAR_BATTLERS_LEFT, VAR_RESULT)
-    setvar(VAR_BATTLERS_LEFT, 2)
+    call(CC_SetRightBattlers)
     call(CC_SetLeftBattlers)
-    //setvar(VAR_LEFTMON, OBJ_EVENT_GFX_SPECIES(CROBAT))
-    //addobject(LOCALID_CC_RANDOMMON_1)
-    // setvar(VAR_OBJ_GFX_ID_1, VAR_LEFTMON)
-    // call(CC_SetLeftBattlers)
     setvar(VAR_TEMP_4, 1)
 }
 
 script CC_SetLeftBattlers{
-    setvar(VAR_OBJ_GFX_ID_2, MON_INCIN)
     switch(var(VAR_BATTLERS_LEFT)){
         case 0:
             if(flag(FLAG_CHISA_CC)==TRUE){
@@ -2691,12 +2686,69 @@ script CC_SetLeftBattlers{
     }
 }
 
+script CC_SetRightBattlers{
+    if(flag(FLAG_DRAGONS)){
+        random(3)
+        copyvar(VAR_BATTLERS_RIGHT, VAR_RESULT)
+        //1 = shu, 2= nian, 3 = fangyi
+    }
+    elif(flag(FLAG_GLADIIA)){
+        setvar(VAR_BATTLERS_RIGHT, 3)
+    }
+    elif(flag(Event_GilbertaEntrance)&&flag(Event_GilbertaBooth)&&flag(Event_GilbertaCafe)){
+        setvar(VAR_BATTLERS_RIGHT, 4)
+    }
+    elif(flag(FLAG_MIFU_EVENT)){
+        setvar(VAR_BATTLERS_RIGHT, 5) // tangtang
+    }
+    elif(flag(FLAG_JOHNENDFIELD)){
+        setvar(VAR_BATTLERS_RIGHT, 7) // Penance
+    }
+    elif(flag(FLAG_CARNELIAN)){
+            setvar(VAR_BATTLERS_RIGHT, 9) // elysium
+    }
+    else{
+        setflag(FLAG_RANDOMBATTLERS)
+        end
+    }
+
+    switch(var(VAR_BATTLERS_RIGHT)){
+        case 0:
+            setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_SHU)
+            setvar(VAR_OBJ_GFX_ID_3, MON_TORTERRA)
+        case 1:
+            setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_NIAN)
+            setvar(VAR_OBJ_GFX_ID_3, MON_TORKOAL)
+        case 2:
+            setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_ZHUANG)
+            setvar(VAR_OBJ_GFX_ID_3, MON_DEDENNE)
+        case 3:
+            setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_GLADIIA)
+            setvar(VAR_OBJ_GFX_ID_3, MON_TENTACRUEL)
+        case 4:
+            setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_GILBERTA)
+            setvar(VAR_OBJ_GFX_ID_3, MON_DELPHOX)
+        case 5:
+            setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_TANGTANG)
+            setvar(VAR_OBJ_GFX_ID_3, MON_WEAVILE)
+        case 6:
+            setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_PENANCE)
+            setvar(VAR_OBJ_GFX_ID_3, MON_FERROTHORN)
+        case 7:
+            setvar(VAR_OBJ_GFX_ID_2, OBJ_EVENT_GFX_ELYSIUM)
+            setvar(VAR_OBJ_GFX_ID_3, MON_NOIVERN)
+        default:
+            setflag(FLAG_RANDOMBATTLERS)
+    }
+}
+
 script CC_DontInterruptBattleRight {
     lock
     setspeaker(SP_NAME_PLAYER)
     msgbox("(Better not interrupt them!)")
     closemessage
     applymovement(player, moves(walk_right))
+    waitmovement
     release
 }
 
@@ -2705,7 +2757,7 @@ script CC_DontInterruptBattleLeft {
     applymovement(LOCALID_ATTENDANT_MAIN, moves(emote_exclamation_mark))
     playse(SE_PIN)
     waitmovement
-    msgbox("Please don't interrupt the battlers. If you'd like to start a battle, please wait.")
+    msgbox("Please don't interrupt the battlers.\nIf you'd like to start a battle,\lplease wait.")
     closemessage
     fadescreen(FADE_TO_BLACK)
     setflag(FLAG_RANDOMBATTLERS)
