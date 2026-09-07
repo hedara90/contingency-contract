@@ -1223,7 +1223,66 @@ script ChooseGauntlet {
 
 script WelcomeCounter {
     lock
-    msgbox("Enjoy your stay!")
+    msgbox("Do you have a promo code?", MSGBOX_YESNO)
+    if (var(VAR_RESULT) != 1)
+    {
+        msgbox("Enjoy your stay!")
+        waitmessage
+        release
+        end
+    }
+    special(EnterCode)
+    waitstate
+    special(GetCodeFeedback)
+    goto_if_eq(VAR_RESULT, 0, CC_CodeFailed)
+    goto_if_eq(VAR_RESULT, 1, CC_CodeJudge)
+    goto_if_eq(VAR_RESULT, 2, CC_CodeTARCRelease)
+    end
+}
+
+script CC_CodeFailed {
+    msgbox("Unfortunately that is not a valid code.\p"
+            "Enjoy your stay!")
+    waitmessage
+    release
+    end
+}
+
+script CC_CodeJudge {
+    goto_if_set(FLAG_JUDGE_CODE_REDEEMED, CC_CodeRedeemed)
+    msgbox("Congratulations! Please enjoy these\n"
+            "extra credits. Have fun!")
+    playse(SE_EXP_MAX)
+    msgbox("Obtained 1000 Pokémon credits and\n"
+            "64 item points!")
+    waitmessage
+    addmoney(1000)
+    givebp(64)
+    setflag(FLAG_JUDGE_CODE_REDEEMED)
+    release
+    end
+}
+
+script CC_CodeTARCRelease {
+    goto_if_set(FLAG_TARCRELEASE_CODE_REDEEMED, CC_CodeRedeemed)
+    msgbox("Congratulations!\nHere, your very own Chubby Lung!\p"
+            "I've also thrown in some extra\ncredits, on the house.")
+    giveitem(ITEM_POKE_DOLL, 1)
+    playse(SE_EXP_MAX)
+    msgbox("Obtained 500 Pokémon credits and\n"
+            "32 item points!")
+    waitmessage
+    addmoney(500)
+    givebp(32)
+    setflag(FLAG_TARCRELEASE_CODE_REDEEMED)
+    release
+    end
+}
+
+script CC_CodeRedeemed {
+    msgbox("Sorry, that promo code has already\n"
+            "been redeemed.\p"
+            "Enjoy your stay!")
     waitmessage
     release
     end
