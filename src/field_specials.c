@@ -4580,9 +4580,16 @@ void EnterCode(void)
 
 void GetCodeFeedback(void)
 {
-    static const u8 sText_SampleCode[] = _("SampleCode");
-    if (!StringCompare(gStringVar2, sText_SampleCode))
+    static const u8 sText_JudgeCode[] = _("4ALH5THXBH9");
+    static const u8 sText_TARCRelease[] = _("Keeper");
+    if (!StringCompare(gStringVar2, sText_JudgeCode))
+    {
         gSpecialVar_Result = 1;
+    }
+    else if (!StringCompare(gStringVar2, sText_TARCRelease))
+    {
+        gSpecialVar_Result = 2;
+    }
     else
         gSpecialVar_Result = 0;
 }

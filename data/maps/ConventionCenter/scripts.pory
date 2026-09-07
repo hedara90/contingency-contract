@@ -201,7 +201,7 @@ script CC_Intro_Explanation {
     applymovement(camera, moves(walk_diag_southeast*2, walk_right*8))
     waitmovement(camera)
     msgbox("You can start a gauntlet by talking\nto my colleague there.\p"
-            "While in a gauntlet, you cannot swap\nout Pokemon, and you cannot change\ltheir moves or abilities.\p"
+            "While in a gauntlet, you cannot swap\nout Pokémon, and you cannot change\ltheir moves or abilities.\p"
             "You will be healed after each fight,\nhowever.\p"
             "Additionally, the battles can have a\nvariety of risks enabled, which alter\lthe fights.\p"
             "This will generally make them more\ndifficult.\p"
@@ -209,14 +209,14 @@ script CC_Intro_Explanation {
     closemessage
     applymovement(camera, moves(walk_up*6, walk_diag_northeast))
     waitmovement
-    msgbox("...Here. This is the Pokemon booth.\p"
-            "Here, you can spend your credit to\nobtain pokemon for use in battle.\p"
-            "Each pokemon will come out of the\nbox with 4 moves and 1 ability.\p"
-            "The more you get the same Pokemon,\nthe more options will unlock for its\lmoves and abilities.")
+    msgbox("...Here. This is the Pokémon booth.\p"
+            "Here, you can spend your credit to\nobtain Pokémon for use in battle.\p"
+            "Each Pokémon will come out of the\nbox with 4 moves and 1 ability.\p"
+            "The more you get the same Pokémon,\nthe more options will unlock for its\lmoves and abilities.")
     closemessage
     applymovement(camera, moves(walk_fast_right*10))
     msgbox("And over there is the Item booth.\p"
-            "This is similar to the Pokemon booth,\nbut for items instead!")
+            "This is similar to the Pokémon booth,\nbut for items instead!")
     closemessage
     setobjectxyperm(chisa, 10, 22)
     fadescreen(FADE_TO_BLACK)
@@ -297,7 +297,7 @@ script CC_Intro_NoExplanation {
     applymovement(chisa, moves(face_left))
     applymovement(player, moves(face_right))
     setspeaker(SP_NAME_CHISA)
-    msgbox("Okay Tiana, I'll see you around!\nI'm gonna try my luck at the\lPokemon booth.")
+    msgbox("Okay Tiana, I'll see you around!\nI'm gonna try my luck at the\lPokémon booth.")
     closemessage
     applymovement(chisa, moves(walk_right*8))
     waitmovement
@@ -728,7 +728,7 @@ script ItemBanner_Sign {
 
 script Pokemonbanner_Sign {
     lock
-    msgbox("The Pokemon Storage\nGet your rental pokemon here!\p"
+    msgbox("The Pokémon Storage\nGet your rental Pokémon here!\p"
         "Do not run away with them.\nWe will find you.")
     closemessage
     release
@@ -1223,7 +1223,66 @@ script ChooseGauntlet {
 
 script WelcomeCounter {
     lock
-    msgbox("Enjoy your stay!")
+    msgbox("Do you have a promo code?", MSGBOX_YESNO)
+    if (var(VAR_RESULT) != 1)
+    {
+        msgbox("Enjoy your stay!")
+        waitmessage
+        release
+        end
+    }
+    special(EnterCode)
+    waitstate
+    special(GetCodeFeedback)
+    goto_if_eq(VAR_RESULT, 0, CC_CodeFailed)
+    goto_if_eq(VAR_RESULT, 1, CC_CodeJudge)
+    goto_if_eq(VAR_RESULT, 2, CC_CodeTARCRelease)
+    end
+}
+
+script CC_CodeFailed {
+    msgbox("Unfortunately that is not a valid code.\p"
+            "Enjoy your stay!")
+    waitmessage
+    release
+    end
+}
+
+script CC_CodeJudge {
+    goto_if_set(FLAG_JUDGE_CODE_REDEEMED, CC_CodeRedeemed)
+    msgbox("Congratulations! Please enjoy these\n"
+            "extra credits. Have fun!")
+    playse(SE_EXP_MAX)
+    msgbox("Obtained 1000 Pokémon credits and\n"
+            "64 item points!")
+    waitmessage
+    addmoney(1000)
+    givebp(64)
+    setflag(FLAG_JUDGE_CODE_REDEEMED)
+    release
+    end
+}
+
+script CC_CodeTARCRelease {
+    goto_if_set(FLAG_TARCRELEASE_CODE_REDEEMED, CC_CodeRedeemed)
+    msgbox("Congratulations!\nHere, your very own Chubby Lung!\p"
+            "I've also thrown in some extra\ncredits, on the house.")
+    giveitem(ITEM_POKE_DOLL, 1)
+    playse(SE_EXP_MAX)
+    msgbox("Obtained 500 Pokémon credits and\n"
+            "32 item points!")
+    waitmessage
+    addmoney(500)
+    givebp(32)
+    setflag(FLAG_TARCRELEASE_CODE_REDEEMED)
+    release
+    end
+}
+
+script CC_CodeRedeemed {
+    msgbox("Sorry, that promo code has already\n"
+            "been redeemed.\p"
+            "Enjoy your stay!")
     waitmessage
     release
     end
@@ -1322,7 +1381,7 @@ script CC_Chisa_LowScore {
 
 script CC_Chisa_MidScore {
     setspeaker(SP_NAME_CHISA)
-    msgbox("Okay so, if i pick Area Lockdown and\nthen use Pokemon with pivoting moves,\lI can mitigate that risk...")
+    msgbox("Okay so, if i pick Area Lockdown and\nthen use Pokémon with pivoting moves,\lI can mitigate that risk...")
     waitmessage
     applymovement(ardelia, moves(walk_in_place_left))
     waitmovement
@@ -1835,7 +1894,7 @@ script CC_FoughtGladiia {
     waitmovement
     waitmessage
     setspeaker(SP_NAME_GLADIIA)
-    msgbox("Did I?\pI just felt nervous, being on such a\nstage with pokemon I'm not familiar with")
+    msgbox("Did I?\pI just felt nervous, being on such a\nstage with Pokémon I'm not familiar with")
     dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
             "Are they unruly?")
     waitmessage
@@ -1890,7 +1949,7 @@ script CC_FoughtGladiia4times {
     waitmessage
     applymovement(gladiia, moves(walk_in_place_down))
     setspeaker(SP_NAME_GLADIIA)
-    msgbox("Is that where you can swap your\npokemon in and out quickly?")
+    msgbox("Is that where you can swap your\nPokémon in and out quickly?")
     waitmessage
     applymovement(player, moves(jump_in_place_up))
     setspeaker(SP_NAME_PLAYER)
