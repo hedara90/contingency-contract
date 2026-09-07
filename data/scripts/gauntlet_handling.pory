@@ -151,7 +151,7 @@ script Gauntlet_BattleWon {
 script Gauntlet_BattleLost {
     closemessage
     special(HealPlayerParty)
-    msgbox("wat")
+    msgbox("Better luck next time!")
     waitmessage
     setvar(VAR_GAUNTLETHANDLING, 0)
     warpsilent(MAP_CONVENTION_CENTER, 21, 24)
@@ -168,6 +168,8 @@ script Gauntlet_AfterGauntletWin {
 }
 
 script Gauntlet_WarpOutAfterWin {
+    msgbox("Well done!")
+    waitmessage
     setvar(VAR_GAUNTLETHANDLING, 0)
     warpsilent(MAP_CONVENTION_CENTER, 21, 24)
     waitstate
