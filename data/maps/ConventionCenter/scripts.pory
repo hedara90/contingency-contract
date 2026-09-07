@@ -646,7 +646,8 @@ script CC_Credits {
             "ROM base: PRET & EmeraldExpansion\l"
             "Party & Box menu base: Montblanc\l"
             "Jamie's Transformation pack\l"
-            "Archie's Fastsave script")
+            "Archie's Fastsave script\l"
+            "Speed of Light & Art of Blade\l MIDI's by 1230james")
     closemessage
     release
 }
