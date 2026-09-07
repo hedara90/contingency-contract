@@ -176,6 +176,42 @@ script Wuling_Arcane {
     return
 }
 
+script Wuling_Arcane_Singles {
+    setspeaker(SP_NAME_ARCANE)
+    msgbox(ArcaneBeforeBattle)
+    trainerbattle_no_intro(TRAINER_ARCANE_SINGLES, ArcaneAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    setspeaker(SP_NAME_ARCANE)
+    switch (var(VAR_RESULT)){
+        default:
+            msgbox(ArcaneAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
+        case 1:
+            msgbox(ArcaneAfterBattle_Win)
+            call(Gauntlet_BattleWon)
+    }
+    return
+}
+
+script Wuling_Arcane_Doubles {
+    setspeaker(SP_NAME_ARCANE)
+    msgbox(ArcaneBeforeBattle)
+    trainerbattle_no_intro(TRAINER_ARCANE_DOUBLES, ArcaneAfterBattle)
+    // msgbox("Good battle!")
+    closemessage
+    setspeaker(SP_NAME_ARCANE)
+    switch (var(VAR_RESULT)){
+        default:
+            msgbox(ArcaneAfterBattle_Lose)
+            goto(Gauntlet_BattleLost)
+        case 1:
+            msgbox(ArcaneAfterBattle_Win)
+            call(Gauntlet_BattleWon)
+    }
+    return
+}
+
 text ArcaneBeforeBattle {
     "I will uphold the honor of the\n"
     "Yinglungs."

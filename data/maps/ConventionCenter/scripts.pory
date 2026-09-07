@@ -1046,6 +1046,9 @@ script ChooseGauntlet {
                     "Abyssal Hunters",
                     "Confluence of East and West",
                     "Band of Misfits",
+                    "Random",
+                    "Random Singles",
+                    "Random Doubles",
                     "Not right now")
     getobjectfacingdirection(LOCALID_ATTENDANT_MAIN, VAR_TEMP_1)
     special(HealPlayerParty)
@@ -1078,6 +1081,21 @@ script ChooseGauntlet {
     case 6:
         callnative(RegenerateRandomDancers)
         warpsilent(MAP_AK_GREEN, 14, 11)
+        waitstate
+    case 7:
+        callnative(RegenerateRandomDancers)
+        callnative(RandomSeedForRandomGauntlet)
+        warpsilent(MAP_RANDOM, 14, 11)
+        waitstate
+    case 8:
+        callnative(RegenerateRandomDancers)
+        callnative(RandomSeedForRandomGauntlet)
+        warpsilent(MAP_RANDOM_SINGLES, 14, 11)
+        waitstate
+    case 9:
+        callnative(RegenerateRandomDancers)
+        callnative(RandomSeedForRandomGauntlet)
+        warpsilent(MAP_RANDOM_DOUBLES, 14, 11)
         waitstate
     default:
         msgbox("Hope you'll be back soon!")

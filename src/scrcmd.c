@@ -69,6 +69,7 @@
 #include "constants/party_menu.h"
 
 #include "field_control_avatar.h"
+#include "victory_screen.h"
 
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(struct ScriptContext *ctx);
@@ -4066,6 +4067,8 @@ const u16 sOpponents[][4] =
     [GAUNTLET_AK_YELLOW] = {TRAINER_SHU, TRAINER_NIAN, TRAINER_ELYSIUM, TRAINER_IRENE},
 };
 
+extern void GetNextRandomGauntletTrainer(void);
+
 void GetNextBattlerName(void)
 {
     u32 pos = VarGet(VAR_GAUNTLET_POSITION);
@@ -4091,7 +4094,20 @@ void GetNextBattlerName(void)
         oppPtr = sOpponents[5];
         break;
     }
-    const u8 *str = gTrainers[DIFFICULTY_NORMAL][oppPtr[pos]].trainerName;
+
+    const u8 *str;
+    if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM)
+     || gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_SINGLES)
+     || gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_DOUBLES))
+    {
+        GetNextRandomGauntletTrainer();
+        str = gTrainers[DIFFICULTY_NORMAL][VarGet(VAR_0x8006)].trainerName;
+    }
+    else
+    {
+        str = gTrainers[DIFFICULTY_NORMAL][oppPtr[pos]].trainerName;
+    }
+
     if (str[0] == CHAR_P && str[1] == CHAR_o && str[2] == CHAR_g && str[3] == EOS)
     {
         str = COMPOUND_STRING("Pograf… Pogras… Pogranch…\lYou're facing Pog next.");
@@ -4184,4 +4200,29 @@ void Script_SetVar_RandomPartyMonGfx(struct ScriptContext *ctx)
         graphicsId = tmpGfxIds[RandomUniform(RNG_NONE, 0, validMonsCount - 1)];
 
     VarSet(var, graphicsId);
+}
+
+void RandomSeedForRandomGauntlet(void)
+{
+    gSaveBlock1Ptr->randomSeed = Random32();
+}
+
+void GetNextRandomGauntletTrainer(void)
+{
+    u32 pos = VarGet(VAR_GAUNTLET_POSITION);
+    //  Build previous trainers
+    u8 arr[4];
+    enum Gauntlet gauntlet = GAUNTLET_RANDOM;
+    if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_SINGLES))
+    {
+        gauntlet = GAUNTLET_RANDOM_SINGLES;
+    }
+    else if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_DOUBLES))
+    {
+        gauntlet = GAUNTLET_RANDOM_DOUBLES;
+    }
+
+    BuildRandomTrainerArray(arr, gauntlet);
+    VarSet(VAR_0x8006, arr[pos]);
+    VarSet(VAR_0x8007, GetTrainerGfx(arr[pos]));
 }

@@ -53,6 +53,14 @@
 	.endif
 	.endm
 
+	.macro instantmorphsilent localId:req, graphicsId=NUM_OBJ_EVENT_GFX, map
+	.ifb \map
+		morphobject \localId, INSTANT_MORPH, \graphicsId
+	.else
+		morphobject \localId, INSTANT_MORPH, \graphicsId. \map
+	.endif
+	.endm
+
 	.macro mosaicmorph localId:req, graphicsId=NUM_OBJ_EVENT_GFX, map
 	playse SE_M_TELEPORT
 	.ifb \map
