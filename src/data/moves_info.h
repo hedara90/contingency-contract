@@ -6112,7 +6112,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_SacredFire,
+        .battleAnimScript = gBattleAnimMove_SacredIce,
         .validApprenticeMove = TRUE,
     },
 
@@ -7327,7 +7327,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Facade,
+        .battleAnimScript = gBattleAnimMove_Charade,
         .validApprenticeMove = TRUE,
     },
 
@@ -13637,7 +13637,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_TOXIC, COMBO_STARTER_FORCE_PALM, COMBO_STARTER_THUNDER_WAVE, COMBO_STARTER_INFERNO, COMBO_STARTER_WILL_O_WISP, COMBO_STARTER_LOVELY_KISS, COMBO_STARTER_SPORE, COMBO_STARTER_SING, COMBO_STARTER_YAWN, COMBO_STARTER_HYPNOSIS, COMBO_STARTER_DARK_VOID, COMBO_STARTER_GRASS_WHISTLE, COMBO_STARTER_SLEEP_POWDER, COMBO_STARTER_POISON_GAS, COMBO_STARTER_POISON_POWDER, COMBO_STARTER_TOXIC_SPIKES, COMBO_STARTER_GLARE},
-        .battleAnimScript = gBattleAnimMove_Hex,
+        .battleAnimScript = gBattleAnimMove_Combustion,
     },
 
     [MOVE_SKY_DROP] =
@@ -14549,7 +14549,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
             .moveEffect = MOVE_EFFECT_POISON,
             .chance = 10,
         }),
-        .battleAnimScript = gBattleAnimMove_TailSlap,
+        .battleAnimScript = gBattleAnimMove_AcidBarrage,
     },
 
     [MOVE_HURRICANE] =
@@ -15586,7 +15586,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .target = TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .battleAnimScript = gBattleAnimMove_MaxOvergrowth,
+        .battleAnimScript = gBattleAnimMove_AlgaeBloom,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_GRASSY_TERRAIN,
         }),
@@ -20157,7 +20157,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .additionalEffects = ADDITIONAL_EFFECTS({
             .sheerForceOverride = TRUE,
         }),
-        .battleAnimScript = gBattleAnimMove_StoneAxe,
+        .battleAnimScript = gBattleAnimMove_SteelSpike,
     },
 
     [MOVE_SPRINGTIDE_STORM] =
@@ -22000,7 +22000,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .mirrorMoveBanned = TRUE,
         .copycatBanned = TRUE,
         .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_BurningBulwark,
+        .battleAnimScript = gBattleAnimMove_BorealBastion,
     },
 
     [MOVE_THUNDERCLAP] =

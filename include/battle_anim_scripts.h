@@ -1029,5 +1029,12 @@ extern const u8 gBattleAnimSpecial_CriticalCaptureBallThrow[];
 //  CC animations
 extern const u8 gBattleAnimMove_IceWisps[];
 extern const u8 gBattleAnimMove_SandBlast[];
+extern const u8 gBattleAnimMove_Combustion[];
+extern const u8 gBattleAnimMove_AcidBarrage[];
+extern const u8 gBattleAnimMove_SteelSpike[];
+extern const u8 gBattleAnimMove_Charade[];
+extern const u8 gBattleAnimMove_SacredIce[];
+extern const u8 gBattleAnimMove_AlgaeBloom[];
+extern const u8 gBattleAnimMove_BorealBastion[];
 
 #endif // GUARD_BATTLE_ANIM_SCRIPTS_H

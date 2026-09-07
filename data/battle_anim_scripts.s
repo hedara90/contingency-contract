@@ -35680,3 +35680,127 @@ gBattleAnimMove_IceWisps::
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
 	end
+
+gBattleAnimMove_Combustion::
+	playsewithpan SE_M_FLAME_WHEEL, SOUND_PAN_TARGET
+	createsprite gEmberFlareSpriteTemplate, ANIM_TARGET, 2, -24, 24, 24, 24, 20, ANIM_TARGET, 1
+	delay 4
+	createsprite gEmberFlareSpriteTemplate, ANIM_TARGET, 2, -24, 18, 24, 18, 20, ANIM_TARGET, 1
+	delay 4
+	createsprite gEmberFlareSpriteTemplate, ANIM_TARGET, 2, -24, 12, 24, 12, 20, ANIM_TARGET, 1
+	delay 4
+	playsewithpan SE_M_FLAME_WHEEL, SOUND_PAN_TARGET
+	createsprite gEmberFlareSpriteTemplate, ANIM_TARGET, 2, -24, 6, 24, 6, 20, ANIM_TARGET, 1
+	delay 4
+	createsprite gEmberFlareSpriteTemplate, ANIM_TARGET, 2, -24, 0, 24, 0, 20, ANIM_TARGET, 1
+	delay 4
+	createsprite gEmberFlareSpriteTemplate, ANIM_TARGET, 2, -24, -6, 24, -6, 20, ANIM_TARGET, 1
+	delay 4
+	playsewithpan SE_M_FLAME_WHEEL, SOUND_PAN_TARGET
+	createsprite gEmberFlareSpriteTemplate, ANIM_TARGET, 2, -24, -12, 24, -12, 20, ANIM_TARGET, 1
+	delay 4
+	createsprite gEmberFlareSpriteTemplate, ANIM_TARGET, 2, -24, -18, 24, -18, 20, ANIM_TARGET, 1
+	delay 4
+	createsprite gEmberFlareSpriteTemplate, ANIM_TARGET, 2, -24, -24, 24, -24, 20, ANIM_TARGET, 1
+	delay 4
+	end
+
+gBattleAnimMove_AcidBarrage::
+	createsprite gPoisonJabProjectileSpriteTemplate, ANIM_TARGET, 2, 3, -31, 10
+	delay 2
+	createsprite gPoisonJabProjectileSpriteTemplate, ANIM_TARGET, 2, -18, -25, 10
+	delay 2
+	createsprite gPoisonJabProjectileSpriteTemplate, ANIM_TARGET, 2, 27, 17, 10
+	delay 2
+	createsprite gPoisonJabProjectileSpriteTemplate, ANIM_TARGET, 2, -26, 18, 10
+	delay 2
+	createsprite gPoisonJabProjectileSpriteTemplate, ANIM_TARGET, 2, 10, 30, 10
+	delay 2
+	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=-7, y=4, relative_to=ANIM_TARGET, animation=3
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	delay 2
+	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=-4, y=-6, relative_to=ANIM_TARGET, animation=3
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	delay 2
+	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=-4, y=-6, relative_to=ANIM_TARGET, animation=3
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	delay 2
+	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=-4, y=-6, relative_to=ANIM_TARGET, animation=3
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	delay 2
+	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=-4, y=-6, relative_to=ANIM_TARGET, animation=3
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	waitforvisualfinish
+	blendoff
+	end
+
+gBattleAnimMove_SteelSpike::
+	loopsewithpan SE_M_HARDEN, SOUND_PAN_ATTACKER, 28, 2
+	metallic_shine permanent=0
+	waitforvisualfinish
+	call JudgmentInwardSpikes
+	delay 5
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	call JudgmentInwardSpikes2
+	delay 5
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	call JudgmentInwardSpikes
+	delay 5
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	call JudgmentInwardSpikes2
+	delay 5
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	waitforvisualfinish
+	end
+
+gBattleAnimMove_Charade::
+	createvisualtask AnimTask_SquishAndSweatDroplets, 2, ANIM_ATTACKER, 3
+	createvisualtask AnimTask_FacadeColorBlend, 2, ANIM_ATTACKER, 72
+	loopsewithpan SE_M_SWAGGER, SOUND_PAN_ATTACKER, 24, 3
+	end
+
+gBattleAnimMove_SacredIce::
+	playsewithpan SE_M_HAIL, SOUND_PAN_TARGET
+	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 4, 0, 13, 1
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 0
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 42
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 84
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 126
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 168
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 210
+	waitforvisualfinish
+	playsewithpan SE_M_HAIL, SOUND_PAN_TARGET
+	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 4, 0, 13, 1
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 0
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 42
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 84
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 126
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 168
+	createsprite gIceWispFireSpriteTemplate, ANIM_ATTACKER, 2, 210
+	waitforvisualfinish
+	end
+
+gBattleAnimMove_AlgaeBloom::
+	call CreatePetals
+	delay 30
+	goto gBattleAnimMove_EnergyBall
+	end
+
+gBattleAnimMove_BorealBastion::
+	monbg ANIM_DEF_PARTNER
+	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_BG | F_PAL_ATK_SIDE, 4, 0, 4, RGB_BLACK
+	fadetobg BG_ICE
+	waitbgfadeout
+	playsewithpan SE_M_ICY_WIND, SOUND_PAN_MIDDLE
+	waitbgfadein
+	waitforvisualfinish
+	playsewithpan SE_M_GUST2, SOUND_PAN_TARGET
+	delay 55
+	call IceSpikesEffectLong
+	waitforvisualfinish
+	clearmonbg ANIM_DEF_PARTNER
+	restorebg
+	waitbgfadeout
+	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_BG | F_PAL_ATK_SIDE, 4, 4, 0, RGB_BLACK
+	waitbgfadein
+	end
