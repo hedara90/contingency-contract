@@ -35761,7 +35761,12 @@ gBattleAnimMove_Charade::
 
 gBattleAnimMove_SacredIce::
 	end
+
 gBattleAnimMove_AlgaeBloom::
+	call CreatePetals
+	delay 30
+	goto gBattleAnimMove_EnergyBall
 	end
+
 gBattleAnimMove_BorealBastion::
 	end
