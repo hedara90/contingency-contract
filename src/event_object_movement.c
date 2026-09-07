@@ -1612,6 +1612,10 @@ static u8 InitObjectEventStateFromTemplate(const struct ObjectEventTemplate *tem
     objectEvent->active = TRUE;
     objectEvent->triggerGroundEffectsOnMove = TRUE;
     objectEvent->graphicsId = template->graphicsId;
+    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_CONVENTION_CENTER) && template->localId == LOCALID_CC_RANDOMMON_1)
+    {
+        objectEvent->graphicsId = OBJ_EVENT_GFX_SPECIES(MUNNA);
+    }
     SetObjectEventDynamicGraphicsId(objectEvent);
     if (IS_OW_MON_OBJ(objectEvent))
     {

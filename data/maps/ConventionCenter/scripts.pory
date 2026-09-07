@@ -2589,9 +2589,8 @@ script CC_LoadRandomBattlers {
     // setvar(VAR_BATTLERS_LEFT, 0)
     setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CHISA)
     
-    setvar(VAR_LEFTMON, OBJ_EVENT_GFX_SPECIES(CROBAT))
-    addobject(LOCALID_CC_RANDOMMON_1)
-    instantmorph(LOCALID_CC_RANDOMMON_1, VAR_LEFTMON)
+    //setvar(VAR_LEFTMON, OBJ_EVENT_GFX_SPECIES(CROBAT))
+    //addobject(LOCALID_CC_RANDOMMON_1)
     // setvar(VAR_OBJ_GFX_ID_1, VAR_LEFTMON)
     // call(CC_SetLeftBattlers)
     setvar(VAR_TEMP_4, 1)
