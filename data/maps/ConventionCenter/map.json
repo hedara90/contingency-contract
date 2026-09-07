@@ -1402,6 +1402,14 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "CC_TianaSnacks"
+    },
+    {
+      "type": "sign",
+      "x": 19,
+      "y": 21,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "CC_ViewRecords"
     }
   ]
 }
