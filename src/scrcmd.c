@@ -3665,45 +3665,59 @@ void Task_TurnQueuers(u8 taskId)
     }
 }
 
+void Task_WaitAndLoadQueueObjects(u8 taskId)
+{
+    if (gTasks[taskId].data[0] < 5)
+    {
+        gTasks[taskId].data[0]++;
+    }
+    else
+    {
+        u16 gfxList[NELEMS(sQueueObjects)];
+        for (u32 i = 0; i < NELEMS(sQueueObjects); i++)
+        {
+            gfxList[i] = sQueueObjects[i];
+        }
+
+        Shuffle16(gfxList, NELEMS(sQueueObjects));
+
+        if (!FlagGet(FLAG_TALKED_SATSUKI))
+        {
+            gfxList[0] = OBJ_EVENT_GFX_SATSUKI;
+        }
+        else if (!FlagGet(FLAG_SATSUKI_QUEUED))
+        {
+            gfxList[17] = OBJ_EVENT_GFX_SATSUKI;
+        }
+        else if (!FlagGet(FLAG_SATSUKI_PAID))
+        {
+            gfxList[33] = OBJ_EVENT_GFX_SATSUKI;
+        }
+
+        if (FlagGet(FLAG_CHISA_CC))
+        {
+            gfxList[7] = OBJ_EVENT_GFX_CHISA;
+        }
+
+        for (u32 i = 0; i < sizeof(sQueueCoord) / 3; i++)
+        {
+            CreateVirtualObject(gfxList[i], i, sQueueCoord[i][0], sQueueCoord[i][1], 3, sQueueCoord[i][2]);
+        }
+
+        for (u32 i = 0; i < 3; i++)
+        {
+            CreateVirtualObject(sQueueClerks[i][0], sizeof(sQueueCoord) / 3 + i, sQueueClerks[i][1], sQueueClerks[i][2], 3, sQueueClerks[i][3]);
+        }
+        sQueueTurnTaskId = CreateTask(Task_TurnQueuers, 1);
+        gTasks[sQueueTurnTaskId].data[0] = 15;
+        DestroyTask(taskId);
+    }
+}
+
 void CreateQueue(void)
 {
-    u16 gfxList[NELEMS(sQueueObjects)];
-    for (u32 i = 0; i < NELEMS(sQueueObjects); i++)
-    {
-        gfxList[i] = sQueueObjects[i];
-    }
-
-    Shuffle16(gfxList, NELEMS(sQueueObjects));
-
-    if (!FlagGet(FLAG_TALKED_SATSUKI))
-    {
-        gfxList[0] = OBJ_EVENT_GFX_SATSUKI;
-    }
-    else if (!FlagGet(FLAG_SATSUKI_QUEUED))
-    {
-        gfxList[17] = OBJ_EVENT_GFX_SATSUKI;
-    }
-    else if (!FlagGet(FLAG_SATSUKI_PAID))
-    {
-        gfxList[33] = OBJ_EVENT_GFX_SATSUKI;
-    }
-
-    if (FlagGet(FLAG_CHISA_CC))
-    {
-        gfxList[7] = OBJ_EVENT_GFX_CHISA;
-    }
-
-    for (u32 i = 0; i < sizeof(sQueueCoord) / 3; i++)
-    {
-        CreateVirtualObject(gfxList[i], i, sQueueCoord[i][0], sQueueCoord[i][1], 3, sQueueCoord[i][2]);
-    }
-
-    for (u32 i = 0; i < 3; i++)
-    {
-        CreateVirtualObject(sQueueClerks[i][0], sizeof(sQueueCoord) / 3 + i, sQueueClerks[i][1], sQueueClerks[i][2], 3, sQueueClerks[i][3]);
-    }
-    sQueueTurnTaskId = CreateTask(Task_TurnQueuers, 1);
-    gTasks[sQueueTurnTaskId].data[0] = 15;
+    u32 taskId = CreateTask(Task_WaitAndLoadQueueObjects, 0);
+    gTasks[taskId].data[0] = 0;
 }
 
 void DestroyQueue(void)
@@ -3801,23 +3815,37 @@ void Task_TurnDancers(u8 taskId)
     }
 }
 
+void Task_WaitAndLoadOtherObjects(u8 taskId)
+{
+    if (gTasks[taskId].data[0] < 5)
+    {
+        gTasks[taskId].data[0]++;
+    }
+    else
+    {
+        for (u32 i = 0; i < sizeof(sNonQueueVObjects) / 8; i++)
+        {
+            CreateVirtualObject(sNonQueueVObjects[i][0], i, sNonQueueVObjects[i][1], sNonQueueVObjects[i][2], 3, sNonQueueVObjects[i][3]);
+        }
+
+        for (u32 i = 0; i < sizeof(sDanceFloorPositions) / 3; i++)
+        {
+            CreateVirtualObject(sRandomDancers[i], (sizeof(sNonQueueVObjects) / 8) + i, sDanceFloorPositions[i][0], sDanceFloorPositions[i][1], 5, sDanceFloorPositions[i][2]);
+        }
+
+        sDancerTurnTaskId = CreateTask(Task_TurnDancers, 1);
+        for (u32 i = 0; i < NELEMS(sRandomDancers); i++)
+        {
+            gTasks[sDancerTurnTaskId].data[i] = 30 + (Random32() % 60);
+        }
+        DestroyTask(taskId);
+    }
+}
+
 void CreateOtherVObjects(void)
 {
-    for (u32 i = 0; i < sizeof(sNonQueueVObjects) / 8; i++)
-    {
-        CreateVirtualObject(sNonQueueVObjects[i][0], i, sNonQueueVObjects[i][1], sNonQueueVObjects[i][2], 3, sNonQueueVObjects[i][3]);
-    }
-
-    for (u32 i = 0; i < sizeof(sDanceFloorPositions) / 3; i++)
-    {
-        CreateVirtualObject(sRandomDancers[i], (sizeof(sNonQueueVObjects) / 8) + i, sDanceFloorPositions[i][0], sDanceFloorPositions[i][1], 5, sDanceFloorPositions[i][2]);
-    }
-
-    sDancerTurnTaskId = CreateTask(Task_TurnDancers, 1);
-    for (u32 i = 0; i < NELEMS(sRandomDancers); i++)
-    {
-        gTasks[sDancerTurnTaskId].data[i] = 30 + (Random32() % 60);
-    }
+    u32 taskId = CreateTask(Task_WaitAndLoadOtherObjects, 0);
+    gTasks[taskId].data[0] = 0;
 }
 
 void DestroyOther(void)
@@ -4014,7 +4042,7 @@ const struct SpectatorCoord sSpectatorCoords[] =
     {22, 6, DIR_SOUTH},
 };
 
-void Task_WaitAndLoadObjects(u8 taskId)
+void Task_WaitAndLoadSpectatorObjects(u8 taskId)
 {
     if (gTasks[taskId].data[0] < 5)
     {
@@ -4053,7 +4081,7 @@ void Task_WaitAndLoadObjects(u8 taskId)
 
 void SpectatorVObjects(void)
 {
-    u32 taskId = CreateTask(Task_WaitAndLoadObjects, 0);
+    u32 taskId = CreateTask(Task_WaitAndLoadSpectatorObjects, 0);
     gTasks[taskId].data[0] = 0;
 }
 
