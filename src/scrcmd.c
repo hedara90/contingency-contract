@@ -4254,3 +4254,16 @@ void GetNextRandomGauntletTrainer(void)
     VarSet(VAR_0x8006, arr[pos]);
     VarSet(VAR_0x8007, GetTrainerGfx(arr[pos]));
 }
+
+void HasDefeatedGauntlet(struct ScriptContext *ctx)
+{
+    enum Gauntlet gauntlet = ScriptReadByte(ctx);
+    if (gSaveBlock1Ptr->wins[gauntlet].species[0] == SPECIES_NONE)
+    {
+        gSpecialVar_Result = FALSE;
+    }
+    else
+    {
+        gSpecialVar_Result = TRUE;
+    }
+}
