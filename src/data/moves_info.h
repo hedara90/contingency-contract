@@ -6112,7 +6112,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_SacredFire,
+        .battleAnimScript = gBattleAnimMove_SacredIce,
         .validApprenticeMove = TRUE,
     },
 
@@ -15586,7 +15586,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .target = TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .battleAnimScript = gBattleAnimMove_MaxOvergrowth,
+        .battleAnimScript = gBattleAnimMove_AlgaeBloom,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_GRASSY_TERRAIN,
         }),
@@ -22000,7 +22000,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .mirrorMoveBanned = TRUE,
         .copycatBanned = TRUE,
         .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_BurningBulwark,
+        .battleAnimScript = gBattleAnimMove_BorealBastion,
     },
 
     [MOVE_THUNDERCLAP] =
