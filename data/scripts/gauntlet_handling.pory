@@ -36,6 +36,28 @@ script Gauntlet_MoveOpponentBeforeBattle {
     waitmovement
 }
 
+script GauntletRandom_MoveOpponentBeforeBattle {
+    switch(var(VAR_GAUNTLET_POSITION)){
+        case 0:
+            addobject(LOCALID_ONE) 
+            instantmorph(LOCALID_ONE, VAR_0x8007)
+            applymovement(LOCALID_ONE, moves(walk_left*3))
+        case 1: 
+            addobject(LOCALID_TWO)
+            instantmorph(LOCALID_TWO, VAR_0x8007)
+            applymovement(LOCALID_TWO, moves(walk_left*3))
+        case 2:
+            addobject(LOCALID_THREE) 
+            instantmorph(LOCALID_THREE, VAR_0x8007)
+            applymovement(LOCALID_THREE, moves(walk_left*3))
+        case 3:
+            addobject(LOCALID_FOUR) 
+            instantmorph(LOCALID_FOUR, VAR_0x8007)
+            applymovement(LOCALID_FOUR, moves(walk_left*3))
+    }
+    waitmovement
+}
+
 script Gauntlet_PostBattle {
     call(Gauntlet_MoveOpponentAfterBattle)
     call(Gauntlet_Attendant)
@@ -139,7 +161,7 @@ script Gauntlet_BattleLost {
 script Gauntlet_AfterGauntletWin {
     closemessage
     special(HealPlayerParty)
-    msgbox("You got ¥500 for winning!")
+    msgbox("You got ¥ 500 for winning!")
     waitmessage
     addmoney(500)
     return

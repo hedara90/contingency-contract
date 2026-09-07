@@ -1073,6 +1073,21 @@ script ChooseGauntlet {
         callnative(RegenerateRandomDancers)
         warpsilent(MAP_AK_GREEN, 14, 11)
         waitstate
+    case 7:
+        callnative(RegenerateRandomDancers)
+        callnative(RandomSeedForRandomGauntlet)
+        warpsilent(MAP_RANDOM, 14, 11)
+        waitstate
+    case 8:
+        callnative(RegenerateRandomDancers)
+        callnative(RandomSeedForRandomGauntlet)
+        warpsilent(MAP_RANDOM_SINGLES, 14, 11)
+        waitstate
+    case 9:
+        callnative(RegenerateRandomDancers)
+        callnative(RandomSeedForRandomGauntlet)
+        warpsilent(MAP_RANDOM_DOUBLES, 14, 11)
+        waitstate
     default:
         msgbox("Hope you'll be back soon!")
     }

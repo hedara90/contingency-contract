@@ -253,13 +253,31 @@ void VictoryScreen_Init(MainCallback callback, enum Gauntlet gauntlet, bool32 fr
                 }
             }
         }
-        if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM)
-         || gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_SINGLES)
-         || gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_DOUBLES))
+        if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM))
         {
+            u8 arr[4] = {0, 0, 0, 0};
+            BuildRandomTrainerArray(arr, GAUNTLET_RANDOM);
             for (u32 i = 0; i < 4; i++)
             {
-                sVictoryScreenState->trainerIds[i] = i + 1;
+                sVictoryScreenState->trainerIds[i] = arr[i];
+            }
+        }
+        else if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_SINGLES))
+        {
+            u8 arr[4] = {0, 0, 0, 0};
+            BuildRandomTrainerArray(arr, GAUNTLET_RANDOM_SINGLES);
+            for (u32 i = 0; i < 4; i++)
+            {
+                sVictoryScreenState->trainerIds[i] = arr[i];
+            }
+        }
+        else if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_DOUBLES))
+        {
+            u8 arr[4] = {0, 0, 0, 0};
+            BuildRandomTrainerArray(arr, GAUNTLET_RANDOM_DOUBLES);
+            for (u32 i = 0; i < 4; i++)
+            {
+                sVictoryScreenState->trainerIds[i] = arr[i];
             }
         }
         else
@@ -462,7 +480,7 @@ static void VictoryScreen_FreeResources(void)
                  || gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_SINGLES)
                  || gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_RANDOM_DOUBLES))
                 {
-                    u8 arr[4];
+                    u8 arr[4] = {0, 0, 0, 0};
                     BuildRandomTrainerArray(arr, sVictoryScreenState->gauntlet);
                     for (u32 i = 0; i < 4; i++)
                     {
@@ -878,6 +896,7 @@ void BuildRandomTrainerArray(u8 *resArr, enum Gauntlet gauntlet)
     {
         resArr[i] = fullArray[i];
     }
+
     Free(fullArray);
 }
 
@@ -916,7 +935,15 @@ static void VictoryScreen_ShowTrainers(void)
     {
         if (sVictoryScreenState->trainerIds[i] != TRAINER_NONE)
         {
-            CreateObjectGraphicsSprite(sTrainerToGfxMap[sVictoryScreenState->trainerIds[i]], SpriteCB_Dummy, 120 + 16 * i, 20, 0);
+            CreateObjectGraphicsSprite(sTrainerToGfxMap[sVictoryScreenState->trainerIds[i]],
+                    SpriteCB_Dummy,
+                    150 + 24 * i, 10,
+                    0);
         }
     }
+}
+
+u16 GetTrainerGfx(u32 trainer)
+{
+    return sTrainerToGfxMap[trainer];
 }
