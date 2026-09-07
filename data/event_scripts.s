@@ -1761,3 +1761,9 @@ EventScript_GiveGachaMon::
 	.include "data/maps/AK_Green/scripts.inc"
 
 	.include "data/scripts/gauntlet_handling.inc"
+
+	.include "data/maps/Random/scripts.inc"
+
+	.include "data/maps/RandomDoubles/scripts.inc"
+
+	.include "data/maps/RandomSingles/scripts.inc"

@@ -161,6 +161,7 @@ struct SavedGauntletWin
     struct Risks risks;
     enum Species species[6];
     u8 numDupes[6];
+    u8 foes[4];
 };
 
 void ClearRisks(void);

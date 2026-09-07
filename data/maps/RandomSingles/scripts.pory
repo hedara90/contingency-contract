@@ -1,0 +1,114 @@
+mapscripts RandomSingles_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: RandomSingles_OnTransition
+    MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE [
+        VAR_GAUNTLETHANDLING, 0: RandomSingles_Setup
+    ]
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_GAUNTLETHANDLING, 0: RandomSingles_OnGauntletStart
+        VAR_GAUNTLETHANDLING, 1: RandomSingles_OnSaveResume
+    ]
+    MAP_SCRIPT_ON_RESUME {
+        callnative(SpectatorVObjects)
+    }
+}
+
+const player = OBJ_EVENT_ID_PLAYER
+const tiana = LOCALID_TIANA
+
+script RandomSingles_OnTransition {
+    if(var(VAR_GAUNTLET_POSITION)==0){
+        setobjectxyperm(tiana, 10, 11)
+    }
+}
+
+script RandomSingles_Setup {
+    hideobjectat(player, MAP_RANDOM)
+}
+
+script RandomSingles_OnGauntletStart {
+    setvar(VAR_GAUNTLETHANDLING, 1)
+    call(Gauntlet_SetupCamera)
+    goto(RandomSingles_StartBattle)
+}
+
+script RandomSingles_OnSaveResume {
+    call(Gauntlet_ResumeSave)
+    goto(RandomSingles_StartBattle)
+}
+
+script RandomSingles_StartBattle {
+    callnative(GetNextRandomGauntletTrainer)
+    switch (var(VAR_GAUNTLET_POSITION)) {
+    case 0:
+        call(GauntletRandom_MoveOpponentBeforeBattle)
+    default:
+        call(Gauntlet_MovePlayerBeforeBattle)
+        call(GauntletRandom_MoveOpponentBeforeBattle)
+    }
+    switch(var(VAR_0x8006)) {
+        case TRAINER_XAIHI:
+            call(CrisisTeam_Xaihi)
+        case TRAINER_CHEN:
+            call(CrisisTeam_Chen)
+        case TRAINER_PERLICA:
+            call(CrisisTeam_Perlica)
+        case TRAINER_ENDMIN:
+            call(CrisisTeam_Endmin)
+        case TRAINER_TANGTANG:
+            call(Wuling_TangTang)
+        case TRAINER_MIFU:
+            call(Wuling_MiFu)
+        case TRAINER_ARCANE_SINGLES:
+            call(Wuling_Arcane_Singles)
+        case TRAINER_ARCANE_DOUBLES:
+            call(Wuling_Arcane_Doubles)
+        case TRAINER_FANGYI:
+            call(Wuling_ZhuangFangyi)
+        case TRAINER_ARDELIA:
+            call(Reconveners_Ardelia)
+        case TRAINER_POG:
+            call(Reconveners_Pogranichnik)
+        case TRAINER_GILBERTA:
+            call(Reconveners_Gilberta)
+        case TRAINER_LAEVATAIN:
+            call(Reconveners_Laevatain)
+        case TRAINER_SPECTER:
+            call(AbyssalHunters_Specter)
+        case TRAINER_GLADIIA:
+            call(AbyssalHunters_Gladiia)
+        case TRAINER_SKADI:
+            call(AbyssalHunters_Skadi)
+        case TRAINER_ULPIANUS:
+            call(AbyssalHunters_Ulpianus)
+        case TRAINER_SHU:
+            call(AKYellow_Shu)
+        case TRAINER_NIAN:
+            call(AKYellow_Nian)
+        case TRAINER_ELYSIUM:
+            call(AKYellow_Elysium)
+        case TRAINER_IRENE:
+            call(AKYellow_Irene)
+        case TRAINER_CARNELIAN:
+            call(AKGreen_Carnelian)
+        case TRAINER_PENANCE:
+            call(AKGreen_Penance)
+        case TRAINER_PRAMANIX:
+            call(AKGreen_Pramanix)
+        case TRAINER_FIAMETTA:
+            call(AKGreen_Fiametta)
+    }
+    switch (var(VAR_GAUNTLET_POSITION)) {
+        default:
+            call(Gauntlet_PostBattle)
+            goto(RandomSingles_StartBattle)
+        case 4:
+            call(RandomSingles_WonGauntlet)
+    }
+}
+
+script RandomSingles_WonGauntlet {
+    call(Gauntlet_AfterGauntletWin)
+    victoryscreen(GAUNTLET_RANDOM_SINGLES, FALSE)
+    waitstate
+    call(Gauntlet_WarpOutAfterWin)
+}

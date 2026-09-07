@@ -1173,7 +1173,10 @@
     "Reconveners",
     "Abyssal_Hunters",
     "AK_Yellow",
-    "AK_Green"
+    "AK_Green",
+    "Random",
+    "RandomSingles",
+    "RandomDoubles"
   ],
   "gMapGroup_Library": [
     "Library"

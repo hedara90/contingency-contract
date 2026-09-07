@@ -9,5 +9,7 @@
 
 void VictoryScreen_Init(MainCallback callback, enum Gauntlet gauntlet, bool32 fromSave);
 void VictoryScreen_InitFromScript(struct ScriptContext *ctx);
+void BuildRandomTrainerArray(u8 *resArr, enum Gauntlet gauntlet);
+u16 GetTrainerGfx(u32 trainer);
 
 #endif
