@@ -37,6 +37,7 @@ script CC_OnTransition {
     }
     // hideobjectat(LOCALID_CC_TAIL, MAP_CONVENTION_CENTER)
     setflag(FLAG_TAIL)
+    call(CC_RandomMusic)
 }
 
 script CC_GilbertaEvent {
@@ -165,7 +166,7 @@ script CC_Intro {
     applymovement(player, moves(face_up))
     applymovement(receptionist, moves(walk_in_place_down))
     msgbox("Would you like me to explain how\neverything's set up?")
-    dynmultichoice(0, 0, TRUE, 4, TRUE, DYN_MULTICHOICE_CB_NONE,
+    dynmultichoice(0, 0, TRUE, 4, 0, DYN_MULTICHOICE_CB_NONE,
             "Yeah sure, give me the brief.",
             "I can figure it out myself!")
     switch(var(VAR_RESULT)){
@@ -459,7 +460,7 @@ script CC_Credits {
 }
 
 script PlayStageMusic {
-    playbgm(MUS_ART_OF_BLADE, FALSE)
+    call(CC_MusicList)
     setvar(VAR_MUSIC_CHECKER, 1)
 }
 
@@ -2189,6 +2190,15 @@ const kenichi = LOCALID_CC_KENICHI
 
 script CC_Kenichi {
     lock
+    if(flag(FLAG_SPOKE_KENICHI)==FALSE){
+        goto(CC_Kenichi_FirstTime)
+    }
+    else {
+        goto(CC_KenichiChangeMusic)
+    }
+}
+
+script CC_Kenichi_FirstTime {
     getobjectcurrentxy(player, CURRENT_POSITION, VAR_TEMP_7, VAR_TEMP_8)
     setspeaker(SP_NAME_PLAYER)
     msgbox("Kenichi? How did you end up here?!")
@@ -2208,7 +2218,7 @@ script CC_Kenichi {
     waitmessage
     setspeaker(SP_NAME_KENICHI)
     msgbox("Nah, we don't produce any songs.\p"
-            "it's mostly just remixin' songs\nand making 'em flow together")
+            "it's mostly just remixin' songs\nand making 'em flow together.")
     waitmessage
     applymovement(kenichi, moves(face_down))
     msgbox("It's our way of doing things together\neven when we're far apart.")
@@ -2216,6 +2226,9 @@ script CC_Kenichi {
     applymovement(kenichi, moves(face_player))
     if(var(VAR_TEMP_7)==14){
         applymovement(player, moves(walk_in_place_right))
+    }
+    elif(var(VAR_TEMP_7)==15) {
+        applymovement(player, moves(walk_in_place_up))
     }
     else {
         applymovement(player, moves(walk_in_place_left))
@@ -2243,18 +2256,70 @@ script CC_Kenichi {
     setspeaker(SP_NAME_KENICHI)
     msgbox("I gotta handle this transition.\nEnjoy the con!")
     applymovement(kenichi, moves(face_down))
+    waitmovement
+    call(CC_RandomMusic)
+    call(CC_MusicList)
+    setflag(FLAG_SPOKE_KENICHI)
     release
 }
 
-//MUS_ENCOUNTER_MALE
-//MUS-HELP
-//MUS ENCOUNTER_COOL
-//MUS ENCOUNTER_AQUA
-//MUS MT_PYRE_EXTERIOR
-//MUS ENCOUNTER_ELITE_FOUR
-//MUS B_DOME
-//MUS B-Factory
-//MUS FRONTIER BRAIN
-//MUS REGI
-//AQUA MAGMA LEADER
-//RG CHAMP
+script CC_KenichiChangeMusic{
+    faceplayer
+    setspeaker(SP_NAME_KENICHI)
+    msgbox("Yo! got a song request?")
+    dynmultichoice(0,0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE,
+            "Electric Heart",
+            "Groove Machine",
+            "Endgame",
+            "A Long Journey",
+            "Future Sight",
+            "One Last Time",
+            "BATTLECRY",
+            "Speed of Light",
+            "Art of Blade",
+            "I'll let you pick!",
+            "Nevermind")
+    switch(var(VAR_RESULT)){
+        default: copyvar(VAR_MUSIC, VAR_RESULT)
+        case 9: call(CC_RandomMusic)
+        case 10:
+            closemessage
+            release
+            end
+    }
+    setspeaker(SP_NAME_KENICHI)
+    msgbox("Sure thing!")
+    closemessage
+    applymovement(kenichi, moves(face_down))
+    waitmovement
+    call(CC_MusicList)
+    release
+}
+
+script CC_RandomMusic {
+    random(9)
+    copyvar(VAR_MUSIC, VAR_RESULT)
+}
+
+script CC_MusicList{
+    switch(var(VAR_MUSIC)){
+        case 0:
+            playbgm(MUS_ENCOUNTER_MALE, FALSE)
+        case 1:
+            playbgm(MUS_ENCOUNTER_COOL, FALSE)
+        case 2:
+            playbgm(MUS_ENCOUNTER_ELITE_FOUR, FALSE)
+        case 3:
+            playbgm(MUS_MT_PYRE_EXTERIOR, FALSE)
+        case 4:
+            playbgm(MUS_B_FACTORY, FALSE)
+        case 5:
+            playbgm(MUS_VS_FRONTIER_BRAIN, FALSE)
+        case 6:
+            playbgm(MUS_VS_AQUA_MAGMA_LEADER, FALSE)
+        case 7:
+            playbgm(MUS_SPEED_OF_LIGHT, FALSE)
+        case 8:
+            playbgm(MUS_ART_OF_BLADE, FALSE)
+    }
+}
