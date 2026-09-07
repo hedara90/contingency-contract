@@ -1236,6 +1236,7 @@ script WelcomeCounter {
     special(GetCodeFeedback)
     goto_if_eq(VAR_RESULT, 0, CC_CodeFailed)
     goto_if_eq(VAR_RESULT, 1, CC_CodeJudge)
+    goto_if_eq(VAR_RESULT, 2, CC_CodeTARCRelease)
     end
 }
 
@@ -1248,9 +1249,9 @@ script CC_CodeFailed {
 }
 
 script CC_CodeJudge {
-    goto_if_set(FLAG_JUDGE_CODE_REDEEMED, CC_CodeJudge_Redeemed)
+    goto_if_set(FLAG_JUDGE_CODE_REDEEMED, CC_CodeRedeemed)
     msgbox("Congratulations! Please enjoy these\n"
-            "extra credits on the house.")
+            "extra credits. Have fun!")
     playse(SE_EXP_MAX)
     msgbox("Obtained 1000 Pokémon credits and\n"
             "64 item points!")
@@ -1262,7 +1263,23 @@ script CC_CodeJudge {
     end
 }
 
-script CC_CodeJudge_Redeemed {
+script CC_CodeTARCRelease {
+    goto_if_set(FLAG_TARCRELEASE_CODE_REDEEMED, CC_CodeRedeemed)
+    msgbox("Congratulations!\nHere, your very own Chubby Lung!\p"
+            "I've also thrown in some extra\ncredits, on the house.")
+    giveitem(ITEM_POKE_DOLL, 1)
+    playse(SE_EXP_MAX)
+    msgbox("Obtained 500 Pokémon credits and\n"
+            "32 item points!")
+    waitmessage
+    addmoney(500)
+    givebp(32)
+    setflag(FLAG_TARCRELEASE_CODE_REDEEMED)
+    release
+    end
+}
+
+script CC_CodeRedeemed {
     msgbox("Sorry, that promo code has already\n"
             "been redeemed.\p"
             "Enjoy your stay!")
