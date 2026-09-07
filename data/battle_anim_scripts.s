@@ -35733,3 +35733,22 @@ gBattleAnimMove_AcidBarrage::
 	waitforvisualfinish
 	blendoff
 	end
+
+gBattleAnimMove_SteelSpike::
+	loopsewithpan SE_M_HARDEN, SOUND_PAN_ATTACKER, 28, 2
+	metallic_shine permanent=0
+	waitforvisualfinish
+	call JudgmentInwardSpikes
+	delay 5
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	call JudgmentInwardSpikes2
+	delay 5
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	call JudgmentInwardSpikes
+	delay 5
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	call JudgmentInwardSpikes2
+	delay 5
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	waitforvisualfinish
+	end

@@ -20157,7 +20157,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .additionalEffects = ADDITIONAL_EFFECTS({
             .sheerForceOverride = TRUE,
         }),
-        .battleAnimScript = gBattleAnimMove_StoneAxe,
+        .battleAnimScript = gBattleAnimMove_SteelSpike,
     },
 
     [MOVE_SPRINGTIDE_STORM] =
