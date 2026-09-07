@@ -3649,6 +3649,8 @@ void Task_WaitAndLoadQueueObjects(u8 taskId)
 
         Shuffle16(gfxList, NELEMS(sQueueObjects));
 
+        gfxList[15] = OBJ_EVENT_GFX_SPECIES(INCINEROAR);
+
         if (!FlagGet(FLAG_TALKED_SATSUKI))
         {
             gfxList[0] = OBJ_EVENT_GFX_SATSUKI;
@@ -4233,5 +4235,18 @@ void HasDefeatedGauntlet(struct ScriptContext *ctx)
     else
     {
         gSpecialVar_Result = TRUE;
+    }
+}
+
+void ScriptGiveBP(struct ScriptContext *ctx)
+{
+    u32 amount = ScriptReadHalfword(ctx);
+    if (gSaveBlock2Ptr->frontier.battlePoints + amount > 1999)
+    {
+        gSaveBlock2Ptr->frontier.battlePoints = 1999;
+    }
+    else
+    {
+        gSaveBlock2Ptr->frontier.battlePoints += amount;
     }
 }
