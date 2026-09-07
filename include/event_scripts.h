@@ -804,4 +804,6 @@ extern const u8 ChubbyLung4[];
 extern const u8 ChubbyLung5[];
 extern const u8 Library_PC[];
 
+extern const u8 TianaHappy[];
+
 #endif // GUARD_EVENT_SCRIPTS_H

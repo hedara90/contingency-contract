@@ -1,6 +1,7 @@
 mapscripts ConventionCenter_MapScripts {
     MAP_SCRIPT_ON_TRANSITION: CC_OnTransition
     MAP_SCRIPT_ON_RESUME {
+        callnative(GenerateRandomDancers)
         if (flag(FLAG_QUEUE_LOADED) == TRUE) {
             callnative(CreateQueue)
         }
@@ -307,7 +308,12 @@ script ChubbyLung1 {
     lock
     applymovement(player, ContestHall_Movement_Heart)
     waitmovement
-    msgbox("It's a big Chubby Lung!")
+    setspeaker(SP_NAME_PLAYER)
+    if (flag(Event_GilbertaEntrance)) {
+        msgbox("(It's a big Chubby Lung!)\p(But why does it look a bit deflated?)")
+    } else {
+        msgbox("(It's a big Chubby Lung!)\p(But it's not looking too good with\nsomeone standing on it.)")
+    }
     waitmessage
     release
     end
@@ -315,7 +321,10 @@ script ChubbyLung1 {
 
 script ChubbyLung2 {
     lock
-    msgbox("It's a big Chubby Lung!")
+    applymovement(player, ContestHall_Movement_Heart)
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("(It's a big Chubby Lung!)\p(It's sooo grumpy and cute!)")
     waitmessage
     release
     end
@@ -323,23 +332,250 @@ script ChubbyLung2 {
 
 script ChubbyLung3 {
     lock
-    msgbox("It's a big Chubby Lung!")
+    applymovement(player, ContestHall_Movement_Heart)
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("(It's a big Chubby Lung!)\p(I wonder if I could fit one of these in\nmy room…)")
     waitmessage
+    release
+    end
+}
+
+//  I'm doing scripts here to no conflicts with others
+script TianaHappy {
+    getobjectfacingdirection(player, VAR_RESULT)
+    switch(var(VAR_RESULT)) {
+    case DIR_NORTH:
+        applymovement(player, moves(emote_heart, jump_in_place_up))
+    case DIR_SOUTH:
+        applymovement(player, moves(emote_heart, jump_in_place_down))
+    case DIR_EAST:
+        applymovement(player, moves(emote_heart, jump_in_place_right))
+    case DIR_WEST:
+        applymovement(player, moves(emote_heart, jump_in_place_left))
+    }
+    waitmovement
+    msgbox("(This is so exciting!)")
+    closemessage
+}
+
+script CC_TianaFood {
+    setspeaker(SP_NAME_TIANA)
+    msgbox("Hi!")
+    setspeaker(SP_NAME_NONE)
+    msgbox("Hello and welcome to the food stand.\pWhat can I get you?")
+    dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
+                    "Meaty Buckflower Stew",
+                    "Edible Denstack",
+                    "Bamboo Sprouts and Meat",
+                    "Garden Fried Rice",
+                    "Master Pan's Egg Pudding",
+                    "Pan-Fried Double Crisp",
+                    "Wuling Flame-Boyance",
+                    "Simmered Xiranite Ball",
+                    "Valley Pie",
+                    "Ginseng meat Stew",
+                    "Wuling Fried Rice",
+                    "Fin-n-chips",
+                    "Nevermind…")
+    switch(var(VAR_RESULT)) {
+    case MULTI_B_PRESSED:
+        msgbox("Welcome back another time!")
+        release
+        end
+    case 12:
+        msgbox("Welcome back another time!")
+        release
+        end
+    }
+    msgbox("Of course.")
+    closemessage
+    turnvobject(3, DIR_SOUTH)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    playse(SE_SLIDING_DOOR)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    turnvobject(3, DIR_WEST)
+    msgbox("Here you go!\pThat will be 7{V_D_ARROW}.")
+    setspeaker(SP_NAME_TIANA)
+    msgbox("Thanks!")
+    playse(SE_ITEMFINDER)
+    waitse
+    closemessage
+    applymovement(player, moves(walk_down * 5, walk_right, face_up))
+    waitmovement
+    clearflag(FLAG_CHISA_CC)
+    if (flag(FLAG_CHISA_CC)) {
+        clearflag(FLAG_CHISA_CC)
+        setobjectxyperm(chisa, 36, 31)
+        addobject(chisa)
+        applymovement(chisa, moves(walk_fast_up, walk_fast_up * 5, walk_fast_right * 6, walk_fast_up * 5, face_right, delay_16 * 8))
+        waitmovement
+    } else {
+        setobjectxyperm(chisa, 42, 19)
+        addobject(chisa)
+        applymovement(chisa, moves(walk_down, face_right, delay_16 * 8))
+        waitmovement
+    }
+    turnvobject(3, DIR_SOUTH)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    playse(SE_SLIDING_DOOR)
+    waitse
+    turnvobject(3, DIR_WEST)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    playse(SE_ITEMFINDER)
+    waitse
+    applymovement(chisa, moves(walk_down * 3, walk_right, face_down))
+    waitmovement
+    setspeaker(SP_NAME_CHISA)
+    msgbox("I thought I saw you go to the food stand!")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Yea, I'm starving.\pI didn't really have time to eat\nthis morning.")
+    setspeaker(SP_NAME_CHISA)
+    msgbox("You could've said something, we\ncould've stopped somewhere.\pAnyway! Let's dig in!")
+    applymovement(player, moves(emote_heart, delay_16 * 3))
+    applymovement(chisa, moves(emote_heart, delay_16 * 3))
+    waitmovement
+    closemessage
+    fadescreen(FADE_TO_BLACK)
+    playse(SE_M_BITE)
+    waitse
+    setobjectxyperm(chisa, 38, 15)
+    setflag(FLAG_CHISA_CC)
+    removeobject(chisa)
+    fadescreen(FADE_FROM_BLACK)
+    release
+    end
+}
+
+script CC_TianaSnacks {
+    msgbox("Hi!")
+    setspeaker(SP_NAME_NONE)
+    msgbox("Hello and welcome to the snack stand.\pWhat can I get you?")
+    dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
+                    "Handmade Weirdrop",
+                    "Cosmo-Meto Jelly",
+                    "Mini Sugar Painting",
+                    "Superhot Fruit Preserves",
+                    "Handmade Star Candy",
+                    "Strawberry Crepe",
+                    "Seasalt Ice Cream",
+                    "Bizarro Cupcake",
+                    "Miracle Cake")
+    switch(var(VAR_RESULT)) {
+    case MULTI_B_PRESSED:
+        msgbox("Welcome back another time!")
+        release
+        end
+    case 12:
+        msgbox("Welcome back another time!")
+        release
+        end
+    }
+    msgbox("Of course.")
+    closemessage
+    turnvobject(2, DIR_SOUTH)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    playse(SE_SLIDING_DOOR)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    turnvobject(2, DIR_WEST)
+    msgbox("Here you go!\pThat will be 4{V_D_ARROW}.")
+    setspeaker(SP_NAME_TIANA)
+    msgbox("Thanks!")
+    playse(SE_ITEMFINDER)
+    waitse
+    closemessage
+    applymovement(player, moves(walk_down * 4, walk_right, face_down))
+    waitmovement
+    if (flag(FLAG_CHISA_CC)) {
+        clearflag(FLAG_CHISA_CC)
+        setobjectxyperm(chisa, 36, 29)
+        addobject(chisa)
+        applymovement(chisa, moves(walk_fast_up, walk_fast_up * 10, walk_fast_right * 6, walk_down, face_right, delay_16 * 8))
+        waitmovement
+    } else {
+        setobjectxyperm(chisa, 42, 17)
+        addobject(chisa)
+        applymovement(chisa, moves(walk_down * 2, face_right, delay_16 * 8))
+        waitmovement
+    }
+    turnvobject(2, DIR_NORTH)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    playse(SE_SLIDING_DOOR)
+    waitse
+    turnvobject(2, DIR_WEST)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    playse(SE_ITEMFINDER)
+    waitse
+    applymovement(chisa, moves(walk_down * 6, walk_right, face_up))
+    waitmovement
+    setspeaker(SP_NAME_CHISA)
+    msgbox("I thought I saw you go to the snack\nstand!")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Yea, I'm feeling for something.\pAnd it looked sooooo yummy!")
+    setspeaker(SP_NAME_CHISA)
+    msgbox("Yea! I've been eying this Miracle Cake\nfor a while now!\pAnyway! Let's dig in!")
+    applymovement(player, moves(emote_heart, delay_16 * 3))
+    applymovement(chisa, moves(emote_heart, delay_16 * 3))
+    waitmovement
+    closemessage
+    fadescreen(FADE_TO_BLACK)
+    playse(SE_M_BITE)
+    waitse
+    setobjectxyperm(chisa, 38, 15)
+    setflag(FLAG_CHISA_CC)
+    removeobject(chisa)
+    fadescreen(FADE_FROM_BLACK)
     release
     end
 }
 
 script ChubbyLung4 {
     lock
-    msgbox("It's a big Chubby Lung!")
-    waitmessage
+    applymovement(player, ContestHall_Movement_Heart)
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("(It's a big Chubby Lung!)\p(The side of it looks a bit charred…)")
+    getobjectfacingdirection(player, VAR_RESULT)
+    switch(var(VAR_RESULT)) {
+    default:
+        closemessage
+    case DIR_EAST:
+        closemessage
+        applymovement(player, moves(face_up, delay_16 * 2, face_right))
+        waitmovement
+        setspeaker(SP_NAME_PLAYER)
+        msgbox("(Best not to think about it too hard…)")
+        closemessage
+    }
     release
     end
 }
 
 script ChubbyLung5 {
     lock
-    msgbox("It's a big Chubby Lung!")
+    applymovement(player, ContestHall_Movement_Heart)
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("(It's a big Chubby Lung!)")
+    getobjectfacingdirection(player, VAR_RESULT)
+    switch(var(VAR_RESULT)) {
+    case DIR_SOUTH:
+        applymovement(player, moves(face_left, delay_16 * 2, face_up, delay_16 * 2, face_right, delay_16 * 2, face_down))
+        waitmovement
+    default:
+        applymovement(player, moves(face_down, delay_16 * 2, face_left, delay_16 * 2, face_up, delay_16 * 2, face_right))
+        waitmovement
+    }
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("The adult Chubby Lung watches as the\ntiny Chubby Lungs are taking their\lfirst steps into the greater world.\pIt's proud of them and hope that they\nwill get good homes.")
     waitmessage
     release
     end
@@ -367,7 +603,7 @@ script Pokemonbanner_Sign {
 }
 
 script PlayStageMusic {
-    playbgm(MUS_CREDITS, FALSE)
+    playbgm(MUS_ART_OF_BLADE, FALSE)
     setvar(VAR_MUSIC_CHECKER, 1)
 }
 
@@ -492,6 +728,20 @@ script SatsukiPaying {
     return
 }
 
+script ChisaQueueTalk {
+    setspeaker(SP_NAME_CHISA)
+    msgbox("Tiana… This queue is sooooo sloooow!\pI'm missing out on sooooo many battles.")
+    closemessage
+    applymovement(player, moves(face_left, delay_16 * 3, face_right, delay_16 *2, face_down))
+    waitmovement
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Maybe it'll speed up soon?")
+    setspeaker(SP_NAME_CHISA)
+    msgbox("Yea…  I hope so… ")
+    waitmessage
+    return
+}
+
 script LastQueuer {
     lock
     getvobjectgfxtag(0)
@@ -520,6 +770,11 @@ script EightToLastQueuer {
         msgbox("Satsuki? Why are you here?")
         turnvobject(7, DIR_NORTH)
         call(SatsukiTalk)
+    case OBJ_EVENT_GFX_CHISA:
+        setspeaker(SP_NAME_PLAYER)
+        msgbox("Chisa! How goes the queuing?")
+        turnvobject(7, DIR_NORTH)
+        call(ChisaQueueTalk)
     default:
         turnvobject(7, DIR_NORTH)
         msgbox("I hope this queue goes fast…")
@@ -746,21 +1001,27 @@ script ChooseGauntlet {
         release
         end
     case 1:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_CRISIS_TEAM, 14, 11)
         waitstate
     case 2:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_WULING, 14, 11)
         waitstate
     case 3:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_RECONVENERS, 14, 11)
         waitstate
     case 4:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_ABYSSAL_HUNTERS, 14, 11)
         waitstate
     case 5:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_AK_YELLOW, 14, 11)
         waitstate
     case 6:
+        callnative(RegenerateRandomDancers)
         warpsilent(MAP_AK_GREEN, 14, 11)
         waitstate
     default:

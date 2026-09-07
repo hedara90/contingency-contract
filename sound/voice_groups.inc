@@ -201,3 +201,5 @@
 .include "sound/voicegroups/rg_sevii_45.inc"
 .include "sound/voicegroups/rg_sevii_67.inc"
 .include "sound/voicegroups/drumsets/rg_credits.inc"
+.include "sound/voicegroups/mus_speed_of_light.inc"
+.include "sound/voicegroups/mus_art_of_blade.inc"
