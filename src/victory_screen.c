@@ -467,9 +467,9 @@ static void VictoryScreen_FreeResources(void)
             gSaveBlock1Ptr->risks = gSaveBlock1Ptr->wins[sVictoryScreenState->gauntlet].risks;
             u32 oldRiskTotal = GetTotalTiskValue();
             gSaveBlock1Ptr->risks = savedRisks;
-            if (currentRiskTotal > oldRiskTotal)
+            struct SavedGauntletWin *win = &gSaveBlock1Ptr->wins[sVictoryScreenState->gauntlet];
+            if (currentRiskTotal > oldRiskTotal || win->species[0] == SPECIES_NONE)
             {
-                struct SavedGauntletWin *win = &gSaveBlock1Ptr->wins[sVictoryScreenState->gauntlet];
                 win->risks = savedRisks;
                 for (u32 i = 0; i < 6; i++)
                 {

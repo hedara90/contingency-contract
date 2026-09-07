@@ -39,7 +39,7 @@ enum Gauntlet
 #define MONEY_BASE      100
 #define MONEY_FACTOR    5
 
-#define ODDS_6_STAR 100
+#define ODDS_6_STAR 50
 #define ODDS_5_STAR 4
 #define PITY_6_STAR 80
 #define PITY_5_STAR 3
