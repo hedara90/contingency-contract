@@ -2797,7 +2797,3 @@ script CC_DontInterruptBattleLeft {
     fadescreen(FADE_FROM_BLACK)
     release
 }
-
-script CC_RandomBattlers {
-
-}
