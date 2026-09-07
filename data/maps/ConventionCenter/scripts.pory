@@ -149,10 +149,10 @@ script CC_Intro {
     setspeaker(SP_NAME_CHISA)
     msgbox("Not yet! Here are our tickets.")
     applymovement(receptionist, moves(walk_in_place_down))
-    msgbox("Let me check...")
+    msgbox("Let me check⋯")
     waitmessage
     applymovement(receptionist, moves(walk_left, delay_16*6, walk_right, face_down))
-    msgbox("...Looks like everything's in order.\nHere you go.")
+    msgbox("⋯Looks like everything's in order.\nHere you go.")
     waitmessage
     playse(MUS_OBTAIN_ITEM)
     msgbox("Obtained a CC pass!")
@@ -206,11 +206,11 @@ script CC_Intro_Explanation {
             "You will be healed after each fight,\nhowever.\p"
             "Additionally, the battles can have a\nvariety of risks enabled, which alter\lthe fights.\p"
             "This will generally make them more\ndifficult.\p"
-            "Winning battles gives you some credit,\nwhich can be spent...")
+            "Winning battles gives you some credit,\nwhich can be spent⋯")
     closemessage
     applymovement(camera, moves(walk_up*6, walk_diag_northeast))
     waitmovement
-    msgbox("...Here. This is the Pokémon booth.\p"
+    msgbox("⋯Here. This is the Pokémon booth.\p"
             "Here, you can spend your credit to\nobtain Pokémon for use in battle.\p"
             "Each Pokémon will come out of the\nbox with 4 moves and 1 ability.\p"
             "The more you get the same Pokémon,\nthe more options will unlock for its\lmoves and abilities.")
@@ -258,7 +258,7 @@ script CC_Intro_Explanation {
     msgbox("You say that, but you'll be in that\narena in no time.")
     closemessage
     setspeaker(SP_NAME_PLAYER)
-    msgbox("...")
+    msgbox("⋯")
     closemessage
     applymovement(player, moves(delay_16*2, face_right))
     applymovement(chisa, moves(walk_right*2, face_left))
@@ -271,7 +271,7 @@ script CC_Intro_Explanation {
     setobjectxy(chisa, 38, 15)
     setobjectxyperm(chisa, 38, 15)
     setspeaker(SP_NAME_PLAYER)
-    msgbox("Well, she's not off the mark there...")
+    msgbox("Well, she's not off the mark there⋯")
     closemessage
     release
 }
@@ -740,7 +740,7 @@ script Pokemonbanner_Sign {
 script MerchBanner_Sign {
     lock
     msgbox("A banner with all the merchandise\nsold at the booth.\p"
-            "A giant 'SOLD OUT' sticker is covering\nall the prices...")
+            "A giant 'SOLD OUT' sticker is covering\nall the prices⋯")
     closemessage
     release
 }
@@ -1311,24 +1311,24 @@ script CC_Chisa {
 
 script CC_Chisa_LowScore {
     setspeaker(SP_NAME_CHISA)
-    msgbox("Okay lets see... Who do I try out now...")
+    msgbox("Okay lets see⋯ Who do I try out now⋯")
     switch(var(VAR_CHISA_PARTY)){
         case 0: 
             msgbox("There's a lot of Double Battles here,\nso maybe Seismitoad and Altaria?\pSounds fun!")
         case 1:
-            msgbox("I did just get Heatran, so maybe I\nshould use him...")
+            msgbox("I did just get Heatran, so maybe I\nshould use him⋯")
         case 2: 
-            msgbox("Oh yeah! I maxed out Sandslash.\pHis signature move sounds good.\nSlush rush... Can I set snow, somehow?")
+            msgbox("Oh yeah! I maxed out Sandslash.\pHis signature move sounds good.\nSlush rush⋯ Can I set snow, somehow?")
         case 3:
-            msgbox("Is there a berry that would be good\nfor Mamoswine...")
+            msgbox("Is there a berry that would be good\nfor Mamoswine⋯")
         case 4:
             msgbox("I could just bring ol' reliable\nCorviknight.\pCan't go wrong with that.")
         case 5:
             msgbox("I got a lot of Nidokings, huh?\nMaybe I need to get my hands on a\lLife Orb")
         case 6:
-            msgbox("What if I just pair Glaceon with\na Webs setter?\pMy options are... Masquerain\nand Araquanid?\lI'm still missing Galvantula.")
+            msgbox("What if I just pair Glaceon with\na Webs setter?\pMy options are⋯ Masquerain\nand Araquanid?\lI'm still missing Galvantula.")
         case 7:
-            msgbox("I could use the Burn risk together\nwith Jolteon's Charade.\pDid just unlock that one...")
+            msgbox("I could use the Burn risk together\nwith Jolteon's Charade.\pDid just unlock that one⋯")
         case 8:
             msgbox("This Steelix set looks insane.\nWhat were they thinking?")
         case 9:
@@ -1375,7 +1375,7 @@ script CC_Chisa_LowScore {
     applymovement(chisa, moves(face_player))
     waitmovement
     setspeaker(SP_NAME_CHISA)
-    msgbox("Yea, there's so many options... ugh...\p"
+    msgbox("Yea, there's so many options⋯ ugh⋯\p"
             "And I STILL don't have my Garchomp!")
     closemessage
     setflag(FLAG_TEMP_2)
@@ -1384,7 +1384,7 @@ script CC_Chisa_LowScore {
 
 script CC_Chisa_MidScore {
     setspeaker(SP_NAME_CHISA)
-    msgbox("Okay so, if i pick Area Lockdown and\nthen use Pokémon with pivoting moves,\lI can mitigate that risk...")
+    msgbox("Okay so, if i pick Area Lockdown and\nthen use Pokémon with pivoting moves,\lI can mitigate that risk⋯")
     waitmessage
     applymovement(ardelia, moves(walk_in_place_left))
     waitmovement
@@ -1394,7 +1394,7 @@ script CC_Chisa_MidScore {
     waitmessage
     applymovement(chisa, moves(walk_in_place_right))
     setspeaker(SP_NAME_CHISA)
-    msgbox("Hmm, that makes the entry hazards more\nannoying though...")
+    msgbox("Hmm, that makes the entry hazards more\nannoying though⋯")
     waitmessage
     applymovement(chisa, moves(emote_exclamation_mark, delay_16*2, face_player))
     playse(SE_PIN)
@@ -1439,7 +1439,7 @@ script CC_Chisa_MidScore {
     waitmovement
     setspeaker(SP_NAME_CHISA)
     msgbox("What?? And you aren't helping me??\p"
-            "I thought we were friends...")
+            "I thought we were friends⋯")
     waitmessage
     applymovement(ardelia, moves(walk_in_place_left))
     setspeaker(SP_NAME_ARDELIA)
@@ -1476,7 +1476,7 @@ script CC_Chisa_MidScore {
     waitmessage
     applymovement(chisa, moves(face_right))
     setspeaker(SP_NAME_CHISA)
-    msgbox("Just gotta figure out which\nmons to use...\p"
+    msgbox("Just gotta figure out which\nmons to use⋯\p"
             "There's so many cool ones.")
     closemessage
     release
@@ -1505,7 +1505,7 @@ script CC_Chisa_HighScore {
     callnative(GetMaxClearedRisk)
     if(var(VAR_RESULT) < 36){
         setspeaker(SP_NAME_PLAYER)
-        msgbox("Less than that...")
+        msgbox("Less than that⋯")
         applymovement(chisa, moves(emote_exclamation_mark))
         playse(SE_PIN)
         setspeaker(SP_NAME_CHISA)
@@ -1585,7 +1585,7 @@ script CC_Chisa_Record {
         }
         waitmovement
     setspeaker(SP_NAME_CHISA)
-    msgbox("I don't think I'll hit that.\n38 was challenging enough for me...")
+    msgbox("I don't think I'll hit that.\n38 was challenging enough for me⋯")
     waitmessage
         if(var(VAR_TEMP_8)==14){
             applymovement(player, moves(walk_in_place_down))
@@ -1623,7 +1623,7 @@ script CC_Ardelia_ChisaNotHere {
     setspeaker(SP_NAME_ARDELIA)
     msgbox("Oh hey there. Tiana, right?\p"
         "Chisa's told me all about you, we're\nbasically friends now.\p"
-        "She's currently trying her luck again.\nMaybe this time...\p"
+        "She's currently trying her luck again.\nMaybe this time⋯\p"
         "Anyway, I look forward to facing you!")
     closemessage
     release
@@ -1697,7 +1697,7 @@ script CC_Dragons {
     waitmessage
     applymovement(shu, moves(walk_in_place_up))
     setspeaker(SP_NAME_SHU)
-    msgbox("Yeah that... took some time to\nfigure out.\pVery happy with the result, though.")
+    msgbox("Yeah that⋯ took some time to\nfigure out.\pVery happy with the result, though.")
     waitmessage
     applymovement(zhuang, moves(face_right))
     waitmovement
@@ -1736,7 +1736,7 @@ script CC_Dragons {
     waitmessage
     applymovement(shu, moves(face_up))
     setspeaker(SP_NAME_SHU)
-    msgbox("We custom order it so it does what\nwe want.\lTo... mixed results.\p"
+    msgbox("We custom order it so it does what\nwe want.\lTo⋯ mixed results.\p"
             "Turns out scales are pretty hard\nto keep dye on.")
     waitmessage
     applymovement(nian, moves(walk_in_place_left))
@@ -1788,7 +1788,7 @@ script CC_AbyssalHunters {
     lock
     applymovement(irene, moves(walk_in_place_left))
     setspeaker(SP_NAME_IRENE)
-    msgbox("Hey... where's your Gladiia?\nEveryone else is here.")//irene
+    msgbox("Hey⋯ where's your Gladiia?\nEveryone else is here.")//irene
     waitmessage
     applymovement(skadi, moves(face_up))
     waitmovement
@@ -1834,7 +1834,7 @@ script CC_AbyssalHunters {
     applymovement(specter, moves(face_down))
     setspeaker(SP_NAME_ULPIANUS)
     msgbox("Fortunately, they gave me something\nmuch more straightforward.\p"
-            "I'm not a great battler, so mons that\njust hit moves and hit hard is a\lbetter fit for me...")
+            "I'm not a great battler, so mons that\njust hit moves and hit hard is a\lbetter fit for me⋯")
     waitmessage
     applymovement(specter, moves(walk_in_place_right))
     applymovement(ulpianus, moves(face_up))
@@ -1843,7 +1843,7 @@ script CC_AbyssalHunters {
     waitmessage
     applymovement(irene, moves(walk_in_place_left))
     setspeaker(SP_NAME_IRENE)
-    msgbox("They gave you a rain team?\pThat's rough...")
+    msgbox("They gave you a rain team?\pThat's rough⋯")
     closemessage
     release
 }
@@ -1866,8 +1866,8 @@ script CC_Gladiia {
 
 script CC_DidntFightGladiia {
     setspeaker(SP_NAME_GLADIIA)
-    msgbox("Oh man...\nWhat did they tell me now again?\p"
-            "Just use the trapping moves? Hmm...")
+    msgbox("Oh man⋯\nWhat did they tell me now again?\p"
+            "Just use the trapping moves? Hmm⋯")
     closemessage
     release
 }
@@ -1880,7 +1880,7 @@ script CC_FoughtGladiia {
             "Catching a break?")
     waitmessage
     setspeaker(SP_NAME_GLADIIA)
-    msgbox("Yeah, it's a bit overwhelming.\nSo many people...")
+    msgbox("Yeah, it's a bit overwhelming.\nSo many people⋯")
     closemessage
     applymovement(gladiia, moves(face_right, delay_16*4, face_down))
     waitmovement
@@ -1897,12 +1897,12 @@ script CC_FoughtGladiia {
     waitmovement
     waitmessage
     setspeaker(SP_NAME_GLADIIA)
-    msgbox("Did I?\pI just felt nervous, being on such a\nstage with Pokémon I'm not familiar with")
+    msgbox("Did I?\pI just felt nervous in front of so many\npeople, commanding Pokémon I'm not\lfamiliar with.")
     dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
             "Are they unruly?")
     waitmessage
     setspeaker(SP_NAME_GLADIIA)
-    msgbox("No they're absolute sweethearts.\nIt's just... weird, y'know?")
+    msgbox("Not at all!\pThey're absolute sweethearts.\nIt's just⋯ weird, y'know?")
     waitmessage
     applymovement(player, moves(walk_in_place_up))
     setspeaker(SP_NAME_PLAYER)
@@ -1921,12 +1921,12 @@ script CC_FoughtGladiia {
 script CC_FoughtGladiia4times {
     faceplayer
     setspeaker(SP_NAME_GLADIIA)
-    msgbox("Hey there!\nI think I finally caught my\lstride with the team")
+    msgbox("Hey there!\nI think I finally caught my stride with\lthe team.")
     waitmessage
     applymovement(player, moves(emote_exclamation_mark))
     waitmovement
     setspeaker(SP_NAME_PLAYER)
-    msgbox("Nice! Just needed some\nmore practice, huh?")
+    msgbox("Nice! Just needed some more practice,\nhuh?")
     waitmessage
     applymovement(gladiia, moves(walk_in_place_down))
     setspeaker(SP_NAME_GLADIIA)
@@ -1937,7 +1937,7 @@ script CC_FoughtGladiia4times {
     waitmessage
     applymovement(player, moves(jump_in_place_up))
     setspeaker(SP_NAME_PLAYER)
-    msgbox("Yeah! Quite a lot at my job.\nThough usually it's a bit... different.")
+    msgbox("Yeah! Quite a lot at my job.\nThough usually it's a bit⋯ different.")
     waitmessage
     applymovement(gladiia, moves(emote_question_mark))
     waitmovement
@@ -1948,7 +1948,7 @@ script CC_FoughtGladiia4times {
     setspeaker(SP_NAME_PLAYER)
     msgbox("I work at the Library, one of my tasks\nis deciphering & categorizing myths.\p"
             "My boss Satsuki has set up a\nwhole battle system for that.\p" 
-            "Basically a juiced up rotation battle\nsystem")
+            "Basically a juiced up rotation battle\nsystem.")
     waitmessage
     applymovement(gladiia, moves(walk_in_place_down))
     setspeaker(SP_NAME_GLADIIA)
@@ -1960,7 +1960,7 @@ script CC_FoughtGladiia4times {
     waitmessage
     applymovement(gladiia, moves(walk_in_place_down))
     setspeaker(SP_NAME_GLADIIA)
-    msgbox("Sounds... rather odd, but you sound\nlike you enjoy it.\p"
+    msgbox("Sounds⋯ rather odd, but you sound\nlike you enjoy it.\p"
             "I'll stick with what I'm doing\nright now, haha.")
     waitmessage
     applymovement(player, moves(walk_in_place_up))
@@ -1971,14 +1971,16 @@ script CC_FoughtGladiia4times {
     setspeaker(SP_NAME_GLADIIA)
     msgbox("Yeah, for sure.")
     closemessage
+    applymovement(gladiia, moves(face_right))
+    waitmovement
     setvar(VAR_GLADIIA, 4)
     release
 }
 
 script CC_GladiiaEnd {
     setspeaker(SP_NAME_GLADIIA)
-    msgbox("So, if I use Dugtrio to deal with\nsomething, they'll probably send in\la flying type after...\p"
-            "Then I can use Memento and swap in\nJolteon... Hey, that may work!")
+    msgbox("So, if I use Dugtrio to deal with\nsomething, they'll probably send in\la flying type after⋯\p"
+            "Then I can use Memento and swap in\nJolteon⋯ Hey, that may work!")
     waitmessage
     applymovement(gladiia, moves(emote_exclamation_mark, delay_16*3, face_down))
     playse(SE_PIN)
@@ -2032,17 +2034,17 @@ script CC_MiFus {
     closemessage
     applymovement(tangtang, moves(jump_in_place_up*2, delay_16*3, face_down, delay_16*3, face_right))
     setspeaker(SP_NAME_TANGTANG)
-    msgbox("Aren't we all... pretending here?\nI'm not actually TangTang!")
+    msgbox("Aren't we all⋯ pretending here?\nI'm not actually TangTang!")
     waitmessage
     applymovement(tangtang, moves(face_down))
-    msgbox("Nooo....")
+    msgbox("Nooo⋯.")
     closemessage
     release
 }
 
 script CC_MiFuSpectator {
     lock
-    msgbox("It should've been me, not her...")
+    msgbox("It should've been me, not her⋯")
     closemessage
     release
 }
@@ -2096,7 +2098,7 @@ script CC_GilbertaBooth {
     lock
     faceplayer
     setspeaker(SP_NAME_GILBERTA)
-    msgbox("How in the world did she even get\nup there...")
+    msgbox("How in the world did she even get\nup there⋯")
     closemessage
     applymovement(guard2, moves(face_down))
     waitmovement
@@ -2116,7 +2118,7 @@ script CC_GilbertaCafe {
     msgbox("I can't help it!\nThey asked me to be in character!")
     waitmessage
     setspeaker(SP_NAME_GUARD)
-    msgbox("...")
+    msgbox("⋯")
     closemessage
     release
 }
@@ -2128,8 +2130,8 @@ script CC_MerchCounter {
     msgbox("Hello! Welcome to the merch shop!")
     closemessage
     delay(30)
-    msgbox("...is what I'd like to say.\p"
-            "We ran out of stock in the first\n30 minutes of the convention...")
+    msgbox("⋯is what I'd like to say.\p"
+            "We ran out of stock in the first\n30 minutes of the convention⋯")
     closemessage
     applymovement(player,moves(walk_in_place_right))
     waitmovement
@@ -2138,7 +2140,7 @@ script CC_MerchCounter {
     applymovement(merchclerk, moves(face_up, delay_16*4, face_left))
     waitmovement
     msgbox("Oh these?\pNo, they're just 2D displays of\nwhat the things would look like.\p"
-            "Sorry to disappoint...")
+            "Sorry to disappoint⋯")
     closemessage
     release
 }
@@ -2161,7 +2163,7 @@ script CC_CameraBooth_TurnBack {
 script CC_Pog {
     lock
     faceplayer
-    msgbox("Sigh... I get that she wants\nto portray Fiametta properly.\p"
+    msgbox("Sigh⋯ I get that she wants\nto portray Fiametta properly.\p"
             "But did she really have to say\nthat line?")
     setspeaker(SP_NAME_NONE)
     msgbox("T/N: we cannot put this sentence\nin the game.")
@@ -2232,7 +2234,7 @@ script CC_Laevatain_Eating {
     lock
     setspeaker(SP_NAME_LAEVATAIN)
     msgbox("Man do I love an all you can eat\n"
-            "ice cream bar, but...")
+            "ice cream bar, but⋯")
     faceplayer
     applymovement(laevatainEating, moves(emote_exclamation_mark))
     playse(SE_PIN)
@@ -2439,7 +2441,7 @@ script CC_Perlica {
     waitmessage
     applymovement(perlica, moves(face_down))
     setspeaker(SP_NAME_PERLICA)
-    msgbox("...")
+    msgbox("⋯")
     waitmessage
     applymovement(perlica, moves(face_left))
     setspeaker(SP_NAME_PERLICA)
@@ -2458,7 +2460,7 @@ script CC_Itemguy {
     lock
     faceplayer
     msgbox("Dang. I've gotten TOO lucky.\p"
-            "I pulled all the 6 star items in 40 pulls.\nBut I was looking for a Loaded Dice...\p"
+            "I pulled all the 6 star items in 40 pulls.\nBut I was looking for a Loaded Dice⋯\p"
             "I'll get it eventually, I suppose.")
     closemessage
     release
@@ -2477,24 +2479,24 @@ script CC_Carnelian {
     waitmessage
     applymovement(elysium, moves(walk_in_place_down))
     setspeaker(SP_NAME_ELYSIUM)
-    msgbox("I want you on your knees...")
+    msgbox("I want you on your knees⋯")
     delay(60)
     waitmessage
     applymovement(carnelian, moves(emote_question_mark))
     waitmovement
     setspeaker(SP_NAME_CARNELIAN)
-    msgbox("...sorry?")
+    msgbox("⋯sorry?")
     waitmessage
     applymovement(elysium, moves(walk_in_place_down))
     setspeaker(SP_NAME_ELYSIUM)
-    msgbox("This buried love grows teeth...")
+    msgbox("This buried love grows teeth⋯")
     waitmessage
     setspeaker(SP_NAME_CARNELIAN)
     msgbox("Are these like, some lyrics?")
     waitmessage
     applymovement(elysium, moves(walk_in_place_down))
     setspeaker(SP_NAME_ELYSIUM)
-    msgbox("A thousand stars weeping...")
+    msgbox("A thousand stars weeping⋯")
     waitmessage
     delay(60)
     msgbox("Dang, you don't know it?\p"
@@ -2507,7 +2509,7 @@ script CC_Carnelian {
     closemessage
     applymovement(elysium, moves(face_left, delay_16*5, face_down))
     setspeaker(SP_NAME_ELYSIUM)
-    msgbox("Yeah... I can't disagree with that...")
+    msgbox("Yeah⋯ I can't disagree with that⋯")
     waitmessage
     applymovement(carnelian, moves(walk_in_place_up))
     setspeaker(SP_NAME_CARNELIAN)
@@ -2561,7 +2563,7 @@ script CC_Satsuki {
     applymovement(satsuki, moves(face_down))
     setspeaker(SP_NAME_PLAYER)
     delay(60)
-    msgbox("...")
+    msgbox("⋯")
     closemessage
     release
 }
@@ -2572,14 +2574,14 @@ const weiqiGirl = LOCALID_CC_WEIQIGIRL
 script CC_Weiqi {
     lock
     applymovement(weiqiGuy, moves(walk_in_place_right))
-    msgbox("They put this weiqi board here, but...\n{PAUSE_UNTIL_PRESS}do you know how to play the game?")
+    msgbox("They put this weiqi board here, but⋯\n{PAUSE_UNTIL_PRESS}do you know how to play the game?")
     applymovement(weiqiGirl, moves(emote_question_mark))
     waitmovement
     msgbox("Oh I sure don't, and they didn't provide\nany instructions either.")
     waitmessage
     delay(45)
     applymovement(weiqiGuy, moves(walk_in_place_right))
-    msgbox("Hmm...\p"
+    msgbox("Hmm⋯\p"
             "There's black and white stones,\nhow about we just play checkers?")
     closemessage
     release
@@ -2874,9 +2876,10 @@ script CC_DontInterruptBattleLeft {
     setflag(FLAG_RANDOMBATTLERS)
     removeobject(LOCALID_CC_RANDOMBATTLER_1)
     removeobject(LOCALID_CC_RANDOMMON_1)
+    removeobject(LOCALID_CC_RANDOMMON2)
     setvar(VAR_TEMP_4, 2)
     delay(30)
-    msgbox("The battle finishes shortly after")
+    msgbox("The battle finishes shortly after⋯")
     closemessage
     fadescreen(FADE_FROM_BLACK)
     release

@@ -337,10 +337,10 @@ enum GiveResult GiveGachaMon(enum Species species, u32 star)
                     ball = BALL_4_STAR;
                     break;
                 case 5:
-                    ball = BALL_6_STAR;
+                    ball = BALL_5_STAR;
                     break;
                 case 6:
-                    ball = BALL_5_STAR;
+                    ball = BALL_6_STAR;
                     break;
                 }
                 SetMonData(&gParties[0][i], MON_DATA_POKEBALL, &ball);
@@ -364,10 +364,10 @@ enum GiveResult GiveGachaMon(enum Species species, u32 star)
                             ball = BALL_4_STAR;
                             break;
                         case 5:
-                            ball = BALL_6_STAR;
+                            ball = BALL_5_STAR;
                             break;
                         case 6:
-                            ball = BALL_5_STAR;
+                            ball = BALL_6_STAR;
                             break;
                         }
                         SetBoxMonData(mon, MON_DATA_POKEBALL, &ball);
