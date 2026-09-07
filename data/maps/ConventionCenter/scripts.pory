@@ -359,6 +359,184 @@ script TianaHappy {
     closemessage
 }
 
+script CC_TianaFood {
+    setspeaker(SP_NAME_TIANA)
+    msgbox("Hi!")
+    setspeaker(SP_NAME_NONE)
+    msgbox("Hello and welcome to the food stand.\pWhat can I get you?")
+    dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
+                    "Meaty Buckflower Stew",
+                    "Edible Denstack",
+                    "Bamboo Sprouts and Meat",
+                    "Garden Fried Rice",
+                    "Master Pan's Egg Pudding",
+                    "Pan-Fried Double Crisp",
+                    "Wuling Flame-Boyance",
+                    "Simmered Xiranite Ball",
+                    "Valley Pie",
+                    "Ginseng meat Stew",
+                    "Wuling Fried Rice",
+                    "Fin-n-chips",
+                    "Nevermind…")
+    switch(var(VAR_RESULT)) {
+    case MULTI_B_PRESSED:
+        msgbox("Welcome back another time!")
+        release
+        end
+    case 12:
+        msgbox("Welcome back another time!")
+        release
+        end
+    }
+    msgbox("Of course.")
+    closemessage
+    turnvobject(3, DIR_SOUTH)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    playse(SE_SLIDING_DOOR)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    turnvobject(3, DIR_WEST)
+    msgbox("Here you go!\pThat will be 7{V_D_ARROW}.")
+    setspeaker(SP_NAME_TIANA)
+    msgbox("Thanks!")
+    playse(SE_ITEMFINDER)
+    waitse
+    closemessage
+    applymovement(player, moves(walk_down * 5, walk_right, face_up))
+    waitmovement
+    clearflag(FLAG_CHISA_CC)
+    if (flag(FLAG_CHISA_CC)) {
+        clearflag(FLAG_CHISA_CC)
+        setobjectxyperm(chisa, 36, 31)
+        addobject(chisa)
+        applymovement(chisa, moves(walk_fast_up, walk_fast_up * 5, walk_fast_right * 6, walk_fast_up * 5, face_right, delay_16 * 8))
+        waitmovement
+    } else {
+        setobjectxyperm(chisa, 42, 19)
+        addobject(chisa)
+        applymovement(chisa, moves(walk_down, face_right, delay_16 * 8))
+        waitmovement
+    }
+    turnvobject(3, DIR_SOUTH)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    playse(SE_SLIDING_DOOR)
+    waitse
+    turnvobject(3, DIR_WEST)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    playse(SE_ITEMFINDER)
+    waitse
+    applymovement(chisa, moves(walk_down * 3, walk_right, face_down))
+    waitmovement
+    setspeaker(SP_NAME_CHISA)
+    msgbox("I thought I saw you go to the food stand!")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Yea, I'm starving.\pI didn't really have time to eat\nthis morning.")
+    setspeaker(SP_NAME_CHISA)
+    msgbox("You could've said something, we\ncould've stopped somewhere.\pAnyway! Let's dig in!")
+    applymovement(player, moves(emote_heart, delay_16 * 3))
+    applymovement(chisa, moves(emote_heart, delay_16 * 3))
+    waitmovement
+    closemessage
+    fadescreen(FADE_TO_BLACK)
+    playse(SE_M_BITE)
+    waitse
+    setobjectxyperm(chisa, 38, 15)
+    setflag(FLAG_CHISA_CC)
+    removeobject(chisa)
+    fadescreen(FADE_FROM_BLACK)
+    release
+    end
+}
+
+script CC_TianaSnacks {
+    msgbox("Hi!")
+    setspeaker(SP_NAME_NONE)
+    msgbox("Hello and welcome to the snack stand.\pWhat can I get you?")
+    dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
+                    "Handmade Weirdrop",
+                    "Cosmo-Meto Jelly",
+                    "Mini Sugar Painting",
+                    "Superhot Fruit Preserves",
+                    "Handmade Star Candy",
+                    "Strawberry Crepe",
+                    "Seasalt Ice Cream",
+                    "Bizarro Cupcake",
+                    "Miracle Cake")
+    switch(var(VAR_RESULT)) {
+    case MULTI_B_PRESSED:
+        msgbox("Welcome back another time!")
+        release
+        end
+    case 12:
+        msgbox("Welcome back another time!")
+        release
+        end
+    }
+    msgbox("Of course.")
+    closemessage
+    turnvobject(2, DIR_SOUTH)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    playse(SE_SLIDING_DOOR)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    turnvobject(2, DIR_WEST)
+    msgbox("Here you go!\pThat will be 4{V_D_ARROW}.")
+    setspeaker(SP_NAME_TIANA)
+    msgbox("Thanks!")
+    playse(SE_ITEMFINDER)
+    waitse
+    closemessage
+    applymovement(player, moves(walk_down * 4, walk_right, face_down))
+    waitmovement
+    if (flag(FLAG_CHISA_CC)) {
+        clearflag(FLAG_CHISA_CC)
+        setobjectxyperm(chisa, 36, 29)
+        addobject(chisa)
+        applymovement(chisa, moves(walk_fast_up, walk_fast_up * 10, walk_fast_right * 6, walk_down, face_right, delay_16 * 8))
+        waitmovement
+    } else {
+        setobjectxyperm(chisa, 42, 17)
+        addobject(chisa)
+        applymovement(chisa, moves(walk_down * 2, face_right, delay_16 * 8))
+        waitmovement
+    }
+    turnvobject(2, DIR_NORTH)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    playse(SE_SLIDING_DOOR)
+    waitse
+    turnvobject(2, DIR_WEST)
+    applymovement(player, moves(delay_16 * 2))
+    waitmovement
+    playse(SE_ITEMFINDER)
+    waitse
+    applymovement(chisa, moves(walk_down * 6, walk_right, face_up))
+    waitmovement
+    setspeaker(SP_NAME_CHISA)
+    msgbox("I thought I saw you go to the snack\nstand!")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("Yea, I'm feeling for something.\pAnd it looked sooooo yummy!")
+    setspeaker(SP_NAME_CHISA)
+    msgbox("Yea! I've been eying this Miracle Cake\nfor a while now!\pAnyway! Let's dig in!")
+    applymovement(player, moves(emote_heart, delay_16 * 3))
+    applymovement(chisa, moves(emote_heart, delay_16 * 3))
+    waitmovement
+    closemessage
+    fadescreen(FADE_TO_BLACK)
+    playse(SE_M_BITE)
+    waitse
+    setobjectxyperm(chisa, 38, 15)
+    setflag(FLAG_CHISA_CC)
+    removeobject(chisa)
+    fadescreen(FADE_FROM_BLACK)
+    release
+    end
+}
+
 script ChubbyLung4 {
     lock
     applymovement(player, ContestHall_Movement_Heart)
