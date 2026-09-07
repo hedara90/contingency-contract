@@ -2583,12 +2583,10 @@ script CC_Dancer3 {
 }
 
 script CC_LoadRandomBattlers {
-    clearflag(FLAG_RANDOMBATTLERS)
-    // random(4)
-    // copyvar(VAR_BATTLERS_LEFT, VAR_RESULT)
-    // setvar(VAR_BATTLERS_LEFT, 0)
-    setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CHISA)
-    
+    random(4)
+    copyvar(VAR_BATTLERS_LEFT, VAR_RESULT)
+    setvar(VAR_BATTLERS_LEFT, 2)
+    call(CC_SetLeftBattlers)
     //setvar(VAR_LEFTMON, OBJ_EVENT_GFX_SPECIES(CROBAT))
     //addobject(LOCALID_CC_RANDOMMON_1)
     // setvar(VAR_OBJ_GFX_ID_1, VAR_LEFTMON)
@@ -2599,19 +2597,23 @@ script CC_LoadRandomBattlers {
 script CC_SetLeftBattlers{
     switch(var(VAR_BATTLERS_LEFT)){
         case 0:
-            goto(CC_ChisaBattle)
+            if(flag(FLAG_CHISA_CC)==TRUE){
+                clearflag(FLAG_RANDOMBATTLERS)
+                setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CHISA)
+            } 
+            else {
+                setvar(VAR_TEMP_4, 2)
+            }
+
         case 1:
+            clearflag(FLAG_RANDOMBATTLERS)
             setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CC_GUY)
         case 2:
+            clearflag(FLAG_RANDOMBATTLERS)
             setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CC_GIRL)
         case 3:
+            clearflag(FLAG_RANDOMBATTLERS)
             setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_MONK)
-    }
-}
-
-script CC_ChisaBattle {
-    if(flag(FLAG_CHISA_CC)==TRUE){
-        setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CHISA)
     }
 }
 

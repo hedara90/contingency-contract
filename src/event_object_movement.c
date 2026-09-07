@@ -1614,7 +1614,16 @@ static u8 InitObjectEventStateFromTemplate(const struct ObjectEventTemplate *tem
     objectEvent->graphicsId = template->graphicsId;
     if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_CONVENTION_CENTER) && template->localId == LOCALID_CC_RANDOMMON_1)
     {
-        objectEvent->graphicsId = OBJ_EVENT_GFX_SPECIES(MUNNA);
+        switch(VarGet(VAR_BATTLERS_LEFT)){
+            case 0:
+                objectEvent->graphicsId = OBJ_EVENT_GFX_SPECIES(CROBAT);
+            case 1:
+                objectEvent->graphicsId = OBJ_EVENT_GFX_SPECIES(DRUDDIGON);
+            case 2:
+                objectEvent->graphicsId = OBJ_EVENT_GFX_SPECIES(DUBWOOL);
+            case 3:
+                objectEvent->graphicsId = OBJ_EVENT_GFX_SPECIES(MEDICHAM);
+        }
     }
     else if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_CONVENTION_CENTER) && template->localId == LOCALID_CC_RANDOMMON2)
     {
