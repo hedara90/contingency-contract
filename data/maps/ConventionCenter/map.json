@@ -1410,6 +1410,22 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "CC_ViewRecords"
+    },
+    {
+      "type": "sign",
+      "x": 14,
+      "y": 34,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "CC_Door"
+    },
+    {
+      "type": "sign",
+      "x": 15,
+      "y": 34,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "CC_Door"
     }
   ]
 }

@@ -697,6 +697,13 @@ script CC_ViewRecords {
     release
 }
 
+script CC_Door {
+    msgbox("There's a sign on the door.\p“Authorized personnel only”")
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("(I probably shouldn't touch it…)")
+    closemessage
+}
+
 script Originium {
     lock
     msgbox("A dark orange crystal resembling\nOriginium")
