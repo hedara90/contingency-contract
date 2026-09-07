@@ -3649,8 +3649,6 @@ void Task_WaitAndLoadQueueObjects(u8 taskId)
 
         Shuffle16(gfxList, NELEMS(sQueueObjects));
 
-        gfxList[15] = OBJ_EVENT_GFX_SPECIES(INCINEROAR);
-
         if (!FlagGet(FLAG_TALKED_SATSUKI))
         {
             gfxList[0] = OBJ_EVENT_GFX_SATSUKI;
