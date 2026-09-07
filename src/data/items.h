@@ -23,9 +23,7 @@ static const u8 sFullHealDesc[]       = _("Heals all the\n"
                                           "status problems of\n"
                                           "one Pokémon.");
 
-static const u8 sPokeDollDesc[]       = _("Use to flee from\n"
-                                          "any battle with\n"
-                                          "a wild Pokémon.");
+static const u8 sPokeDollDesc[]       = _("It's very squishy.");
 
 static const u8 sMaxReviveDesc[]      = _("Revives a fainted\n"
                                           "Pokémon with all\n"
@@ -2605,7 +2603,7 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_POKE_DOLL] =
     {
-        .name = ITEM_NAME("Poké Doll"),
+        .name = ITEM_NAME("Chubby Lung"),
     #if I_PRICE >= GEN_8
         .price = 300,
     #elif I_PRICE == GEN_7
