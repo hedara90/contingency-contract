@@ -612,6 +612,7 @@ script ChubbyLung5 {
 }
 
 script CC_ViewRecords {
+    lock
     dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
                     "Crisis Team",
                     "Wuling",
@@ -628,53 +629,72 @@ script CC_ViewRecords {
         hasdefeatedgauntlet(GAUNTLET_CRISIS_TEAM)
         if (var(VAR_RESULT) == TRUE) {
             victoryscreen(GAUNTLET_CRISIS_TEAM, TRUE)
+            release
+            end
         }
     case 1:
         hasdefeatedgauntlet(GAUNTLET_WULING)
         if (var(VAR_RESULT) == TRUE) {
             victoryscreen(GAUNTLET_WULING, TRUE)
+            release
+            end
         }
     case 2:
         hasdefeatedgauntlet(GAUNTLET_RECONVENERS)
         if (var(VAR_RESULT) == TRUE) {
             victoryscreen(GAUNTLET_RECONVENERS, TRUE)
+            release
+            end
         }
     case 3:
         hasdefeatedgauntlet(GAUNTLET_ABYSSAL_HUNTERS)
         if (var(VAR_RESULT) == TRUE) {
             victoryscreen(GAUNTLET_ABYSSAL_HUNTERS, TRUE)
+            release
+            end
         }
     case 4:
         hasdefeatedgauntlet(GAUNTLET_AK_YELLOW)
         if (var(VAR_RESULT) == TRUE) {
             victoryscreen(GAUNTLET_AK_YELLOW, TRUE)
+            release
+            end
         }
     case 5:
         hasdefeatedgauntlet(GAUNTLET_AK_GREEN)
         if (var(VAR_RESULT) == TRUE) {
             victoryscreen(GAUNTLET_AK_GREEN, TRUE)
+            release
+            end
         }
     case 6:
         hasdefeatedgauntlet(GAUNTLET_RANDOM)
         if (var(VAR_RESULT) == TRUE) {
             victoryscreen(GAUNTLET_RANDOM, TRUE)
+            release
+            end
         }
     case 7:
         hasdefeatedgauntlet(GAUNTLET_RANDOM_SINGLES)
         if (var(VAR_RESULT) == TRUE) {
             victoryscreen(GAUNTLET_RANDOM_SINGLES, TRUE)
+            release
+            end
         }
     case 8:
         hasdefeatedgauntlet(GAUNTLET_RANDOM_DOUBLES)
         if (var(VAR_RESULT) == TRUE) {
             victoryscreen(GAUNTLET_RANDOM_DOUBLES, TRUE)
+            release
         }
     default:
         playse(SE_PC_OFF)
+        release
     }
     msgbox("No record found for specified gauntlet.")
     closemessage
     playse(SE_PC_OFF)
+    release
 }
 
 script Originium {
