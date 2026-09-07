@@ -313,6 +313,9 @@ static const struct MenuAction sItemMenuActions[] = {
 
 // these are all 2D arrays with a width of 2 but are represented as 1D arrays
 // ACTION_DUMMY is used to represent blank spaces
+static const u8 sContextMenuItems_ChubbyLung[] = {
+    ACTION_CANCEL
+};
 static const u8 sContextMenuItems_ItemsPocket[] = {
     //ACTION_USE,         ACTION_GIVE,
     ACTION_GIVE,        ACTION_CANCEL
@@ -1716,11 +1719,22 @@ static void OpenContextMenu(u8 taskId)
             switch (gBagPosition.pocket)
             {
             case POCKET_ITEMS:
-                gBagMenu->contextMenuItemsPtr = gBagMenu->contextMenuItemsBuffer;
-                gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_ItemsPocket);
-                memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_ItemsPocket, sizeof(sContextMenuItems_ItemsPocket));
-                if (ItemIsMail(gSpecialVar_ItemId) == TRUE)
-                    gBagMenu->contextMenuItemsBuffer[0] = ACTION_CHECK;
+                if (gSpecialVar_ItemId == ITEM_POKE_DOLL)
+                {
+                    gBagMenu->contextMenuItemsPtr = gBagMenu->contextMenuItemsBuffer;
+                    gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_ChubbyLung);
+                    memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_ChubbyLung, sizeof(sContextMenuItems_ChubbyLung));
+                    if (ItemIsMail(gSpecialVar_ItemId) == TRUE)
+                        gBagMenu->contextMenuItemsBuffer[0] = ACTION_CHECK;
+                }
+                else
+                {
+                    gBagMenu->contextMenuItemsPtr = gBagMenu->contextMenuItemsBuffer;
+                    gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_ItemsPocket);
+                    memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_ItemsPocket, sizeof(sContextMenuItems_ItemsPocket));
+                    if (ItemIsMail(gSpecialVar_ItemId) == TRUE)
+                        gBagMenu->contextMenuItemsBuffer[0] = ACTION_CHECK;
+                }
                 break;
             case POCKET_KEY_ITEMS:
                 gBagMenu->contextMenuItemsPtr = gBagMenu->contextMenuItemsBuffer;

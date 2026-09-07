@@ -118,6 +118,8 @@ void SetVBlankHBlankCallbacksToNull(void)
     SetHBlankCallback(NULL);
 }
 
+const u8 sCheckString[] = _("The Poké Doll can't be held\nhere.");
+
 void DisplayMessageAndContinueTask(u8 taskId, u8 windowId, u16 tileNum, u8 paletteNum, u8 fontId, u8 textSpeed, const u8 *string, void *taskFunc)
 {
     sMessageWindowId = windowId;
@@ -126,8 +128,26 @@ void DisplayMessageAndContinueTask(u8 taskId, u8 windowId, u16 tileNum, u8 palet
     if (string != gStringVar4)
         StringExpandPlaceholders(gStringVar4, string);
 
+    u32 index = 0;
+    bool32 useWorkaround = TRUE;
+    while (gStringVar4[index] != EOS)
+    {
+        if (gStringVar4[index] != sCheckString[index])
+        {
+            useWorkaround = FALSE;
+        }
+        index++;
+    }
+
     gTextFlags.canABSpeedUpPrint = 1;
-    AddTextPrinterParameterized2(windowId, fontId, gStringVar4, textSpeed, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+    if (useWorkaround)
+    {
+        AddTextPrinterParameterized2(windowId, fontId, gStringVar4, textSpeed, NULL, TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY);
+    }
+    else
+    {
+        AddTextPrinterParameterized2(windowId, fontId, gStringVar4, textSpeed, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+    }
     sMessageNextTask = taskFunc;
     gTasks[taskId].func = Task_ContinueTaskAfterMessagePrints;
 }
@@ -275,7 +295,9 @@ u8 GetLRKeysPressedAndHeld(void)
 bool8 IsHoldingItemAllowed(enum Item itemId)
 {
     // e-Reader Enigma Berry can't be held in link areas
-    if (itemId == ITEM_ENIGMA_BERRY_E_READER
+    if (itemId == ITEM_POKE_DOLL)
+        return FALSE;
+    else if (itemId == ITEM_ENIGMA_BERRY_E_READER
      && ((gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_TRADE_CENTER)
        && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_TRADE_CENTER))
        || InUnionRoom() == TRUE))
