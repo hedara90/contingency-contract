@@ -2664,11 +2664,13 @@ script CC_LoadRandomBattlers {
 }
 
 script CC_SetLeftBattlers{
+    setvar(VAR_OBJ_GFX_ID_2, MON_INCIN)
     switch(var(VAR_BATTLERS_LEFT)){
         case 0:
             if(flag(FLAG_CHISA_CC)==TRUE){
                 clearflag(FLAG_RANDOMBATTLERS)
                 setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CHISA)
+                setvar(VAR_OBJ_GFX_ID_1, MON_CROBAT)
             } 
             else {
                 setvar(VAR_TEMP_4, 2)
@@ -2677,12 +2679,15 @@ script CC_SetLeftBattlers{
         case 1:
             clearflag(FLAG_RANDOMBATTLERS)
             setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CC_GUY)
+            setvar(VAR_OBJ_GFX_ID_1, MON_DRUDDIGON)
         case 2:
             clearflag(FLAG_RANDOMBATTLERS)
             setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CC_GIRL)
+            setvar(VAR_OBJ_GFX_ID_1, MON_DUBWOOL)
         case 3:
             clearflag(FLAG_RANDOMBATTLERS)
             setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_MONK)
+            setvar(VAR_OBJ_GFX_ID_1, MON_MEDICHAM)
     }
 }
 

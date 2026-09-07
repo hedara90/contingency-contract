@@ -805,7 +805,7 @@
     },
     {
       "local_id": "LOCALID_CC_RANDOMMON2",
-      "graphics_id": "OBJ_EVENT_GFX_SPECIES(ODDISH)",
+      "graphics_id": "OBJ_EVENT_GFX_VAR_2",
       "x": 28,
       "y": 24,
       "elevation": 0,
@@ -819,7 +819,7 @@
     },
     {
       "local_id": "LOCALID_CC_RANDOMMON_1",
-      "graphics_id": "VAR_OBJ_GFX_ID_1",
+      "graphics_id": "OBJ_EVENT_GFX_VAR_1",
       "x": 24,
       "y": 24,
       "elevation": 0,
