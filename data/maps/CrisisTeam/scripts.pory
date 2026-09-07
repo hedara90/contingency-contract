@@ -134,7 +134,7 @@ script CrisisTeam_Chen {
 
 text ChenBeforeBattle {
     "Get ready? Heh. My blades are\n"
-    "always ready as they never rest!"
+    "always ready!"
 }
 
 text ChenAfterBattle {

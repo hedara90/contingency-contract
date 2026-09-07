@@ -99,7 +99,7 @@ text SpecterBeforeBattle {
 }
 
 text SpecterAfterBattle {
-    "O benevolent Herald, hear my prayer:\n"
+    "O benevolent Herald, hear my prayer…\n"
     "watch over my dreams and my soul…"
 }
 
@@ -154,7 +154,7 @@ text GladiiaAfterBattle {
 text GladiiaAfterBattle_Win {
     "The language I use is overly\n"
     "polite…?\p"
-    "Hm, I'm still getting\l"
+    "Hm, I'm still getting\n"
     "acquainted with the language used\l"
     "on the land. Besides, it's in my\l"
     "best interest to be seen as polite."
@@ -236,7 +236,7 @@ script AbyssalHunters_Ulpianus {
 text UlpianusBeforeBattle {
     "The Hunters will lose awareness if\n"
     "deprived of water, but they need\l"
-    "only return to the sea to awaken\n"
+    "only return to the sea to awaken\l"
     "their past.\p"
     "How about you? What opportunity\n"
     "would you need?"
