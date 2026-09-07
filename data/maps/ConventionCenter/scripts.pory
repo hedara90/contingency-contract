@@ -905,10 +905,14 @@ script LastQueuer {
         msgbox("Satsuki? Why are you here?")
         turnvobject(0, DIR_NORTH)
         call(SatsukiTalk)
+    case 17111:
+        turnvobject(0, DIR_NORTH)
+        msgbox("This Incineroar suit was not the\nbest thing to queue in…")
+        closemessage
     default:
         turnvobject(0, DIR_NORTH)
         msgbox("I hope this queue goes fast…")
-        waitmessage
+        closemessage
     }
     turnvobject(0, DIR_SOUTH)
     release
@@ -929,10 +933,14 @@ script EightToLastQueuer {
         msgbox("Chisa! How goes the queuing?")
         turnvobject(7, DIR_NORTH)
         call(ChisaQueueTalk)
+    case 17111:
+        turnvobject(7, DIR_NORTH)
+        msgbox("This Incineroar suit was not the\nbest thing to queue in…")
+        closemessage
     default:
         turnvobject(7, DIR_NORTH)
         msgbox("I hope this queue goes fast…")
-        waitmessage
+        closemessage
     }
     turnvobject(7, DIR_EAST)
     release
@@ -948,10 +956,14 @@ script SixteenToLastQueuer {
         msgbox("Satsuki? Why are you here?")
         turnvobject(15, DIR_NORTH)
         call(SatsukiTalk)
+    case 17111:
+        turnvobject(15, DIR_NORTH)
+        msgbox("This Incineroar suit was not the\nbest thing to queue in…")
+        closemessage
     default:
         turnvobject(15, DIR_NORTH)
         msgbox("I hope this queue goes fast…")
-        waitmessage
+        closemessage
     }
     turnvobject(15, DIR_EAST)
     release
@@ -967,10 +979,14 @@ script EighteenToLastQueuer {
         msgbox("Satsuki? Why are you here?")
         turnvobject(17, DIR_NORTH)
         call(SatsukiTalk)
+    case 17111:
+        turnvobject(17, DIR_NORTH)
+        msgbox("This Incineroar suit was not the\nbest thing to queue in…")
+        closemessage
     default:
         turnvobject(17, DIR_NORTH)
         msgbox("I hope this queue goes fast…")
-        waitmessage
+        closemessage
     }
     turnvobject(17, DIR_SOUTH)
     release
@@ -986,9 +1002,13 @@ script PayingQueuer {
         msgbox("Satsuki? Why are you here?")
         turnvobject(33, DIR_NORTH)
         call(SatsukiPaying)
+    case 17111:
+        turnvobject(33, DIR_NORTH)
+        msgbox("This Incineroar suit was not the\nbest thing to queue in…\pAt least it's over now.")
+        closemessage
     default:
         turnvobject(33, DIR_NORTH)
-        msgbox("I hope this queue goes fast…")
+        msgbox("I'm so excited for this merch!")
         waitmessage
     }
     turnvobject(33, DIR_WEST)

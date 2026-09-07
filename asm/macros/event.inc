@@ -2992,3 +2992,9 @@
 	callnative HasDefeatedGauntlet
 	.byte \gauntlet
 	.endm
+
+	@ Gives BP
+	.macro givebp amount:req
+	callnative ScriptGiveBP
+	.2byte \amount
+	.endm
