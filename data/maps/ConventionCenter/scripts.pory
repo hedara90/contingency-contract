@@ -61,21 +61,23 @@ script CC_GilbertaEvent {
     }
     random(10)
     copyvar(VAR_CHISA_PARTY, VAR_RESULT)
+    setflag(FLAG_RANDOMBATTLERS)
 }
 
 script CC_PickRandomEvents {
-    //Abyssal Hunters group
     //Gladiia in lounge
     random(2)
     switch(var(VAR_RESULT)){
         case 0: setflag(FLAG_GLADIIA)
         default: clearflag(FLAG_GLADIIA)
     }
+    //Pneance & Endmin
     random(2)
     switch(var(VAR_RESULT)){
         case 0: setflag(FLAG_JOHNENDFIELD)
         default: clearflag(FLAG_JOHNENDFIELD)
     }
+    //Mifus, OR Carnelian + Elysium
     random(2)
     switch(var(VAR_RESULT)){
         case 0: 
@@ -85,6 +87,7 @@ script CC_PickRandomEvents {
             setflag(FLAG_MIFU_EVENT)
             clearflag(FLAG_CARNELIAN)
     }
+    //Chisa
     random(2)
     switch(var(VAR_RESULT)){
         case 0:
@@ -92,6 +95,7 @@ script CC_PickRandomEvents {
         default:
             clearflag(FLAG_CHISA_CC)
     }
+    //Laevatain
     random(2)
     switch(var(VAR_RESULT)){
         case 0:
@@ -101,13 +105,15 @@ script CC_PickRandomEvents {
             setflag(FLAG_LAEVATAIN_SHOOT)
             clearflag(FLAG_LAEVATAIN_EATING)
     }
-    // random(3)
-    // switch(var(VAR_RESULT)){
-    //     case 0:
-    //         setflag(FLAG_DRAGONS)
-    //     default:
-    //         clearflag(FLAG_DRAGONS)
-    // }
+    //Dragons
+    random(3)
+    switch(var(VAR_RESULT)){
+        case 0:
+            setflag(FLAG_DRAGONS)
+        default:
+            clearflag(FLAG_DRAGONS)
+    }
+    //Weiqi players
     random(2)
     switch(var(VAR_RESULT)){
         case 0:
@@ -115,11 +121,14 @@ script CC_PickRandomEvents {
         default:
             clearflag(FLAG_WEIQI)
     }
-    //some other people in lounge (excl. with Gladiia)
-    //Endmin & Penance
-    //Various people at the photobooth
-    //TangTang + MiFu
-    //Laevatain position
+    //random battlers
+    // random(3)
+    // switch(var(VAR_RESULT)){
+    //     case 0:
+    //         setvar(VAR_TEMP_4, 0)
+    //     default:
+    //         setvar(VAR_TEMP_4, 2)
+    // }
 }
 
 script CC_Intro {
@@ -2553,4 +2562,70 @@ script CC_Dancer3 {
     waitmovement
     release
     end
+}
+
+script CC_LoadRandomBattlers {
+    clearflag(FLAG_RANDOMBATTLERS)
+    // random(4)
+    // copyvar(VAR_BATTLERS_LEFT, VAR_RESULT)
+    // setvar(VAR_BATTLERS_LEFT, 0)
+    setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CHISA)
+    
+    setvar(VAR_LEFTMON, OBJ_EVENT_GFX_SPECIES(CROBAT))
+    addobject(LOCALID_CC_RANDOMMON_1)
+    instantmorph(LOCALID_CC_RANDOMMON_1, VAR_LEFTMON)
+    // setvar(VAR_OBJ_GFX_ID_1, VAR_LEFTMON)
+    // call(CC_SetLeftBattlers)
+    setvar(VAR_TEMP_4, 1)
+}
+
+script CC_SetLeftBattlers{
+    switch(var(VAR_BATTLERS_LEFT)){
+        case 0:
+            goto(CC_ChisaBattle)
+        case 1:
+            setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CC_GUY)
+        case 2:
+            setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CC_GIRL)
+        case 3:
+            setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_MONK)
+    }
+}
+
+script CC_ChisaBattle {
+    if(flag(FLAG_CHISA_CC)==TRUE){
+        setvar(VAR_OBJ_GFX_ID_0, OBJ_EVENT_GFX_CHISA)
+        setvar(VAR_OBJ_GFX_ID_1, OBJ_EVENT_GFX_SPECIES(CROBAT))
+    }
+}
+
+script CC_DontInterruptBattleRight {
+    lock
+    setspeaker(SP_NAME_PLAYER)
+    msgbox("(Better not interrupt them!)")
+    closemessage
+    applymovement(player, moves(walk_right))
+}
+
+script CC_DontInterruptBattleLeft {
+    lock
+    applymovement(LOCALID_ATTENDANT_MAIN, moves(emote_exclamation_mark))
+    playse(SE_PIN)
+    waitmovement
+    msgbox("Please don't interrupt the battlers. If you'd like to start a battle, please wait.")
+    closemessage
+    fadescreen(FADE_TO_BLACK)
+    setflag(FLAG_RANDOMBATTLERS)
+    removeobject(LOCALID_CC_RANDOMBATTLER_1)
+    removeobject(LOCALID_CC_RANDOMMON_1)
+    setvar(VAR_TEMP_4, 2)
+    delay(30)
+    msgbox("The battle finishes shortly after")
+    closemessage
+    fadescreen(FADE_FROM_BLACK)
+    release
+}
+
+script CC_RandomBattlers {
+
 }
