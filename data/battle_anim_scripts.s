@@ -35704,3 +35704,32 @@ gBattleAnimMove_Combustion::
 	createsprite gEmberFlareSpriteTemplate, ANIM_TARGET, 2, -24, -24, 24, -24, 20, ANIM_TARGET, 1
 	delay 4
 	end
+
+gBattleAnimMove_AcidBarrage::
+	createsprite gPoisonJabProjectileSpriteTemplate, ANIM_TARGET, 2, 3, -31, 10
+	delay 2
+	createsprite gPoisonJabProjectileSpriteTemplate, ANIM_TARGET, 2, -18, -25, 10
+	delay 2
+	createsprite gPoisonJabProjectileSpriteTemplate, ANIM_TARGET, 2, 27, 17, 10
+	delay 2
+	createsprite gPoisonJabProjectileSpriteTemplate, ANIM_TARGET, 2, -26, 18, 10
+	delay 2
+	createsprite gPoisonJabProjectileSpriteTemplate, ANIM_TARGET, 2, 10, 30, 10
+	delay 2
+	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=-7, y=4, relative_to=ANIM_TARGET, animation=3
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	delay 2
+	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=-4, y=-6, relative_to=ANIM_TARGET, animation=3
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	delay 2
+	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=-4, y=-6, relative_to=ANIM_TARGET, animation=3
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	delay 2
+	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=-4, y=-6, relative_to=ANIM_TARGET, animation=3
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	delay 2
+	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=-4, y=-6, relative_to=ANIM_TARGET, animation=3
+	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
+	waitforvisualfinish
+	blendoff
+	end

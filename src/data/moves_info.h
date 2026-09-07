@@ -14549,7 +14549,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
             .moveEffect = MOVE_EFFECT_POISON,
             .chance = 10,
         }),
-        .battleAnimScript = gBattleAnimMove_TailSlap,
+        .battleAnimScript = gBattleAnimMove_AcidBarrage,
     },
 
     [MOVE_HURRICANE] =
