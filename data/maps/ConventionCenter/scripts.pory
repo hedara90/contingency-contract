@@ -1223,7 +1223,49 @@ script ChooseGauntlet {
 
 script WelcomeCounter {
     lock
-    msgbox("Enjoy your stay!")
+    msgbox("Do you have a promo code?", MSGBOX_YESNO)
+    if (var(VAR_RESULT) != 1)
+    {
+        msgbox("Enjoy your stay!")
+        waitmessage
+        release
+        end
+    }
+    special(EnterCode)
+    waitstate
+    special(GetCodeFeedback)
+    goto_if_eq(VAR_RESULT, 0, CC_CodeFailed)
+    goto_if_eq(VAR_RESULT, 1, CC_CodeJudge)
+    end
+}
+
+script CC_CodeFailed {
+    msgbox("Unfortunately that is not a valid code.\p"
+            "Enjoy your stay!")
+    waitmessage
+    release
+    end
+}
+
+script CC_CodeJudge {
+    goto_if_set(FLAG_JUDGE_CODE_REDEEMED, CC_CodeJudge_Redeemed)
+    msgbox("Congratulations! Please enjoy these\n"
+            "extra credits on the house.")
+    playse(SE_EXP_MAX)
+    msgbox("Obtained 1000 Pokémon credits and\n"
+            "64 item points!")
+    waitmessage
+    addmoney(1000)
+    givebp(64)
+    setflag(FLAG_JUDGE_CODE_REDEEMED)
+    release
+    end
+}
+
+script CC_CodeJudge_Redeemed {
+    msgbox("Sorry, that promo code has already\n"
+            "been redeemed.\p"
+            "Enjoy your stay!")
     waitmessage
     release
     end
