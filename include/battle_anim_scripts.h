@@ -1032,5 +1032,6 @@ extern const u8 gBattleAnimMove_SandBlast[];
 extern const u8 gBattleAnimMove_Combustion[];
 extern const u8 gBattleAnimMove_AcidBarrage[];
 extern const u8 gBattleAnimMove_SteelSpike[];
+extern const u8 gBattleAnimMove_Charade[];
 
 #endif // GUARD_BATTLE_ANIM_SCRIPTS_H

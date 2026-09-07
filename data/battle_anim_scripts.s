@@ -35752,3 +35752,9 @@ gBattleAnimMove_SteelSpike::
 	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
 	waitforvisualfinish
 	end
+
+gBattleAnimMove_Charade::
+	createvisualtask AnimTask_SquishAndSweatDroplets, 2, ANIM_ATTACKER, 3
+	createvisualtask AnimTask_FacadeColorBlend, 2, ANIM_ATTACKER, 72
+	loopsewithpan SE_M_SWAGGER, SOUND_PAN_ATTACKER, 24, 3
+	end
