@@ -488,8 +488,8 @@ static enum Item RollGachaItem(enum Banner banner, u32 *star)
 
     if (gSaveBlock1Ptr->pityItem6 == PITY_ITEM_6_STAR - 1)
     {
-        gSaveBlock1Ptr->pity5 = 0;
-        gSaveBlock1Ptr->pity6 = 0;
+        gSaveBlock1Ptr->pityItem5 = 0;
+        gSaveBlock1Ptr->pityItem6 = 0;
         starToUse = 6;
     }
     else if (gSaveBlock1Ptr->pityItem5 == PITY_ITEM_5_STAR)
