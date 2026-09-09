@@ -7832,6 +7832,13 @@ static bool8 SetMenuTexts_Mon(void)
 
     if (!sIsMonBeingMoved)
         SetMenuText(MENU_SUMMARY);
+    if (!sStorage->displayMon.heldItem == ITEM_NONE){
+
+        SetMenuText(MENU_BAG);
+    }
+    // else {
+    //     SetMenuText(MENU_GIVE_2);
+    // }
     if (sStorage->boxOption == OPTION_MOVE_MONS)
     {
         if (sCursorArea == CURSOR_AREA_IN_BOX)
