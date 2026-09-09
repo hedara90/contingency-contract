@@ -2191,6 +2191,7 @@ static void Task_ItemContext_GiveToPC(u8 taskId)
 
 bool8 UseRegisteredKeyItemOnField(void)
 {
+    /*
     u8 taskId;
 
     if (InUnionRoom() == TRUE || CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE || InBattlePike() || InMultiPartnerRoom() == TRUE)
@@ -2216,6 +2217,8 @@ bool8 UseRegisteredKeyItemOnField(void)
         }
     }
     ScriptContext_SetupScript(EventScript_SelectWithoutRegisteredItem);
+    */
+    ScriptContext_SetupScript(TianaHappy);
     return TRUE;
 }
 
