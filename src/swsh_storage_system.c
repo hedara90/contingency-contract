@@ -7832,8 +7832,9 @@ static bool8 SetMenuTexts_Mon(void)
 
     if (!sIsMonBeingMoved)
         SetMenuText(MENU_SUMMARY);
-    if (!sStorage->displayMon.heldItem == ITEM_NONE){
 
+    if (!sIsMonBeingMoved && !sStorage->displayMon.heldItem == ITEM_NONE)
+    {
         SetMenuText(MENU_BAG);
     }
     // else {
@@ -8931,9 +8932,6 @@ static void MoveItemFromMonToBag(u8 cursorArea, u8 cursorPos)
 {
     u8 id;
     enum Item itemId;
-
-    if (sStorage->boxOption != OPTION_MOVE_ITEMS)
-        return;
 
     itemId = ITEM_NONE;
     id = GetItemIconIdxByPosition(cursorArea, cursorPos);
