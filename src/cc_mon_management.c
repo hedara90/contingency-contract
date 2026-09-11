@@ -305,7 +305,7 @@ enum GiveResult GiveGachaMon(enum Species species, u32 star)
                             return GIVE_RESULT_CAP;
 
                         isShiny = TRUE;
-                        SetBoxMonData(mon, MON_DATA_MARKINGS, &isShiny);
+                        SetBoxMonData(mon, MON_DATA_IS_SHINY, &isShiny);
                         return GIVE_RESULT_DUPE;
                     }
                     marking = 1 | (marking << 1);

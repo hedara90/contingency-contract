@@ -4248,3 +4248,17 @@ void ScriptGiveBP(struct ScriptContext *ctx)
         gSaveBlock2Ptr->frontier.battlePoints += amount;
     }
 }
+
+void Task_Apology(u8 taskId)
+{
+    if (!ArePlayerFieldControlsLocked())
+    {
+        ScriptContext_SetupScript(CC_Apology1);
+        DestroyTask(taskId);
+    }
+}
+
+void CreateApology(void)
+{
+    CreateTask(Task_Apology, 0);
+}
