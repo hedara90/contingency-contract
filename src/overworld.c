@@ -2167,8 +2167,11 @@ void CB2_ContinueSavedGame(void)
         switch (gSaveBlock1Ptr->gameVersion)
         {
         case CC_GAME_VERSION_1:
+            FlagSet(FLAG_TRIGGER_APOLOGY_1);
+            AddMoney(&gSaveBlock1Ptr->money, 1000);
             break;
         }
+        gSaveBlock1Ptr->gameVersion = CC_GAME_VERSION;
     }
 }
 
