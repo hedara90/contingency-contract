@@ -70,8 +70,8 @@
 #define FLAG_RANDOMBATTLERS    0x30 // Unused Flag
 #define FLAG_JUDGE_CODE_REDEEMED    0x31 // Unused Flag
 #define FLAG_TARCRELEASE_CODE_REDEEMED    0x32 // Unused Flag
-#define FLAG_UNUSED_0x033    0x33 // Unused Flag
-#define FLAG_UNUSED_0x034    0x34 // Unused Flag
+#define FLAG_TRIGGER_APOLOGY_1    0x33 // Unused Flag
+#define FLAG_HAS_RECEIVED_APOLOGY_1    0x34 // Unused Flag
 #define FLAG_UNUSED_0x035    0x35 // Unused Flag
 #define FLAG_UNUSED_0x036    0x36 // Unused Flag
 #define FLAG_UNUSED_0x037    0x37 // Unused Flag

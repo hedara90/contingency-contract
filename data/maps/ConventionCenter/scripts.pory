@@ -8,6 +8,9 @@ mapscripts ConventionCenter_MapScripts {
         if (flag(FLAG_OTHER_LOADED) == TRUE) {
             callnative(CreateOtherVObjects)
         }
+        if (flag(FLAG_TRIGGER_APOLOGY_1)) {
+            callnative(CreateApology)
+        }
     }
     MAP_SCRIPT_ON_FRAME_TABLE [
         VAR_INTRO, 0 : CC_Intro
@@ -1278,6 +1281,22 @@ script CC_CodeTARCRelease {
     addmoney(500)
     givebp(32)
     setflag(FLAG_TARCRELEASE_CODE_REDEEMED)
+    release
+    end
+}
+
+script CC_Apology1 {
+    if (flag(FLAG_HAS_RECEIVED_APOLOGY_1)) {
+        release
+        end
+    }
+    msgbox("We're so sorry for the technical issue.\pPlease accept this as compensation.")
+    waitmessage
+    msgbox("Received ¥ 1000")
+    waitmessage
+    addmoney(1000)
+    clearflag(FLAG_TRIGGER_APOLOGY_1)
+    setflag(FLAG_HAS_RECEIVED_APOLOGY_1)
     release
     end
 }

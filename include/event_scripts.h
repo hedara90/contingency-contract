@@ -806,4 +806,6 @@ extern const u8 Library_PC[];
 
 extern const u8 TianaHappy[];
 
+extern const u8 CC_Apology1[];
+
 #endif // GUARD_EVENT_SCRIPTS_H
