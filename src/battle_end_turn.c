@@ -1443,7 +1443,7 @@ bool32 TrySwitchForced(void)
     enum BattlerId battler = 0;
     for (u32 i = 0; i < gBattlersCount; i++)
     {
-        if (gProtectStructs[i].shouldBeSwitched)
+        if (IsBattlerAlive(i) && gProtectStructs[i].shouldBeSwitched)
         {
             gProtectStructs[i].shouldBeSwitched = FALSE;
             hasMonToSwitch = TRUE;
