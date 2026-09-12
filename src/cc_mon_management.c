@@ -271,7 +271,7 @@ enum GiveResult GiveGachaMon(enum Species species, u32 star)
         //  Iterate over all mons that the player has in party
         for (u32 i = 0; i < 6; i++)
         {
-            if (GetMonData(&gParties[0][i], MON_DATA_SPECIES) == species)
+            if (SpeciesToNationalPokedexNum(GetMonData(&gParties[0][i], MON_DATA_SPECIES)) == SpeciesToNationalPokedexNum(species))
             {
                 u8 marking = GetMonData(&gParties[0][i], MON_DATA_MARKINGS);
                 if (marking == 0xF)
@@ -295,7 +295,7 @@ enum GiveResult GiveGachaMon(enum Species species, u32 star)
             for (u32 index = 0; index < 30; index++)
             {
                 struct BoxPokemon *mon = GetBoxedMonPtr(box, index);
-                if (GetBoxMonData(mon, MON_DATA_SPECIES) == species)
+                if (SpeciesToNationalPokedexNum(GetBoxMonData(mon, MON_DATA_SPECIES)) == SpeciesToNationalPokedexNum(species))
                 {
                     u8 marking = GetBoxMonData(mon, MON_DATA_MARKINGS);
                     if (marking == 0xF)
