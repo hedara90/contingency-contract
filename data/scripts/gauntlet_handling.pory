@@ -3,6 +3,13 @@ const player = LOCALID_PLAYER
 const tiana = LOCALID_TIANA
 
 
+script Gauntlet_SetupPreWarp {
+    msgbox("I'll set up this gauntlet for you then.")
+    callnative(RegenerateRandomDancers)
+    special(HealPlayerParty)
+    setvar(VAR_GAUNTLET_POSITION, 0)
+}
+
 script Gauntlet_SetupCamera {
     // special(SpawnCameraObject)
     // applymovement(camera, moves(walk_right*3))

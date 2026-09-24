@@ -30,6 +30,7 @@ const FLAG_EATEN_SNACKS = FLAG_TEMP_15
 const chisa = LOCALID_CC_CHISA
 const ardelia = LOCALID_CC_ARDELIA
 const receptionist = LOCALID_CC_RECEPTIONIST
+const gauntletperson = LOCALID_ATTENDANT_MAIN
 
 script CC_OnTransition {
     call(CC_GilbertaEvent)
@@ -1156,75 +1157,270 @@ script ItemBanner {
     end
 }
 
-script ChooseGauntlet {
+//dynmulti1: Set Risks | Fight | Help | nvm
+//dynmulti2:                -> Endfield | Arknights | Other
+//dynmulti3:                    -> Endfield gauntlets
+//                              -> Arknights Gauntlets
+//                              -> Other Gauntlets
+
+script ChooseGauntlet_Attendant {
     lock
     faceplayer
-    msgbox("Which gauntlet do you want to fight?")
-    dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
-                    "Set Risks",
-                    "Crisis Team",
-                    "Wuling",
-                    "Reconveners",
-                    "Abyssal Hunters",
-                    "Confluence of East and West",
-                    "Band of Misfits",
-                    "Random",
-                    "Random Singles",
-                    "Random Doubles",
-                    "Not right now")
-    getobjectfacingdirection(LOCALID_ATTENDANT_MAIN, VAR_TEMP_1)
-    special(HealPlayerParty)
-    setvar(VAR_GAUNTLET_POSITION, 0)
-    switch(var(VAR_RESULT)) {
-    case 0:
-        riskui
-        release
-        end
-    case 1:
-        callnative(RegenerateRandomDancers)
+    msgbox("Hello! How can I help you?")
+    goto(ChooseGauntlet)
+}
+
+script ChooseGauntlet {
+    dynmultichoice(0,0,FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE,
+        "Can I change my {COLOR RED}Risks?",
+        "A gauntlet fight please!",
+        "I need a refresher...",
+        "Nevermind!")
+    switch(var(VAR_RESULT)){
+        case 0: goto(ChooseGauntlet_Risks)
+        case 1:
+            msgbox("Sure thing, which one would you like\nto fight?")
+            goto(ChooseGauntlet_Main)
+        case 2: goto(ChooseGauntlet_Help)
+        default:
+            goto(ChooseGauntlet_CloseScript)
+    }
+}
+
+script ChooseGauntlet_Risks {
+    msgbox("Aye, put your CC Pass here please, miss.")
+    closemessage
+    riskui
+    waitstate
+    msgbox("Anything else?")
+    waitmessage
+    goto(ChooseGauntlet)
+}
+
+script ChooseGauntlet_Help {
+    msgbox("Ofcourse!")
+    msgbox("The event battles are set up as\ngauntlets.\p"
+            "You fight 4 trainers back to back,\nand your team is healed between\leach fight.\p"
+            "You cannot change your Pokemon's\nMoves and Abilities between fights.\p"
+            "However, you can still change your\nparty order.\p"
+            "Winning one battle grants a small\namount of credits, and winning a\lgauntlet grants a bonus.\p"
+            "Additionally, each risk you enable\nincreases the battle payout.\p"
+            "I can help you enable or disable\nrisks here.")
+    applymovement(gauntletperson, moves(face_up))
+    msgbox("The machine over there will show your\nhigh scores for each gauntlet.")
+    waitmessage
+    applymovement(gauntletperson, moves(face_player))
+    msgbox("That should cover everything!")
+    closemessage
+    goto(ChooseGauntlet)
+}
+
+script ChooseGauntlet_Main {
+    
+    dynmultichoice(0,0,FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE,
+        "Endfield Gauntlets",
+        "Arknights Gauntlets",
+        "Other",
+        "Actually, hold on.")
+    switch(var(VAR_RESULT)){
+        case 0: 
+            msgbox("Which Endfield gauntlet?")
+            goto(ChooseGauntlet_Endfield)
+        case 1: 
+            msgbox("Ofcourse, which Arknights gauntlet?")
+            goto(ChooseGauntlet_Arknights)
+        case 2: 
+            msgbox("Looking to spice it up?")
+            goto(ChooseGauntlet_Random)
+        case 3:
+            msgbox("Something else?")
+            goto(ChooseGauntlet)
+        default:
+            goto(ChooseGauntlet_CloseScript)
+    }
+}
+
+script ChooseGauntlet_Endfield {
+    dynmultichoice(0,0,FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE,
+        "Endfield Crisis Team",
+        "Wuling Science Station",
+        "Reconveners",
+        "Nah..")
+    switch(var(VAR_RESULT)){
+        case 0: goto(ChooseGauntlet_CrisisTeam)
+        case 1: goto(ChooseGauntlet_Wuling)
+        case 2: goto(ChooseGauntlet_Reconveners)
+        case 3: 
+            msgbox("Change of mind?")
+            goto(ChooseGauntlet_Main)
+        default:
+            goto(ChooseGauntlet_CloseScript)
+    }
+}
+
+script ChooseGauntlet_CrisisTeam {
+    msgbox("(Crisis Team)", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
         warpsilent(MAP_CRISIS_TEAM, 14, 11)
         waitstate
-    case 2:
-        callnative(RegenerateRandomDancers)
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Endfield)
+    }
+}
+
+script ChooseGauntlet_Wuling {
+    msgbox("(Wuling)", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
         warpsilent(MAP_WULING, 14, 11)
         waitstate
-    case 3:
-        callnative(RegenerateRandomDancers)
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Endfield)
+    }
+}
+
+script ChooseGauntlet_Reconveners {
+    msgbox("(Wuling)", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
         warpsilent(MAP_RECONVENERS, 14, 11)
         waitstate
-    case 4:
-        callnative(RegenerateRandomDancers)
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Endfield)
+    }
+}
+
+script ChooseGauntlet_Arknights {
+    dynmultichoice(0,0,FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE,
+        "Abyssal Hunters",
+        "Confluence of East and West",
+        "Band of Misfits",
+        "Maybe not...")
+    switch(var(VAR_RESULT)){
+        case 0: goto(ChooseGauntlet_AbyssalHunters)
+        case 1: goto(ChooseGauntlet_AKYellow)
+        case 2: goto(ChooseGauntlet_AKGreen)
+        case 3: 
+            msgbox("Change of mind?")
+            goto(ChooseGauntlet_Main)
+        default:
+            goto(ChooseGauntlet_CloseScript)
+    }
+}
+
+script ChooseGauntlet_AbyssalHunters {
+    msgbox("(Crisis Team)", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
         warpsilent(MAP_ABYSSAL_HUNTERS, 14, 11)
         waitstate
-    case 5:
-        callnative(RegenerateRandomDancers)
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Arknights)
+    }
+}
+
+script ChooseGauntlet_AKYellow {
+    msgbox("(Yeller)", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
         warpsilent(MAP_AK_YELLOW, 14, 11)
         waitstate
-    case 6:
-        callnative(RegenerateRandomDancers)
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Arknights)
+    }
+}
+
+script ChooseGauntlet_AKGreen {
+    msgbox("(Green)", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
         warpsilent(MAP_AK_GREEN, 14, 11)
         waitstate
-    case 7:
-        callnative(RegenerateRandomDancers)
-        callnative(RandomSeedForRandomGauntlet)
-        warpsilent(MAP_RANDOM, 14, 11)
-        waitstate
-    case 8:
-        callnative(RegenerateRandomDancers)
-        callnative(RandomSeedForRandomGauntlet)
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Arknights)
+    }
+}
+
+script ChooseGauntlet_Random {
+    dynmultichoice(0,0,FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE,
+        "Random Singles",
+        "Random Doubles",
+        "Just give me anything",
+        "Maybe not...")
+    switch(var(VAR_RESULT)){
+        case 0: goto(ChooseGauntlet_RandomSingles)
+        case 1: goto(ChooseGauntlet_RandomDoubles)
+        case 2: goto(ChooseGauntlet_RandomMixed)
+        case 3: 
+            msgbox("Change of mind?")
+            goto(ChooseGauntlet_Main)
+        default:
+            goto(ChooseGauntlet_CloseScript)
+    }
+}
+
+script ChooseGauntlet_RandomSingles {
+    msgbox("(Crisis Team)", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
         warpsilent(MAP_RANDOM_SINGLES, 14, 11)
         waitstate
-    case 9:
-        callnative(RegenerateRandomDancers)
-        callnative(RandomSeedForRandomGauntlet)
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Random)
+    }
+}
+
+script ChooseGauntlet_RandomDoubles {
+    msgbox("(Yeller)", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
         warpsilent(MAP_RANDOM_DOUBLES, 14, 11)
         waitstate
-    default:
-        msgbox("Hope you'll be back soon!")
     }
-    waitmessage
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Random)
+    }
+}
+
+script ChooseGauntlet_RandomMixed {
+    msgbox("(Green)", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
+        warpsilent(MAP_RANDOM, 14, 11)
+        waitstate
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Random)
+    }
+}
+
+script ChooseGauntlet_CloseScript {
+    closemessage
+    applymovement(gauntletperson, moves(face_down))
+    waitmovement
     release
     end
+}
+
+text ChooseGauntlet_SomethingElseMSG {
+    "Something else then?"
 }
 
 script WelcomeCounter {
