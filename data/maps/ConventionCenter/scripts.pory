@@ -1023,7 +1023,7 @@ script PayingQueuer {
     end
 }
 
-script MonBanners {
+script MonBannersOld {
     lock
     msgbox("Hello!\pDo you want to try your luck on a banner?")
     dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
@@ -1046,6 +1046,77 @@ script MonBanners {
     }
     waitstate
     msgbox("Hope it went well.")
+    waitmessage
+    release
+    end
+}
+
+script MonBanners_Attendant {
+    lock
+    msgbox("Hello!\pDo you want to try your luck on a banner?")
+    goto(MonBanners)
+}
+
+script MonBanners {
+    dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
+        "I'd like to do some pulls!",
+        "What's this about?",
+        "No, I'm good for now!")
+    switch(var(VAR_RESULT)){
+        case 0:
+            msgbox("Certainly, which banner would you like\nto pull on?")
+            goto(MonBanners_List)
+        case 1:
+            goto(MonBanners_Help)
+        default:
+            goto(MonBanners_Exit)
+    }
+}
+script MonBanners_List {
+    dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
+        "Indomitability of the Unbreakable Spirit",
+        "Fury of the Earthern Core",
+        "Memories of Months Past",
+        "Actually, nevermind")
+    switch(var(VAR_RESULT)){
+        case 0: 
+            gachaui(BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT)
+        case 1: 
+            gachaui(BANNER_FURY_OF_THE_EARTHEN_CORE)
+        case 2: 
+            gachaui(BANNER_MEMORIES_OF_MONTHS_PAST)
+        default:
+            closemessage
+            goto(MonBanners)
+    }
+    waitstate
+    msgbox("I hope it went well!\pIs there anything else?")
+    goto(MonBanners_List)
+}
+
+script MonBanners_Help {
+    msgbox("Oh, you they didn't explain?\p"
+            "This is the Pokemon booth! Here, you\ncan obtain Pokemon for use in the\levent's arena.\p"
+            "If you're familiar with Gacha systems,\nthis basically works like one.\p"
+            "You spend your credits to get random\nPokemon from the banners here.\p"
+            "The available Pokemon are split between\nthe banners, with each mon being\lexclusive to one banner.\p"
+            "When you obtain a mon for the first time,\nthey'll have 1 Ability and 4 Moves\lavailable.\lAs you get more copies, you will raise\ltheir Potential level.\p"
+            "Each Potential level will unlock new\nmoves and abilities.\lYou can change those in the mon's\lsummary screen.\p"
+            "The limit to this is 4 copies.\nFrom your 5th copy onwards,\lwe will refund some credits instead.\p"
+            "Furthermore, each Pokemon has a rarity.\nThere are 4-, 5- and 6-star rarity mons.\p"
+            "The higher the rarity, the lower the\nchance of pulling them.\p"
+            "But, higher rarity Pokemon will\ngenerally learn more new moves or\labilities per potential!\p"
+            "Lastly, each banner has a pity system.\nYou are guaranteed to get a\l6-star Pokemon every 70 pulls.\p"
+            "This count does reset when you obtain\na 6-star Pokemon, however.\p"
+            "That should be all!{PAUSE_UNTIL_PRESS} Sorry for the long\nexplanation, we want to be thorough.\p"
+            "Time for some pulls, then?")
+    waitmessage
+    goto(MonBanners)
+}
+
+
+script MonBanners_Exit {
+    msgbox("Alright, come back anytime!")
     waitmessage
     release
     end
@@ -1177,7 +1248,8 @@ script ChooseGauntlet {
         "I need a refresher...",
         "Nevermind!")
     switch(var(VAR_RESULT)){
-        case 0: goto(ChooseGauntlet_Risks)
+        case 0: 
+            goto(ChooseGauntlet_Risks)
         case 1:
             msgbox("Sure thing, which one would you like\nto fight?")
             goto(ChooseGauntlet_Main)
@@ -1247,9 +1319,12 @@ script ChooseGauntlet_Endfield {
         "Reconveners",
         "Nah..")
     switch(var(VAR_RESULT)){
-        case 0: goto(ChooseGauntlet_CrisisTeam)
-        case 1: goto(ChooseGauntlet_Wuling)
-        case 2: goto(ChooseGauntlet_Reconveners)
+        case 0: 
+            goto(ChooseGauntlet_CrisisTeam)
+        case 1: 
+            goto(ChooseGauntlet_Wuling)
+        case 2: 
+            goto(ChooseGauntlet_Reconveners)
         case 3: 
             msgbox("Change of mind?")
             goto(ChooseGauntlet_Main)
@@ -1304,9 +1379,12 @@ script ChooseGauntlet_Arknights {
         "Band of Misfits",
         "Maybe not...")
     switch(var(VAR_RESULT)){
-        case 0: goto(ChooseGauntlet_AbyssalHunters)
-        case 1: goto(ChooseGauntlet_AKYellow)
-        case 2: goto(ChooseGauntlet_AKGreen)
+        case 0: 
+            goto(ChooseGauntlet_AbyssalHunters)
+        case 1: 
+            goto(ChooseGauntlet_AKYellow)
+        case 2: 
+            goto(ChooseGauntlet_AKGreen)
         case 3: 
             msgbox("Change of mind?")
             goto(ChooseGauntlet_Main)
@@ -1361,9 +1439,12 @@ script ChooseGauntlet_Random {
         "Just give me anything",
         "Maybe not...")
     switch(var(VAR_RESULT)){
-        case 0: goto(ChooseGauntlet_RandomSingles)
-        case 1: goto(ChooseGauntlet_RandomDoubles)
-        case 2: goto(ChooseGauntlet_RandomMixed)
+        case 0: 
+            goto(ChooseGauntlet_RandomSingles)
+        case 1: 
+            goto(ChooseGauntlet_RandomDoubles)
+        case 2: 
+            goto(ChooseGauntlet_RandomMixed)
         case 3: 
             msgbox("Change of mind?")
             goto(ChooseGauntlet_Main)
