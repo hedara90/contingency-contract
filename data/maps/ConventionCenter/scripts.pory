@@ -1023,34 +1023,6 @@ script PayingQueuer {
     end
 }
 
-script MonBannersOld {
-    lock
-    msgbox("Hello!\pDo you want to try your luck on a banner?")
-    dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
-                    "Indomitability of the Unbreakable Spirit",
-                    "Fury of the Earthern Core",
-                    "Memories of Months Past",
-                    "No, I'm good for now!")
-    switch(var(VAR_RESULT)) {
-    case 0:
-        gachaui(BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT)
-    case 1:
-        gachaui(BANNER_FURY_OF_THE_EARTHEN_CORE)
-    case 2:
-        gachaui(BANNER_MEMORIES_OF_MONTHS_PAST)
-    default:
-        msgbox("Next time then.")
-        waitmessage
-        release
-        end
-    }
-    waitstate
-    msgbox("Hope it went well.")
-    waitmessage
-    release
-    end
-}
-
 script MonBanners_Attendant {
     lock
     msgbox("Hello!\pDo you want to try your luck on a banner?")
