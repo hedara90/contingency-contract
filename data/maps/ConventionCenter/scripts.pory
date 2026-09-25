@@ -723,6 +723,19 @@ script CC_Door {
 script Originium {
     lock
     msgbox("A dark orange crystal resembling\nOriginium")
+    closemessage
+}
+
+script TallOriginium {
+    lock
+    msgbox("The taller variant of the crystals.\nIt's big enough to encase a person.")
+    closemessage
+}
+
+script BlackOriginium {
+    lock
+    msgbox("Another piece of Originium.\nIt has a very daunting presence.")
+    closemessage
 }
 
 script ItemBanner_Sign {
@@ -2418,7 +2431,7 @@ script CC_CameraBooth_TurnBack {
 script CC_Pog {
     lock
     faceplayer
-    msgbox("Sigh⋯ I get that she wants\nto portray Fiametta properly.\p"
+    msgbox("Sigh⋯ I get that she wants\nto portray Fiammetta properly.\p"
             "But did she really have to say\nthat line?")
     setspeaker(SP_NAME_NONE)
     msgbox("T/N: we cannot put this sentence\nin the game.")
