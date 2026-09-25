@@ -1044,6 +1044,7 @@ script MonBanners {
             goto(MonBanners_Exit)
     }
 }
+
 script MonBanners_List {
     dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
         "Indomitability of the Unbreakable Spirit",
@@ -1094,110 +1095,96 @@ script MonBanners_Exit {
     end
 }
 
-script ItemBanner {
+script ItemBanner_Attendant {
     lock
-    msgbox("Hello!\pDo you want to try your luck on items?\nOr redeem what you want directly?")
+    msgbox("Hello darling!\nWelcome to the Item Arsenal!\p"
+            "Looking to pull some new gear?\nOr d'ya want to redeem something?")
+    goto(ItemBanner)
+}
+
+script ItemBanner {
     dynmultichoice(0, 0, FALSE, 3, FALSE, DYN_MULTICHOICE_CB_NONE,
-                    "I'll try my luck!",
-                    "I'll redeem an item.",
-                    "Nothing for now.")
-    switch(var(VAR_RESULT)) {
-    case 0:
-        gachaui(BANNER_ITEMS)
-    case 1:
-        msgbox("Of course, which rarity?\p4-star items cost 16 points,\n5-star 64, and 6-star costs 256.")
-        callnative(DisplayItemPoints)
-        dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
-                        "4-Star!",
-                        "5-Star!",
-                        "6-Star!",
-                        "Nevermind.")
-        switch(var(VAR_RESULT)) {
+        "I'll try my luck!",
+        "I'll redeem an item.",
+        "How's this work?",
+        "Nothing for now.")
+    switch(var(VAR_RESULT)){
         case 0:
-            callnative(BuildListOf4StarItems)
-            setvar(VAR_RESULT, 0)
-            dynmultistack(0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
-            switch(var(VAR_RESULT)) {
-            case 0:
-                msgbox("See you another time then.")
-            case MULTI_B_PRESSED:
-                msgbox("See you another time then.")
-            default:
-                callnative(GiveItemFromPointShop)
-                switch(var(VAR_RESULT)) {
-                case 0:
-                    msgbox("You don't have enough points for that.")
-                case 1:
-                    msgbox("Here you go!")
-                }
-            }
-            callnative(HideItemPoints)
-            waitmessage
-            release
-            end
+            msgbox("You got it!")
+            closemessage
+            gachaui(BANNER_ITEMS)
         case 1:
-            callnative(BuildListOf5StarItems)
-            setvar(VAR_RESULT, 0)
-            dynmultistack(0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
-            switch(var(VAR_RESULT)) {
-            case 0:
-                msgbox("See you another time then.")
-            case MULTI_B_PRESSED:
-                msgbox("See you another time then.")
-            default:
-                callnative(GiveItemFromPointShop)
-                switch(var(VAR_RESULT)) {
-                case 0:
-                    msgbox("You don't have enough points for that.")
-                case 1:
-                    msgbox("Here you go!")
-                }
-            }
-            callnative(HideItemPoints)
-            waitmessage
-            release
-            end
+        msgbox("Oh, here for something specific?\nTell, which rarity item would you like?")
+            goto(ItemBanner_Redeem)
         case 2:
-            callnative(BuildListOf6StarItems)
-            setvar(VAR_RESULT, 0)
-            dynmultistack(0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
-            switch(var(VAR_RESULT)) {
-            case 0:
-                msgbox("See you another time then.")
-            case MULTI_B_PRESSED:
-                msgbox("See you another time then.")
-            default:
-                callnative(GiveItemFromPointShop)
-                switch(var(VAR_RESULT)) {
-                case 0:
-                    msgbox("You don't have enough points for that.")
-                case 1:
-                    msgbox("Here you go!")
-                }
-            }
-            callnative(HideItemPoints)
-            waitmessage
-            release
-            end
+            goto(ItemBanner_Help)
         default:
-            callnative(HideItemPoints)
-            msgbox("See you another time!")
-            waitmessage
+            msgbox("I'll be here if you need anything else,\nsweetheart.")
+            closemessage
             release
             end
-        }
-        callnative(HideItemPoints)
-    default:
-        msgbox("Next time then.")
-        waitmessage
-        release
-        end
     }
     waitstate
-    msgbox("Hope it went well.")
+    msgbox("And, got what you wanted?\pIs there anything else I can help with?")
+    goto(ItemBanner)
+}
+
+script ItemBanner_Redeem {
+    msgbox("It's 16 points for a 4-star, 64 for\na 5-stars and 256 for the 6-stars.")
+    callnative(DisplayItemPoints)
+    dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
+        "4-Star!",
+        "5-Star!",
+        "6-Star!",
+        "Nevermind.")
+    switch(var(VAR_RESULT)){
+        case 0:
+            callnative(BuildListOf4StarItems)
+        case 1:
+            callnative(BuildListOf5StarItems)
+        case 2:
+            callnative(BuildListOf6StarItems)
+        default:
+            callnative(HideItemPoints)
+            msgbox("Change of heart, hmm?\nNeed me for anything else?")
+            goto(ItemBanner)
+    }
+    goto(ItemBanner_Redeem_ItemList)
+}
+
+script ItemBanner_Redeem_ItemList {
+    setvar(VAR_RESULT, 0)
+    dynmultistack(0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
+    switch(var(VAR_RESULT)) {
+        case 0:
+            msgbox("Not what ya were looking for?")
+        case MULTI_B_PRESSED:
+            msgbox("Not what ya were looking for?")
+        default:
+            callnative(GiveItemFromPointShop)
+            switch(var(VAR_RESULT)) {
+                case 0:
+                    msgbox("No can do, sorry.\nYou don't have enough points.")
+                case 1:
+                    msgbox("Ofcourse, here you go!")
+            }
+    }
+    msgbox("Something else I can help you with,\nsweetie?")
+    goto(ItemBanner_Redeem)
+}
+
+script ItemBanner_Help {
+    msgbox("Need a reminder, hmm?\nI got you covered.\p"
+            "Much like the Pokemon Booth over yonder,\nyou can spend your credits here\lfor items.\p"
+            "The catch is that we don't split up the\navailable gear to different banners.\lAll's on the same banner here.\p"
+            "The guarantee for a 6-star item's also\nlower over here, you only need 40 pulls\lfor them.\p"
+            "But ofcourse, that means less chance\nto get the specific one ya want.\lI'd say that's a fair tradeoff.\p"
+            "Items don't get improved as you pull\nduplicates. We tried something, but\lthat got scrapped early on.\p"
+            "So, whenever you get a copy of an item\nyou already have, you get reimbursed\lin Item Points.\lHow much depends on the item rarity.\p"
+            "The Item Points can be spent here to\nredeem any item of choice. So nothing's\lever wasted.\p"
+            "That should be all!\nNow, time for you to get some of gear.")
     waitmessage
-    release
-    end
+    goto(ItemBanner)
 }
 
 //dynmulti1: Set Risks | Fight | Help | nvm
