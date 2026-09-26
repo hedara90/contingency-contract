@@ -3191,6 +3191,18 @@ bool32 IsTrappingMove(enum Move move)
     }
 }
 
+bool32 IsTrappingAbility(enum Ability ability)
+{
+    switch (ability)
+    {
+    case ABILITY_ARENA_TRAP:
+    case ABILITY_SHADOW_TAG:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
+
 bool32 HasTrappingMoveEffect(enum BattlerId battler)
 {
     enum Move *moves = GetMovesArray(battler);
@@ -3664,6 +3676,9 @@ enum AIPivot ShouldPivot(enum BattlerId battlerAtk, enum BattlerId battlerDef, e
         return SHOULD_PIVOT;
     // Palafin always wants to activate Zero to Hero via pivoting when able
     if (gAiLogicData->abilities[battlerAtk] == ABILITY_ZERO_TO_HERO && gBattleMons[battlerAtk].species == SPECIES_PALAFIN_ZERO && CountUsablePartyMons(battlerAtk) != 0)
+        return SHOULD_PIVOT;
+    // If you're going to die to Perish Song and you're trapped, you should pivot
+    if (IsBattlerTrapped(battlerAtk, battlerDef) && gBattleMons[battlerAtk].volatiles.perishSong && (gBattleMons[battlerAtk].volatiles.perishSongTimer == 0 || IsOnPlayerSide(battlerAtk)))
         return SHOULD_PIVOT;
     // If no good switchin candidate and can't KO to change the situation, not good to pivot
     if (GetNoOfHitsToKOBattler(battlerAtk, battlerDef, gAiThinkingStruct->movesetIndex, AI_ATTACKING, CONSIDER_ENDURE) && !hasGoodSwitchin)

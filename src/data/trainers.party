@@ -2152,124 +2152,86 @@ Music: Magma
 Double Battle: Yes
 AI: Smart Trainer
 Party Size: 4
-Pool Rules: Double Lead Support
+Pool Rules: Skadi
 Pool Pick Functions: Default
 
-Mismagius @ Throat Spray  
-Ability: Levitate  
-Level: 50  
-Tags: Lead / Support
-- Perish Song  
-- Shadow Ball  
-- Hyper Voice  
-- Mystical Fire  
+Chimecho @ Air Balloon
+Ability: Shadow Tag
+Level: 50
+Tags: Lead / Weather Setter / Tag6
+- Perish Song
+- Protect
+- Psycho Boost
+- Doom Desire
 
-Gyarados @ Shed Shell  
-Ability: Intimidate  
-Level: 50  
-Tags: Lead / Weather Abuser
-- Jaw Lock  
-- Bounce  
-- Waterfall  
-- Power Whip  
+Accelgor @ Covert Cloak
+Ability: Intimidate
+Level: 50
+Tags: Lead / Weather Abuser / Tag7
+- Fake Out
+- Bug Buzz
+- Parting Shot
+- Mat Block
 
-Gothitelle @ Leftovers  
-Ability: Shadow Tag  
-Level: 50  
-Tags: Lead / Weather Abuser
-- Trick Room  
-- Heal Pulse  
-- Helping Hand  
-- Psyshock  
+Swampert @ Rocky Helmet
+Ability: Water Absorb
+Level: 50
+- Explosion
+- Flip Turn
+- Protect
+- Recover
 
-Bouffalant @ Silk Scarf  
-Ability: Soundproof  
-Level: 50  
-- High Horsepower  
-- Head Charge  
-- Reversal  
-- Pursuit  
+Decidueye @ Colbur Berry
+Ability: Arena Trap
+Level: 50
+- Thousand Arrows
+- Spiky Shield
+- Spirit Shackle
+- Sappy Seed
 
-Primarina @ Sitrus Berry  
-Ability: Liquid Voice  
-Level: 50  
-Tags: Lead / Support
-- Perish Song  
-- Hyper Voice  
-- Moonblast  
-- Flip Turn  
+Dragalge @ Eject Pack
+Ability: Hospitality
+Level: 50
+- Perish Song
+- Rage Powder
+- Draco Meteor
+- Sludge Bomb
 
-Palossand @ Weakness Policy  
-Ability: Arena Trap  
-Level: 50  
-Tags: Weather Abuser
-- Stealth Rock  
-- Shadow Ball  
-- Shore Up  
-- Toxic Spikes 
+Gyarados @ Choice Band
+Ability: Intimidate
+Level: 50
+Tags: Support
+- Flip Turn
+- Ice Fang
+- Waterfall
+- Floaty Fall
 
-Cursola @ Focus Sash  
-Ability: Weak Armor  
-Level: 50  
-Tags: Weather Setter
-- Destiny Bond  
-- Rage Powder  
-- Shadow Ball  
-- Ice Beam  
+Primarina @ Sitrus Berry
+Ability: Liquid Voice
+Level: 50
+Tags: Lead / Weather Setter / Tag7
+- Perish Song
+- Protect
+- Surf
+- Moonblast
 
-Honchkrow @ Flying Gem  
-Ability: Moxie  
-Level: 50  
-Tags: Weather Setter
-- Perish Song  
-- Acrobatics  
-- Sucker Punch  
-- Pursuit   
+Manaphy @ Leftovers
+Ability: Storm Drain
+Level: 50
+Tags: Lead / Weather Abuser / Tag6
+- Fake Out
+- Take Heart
+- Draining Kiss
+- Scald
 
-Wishiwashi @ Figy Berry  
-Ability: Schooling  
-Level: 50  
-Tags: Weather Abuser
-- Flip Turn  
-- Dive  
-- Whirlpool  
-- Ice Beam  
-
-Mismagius @ Throat Spray  
-Ability: Levitate  
-Level: 50  
-Tags: Weather Setter
-- Perish Song  
-- Shadow Ball  
-- Hyper Voice  
-- Mystical Fire  
-
-Gyarados @ Shed Shell  
-Ability: Intimidate  
-Level: 50  
-Tags: Weather Abuser
-- Jaw Lock  
-- Bounce  
-- Waterfall  
-- Power Whip  
-
-Gothitelle @ Leftovers  
-Ability: Shadow Tag  
-Level: 50  
-Tags: Weather Abuser
-- Trick Room  
-- Heal Pulse  
-- Helping Hand  
-- Psyshock  
-
-Primarina @ Sitrus Berry  
-Ability: Liquid Voice  
-Level: 50  
-Tags: Weather Setter
-- Perish Song  
-- Hyper Voice  
-- Moonblast  
-- Flip Turn  
+Wishiwashi @ Assault Vest
+Ability: Schooling
+Level: 50
+Tags: Support
+- Flip Turn
+- Bouncy Bubble
+- Ice Beam
+- Surf
 
 === TRAINER_ULPIANUS ===
 Name: Ulpianus

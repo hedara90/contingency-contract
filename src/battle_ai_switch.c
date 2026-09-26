@@ -461,6 +461,24 @@ static u32 FindMonWithMoveOfEffectiveness(struct SwitchAiContext *switchContext,
     return FALSE; // There is not a single Pokémon in the party that has a move with this effectiveness threshold
 }
 
+static u32 GetSwampertIndex(struct SwitchAiContext *switchContext)
+{
+    // Find a Pokémon in the party that is Swampert
+    for (u32 monIndex = 0; monIndex < switchContext->lastId; monIndex++)
+    {
+        if(!(switchContext->eligiblePartyMons & (1u << monIndex)))
+            continue;
+
+        enum Species species = GetMonData(&switchContext->party[monIndex], MON_DATA_SPECIES);
+        if (species == SPECIES_SWAMPERT)
+        {
+            return monIndex;
+        }
+    }
+
+    return PARTY_SIZE; // There is not a single Pokémon in the party that is Swampert
+}
+
 static bool32 CanMoveAffectTarget(struct DamageContext *ctx, u32 moveIndex)
 {
     if (ctx->move != MOVE_NONE
@@ -695,6 +713,10 @@ static bool32 ShouldSwitchIfTrapperInParty(struct SwitchAiContext *switchContext
     if (!(gAiThinkingStruct->aiFlags[switchContext->battler] & AI_FLAG_SMART_SWITCHING))
         return FALSE;
 
+    // Built for singles
+    if (IsDoubleBattle())
+        return FALSE;
+
     // Check if opposing battler is already trapped
     if (IsBattlerTrapped(switchContext->battler, switchContext->opposingBattler))
         return FALSE;
@@ -713,6 +735,49 @@ static bool32 ShouldSwitchIfTrapperInParty(struct SwitchAiContext *switchContext
                 return SetSwitchinAndSwitch(switchContext->battler, PARTY_SIZE);
         }
     }
+    return FALSE;
+}
+
+bool32 ShouldSwitchIfAbsorbingPivotMove(struct SwitchAiContext *switchContext)
+{
+    struct DamageContext ctx = {0};
+    ctx.battlerAtk = switchContext->battler;
+    enum BattlerId battlerPartner = GetPartnerBattler(ctx.battlerAtk);
+    ctx.battlerDef = switchContext->opposingBattler;
+    ctx.abilities[ctx.battlerAtk] = gAiLogicData->abilities[ctx.battlerAtk];
+    ctx.abilities[battlerPartner] = gAiLogicData->abilities[battlerPartner];
+    ctx.abilities[ctx.battlerDef] = gAiLogicData->abilities[ctx.battlerDef];
+    ctx.holdEffects[ctx.battlerAtk] = gAiLogicData->holdEffects[ctx.battlerAtk];
+    ctx.holdEffects[ctx.battlerDef] = gAiLogicData->holdEffects[ctx.battlerDef];
+
+    // Don't switch mon out if it's the only trapper
+    if (IsTrappingAbility(ctx.abilities[ctx.battlerAtk]) && !IsTrappingAbility(ctx.abilities[battlerPartner]))
+        return FALSE;
+
+    enum Move predictedMove = GetPredictedMove(ctx.battlerAtk, ctx.battlerDef, gAiLogicData);
+
+    // Only switch if Swampert is alive to absorb the hit
+    u32 swampertIndex = GetSwampertIndex(switchContext);
+    if (swampertIndex == PARTY_SIZE)
+        return FALSE;
+
+    if (IsDoubleBattle())
+    {
+        enum BattlerId opposingPartner = GetPartnerBattler(ctx.battlerDef);
+        enum Move predictedMovePartner = GetPredictedMove(ctx.battlerAtk, opposingPartner, gAiLogicData);
+
+        if ((predictedMove == MOVE_U_TURN || predictedMove == MOVE_VOLT_SWITCH || predictedMove == MOVE_FLIP_TURN)
+            && IsBattlerTrapped(ctx.battlerAtk, ctx.battlerDef) && gBattleMons[ctx.battlerDef].volatiles.perishSong)
+        {
+            return SetSwitchinAndSwitch(switchContext->battler, swampertIndex);
+        }
+        else if ((predictedMovePartner == MOVE_U_TURN || predictedMovePartner == MOVE_VOLT_SWITCH || predictedMovePartner == MOVE_FLIP_TURN)
+            && IsBattlerTrapped(ctx.battlerAtk, opposingPartner) && gBattleMons[opposingPartner].volatiles.perishSong)
+        {
+            return SetSwitchinAndSwitch(switchContext->battler, swampertIndex);
+        }
+    }
+
     return FALSE;
 }
 

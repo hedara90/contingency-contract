@@ -222,6 +222,7 @@ bool32 ShouldClearFieldStatus(enum BattlerId battler, u32 fieldStatus);
 bool32 HasSleepMoveWithLowAccuracy(enum BattlerId battlerAtk, enum BattlerId battlerDef);
 bool32 HasHealingEffect(enum BattlerId battler);
 bool32 IsTrappingMove(enum Move move);
+bool32 IsTrappingAbility(enum Ability ability);
 bool32 HasTrappingMoveEffect(enum BattlerId battler);
 bool32 IsFlinchGuaranteed(enum BattlerId battlerAtk, enum BattlerId battlerDef, enum Move move);
 bool32 HasChoiceEffect(enum BattlerId battler);

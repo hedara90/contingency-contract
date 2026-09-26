@@ -19,6 +19,7 @@ enum PoolRulesets {
     POOL_RULESET_SUPPORT_DOUBLES,
     POOL_RULESET_DOUBLE_LEAD_SUPPORT,
     POOL_RULESET_ELYSIUM,
+    POOL_RULESET_SKADI,
 };
 
 enum PoolPickFunctions {
