@@ -1189,7 +1189,7 @@ script ItemBanner_Redeem_ItemList {
 script ItemBanner_Help {
     msgbox("Need a reminder, hmm?\nI got you covered.\p"
             "Much like the Pokémon Booth over yonder,\nyou can spend your credits here\lfor items.\p"
-            "The catch is that we don't split up the\navailable gear to different banners.\It's all on the same banner here.\p"
+            "The catch is that we don't split up the\navailable gear to different banners.\lIt's all on the same banner here.\p"
             "The guarantee for a 6-star item's also\nlower over here, you only need 40 pulls\lfor them.\p"
             "But of course, that means worse odds\nto get the specific one ya want.\lI'd say that's a fair tradeoff.\p"
             "Items don't get improved as you pull\nduplicates. We tried something, but\lthat got scrapped early on.\p"
