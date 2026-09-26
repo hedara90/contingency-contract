@@ -3665,6 +3665,9 @@ enum AIPivot ShouldPivot(enum BattlerId battlerAtk, enum BattlerId battlerDef, e
     // Palafin always wants to activate Zero to Hero via pivoting when able
     if (gAiLogicData->abilities[battlerAtk] == ABILITY_ZERO_TO_HERO && gBattleMons[battlerAtk].species == SPECIES_PALAFIN_ZERO && CountUsablePartyMons(battlerAtk) != 0)
         return SHOULD_PIVOT;
+    // If you're going to die to Perish Song and you're trapped, you should pivot
+    if (IsBattlerTrapped(battlerAtk, battlerDef) && gBattleMons[battlerAtk].volatiles.perishSong && (gBattleMons[battlerAtk].volatiles.perishSongTimer == 0 || IsOnPlayerSide(battlerAtk)))
+        return SHOULD_PIVOT;
     // If no good switchin candidate and can't KO to change the situation, not good to pivot
     if (GetNoOfHitsToKOBattler(battlerAtk, battlerDef, gAiThinkingStruct->movesetIndex, AI_ATTACKING, CONSIDER_ENDURE) && !hasGoodSwitchin)
         return DONT_PIVOT;
