@@ -3191,6 +3191,18 @@ bool32 IsTrappingMove(enum Move move)
     }
 }
 
+bool32 IsTrappingAbility(enum Ability ability)
+{
+    switch (ability)
+    {
+    case ABILITY_ARENA_TRAP:
+    case ABILITY_SHADOW_TAG:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
+
 bool32 HasTrappingMoveEffect(enum BattlerId battler)
 {
     enum Move *moves = GetMovesArray(battler);

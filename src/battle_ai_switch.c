@@ -742,11 +742,17 @@ bool32 ShouldSwitchIfAbsorbingPivotMove(struct SwitchAiContext *switchContext)
 {
     struct DamageContext ctx = {0};
     ctx.battlerAtk = switchContext->battler;
+    enum BattlerId battlerPartner = GetPartnerBattler(ctx.battlerAtk);
     ctx.battlerDef = switchContext->opposingBattler;
     ctx.abilities[ctx.battlerAtk] = gAiLogicData->abilities[ctx.battlerAtk];
+    ctx.abilities[battlerPartner] = gAiLogicData->abilities[battlerPartner];
     ctx.abilities[ctx.battlerDef] = gAiLogicData->abilities[ctx.battlerDef];
     ctx.holdEffects[ctx.battlerAtk] = gAiLogicData->holdEffects[ctx.battlerAtk];
     ctx.holdEffects[ctx.battlerDef] = gAiLogicData->holdEffects[ctx.battlerDef];
+
+    // Don't switch mon out if it's the only trapper
+    if (IsTrappingAbility(ctx.abilities[ctx.battlerAtk]) && !IsTrappingAbility(ctx.abilities[battlerPartner]))
+        return FALSE;
 
     enum Move predictedMove = GetPredictedMove(ctx.battlerAtk, ctx.battlerDef, gAiLogicData);
 
