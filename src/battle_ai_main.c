@@ -5346,6 +5346,8 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
                 ADJUST_SCORE(DECENT_EFFECT);
             if (aiData->abilities[battlerAtk] == ABILITY_SEED_SOWER && GetMoveCategory(predictedMove) == DAMAGE_CATEGORY_PHYSICAL && predictedMove != MOVE_NONE && AI_IsSlower(battlerAtk, battlerDef, move, predictedMove, CONSIDER_PRIORITY))
                 ADJUST_SCORE(GOOD_EFFECT);
+            if (aiData->abilities[battlerAtk] == ABILITY_STATIC_DISCHARGE && GetMoveCategory(predictedMove) == DAMAGE_CATEGORY_PHYSICAL && predictedMove != MOVE_NONE && AI_IsSlower(battlerAtk, battlerDef, move, predictedMove, CONSIDER_PRIORITY))
+                ADJUST_SCORE(GOOD_EFFECT);
         }
         break;
     case EFFECT_ICE_SPINNER:
