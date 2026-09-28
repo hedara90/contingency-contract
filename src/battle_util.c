@@ -4426,6 +4426,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
             break;
         case ABILITY_SUNBREAK:
             if (!gBattleMons[gBattlerAttacker].volatiles.weatherAbilityActivated
+             && GetMoveType(gCurrentMove) == TYPE_FIRE
              && IsBattlerTurnDamaged(gBattlerTarget, INCLUDING_SUBSTITUTES)
              && !(GetWeather() & B_WEATHER_SUN))
             {
