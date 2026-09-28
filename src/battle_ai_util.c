@@ -751,6 +751,8 @@ bool32 IsDamageMoveUnusable(struct DamageContext *ctx)
     case EFFECT_STEEL_ROLLER:
         if (!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY) && !(aiData->abilities[ctx->battlerAtk] == ABILITY_SEED_SOWER && gAiThinkingStruct->aiFlags[ctx->battlerAtk] & AI_FLAG_PREDICT_MOVE))
             return TRUE;
+        if (!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY) && !(aiData->abilities[ctx->battlerAtk] == ABILITY_STATIC_DISCHARGE && gAiThinkingStruct->aiFlags[ctx->battlerAtk] & AI_FLAG_PREDICT_MOVE))
+            return TRUE;
         break;
     case EFFECT_POLTERGEIST:
         if (gAiLogicData->items[ctx->battlerDef] == ITEM_NONE || !IsBattlerItemEnabled(ctx->battlerDef))

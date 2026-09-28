@@ -4304,6 +4304,14 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
                 effect++;
             }
             break;
+        case ABILITY_STATIC_DISCHARGE:
+            if (IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES)
+             && TryChangeBattleTerrain(gBattlerTarget, STATUS_FIELD_ELECTRIC_TERRAIN, FALSE))
+             {
+                BattleScriptCall(BattleScript_StaticDischargeActivates);
+                effect++;
+             }
+            break;
         case ABILITY_THERMAL_EXCHANGE:
             if (IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES)
              && IsBattlerAlive(gBattlerTarget)
