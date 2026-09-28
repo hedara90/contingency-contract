@@ -2504,4 +2504,10 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Stormcaller"),
         .description = COMPOUND_STRING("Wind summons Rain."),
     },
+    [ABILITY_STATIC_DISCHARGE] =
+    {
+        .name = _("Static Discharge"),
+        .description = COMPOUND_STRING("Affects terrain when hit."),
+        .aiRating = 5,
+    },
 };
