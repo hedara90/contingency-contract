@@ -4582,6 +4582,7 @@ void GetCodeFeedback(void)
 {
     static const u8 sText_JudgeCode[] = _("4ALH5THXBH9");
     static const u8 sText_TARCRelease[] = _("Keeper");
+    static const u8 sText_SkadiOverhaul[] = _("Ishar'mla");
     if (!StringCompare(gStringVar2, sText_JudgeCode))
     {
         gSpecialVar_Result = 1;
@@ -4589,6 +4590,10 @@ void GetCodeFeedback(void)
     else if (!StringCompare(gStringVar2, sText_TARCRelease))
     {
         gSpecialVar_Result = 2;
+    }
+    else if (!StringCompare(gStringVar2, sText_SkadiOverhaul))
+    {
+        gSpecialVar_Result = 3;
     }
     else
         gSpecialVar_Result = 0;
