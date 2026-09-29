@@ -14,6 +14,19 @@ SINGLE_BATTLE_TEST("Sunbreak sets sun after using a Fire attack")
     }
 }
 
+SINGLE_BATTLE_TEST("Sunbreak does not set sun after using a non-Fire attack")
+{
+    GIVEN {
+        PLAYER(SPECIES_FLAREON) { Ability(ABILITY_SUNBREAK); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_TACKLE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, player);
+        NOT { ABILITY_POPUP(player, ABILITY_SUNBREAK); }
+    }
+}
+
 SINGLE_BATTLE_TEST("Sunbreak can only be set once per switch-in")
 {
     GIVEN {

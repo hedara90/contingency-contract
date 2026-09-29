@@ -751,6 +751,8 @@ bool32 IsDamageMoveUnusable(struct DamageContext *ctx)
     case EFFECT_STEEL_ROLLER:
         if (!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY) && !(aiData->abilities[ctx->battlerAtk] == ABILITY_SEED_SOWER && gAiThinkingStruct->aiFlags[ctx->battlerAtk] & AI_FLAG_PREDICT_MOVE))
             return TRUE;
+        if (!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY) && !(aiData->abilities[ctx->battlerAtk] == ABILITY_STATIC_DISCHARGE && gAiThinkingStruct->aiFlags[ctx->battlerAtk] & AI_FLAG_PREDICT_MOVE))
+            return TRUE;
         break;
     case EFFECT_POLTERGEIST:
         if (gAiLogicData->items[ctx->battlerDef] == ITEM_NONE || !IsBattlerItemEnabled(ctx->battlerDef))
@@ -2480,7 +2482,12 @@ s32 ProtectChecks(enum BattlerId battlerAtk, enum BattlerId battlerDef, enum Mov
 
     if (uses == 0)
     {
-        if (predictedMove != MOVE_NONE && predictedMove != MOVE_UNAVAILABLE && !IsBattleMoveStatus(predictedMove))
+        if ((IsBattlerTrapped(battlerAtk, battlerDef) && gBattleMons[battlerDef].volatiles.perishSong)
+            || (IsBattlerTrapped(battlerAtk, GetPartnerBattler(battlerDef)) && gBattleMons[GetPartnerBattler(battlerDef)].volatiles.perishSong))
+        {
+            score += 5;
+        }
+        else if (predictedMove != MOVE_NONE && predictedMove != MOVE_UNAVAILABLE && !IsBattleMoveStatus(predictedMove))
             score += DECENT_EFFECT;
         else if (Random() % 256 < 100)
             score += WEAK_EFFECT;
@@ -3191,6 +3198,18 @@ bool32 IsTrappingMove(enum Move move)
     }
 }
 
+bool32 IsTrappingAbility(enum Ability ability)
+{
+    switch (ability)
+    {
+    case ABILITY_ARENA_TRAP:
+    case ABILITY_SHADOW_TAG:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
+
 bool32 HasTrappingMoveEffect(enum BattlerId battler)
 {
     enum Move *moves = GetMovesArray(battler);
@@ -3664,6 +3683,9 @@ enum AIPivot ShouldPivot(enum BattlerId battlerAtk, enum BattlerId battlerDef, e
         return SHOULD_PIVOT;
     // Palafin always wants to activate Zero to Hero via pivoting when able
     if (gAiLogicData->abilities[battlerAtk] == ABILITY_ZERO_TO_HERO && gBattleMons[battlerAtk].species == SPECIES_PALAFIN_ZERO && CountUsablePartyMons(battlerAtk) != 0)
+        return SHOULD_PIVOT;
+    // If you're going to die to Perish Song and you're trapped, you should pivot
+    if (IsBattlerTrapped(battlerAtk, battlerDef) && gBattleMons[battlerAtk].volatiles.perishSong && (gBattleMons[battlerAtk].volatiles.perishSongTimer == 0 || IsOnPlayerSide(battlerAtk)))
         return SHOULD_PIVOT;
     // If no good switchin candidate and can't KO to change the situation, not good to pivot
     if (GetNoOfHitsToKOBattler(battlerAtk, battlerDef, gAiThinkingStruct->movesetIndex, AI_ATTACKING, CONSIDER_ENDURE) && !hasGoodSwitchin)

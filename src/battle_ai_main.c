@@ -2073,13 +2073,12 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
         if (gBattleStruct->futureSight[GetBattlerLeftFoe(battlerAtk)].counter > 0
          || gBattleStruct->futureSight[GetBattlerRightFoe(battlerAtk)].counter > 0)
             ADJUST_SCORE(-12);
-        else
-            ADJUST_SCORE(GOOD_EFFECT);
         break;
     case EFFECT_TELEPORT:
         ADJUST_SCORE(-10);
         break;
     case EFFECT_FIRST_TURN_ONLY:
+    case EFFECT_MAT_BLOCK:
         if (!IsBattlersFirstTurn(battlerAtk))
             ADJUST_SCORE(-10);
         if (HasChoiceEffect(battlerAtk))
@@ -4880,6 +4879,13 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
                 ADJUST_SCORE(GOOD_EFFECT);
         }
         break;
+    case EFFECT_MAT_BLOCK:
+        if (IsBattlersFirstTurn(battlerAtk)
+        && (AI_IsFaster(battlerAtk, battlerDef, move, predictedMove, CONSIDER_PRIORITY) || AI_IsFaster(battlerAtk, battlerDefPartner, move, predictedMove, CONSIDER_PRIORITY)))
+        {
+            ADJUST_SCORE(5);
+        }
+        break;
     case EFFECT_FIRST_TURN_ONLY:
         if (IsBattlersFirstTurn(battlerAtk) && !IsTargetingPartner(battlerAtk, battlerDef))
         {
@@ -5346,7 +5352,9 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
                 ADJUST_SCORE(GOOD_EFFECT);
             if (ShouldSetFieldStatus(battlerDef, terrain))
                 ADJUST_SCORE(DECENT_EFFECT);
-            if (aiData->abilities[battlerAtk] == ABILITY_SEED_SOWER && GetMoveCategory(predictedMove) == DAMAGE_CATEGORY_PHYSICAL && predictedMove != MOVE_NONE && AI_IsSlower(battlerAtk, battlerDef, move, predictedMove, CONSIDER_PRIORITY))
+            if (aiData->abilities[battlerAtk] == ABILITY_SEED_SOWER && GetMoveCategory(predictedMove) != DAMAGE_CATEGORY_STATUS && predictedMove != MOVE_NONE && AI_IsSlower(battlerAtk, battlerDef, move, predictedMove, CONSIDER_PRIORITY))
+                ADJUST_SCORE(GOOD_EFFECT);
+            if (aiData->abilities[battlerAtk] == ABILITY_STATIC_DISCHARGE && GetMoveCategory(predictedMove) != DAMAGE_CATEGORY_STATUS && predictedMove != MOVE_NONE && AI_IsSlower(battlerAtk, battlerDef, move, predictedMove, CONSIDER_PRIORITY))
                 ADJUST_SCORE(GOOD_EFFECT);
         }
         break;
@@ -5616,6 +5624,8 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
     case EFFECT_SMACK_DOWN:
         if (!AI_IsBattlerGrounded(battlerDef) && HasDamagingMoveOfType(battlerAtk, TYPE_GROUND) && !CanTargetFaintAi(battlerDef, battlerAtk))
             ADJUST_SCORE(DECENT_EFFECT);
+        else if (!AI_IsBattlerGrounded(battlerDef) && gBattleMons[battlerAtk].ability == ABILITY_ARENA_TRAP && !IsBattlerTrapped(battlerAtk, battlerDef))
+            ADJUST_SCORE(GOOD_EFFECT);
         break;
     case EFFECT_KNOCK_OFF:
         if (CanKnockOffItem(battlerDef, battlerAtk, aiData->items[battlerDef]))
@@ -6599,7 +6609,6 @@ static s32 AI_PredictSwitch(enum BattlerId battlerAtk, enum BattlerId battlerDef
     case EFFECT_TOXIC_SPIKES:
         ADJUST_SCORE(BEST_EFFECT);
         break;
-    case EFFECT_FUTURE_SIGHT:
     case EFFECT_TELEKINESIS:
     case EFFECT_GRAVITY:
     case EFFECT_WEATHER:

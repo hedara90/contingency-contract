@@ -21,6 +21,7 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "risk.h"
+#include "string_util.h"
 
 // this file's functions
 struct IncomingHealInfo
@@ -461,6 +462,46 @@ static u32 FindMonWithMoveOfEffectiveness(struct SwitchAiContext *switchContext,
     return FALSE; // There is not a single Pokémon in the party that has a move with this effectiveness threshold
 }
 
+static u32 GetSwampertIndex(struct SwitchAiContext *switchContext)
+{
+    // Find a Pokémon in the party that is Swampert
+    for (u32 monIndex = 0; monIndex < switchContext->lastId; monIndex++)
+    {
+        if(!(switchContext->eligiblePartyMons & (1u << monIndex)))
+            continue;
+
+        enum Species species = GetMonData(&switchContext->party[monIndex], MON_DATA_SPECIES);
+        if (species == SPECIES_SWAMPERT)
+        {
+            return monIndex;
+        }
+    }
+
+    return PARTY_SIZE; // There is not a single Pokémon in the party that is Swampert
+}
+
+static u32 GetDragalgeIndex(struct SwitchAiContext *switchContext)
+{
+    // Find a Pokémon in the party that is Dragalge
+    for (u32 monIndex = 0; monIndex < switchContext->lastId; monIndex++)
+    {
+        if(!(switchContext->eligiblePartyMons & (1u << monIndex)))
+            continue;
+
+        enum Species species = GetMonData(&switchContext->party[monIndex], MON_DATA_SPECIES);
+        if (species == SPECIES_DRAGALGE)
+        {
+            enum Item heldItem = GetMonData(&switchContext->party[monIndex], MON_DATA_HELD_ITEM);
+            if (heldItem == ITEM_EJECT_PACK)
+            {
+                return monIndex;
+            }
+        }
+    }
+
+    return PARTY_SIZE; // There is not a single Pokémon in the party that is Dragalge
+}
+
 static bool32 CanMoveAffectTarget(struct DamageContext *ctx, u32 moveIndex)
 {
     if (ctx->move != MOVE_NONE
@@ -695,6 +736,10 @@ static bool32 ShouldSwitchIfTrapperInParty(struct SwitchAiContext *switchContext
     if (!(gAiThinkingStruct->aiFlags[switchContext->battler] & AI_FLAG_SMART_SWITCHING))
         return FALSE;
 
+    // Built for singles
+    if (IsDoubleBattle())
+        return FALSE;
+
     // Check if opposing battler is already trapped
     if (IsBattlerTrapped(switchContext->battler, switchContext->opposingBattler))
         return FALSE;
@@ -713,6 +758,68 @@ static bool32 ShouldSwitchIfTrapperInParty(struct SwitchAiContext *switchContext
                 return SetSwitchinAndSwitch(switchContext->battler, PARTY_SIZE);
         }
     }
+    return FALSE;
+}
+
+bool32 ShouldSwitchIfAbsorbingPivotMove(struct SwitchAiContext *switchContext)
+{
+    struct DamageContext ctx = {0};
+    ctx.battlerAtk = switchContext->battler;
+    enum BattlerId battlerPartner = GetPartnerBattler(ctx.battlerAtk);
+    ctx.battlerDef = switchContext->opposingBattler;
+    ctx.abilities[ctx.battlerAtk] = gAiLogicData->abilities[ctx.battlerAtk];
+    ctx.abilities[battlerPartner] = gAiLogicData->abilities[battlerPartner];
+    ctx.abilities[ctx.battlerDef] = gAiLogicData->abilities[ctx.battlerDef];
+    ctx.holdEffects[ctx.battlerAtk] = gAiLogicData->holdEffects[ctx.battlerAtk];
+    ctx.holdEffects[ctx.battlerDef] = gAiLogicData->holdEffects[ctx.battlerDef];
+
+    enum BattlerId opposingPartner = GetPartnerBattler(ctx.battlerDef);
+
+    // Don't switch mon out if it's the only trapper and the perish timer of one of the player's mons isn't about to KO it
+    if ((IsTrappingAbility(ctx.abilities[ctx.battlerAtk]) && !IsTrappingAbility(ctx.abilities[battlerPartner]))
+        && !gBattleMons[ctx.battlerDef].volatiles.perishSongTimer == 0
+        && !gBattleMons[opposingPartner].volatiles.perishSongTimer == 0)
+        return FALSE;
+
+    // Only switch if Swampert or Dragalge are alive to absorb the hit
+    u32 swampertIndex = GetSwampertIndex(switchContext);
+    u32 dragalgeIndex = GetDragalgeIndex(switchContext);
+    if (swampertIndex == PARTY_SIZE && dragalgeIndex == PARTY_SIZE)
+        return FALSE;
+
+    enum Move predictedMove = GetPredictedMove(ctx.battlerAtk, ctx.battlerDef, gAiLogicData);
+    enum Move predictedMovePartner = GetPredictedMove(ctx.battlerAtk, opposingPartner, gAiLogicData);
+
+    if (IsDoubleBattle())
+    {
+        if (swampertIndex != PARTY_SIZE)
+        {
+            if ((predictedMove == MOVE_U_TURN || predictedMove == MOVE_VOLT_SWITCH || predictedMove == MOVE_FLIP_TURN)
+                && IsBattlerTrapped(ctx.battlerAtk, ctx.battlerDef) && gBattleMons[ctx.battlerDef].volatiles.perishSong)
+            {
+                return SetSwitchinAndSwitch(switchContext->battler, swampertIndex);
+            }
+            else if ((predictedMovePartner == MOVE_U_TURN || predictedMovePartner == MOVE_VOLT_SWITCH || predictedMovePartner == MOVE_FLIP_TURN)
+                && IsBattlerTrapped(ctx.battlerAtk, opposingPartner) && gBattleMons[opposingPartner].volatiles.perishSong)
+            {
+                return SetSwitchinAndSwitch(switchContext->battler, swampertIndex);
+            }
+        }
+        else if (dragalgeIndex != PARTY_SIZE)
+        {
+            if ((predictedMove == MOVE_PARTING_SHOT)
+                && IsBattlerTrapped(ctx.battlerAtk, ctx.battlerDef) && gBattleMons[ctx.battlerDef].volatiles.perishSong)
+            {
+                return SetSwitchinAndSwitch(switchContext->battler, dragalgeIndex);
+            }
+            else if ((predictedMovePartner == MOVE_PARTING_SHOT)
+                && IsBattlerTrapped(ctx.battlerAtk, opposingPartner) && gBattleMons[opposingPartner].volatiles.perishSong)
+            {
+                return SetSwitchinAndSwitch(switchContext->battler, dragalgeIndex);
+            }
+        }
+    }
+
     return FALSE;
 }
 
@@ -2466,11 +2573,59 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int lastId, enum BattlerI
     return PARTY_SIZE;
 }
 
+static bool32 IsMonSkadiPivotAbsorber(enum BattlerId battler, enum BattlerId opposingBattler, enum Move predictedMove, enum Move predictedMovePartner, bool32 defenderTrapped, bool32 defenderPartnerTrapped)
+{
+    if (gBattleMons[battler].species == SPECIES_SWAMPERT)
+    {
+        if ((predictedMove == MOVE_U_TURN || predictedMove == MOVE_VOLT_SWITCH || predictedMove == MOVE_FLIP_TURN)
+            && defenderTrapped && gBattleMons[opposingBattler].volatiles.perishSong)
+        {
+            return TRUE;
+        }
+        else if ((predictedMovePartner == MOVE_U_TURN || predictedMovePartner == MOVE_VOLT_SWITCH || predictedMovePartner == MOVE_FLIP_TURN)
+            && defenderPartnerTrapped && gBattleMons[GetPartnerBattler(opposingBattler)].volatiles.perishSong)
+        {
+            return TRUE;
+        }
+    }
+    else if (gBattleMons[battler].species == SPECIES_DRAGALGE && gAiLogicData->items[battler] == ITEM_EJECT_BUTTON)
+    {
+        if ((predictedMove == MOVE_PARTING_SHOT)
+            && defenderTrapped && gBattleMons[opposingBattler].volatiles.perishSong)
+        {
+            return TRUE;
+        }
+        else if ((predictedMovePartner == MOVE_PARTING_SHOT)
+            && defenderPartnerTrapped && gBattleMons[GetPartnerBattler(opposingBattler)].volatiles.perishSong)
+        {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
 static u32 GetBestMonVanilla(struct Pokemon *party, int lastId, enum BattlerId battler, enum BattlerId opposingBattler, enum BattlerId battlerIn1, enum BattlerId battlerIn2, enum SwitchType switchType)
 {
     s32 aceMonCount = 0;
     u32 validMonIds = 0, batonPassIds = 0, typeMatchupIds = 0, bestDamageId = PARTY_SIZE, aceMonId = PARTY_SIZE;
     u32 bestResist = UQ_4_12(2.0), typeMatchup, bestDamage = 0;
+    u32 pivotAbsorberId = PARTY_SIZE;
+    bool32 fightingSkadi = FALSE;
+
+    enum Move predictedMove = MOVE_NONE;
+    enum Move predictedMovePartner = MOVE_NONE;
+    bool32 defenderTrapped = FALSE;
+    bool32 defenderPartnerTrapped = FALSE;
+    const u8 skadiName[] = _("Skadi");
+
+    if (!StringCompare(GetTrainerNameFromId(TRAINER_BATTLE_PARAM.opponentA), skadiName))
+    {
+        fightingSkadi = TRUE;
+        predictedMove = GetPredictedMove(battler, opposingBattler, gAiLogicData);
+        predictedMovePartner = GetPredictedMove(battler, GetPartnerBattler(opposingBattler), gAiLogicData);
+        defenderTrapped = IsBattlerTrapped(battler, opposingBattler);
+        defenderPartnerTrapped = IsBattlerTrapped(battler, GetPartnerBattler(opposingBattler));
+    }
 
     // Save existing battler data
     struct AiLogicData *savedAiLogicData = AllocSaveAiLogicData();
@@ -2504,6 +2659,12 @@ static u32 GetBestMonVanilla(struct Pokemon *party, int lastId, enum BattlerId b
         // While not really invalid per se, not really wise to switch into this mon
         if (gAiLogicData->abilities[battler] == ABILITY_TRUANT && IsTruantMonVulnerable(battler, opposingBattler))
             continue;
+
+        if (fightingSkadi)
+        {
+            if (IsMonSkadiPivotAbsorber(battler, opposingBattler, predictedMove, predictedMovePartner, defenderTrapped, defenderPartnerTrapped))
+                pivotAbsorberId = monIndex;
+        }
 
         typeMatchup = GetBattlerTypeMatchup(opposingBattler, battler);
 
@@ -2548,7 +2709,8 @@ static u32 GetBestMonVanilla(struct Pokemon *party, int lastId, enum BattlerId b
     SetBattlerAiData(battler, gAiLogicData);
 
     // Baton Pass > Type Matchup > Best Damage
-    if (batonPassIds != 0)                  return GetSwitchinCandidate(batonPassIds, battler, lastId, switchType);
+    if (pivotAbsorberId != PARTY_SIZE)        return pivotAbsorberId;
+    else if (batonPassIds != 0)                  return GetSwitchinCandidate(batonPassIds, battler, lastId, switchType);
     else if (typeMatchupIds != 0)           return GetSwitchinCandidate(typeMatchupIds, battler, lastId, switchType);
     else if (bestDamageId != PARTY_SIZE)    return bestDamageId;
 

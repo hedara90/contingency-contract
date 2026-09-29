@@ -173,6 +173,7 @@ text GladiiaAfterBattle_Lose {
 script AbyssalHunters_Skadi {
     msgbox(SkadiBeforeBattle)
     setspeaker(SP_NAME_SKADI)
+    setdynamicswitchaifunc(ShouldSwitchIfAbsorbingPivotMove)
     trainerbattle_no_intro(TRAINER_SKADI, SkadiAfterBattle)
     // msgbox("Good battle!")
     closemessage
