@@ -2078,6 +2078,7 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
         ADJUST_SCORE(-10);
         break;
     case EFFECT_FIRST_TURN_ONLY:
+    case EFFECT_MAT_BLOCK:
         if (!IsBattlersFirstTurn(battlerAtk))
             ADJUST_SCORE(-10);
         if (HasChoiceEffect(battlerAtk))
@@ -4876,6 +4877,13 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
                 ADJUST_SCORE(GOOD_EFFECT);
             else if (predictedEffect == EFFECT_SEMI_INVULNERABLE && !IsSemiInvulnerable(battlerDef, CHECK_ALL))
                 ADJUST_SCORE(GOOD_EFFECT);
+        }
+        break;
+    case EFFECT_MAT_BLOCK:
+        if (IsBattlersFirstTurn(battlerAtk)
+        && (AI_IsFaster(battlerAtk, battlerDef, move, predictedMove, CONSIDER_PRIORITY) || AI_IsFaster(battlerAtk, battlerDefPartner, move, predictedMove, CONSIDER_PRIORITY)))
+        {
+            ADJUST_SCORE(5);
         }
         break;
     case EFFECT_FIRST_TURN_ONLY:
