@@ -2482,7 +2482,12 @@ s32 ProtectChecks(enum BattlerId battlerAtk, enum BattlerId battlerDef, enum Mov
 
     if (uses == 0)
     {
-        if (predictedMove != MOVE_NONE && predictedMove != MOVE_UNAVAILABLE && !IsBattleMoveStatus(predictedMove))
+        if ((IsBattlerTrapped(battlerAtk, battlerDef) && gBattleMons[battlerDef].volatiles.perishSong)
+            || (IsBattlerTrapped(battlerAtk, GetPartnerBattler(battlerDef)) && gBattleMons[GetPartnerBattler(battlerDef)].volatiles.perishSong))
+        {
+            score += 5;
+        }
+        else if (predictedMove != MOVE_NONE && predictedMove != MOVE_UNAVAILABLE && !IsBattleMoveStatus(predictedMove))
             score += DECENT_EFFECT;
         else if (Random() % 256 < 100)
             score += WEAK_EFFECT;
