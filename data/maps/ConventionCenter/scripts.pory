@@ -1243,6 +1243,7 @@ script WelcomeCounter {
     goto_if_eq(VAR_RESULT, 0, CC_CodeFailed)
     goto_if_eq(VAR_RESULT, 1, CC_CodeJudge)
     goto_if_eq(VAR_RESULT, 2, CC_CodeTARCRelease)
+    goto_if_eq(VAR_RESULT, 3, CC_CodeSkadiOverhaul)
     end
 }
 
@@ -1259,7 +1260,7 @@ script CC_CodeJudge {
     msgbox("Congratulations! Please enjoy these\n"
             "extra credits. Have fun!")
     playse(SE_EXP_MAX)
-    msgbox("Obtained 1000 Pokémon credits and\n"
+    msgbox("Received ¥ 1000 and\n"
             "64 item points!")
     waitmessage
     addmoney(1000)
@@ -1272,15 +1273,27 @@ script CC_CodeJudge {
 script CC_CodeTARCRelease {
     goto_if_set(FLAG_TARCRELEASE_CODE_REDEEMED, CC_CodeRedeemed)
     msgbox("Congratulations!\nHere, your very own Chubby Lung!\p"
-            "I've also thrown in some extra\ncredits, on the house.")
+            "Unfortunately the extra credits\n"
+            "associated with this code have\l"
+            "expired.")
     giveitem(ITEM_POKE_DOLL, 1)
+    setflag(FLAG_TARCRELEASE_CODE_REDEEMED)
+    release
+    end
+}
+
+script CC_CodeSkadiOverhaul {
+    goto_if_set(FLAG_SKADI_OVERHAUL_CODE_REDEEMED, CC_CodeRedeemed)
+    msgbox("Congratulations!\nI hope you enjoy the new team Skadi\l"
+            "has cooked up!\p"
+            "Here, some extra credits on the\nhouse.")
     playse(SE_EXP_MAX)
-    msgbox("Obtained 500 Pokémon credits and\n"
+    msgbox("Received ¥ 500 and\n"
             "32 item points!")
     waitmessage
     addmoney(500)
     givebp(32)
-    setflag(FLAG_TARCRELEASE_CODE_REDEEMED)
+    setflag(FLAG_SKADI_OVERHAUL_CODE_REDEEMED)
     release
     end
 }

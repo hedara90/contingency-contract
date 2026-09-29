@@ -72,7 +72,7 @@
 #define FLAG_TARCRELEASE_CODE_REDEEMED    0x32 // Unused Flag
 #define FLAG_TRIGGER_APOLOGY_1    0x33 // Unused Flag
 #define FLAG_HAS_RECEIVED_APOLOGY_1    0x34 // Unused Flag
-#define FLAG_UNUSED_0x035    0x35 // Unused Flag
+#define FLAG_SKADI_OVERHAUL_CODE_REDEEMED    0x35 // Unused Flag
 #define FLAG_UNUSED_0x036    0x36 // Unused Flag
 #define FLAG_UNUSED_0x037    0x37 // Unused Flag
 #define FLAG_UNUSED_0x038    0x38 // Unused Flag
