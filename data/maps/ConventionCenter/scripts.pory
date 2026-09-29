@@ -30,6 +30,7 @@ const FLAG_EATEN_SNACKS = FLAG_TEMP_15
 const chisa = LOCALID_CC_CHISA
 const ardelia = LOCALID_CC_ARDELIA
 const receptionist = LOCALID_CC_RECEPTIONIST
+const gauntletperson = LOCALID_ATTENDANT_MAIN
 
 script CC_OnTransition {
     call(CC_GilbertaEvent)
@@ -722,6 +723,19 @@ script CC_Door {
 script Originium {
     lock
     msgbox("A dark orange crystal resembling\nOriginium")
+    closemessage
+}
+
+script TallOriginium {
+    lock
+    msgbox("The taller variant of the crystals.\nIt's big enough to encase a person.")
+    closemessage
+}
+
+script BlackOriginium {
+    lock
+    msgbox("Another piece of Originium.\nIt has a very daunting presence.")
+    closemessage
 }
 
 script ItemBanner_Sign {
@@ -1022,209 +1036,444 @@ script PayingQueuer {
     end
 }
 
-script MonBanners {
+script MonBanners_Attendant {
     lock
     msgbox("Hello!\pDo you want to try your luck on a banner?")
+    goto(MonBanners)
+}
+
+script MonBanners {
     dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
-                    "Indomitability of the Unbreakable Spirit",
-                    "Fury of the Earthern Core",
-                    "Memories of Months Past",
-                    "No, I'm good for now!")
-    switch(var(VAR_RESULT)) {
-    case 0:
-        gachaui(BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT)
-    case 1:
-        gachaui(BANNER_FURY_OF_THE_EARTHEN_CORE)
-    case 2:
-        gachaui(BANNER_MEMORIES_OF_MONTHS_PAST)
-    default:
-        msgbox("Next time then.")
-        waitmessage
-        release
-        end
+        "I'd like to do some pulls!",
+        "What's this about?",
+        "No, I'm good for now!")
+    switch(var(VAR_RESULT)){
+        case 0:
+            msgbox("Certainly, which banner would you like\nto pull on?")
+            goto(MonBanners_List)
+        case 1:
+            goto(MonBanners_Help)
+        default:
+            goto(MonBanners_Exit)
+    }
+}
+
+script MonBanners_List {
+    dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
+        "Indomitability of the Unbreakable Spirit",
+        "Fury of the Earthern Core",
+        "Memories of Months Past",
+        "Actually, nevermind")
+    switch(var(VAR_RESULT)){
+        case 0: 
+            gachaui(BANNER_INDOMITABILITY_OF_THE_UNBREAKABLE_SPIRIT)
+        case 1: 
+            gachaui(BANNER_FURY_OF_THE_EARTHEN_CORE)
+        case 2: 
+            gachaui(BANNER_MEMORIES_OF_MONTHS_PAST)
+        default:
+            closemessage
+            goto(MonBanners)
     }
     waitstate
-    msgbox("Hope it went well.")
+    msgbox("I hope it went well!\pIs there anything else?")
+    goto(MonBanners_List)
+}
+
+script MonBanners_Help {
+    msgbox("Oh, they didn't explain it to you?\p"
+            "This is the Pokémon booth! Here, you\ncan obtain Pokémon for use in the\levent's arena.\p"
+            "If you're familiar with Gacha systems,\nthis basically works like one.\p"
+            "You spend your credits to get random\nPokémon from the banners here.\p"
+            "The available Pokémon are split between\nthe banners, with each mon being\lexclusive to one banner.\p"
+            "When you obtain a mon for the first time,\nthey'll have 1 Ability and 4 Moves\lavailable.\lAs you get more copies, you will raise\ltheir Potential level.\p"
+            "Each Potential level will unlock new\nmoves and abilities.\lYou can change those in the mon's\lsummary screen.\p"
+            "The limit to this is 4 copies.\nFrom your 5th copy onwards,\lwe will refund some credits instead.\p"
+            "Furthermore, each Pokémon has a rarity.\nThere are 4-, 5-, and 6-star rarity mons.\p"
+            "The higher the rarity, the lower the\nchance of pulling them.\p"
+            "But, higher rarity Pokémon will\ngenerally learn more new moves or\labilities per potential!\p"
+            "Lastly, each banner has a pity system.\nYou are guaranteed to get a\l6-star Pokémon every 70 pulls.\p"
+            "This count does reset when you obtain\na 6-star Pokémon, however.\p"
+            "That should be all!{PAUSE_UNTIL_PRESS} Sorry for the long\nexplanation, we want to be thorough.\p"
+            "Time for some pulls, then?")
+    waitmessage
+    goto(MonBanners)
+}
+
+
+script MonBanners_Exit {
+    msgbox("Alright, come back anytime!")
     waitmessage
     release
     end
+}
+
+script ItemBanner_Attendant {
+    lock
+    msgbox("Hello darling!\nWelcome to the Item Arsenal!\p"
+            "Looking to pull some new gear?\nOr d'ya want to redeem something?")
+    goto(ItemBanner)
 }
 
 script ItemBanner {
-    lock
-    msgbox("Hello!\pDo you want to try your luck on items?\nOr redeem what you want directly?")
     dynmultichoice(0, 0, FALSE, 3, FALSE, DYN_MULTICHOICE_CB_NONE,
-                    "I'll try my luck!",
-                    "I'll redeem an item.",
-                    "Nothing for now.")
-    switch(var(VAR_RESULT)) {
-    case 0:
-        gachaui(BANNER_ITEMS)
-    case 1:
-        msgbox("Of course, which rarity?\p4-star items cost 16 points,\n5-star 64, and 6-star costs 256.")
-        callnative(DisplayItemPoints)
-        dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
-                        "4-Star!",
-                        "5-Star!",
-                        "6-Star!",
-                        "Nevermind.")
-        switch(var(VAR_RESULT)) {
+        "I'll try my luck!",
+        "I'll redeem an item.",
+        "How's this work?",
+        "Nothing for now.")
+    switch(var(VAR_RESULT)){
         case 0:
-            callnative(BuildListOf4StarItems)
-            setvar(VAR_RESULT, 0)
-            dynmultistack(0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
-            switch(var(VAR_RESULT)) {
-            case 0:
-                msgbox("See you another time then.")
-            case MULTI_B_PRESSED:
-                msgbox("See you another time then.")
-            default:
-                callnative(GiveItemFromPointShop)
-                switch(var(VAR_RESULT)) {
-                case 0:
-                    msgbox("You don't have enough points for that.")
-                case 1:
-                    msgbox("Here you go!")
-                }
-            }
-            callnative(HideItemPoints)
-            waitmessage
-            release
-            end
+            msgbox("You got it!")
+            closemessage
+            gachaui(BANNER_ITEMS)
         case 1:
-            callnative(BuildListOf5StarItems)
-            setvar(VAR_RESULT, 0)
-            dynmultistack(0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
-            switch(var(VAR_RESULT)) {
-            case 0:
-                msgbox("See you another time then.")
-            case MULTI_B_PRESSED:
-                msgbox("See you another time then.")
-            default:
-                callnative(GiveItemFromPointShop)
-                switch(var(VAR_RESULT)) {
-                case 0:
-                    msgbox("You don't have enough points for that.")
-                case 1:
-                    msgbox("Here you go!")
-                }
-            }
-            callnative(HideItemPoints)
-            waitmessage
-            release
-            end
+        msgbox("Oh, here for something specific?\nTell, which rarity item would you like?")
+            goto(ItemBanner_Redeem)
         case 2:
-            callnative(BuildListOf6StarItems)
-            setvar(VAR_RESULT, 0)
-            dynmultistack(0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
-            switch(var(VAR_RESULT)) {
-            case 0:
-                msgbox("See you another time then.")
-            case MULTI_B_PRESSED:
-                msgbox("See you another time then.")
-            default:
-                callnative(GiveItemFromPointShop)
-                switch(var(VAR_RESULT)) {
-                case 0:
-                    msgbox("You don't have enough points for that.")
-                case 1:
-                    msgbox("Here you go!")
-                }
-            }
-            callnative(HideItemPoints)
-            waitmessage
-            release
-            end
+            goto(ItemBanner_Help)
         default:
-            callnative(HideItemPoints)
-            msgbox("See you another time!")
-            waitmessage
+            msgbox("I'll be here if you need anything else,\nsweetheart.")
+            closemessage
             release
             end
-        }
-        callnative(HideItemPoints)
-    default:
-        msgbox("Next time then.")
-        waitmessage
-        release
-        end
     }
     waitstate
-    msgbox("Hope it went well.")
+    msgbox("And, got what you wanted?\pIs there anything else I can help with?")
+    goto(ItemBanner)
+}
+
+script ItemBanner_Redeem {
+    msgbox("It's 16 points for a 4-star, 64 for\na 5-stars and 256 for the 6-stars.")
+    callnative(DisplayItemPoints)
+    dynmultichoice(0, 0, FALSE, 4, FALSE, DYN_MULTICHOICE_CB_NONE,
+        "4-Star!",
+        "5-Star!",
+        "6-Star!",
+        "Nevermind.")
+    switch(var(VAR_RESULT)){
+        case 0:
+            callnative(BuildListOf4StarItems)
+        case 1:
+            callnative(BuildListOf5StarItems)
+        case 2:
+            callnative(BuildListOf6StarItems)
+        default:
+            callnative(HideItemPoints)
+            msgbox("Change of heart, hmm?\nNeed me for anything else?")
+            goto(ItemBanner)
+    }
+    goto(ItemBanner_Redeem_ItemList)
+}
+
+script ItemBanner_Redeem_ItemList {
+    setvar(VAR_RESULT, 0)
+    dynmultistack(0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE)
+    switch(var(VAR_RESULT)) {
+        case 0:
+            msgbox("Not what ya were looking for?")
+        case MULTI_B_PRESSED:
+            msgbox("Not what ya were looking for?")
+        default:
+            callnative(GiveItemFromPointShop)
+            switch(var(VAR_RESULT)) {
+                case 0:
+                    msgbox("No can do, sorry.\nYou don't have enough points.")
+                case 1:
+                    msgbox("Of course, here you go!")
+            }
+    }
+    msgbox("Something else I can help you with,\nsweetie?")
+    goto(ItemBanner_Redeem)
+}
+
+script ItemBanner_Help {
+    msgbox("Need a reminder, hmm?\nI got you covered.\p"
+            "Much like the Pokémon Booth over yonder,\nyou can spend your credits here\lfor items.\p"
+            "The catch is that we don't split up the\navailable gear to different banners.\lIt's all on the same banner here.\p"
+            "The guarantee for a 6-star item's also\nlower over here, you only need 40 pulls\lfor them.\p"
+            "But of course, that means worse odds\nto get the specific one ya want.\lI'd say that's a fair tradeoff.\p"
+            "Items don't get improved as you pull\nduplicates. We tried something, but\lthat got scrapped early on.\p"
+            "So, whenever you get a copy of an item\nyou already have, you get reimbursed\lin Item Points.\lHow much depends on the item rarity.\p"
+            "The Item Points can be spent here to\nredeem any item of choice. So nothing's\lever wasted.\p"
+            "That should be all!\nNow, time for you to get some of gear.")
     waitmessage
+    goto(ItemBanner)
+}
+
+//dynmulti1: Set Risks | Fight | Help | nvm
+//dynmulti2:                -> Endfield | Arknights | Other
+//dynmulti3:                    -> Endfield gauntlets
+//                              -> Arknights Gauntlets
+//                              -> Other Gauntlets
+
+script ChooseGauntlet_Attendant {
+    lock
+    faceplayer
+    msgbox("Hello! How can I help you?")
+    goto(ChooseGauntlet)
+}
+
+script ChooseGauntlet {
+    dynmultichoice(0,0,FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE,
+        "Can I change my {COLOR RED}Risks?",
+        "A gauntlet fight please!",
+        "I need a refresher...",
+        "Nevermind!")
+    switch(var(VAR_RESULT)){
+        case 0: 
+            goto(ChooseGauntlet_Risks)
+        case 1:
+            msgbox("Sure thing, which one would you like\nto fight?")
+            goto(ChooseGauntlet_Main)
+        case 2: goto(ChooseGauntlet_Help)
+        default:
+            goto(ChooseGauntlet_CloseScript)
+    }
+}
+
+script ChooseGauntlet_Risks {
+    msgbox("Aye, put your CC Pass here please, miss.")
+    closemessage
+    riskui
+    waitstate
+    msgbox("Anything else?")
+    waitmessage
+    goto(ChooseGauntlet)
+}
+
+script ChooseGauntlet_Help {
+    msgbox("Of course!")
+    msgbox("The event battles are set up as\ngauntlets.\p"
+            "You fight 4 trainers back to back,\nand your team is healed between\leach fight.\p"
+            "You cannot change your Pokémon's\nmoves and abilities between fights.\p"
+            "However, you can still change your\nparty order.\p"
+            "Winning one battle grants a small\namount of credits, and winning a\lgauntlet grants a bonus.\p"
+            "Additionally, each risk you enable\nincreases the battle payout.\p"
+            "I can help you enable or disable\nrisks here.")
+    applymovement(gauntletperson, moves(face_up))
+    msgbox("The machine over there will show your\nhigh scores for each gauntlet.")
+    waitmessage
+    applymovement(gauntletperson, moves(face_player))
+    msgbox("That should cover everything!")
+    closemessage
+    goto(ChooseGauntlet)
+}
+
+script ChooseGauntlet_Main {
+    
+    dynmultichoice(0,0,FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE,
+        "Endfield Gauntlets",
+        "Arknights Gauntlets",
+        "Other",
+        "Actually, hold on.")
+    switch(var(VAR_RESULT)){
+        case 0: 
+            msgbox("Which Endfield gauntlet?")
+            goto(ChooseGauntlet_Endfield)
+        case 1: 
+            msgbox("Of course, which Arknights gauntlet?")
+            goto(ChooseGauntlet_Arknights)
+        case 2: 
+            msgbox("Looking to spice it up?")
+            goto(ChooseGauntlet_Random)
+        case 3:
+            msgbox("Something else?")
+            goto(ChooseGauntlet)
+        default:
+            goto(ChooseGauntlet_CloseScript)
+    }
+}
+
+script ChooseGauntlet_Endfield {
+    dynmultichoice(0,0,FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE,
+        "Endfield Crisis Team",
+        "Wuling Science Station",
+        "Reconveners",
+        "Nah...")
+    switch(var(VAR_RESULT)){
+        case 0: 
+            goto(ChooseGauntlet_CrisisTeam)
+        case 1: 
+            goto(ChooseGauntlet_Wuling)
+        case 2: 
+            goto(ChooseGauntlet_Reconveners)
+        case 3: 
+            msgbox("Change your mind?")
+            goto(ChooseGauntlet_Main)
+        default:
+            goto(ChooseGauntlet_CloseScript)
+    }
+}
+
+script ChooseGauntlet_CrisisTeam {
+    msgbox("The Crisis Team, is that correct?", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
+        warpsilent(MAP_CRISIS_TEAM, 14, 11)
+        waitstate
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Endfield)
+    }
+}
+
+script ChooseGauntlet_Wuling {
+    msgbox("So you'd like the Science Station\ngauntlet, yes?", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
+        warpsilent(MAP_WULING, 14, 11)
+        waitstate
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Endfield)
+    }
+}
+
+script ChooseGauntlet_Reconveners {
+    msgbox("Ah, the Reconveners?", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
+        warpsilent(MAP_RECONVENERS, 14, 11)
+        waitstate
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Endfield)
+    }
+}
+
+script ChooseGauntlet_Arknights {
+    dynmultichoice(0,0,FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE,
+        "Abyssal Hunters",
+        "Confluence of East and West",
+        "Band of Misfits",
+        "Maybe not...")
+    switch(var(VAR_RESULT)){
+        case 0: 
+            goto(ChooseGauntlet_AbyssalHunters)
+        case 1: 
+            goto(ChooseGauntlet_AKYellow)
+        case 2: 
+            goto(ChooseGauntlet_AKGreen)
+        case 3: 
+            msgbox("Change of mind?")
+            goto(ChooseGauntlet_Main)
+        default:
+            goto(ChooseGauntlet_CloseScript)
+    }
+}
+
+script ChooseGauntlet_AbyssalHunters {
+    msgbox("Going for a swim! Are you prepared?", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
+        warpsilent(MAP_ABYSSAL_HUNTERS, 14, 11)
+        waitstate
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Arknights)
+    }
+}
+
+script ChooseGauntlet_AKYellow {
+    msgbox("Did you double-check your preperation?", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
+        warpsilent(MAP_AK_YELLOW, 14, 11)
+        waitstate
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Arknights)
+    }
+}
+
+script ChooseGauntlet_AKGreen {
+    msgbox("Taking on the misfits, eh?", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
+        warpsilent(MAP_AK_GREEN, 14, 11)
+        waitstate
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Arknights)
+    }
+}
+
+script ChooseGauntlet_Random {
+    dynmultichoice(0,0,FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE,
+        "Random Singles",
+        "Random Doubles",
+        "Just give me anything",
+        "Maybe not...")
+    switch(var(VAR_RESULT)){
+        case 0: 
+            goto(ChooseGauntlet_RandomSingles)
+        case 1: 
+            goto(ChooseGauntlet_RandomDoubles)
+        case 2: 
+            goto(ChooseGauntlet_RandomMixed)
+        case 3: 
+            msgbox("Change of mind?")
+            goto(ChooseGauntlet_Main)
+        default:
+            goto(ChooseGauntlet_CloseScript)
+    }
+}
+
+script ChooseGauntlet_RandomSingles {
+    msgbox("Feeling lucky?", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
+        warpsilent(MAP_RANDOM_SINGLES, 14, 11)
+        waitstate
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Random)
+    }
+}
+
+script ChooseGauntlet_RandomDoubles {
+    msgbox("Double the fun, are you ready?", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
+        warpsilent(MAP_RANDOM_DOUBLES, 14, 11)
+        waitstate
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Random)
+    }
+}
+
+script ChooseGauntlet_RandomMixed {
+    msgbox("Hmm, do you really put that much faith\nin me?", MSGBOX_YESNO)
+    if(var(VAR_RESULT)==TRUE){
+        call(Gauntlet_SetupPreWarp)
+        warpsilent(MAP_RANDOM, 14, 11)
+        waitstate
+    }
+    else {
+        msgbox(ChooseGauntlet_SomethingElseMSG)
+        goto(ChooseGauntlet_Random)
+    }
+}
+
+script ChooseGauntlet_CloseScript {
+    closemessage
+    applymovement(gauntletperson, moves(face_down))
+    waitmovement
     release
     end
 }
 
-script ChooseGauntlet {
-    lock
-    faceplayer
-    msgbox("Which gauntlet do you want to fight?")
-    dynmultichoice(0, 0, FALSE, 5, FALSE, DYN_MULTICHOICE_CB_NONE,
-                    "Set Risks",
-                    "Crisis Team",
-                    "Wuling",
-                    "Reconveners",
-                    "Abyssal Hunters",
-                    "Confluence of East and West",
-                    "Band of Misfits",
-                    "Random",
-                    "Random Singles",
-                    "Random Doubles",
-                    "Not right now")
-    getobjectfacingdirection(LOCALID_ATTENDANT_MAIN, VAR_TEMP_1)
-    special(HealPlayerParty)
-    setvar(VAR_GAUNTLET_POSITION, 0)
-    switch(var(VAR_RESULT)) {
-    case 0:
-        riskui
-        release
-        end
-    case 1:
-        callnative(RegenerateRandomDancers)
-        warpsilent(MAP_CRISIS_TEAM, 14, 11)
-        waitstate
-    case 2:
-        callnative(RegenerateRandomDancers)
-        warpsilent(MAP_WULING, 14, 11)
-        waitstate
-    case 3:
-        callnative(RegenerateRandomDancers)
-        warpsilent(MAP_RECONVENERS, 14, 11)
-        waitstate
-    case 4:
-        callnative(RegenerateRandomDancers)
-        warpsilent(MAP_ABYSSAL_HUNTERS, 14, 11)
-        waitstate
-    case 5:
-        callnative(RegenerateRandomDancers)
-        warpsilent(MAP_AK_YELLOW, 14, 11)
-        waitstate
-    case 6:
-        callnative(RegenerateRandomDancers)
-        warpsilent(MAP_AK_GREEN, 14, 11)
-        waitstate
-    case 7:
-        callnative(RegenerateRandomDancers)
-        callnative(RandomSeedForRandomGauntlet)
-        warpsilent(MAP_RANDOM, 14, 11)
-        waitstate
-    case 8:
-        callnative(RegenerateRandomDancers)
-        callnative(RandomSeedForRandomGauntlet)
-        warpsilent(MAP_RANDOM_SINGLES, 14, 11)
-        waitstate
-    case 9:
-        callnative(RegenerateRandomDancers)
-        callnative(RandomSeedForRandomGauntlet)
-        warpsilent(MAP_RANDOM_DOUBLES, 14, 11)
-        waitstate
-    default:
-        msgbox("Hope you'll be back soon!")
-    }
-    waitmessage
-    release
-    end
+text ChooseGauntlet_SomethingElseMSG {
+    "Something else then?"
 }
 
 script WelcomeCounter {
@@ -2195,7 +2444,7 @@ script CC_CameraBooth_TurnBack {
 script CC_Pog {
     lock
     faceplayer
-    msgbox("Sigh⋯ I get that she wants\nto portray Fiametta properly.\p"
+    msgbox("Sigh⋯ I get that she wants\nto portray Fiammetta properly.\p"
             "But did she really have to say\nthat line?")
     setspeaker(SP_NAME_NONE)
     msgbox("T/N: we cannot put this sentence\nin the game.")
